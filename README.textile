@@ -1,0 +1,7 @@
+h1. curtisgithub.github.com blog
+
+This was forked from https://github.com/mojombo/mojombo.github.com . 
+
+h1. License
+
+_posts is copyright curtisgithub, but the rest is licensed MIT by Tom Preston-Werner (https://github.com/mojombo)
