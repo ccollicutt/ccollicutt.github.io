@@ -1,4 +1,11 @@
-h1. What am I trying to do here?
+---
+layout: post
+title: What am I doing here?
+---
+
+h1. {{ page.title }}
+
+p(meta). 11 April 2011 - Edmonton
 
 serverascode.com has two major functions: 1) to document how I am working through the process of learning to treat servers as code, and 2) to be my systems administration resume.
 
