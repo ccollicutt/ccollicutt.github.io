@@ -17,4 +17,4 @@ For better or for worse, systems administration has changed greatly--and will co
 
 On top of every Linux distribution, which can perhaps now be a called a OS framework, comes configuration conventions, and a packaging system. Then, over top of the framework, we add a centralized management server instance (perhaps the only server I should be logging into) which runs configuration management software, such as chef, puppet, and others, which control installation and configuration of applications, alerting things such as change management, and other systems I have not yet determined.
 
-Suffice it to say that I am looking forward to working towards treating servers as code and documenting that process in blog posts and, hopefully more-so, as code!
+Suffice it to say that I am looking forward to working towards treating @servers as code@ and documenting that process in blog posts and, hopefully more-so, as code!
