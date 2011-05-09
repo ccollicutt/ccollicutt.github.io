@@ -9,9 +9,9 @@ h1. {{ page.title }}
 
 p(meta). 9 May 2011 - Edmonton
 
-Another small post...given that I've recently changed jobs and thus have new workstation(s) to install and configure as I like them, _and_ that I recently purchased a used Lenovo T61 laptop (which BTW is running very well on Lucid, perhaps fodder for another post) I've repeated a several software installations lately on lucid, including getting jekyll running locally so I can review blog posts before I send them up to "github":http://github.com to run "serverascode.com":http://serverascode.com.
+Another small post...given that I've recently changed jobs and thus have new workstation(s) to install and configure as I like them, _and_ that I recently purchased a used Lenovo T61 laptop (which BTW is running very well on Ubuntu 10.04/Lucid, perhaps fodder for another post) I've repeated a several software installations lately on Lucid, including getting jekyll running locally so I can review blog posts before I send them up to "github":http://github.com to run "serverascode.com":http://serverascode.com.
 
-When you run @gem install jekyll@ on Ubuntu 10.04 (otherwise known as lucid), you will recieve this error message:
+When you run @gem install jekyll@ on Lucid, you will recieve this error message:
 
 <pre>
 <code>
