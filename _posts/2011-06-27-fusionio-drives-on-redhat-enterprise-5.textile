@@ -38,6 +38,19 @@ $ vgs fio
 
 and where the @fio[a,b,c,d,e,f]@ are the drives, with each 640 gig card actually appearing as 2 320 gig disks.
 
+<pre>
+<code>
+$ dmesg  |grep -i "found device"
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:89:00.0: Found device 0000:89:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:8a:00.0: Found device 0000:8a:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:93:00.0: Found device 0000:93:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:94:00.0: Found device 0000:94:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:98:00.0: Found device 0000:98:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:99:00.0: Found device 0000:99:00.0
+</code>
+</pre>
+<br />
+
 h2. Resources
 
 The most important resource for using these FusionIO drives is the "official knowledge base":http://kb.fusionio.com/KB/c4/linux-specific.aspx which has several articles specifically for linux. I would suggest reading all of them. :)
