@@ -323,7 +323,7 @@ fio.x86_64 : I/O benchmark and stress/hardware verification tool
 </code>
 </pre>
 
-Here are a couple of example runs. Please note that at this point I do not know much about fio. Benchmarking disk is a highly technical thing to do, and getting tests write would take a lot of research and consideration, which I have not done.
+Here are a couple of example runs. Please note that at this point I do not know much about fio. Benchmarking disk is a highly technical thing to do, and getting tests right would take a lot of research and consideration, which I have not done.
 
 It seems that the @fio@ benchmark utility suports @direct=1@ which means use non-buffered-io, thereby skipping memory cacheing and going straight to the disk.
 
