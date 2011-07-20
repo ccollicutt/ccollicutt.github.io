@@ -77,9 +77,9 @@ The kickstart server is simply a plain http server that serves kickstart files, 
 
 @ks=http://example.com/ks/newserver.ks@ if you know what I mean. :)
 
-*6. Centralize management*
+*6. Centralize configuration management*
 
-This is a central server that can be used to access all the Linux/Unix servers (via ssh) and try to automate with custom scripts or things like pdsh, chef, puppet, ect.
+This is a central server that can be used to access all the Linux/Unix servers (via ssh) and try to automate with custom scripts or things like "pdsh":https://code.google.com/p/pdsh/, "chef":http://www.opscode.com/chef/, "puppet":http://www.puppetlabs.com/, "fabric":http://www.fabfile.org, ect.
 
 Also stores a copy of every Linux servers RPM database so that if a server gets hacked you can check what files have changed, if any, on the hacked server. (Though that should be in backups too.)
 
