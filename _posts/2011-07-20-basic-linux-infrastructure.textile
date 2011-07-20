@@ -110,7 +110,7 @@ Essentially a "Nagios":http://www.nagios.org server, or similar, that monitors p
 
 *10. Manage code with version control systems*
 
-Every IT workplace should have a central code repository. Sure, hg and git are distributed, but I still think it's nice to have a central location. "Github":github.com seems to be successful at centralizing distributed revision control, so I think it'll work for most workplaces as well. :)
+Every IT workplace should have a central code repository. Sure, hg and git are distributed, but I still think it's nice to have a central location. "Github":github.com seems to be successful at centralizing distributed revision control, so I think centralizing a local git or hg instance (with hgweb.cgi for example) will work for most workplaces as well. :)
 
 I have a github account and have used svn and hg at work. Use whatever you want--just do it now!
 
