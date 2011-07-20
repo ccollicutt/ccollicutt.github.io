@@ -53,7 +53,7 @@ This means our servers don't go to the internet to get updates, they go to the p
 
 *3. Centralize syslogging with rsyslog*
 
-There should be a central syslog server somewhere in your infrastucture, and all production servers should send syslog packages to that server. 
+There should be a central syslog server somewhere in your infrastucture, and all production servers should send syslog packets to that server. 
 
 This will allow for a central spot for gathering syslog messages from all servers. We can then run scripts/processes to analyze these logs looking for issues.
 
@@ -63,7 +63,7 @@ I usually replace, when possible, syslog with "rsyslog":http://www.rsyslog.com/ 
 
 *4. Centralize root email with sendmail or postfix and dovecot*
 
-There are many scripts on servers that will send email to root if something breaks, eg. Cron or logwatch. So all of these emails should be sent to a central email address that sysadmins have access to.
+There are many scripts on servers that will send email to root if something breaks, eg. cron or logwatch. So all of these emails should be sent to a central email address that sysadmins have access to.
 
 I'm not a huge fan of what is essentially logging over email, but it's nearly impossible to avoid.
 
@@ -73,13 +73,13 @@ Currently I configure each server's root alias to email a central address which 
 
 *5. Serve kickstarts over http*
 
-The kickstart server is simply a plain http server that serves kickstart files, and in conjunction with the packaging server allows for rapid, repeatable installation of Redhat/CentOS. Or you could do it over nfs, or pop it on the USB key. For me, I always use a web server to serve up the kickstarts.
+The kickstart server is simply a plain http server that serves kickstart files, and in conjunction with the packaging server allows for rapid, repeatable installation of Redhat/CentOS. Or you could do it over nfs, or pop it on the USB key. I always use a web server to serve up the kickstarts.
 
 @ks=http://example.com/ks/newserver.ks@ if you know what I mean. :)
 
 *6. Centralize configuration management*
 
-This is a central server that can be used to access all the Linux/Unix servers (via ssh) and try to automate with custom scripts or things like "pdsh":https://code.google.com/p/pdsh/, "chef":http://www.opscode.com/chef/, "puppet":http://www.puppetlabs.com/, "fabric":http://www.fabfile.org, ect.
+This is a central server that can be used to access all the Linux/Unix servers via ssh and to try automate with custom scripts or things like "pdsh":https://code.google.com/p/pdsh/, "chef":http://www.opscode.com/chef/, "puppet":http://www.puppetlabs.com/, "fabric":http://www.fabfile.org, ect.
 
 Also stores a copy of every Linux servers RPM database so that if a server gets hacked you can check what files have changed, if any, on the hacked server. (Though that should be in backups too.)
 
