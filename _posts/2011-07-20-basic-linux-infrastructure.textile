@@ -2,8 +2,7 @@
 layout: post
 title: Basic infrastructure to support production linux servers
 categories:
-- serverascode
-- storage 
+- infrastructure
 ---
 
 h1. {{ page.title }}
