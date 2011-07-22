@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Basic infrastructure to support production linux servers
+title: ksplice bought out by Oracle, RHEL desupported 
 categories:
 - infrastructure
 ---
