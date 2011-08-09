@@ -48,5 +48,22 @@ Then run your kickstart as usual and hopefully your system will boot with whatev
 </code>
 </pre>
 
+And running @parted@ we can see that it is indeed a gpt layout:
+
+<pre>
+<code>
+4TB_RAID10_SERVER$ parted /dev/sda print
+Model: HP LOGICAL VOLUME (scsi)
+Disk /dev/sda: 4001GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+
+Number  Start   End     Size    File system  Name  Flags
+ 1      1049kB  525MB   524MB   ext4               boot
+ 2      525MB   63.4GB  62.9GB                     lvm
+ 3      63.4GB  4001GB  3937GB                     lvm
+</code>
+</pre>
+
 So now I can create that rsync backup server I've always wanted, and I have up to 3.58TB to store the backups on. Good times and I'm glad it all worked out. Now if only they were 3TB drives... *;)*
 
