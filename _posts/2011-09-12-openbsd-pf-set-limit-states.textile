@@ -86,7 +86,7 @@ table-entries hard limit   200000
 </code>
 </pre>
 
-So lets fire up that siege command and see what happens by watching the current entries on the firewall that has the master carp IP. (Note that with @pfsync@ all the states will be transferred to the backup firewall as well, but for simplicity let's focus on the master.)
+So lets fire up that @siege@ command and see what happens by watching the current entries on the firewall that has the master carp IP. (Note that with @pfsync@ all the states will be transferred to the backup firewall as well, but for simplicity let's focus on the master.)
 
 <pre>
 <code>
