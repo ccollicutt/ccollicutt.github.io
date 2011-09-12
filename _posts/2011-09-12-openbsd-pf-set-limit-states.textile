@@ -165,7 +165,7 @@ And looks like we max out the @siege@ command now at about 30k sessions. Nice!
 
 To conclude, this was just a quick look at session limits on OpenBSD. If you're running a pf firewall it may be something to consider looking at to make sure you're not hitting the limit which would reduce the effectiveness of your firewall.
 
-Note that I haven't shown any memory usage from the firewall, but the small boxes have 512MB of RAM and even at 200K sessions the memory usage only went up very slightly so I don't think it's a constrained for memory reasons.
+Note that I haven't shown any memory usage from the firewall, but the small boxes have 512MB of RAM and even at 200K sessions the memory usage only went up very slightly so I don't think it's constrained for memory reasons.
 
 Thanks,
 Curtis.
