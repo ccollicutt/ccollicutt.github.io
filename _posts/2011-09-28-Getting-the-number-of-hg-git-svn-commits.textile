@@ -3,7 +3,7 @@ layout: post
 title: Getting the number of commits in mercurial, git, and svn 
 ---
 
-h1. Getting the number of commits in mercurial, git, and svn 
+h1. {{ page.title }} 
 
 p(meta). 28 September - 2011 - Edmonton
 
@@ -37,16 +37,20 @@ $ git log --since="24 hours ago" | grep "^commit" | wc -l
 
 *svn*
 
-Note that with svn, if there hasn't been a commit in since @YESTERDAY@ it will return that last commit before that--could be two days ago or more--so unless there are no commits, the number of commits will be at least one, which may not be what you are expecting.
-
+<notextile>
 <pre>
 <code>
 $ cd some_svn_repo
-# Where YESTERDAY=`date --date yesterday +{%Y-%m-%d}`
 # and SVN_REPO=`pwd` or something like that
+# Where YESTERDAY=`date --date yesterday +\{\%Y-\%m-\%d\}`
 $ svn log -q -r $YESTERDAY file:///$SVN_REPO | grep "^r" | wc -l
 </code>
 </pre>
+</notextile>
+
+Note that with svn, if there hasn't been a commit in since @YESTERDAY@ it will return that last commit before that--could be two days ago or more--so unless there are no commits, the number of commits will be at least one, which may not be what you are expecting.
+
+
 
 Thanks,
 Curtis
