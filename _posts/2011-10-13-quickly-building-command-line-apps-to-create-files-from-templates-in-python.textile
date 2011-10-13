@@ -14,7 +14,7 @@ First, let me say that I am not an expert in Python. :) That said, I have been w
 
 # a configuration file to get defaults,
 # command line options to add or override options, and
-# "cheetah template":http://www.google.ca/url?sa=t&source=web&cd=1&ved=0CB8QFjAA&url=http%3A%2F%2Fwww.cheetahtemplate.org%2F&ei=dCCXTvCUMsffiALspIWxDQ&usg=AFQjCNGtXaktBzupofyUsRuh_y5nfZFluA&sig2=5LSTcds2ExcZP8saN506fA files.
+# "cheetah template":http://www.cheetahtemplate.org/
 
 I think I finally have a good system for doing this, and could see it being useful to others in terms of writing their own quick application to generate some kind of text file from a command line application using the above three points, and what I have done is commited a set of "skeleton files":https://github.com/curtisgithub/cli-template-generator so that you could do this yourself very easily.
 
