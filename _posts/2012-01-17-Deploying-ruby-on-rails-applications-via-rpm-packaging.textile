@@ -349,7 +349,7 @@ h2. That's...it
 
 At this point the rails app should be available at the virtual host URL that was configured in the vhost. :)
 
-While it's a long process to get that intial spec file and rpmbuild working, once it's done the application can be deployed in a few minutes, and now the developers can simply worry about commiting and tagging code, and let the sysadmin deal with deploying the actual application in a replicable. Of course there will be some back and forth, new gems might not compile, etc, but the general structure is in place. Further, the deployment is quite automatable--a new tag could mean a new RPM build and deployment to test.
+While it's a long process to get that intial spec file and rpmbuild working, once it's done the application can be deployed in a few minutes, and now the developers can simply worry about commiting and tagging code, and let the sysadmin deal with deploying the actual application in a replicable manner. Of course there will be some back and forth, new gems might not compile, etc, but the general structure is in place. Further, the deployment is quite automatable--a new tag could mean a new RPM build and deployment to test.
 
 Feel free to comment below with _any_ corrections/issues, and thanks,
 Curtis.
