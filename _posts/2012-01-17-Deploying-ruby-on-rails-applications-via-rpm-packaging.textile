@@ -166,7 +166,7 @@ Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.VOkPMU
 *NOTES:* 
 
 * The above rpmbuild could take a long time depending on the number of gems that the application requires. It's important to rembember that in this process all the gems are being downloaded from "rubygems.org":http://rubygems.org and then also _compiled_ on the build server, each and every time the rpm is built. So it's slow. There are some things I'm looking at doing to reduce the time it takes to build the RPM, but that's where it is right now. Maybe someone will read this blog and give me some comments on what I can be doing better!
-* The resulting RPM is quite large...in this case about 80MB _compressed_. This is because it as 100+ gems in it.
+* The resulting RPM is quite large...in this case about 80MB _compressed_. This is because it has 100+ gems in it.
 <br />
 
 h2. Installing the RPM on a brand new server
