@@ -12,7 +12,7 @@ p(meta). 13 April - 2012 - Edmonton
 
 ...in one big box.
 
-Recently we picked up 11 "300GB OCZ Z-Drive PCIe SSD":http://www.oczenterprise.com/ssd-products/z-drive-c-series.html cards to put in some new servers we bought. Don't ask me to explain what and why because it was somewhat of an unusual purchase, but suffice it to say we're going to be running a lot of fast VMs on top of this storage. I would have liked to get the full height cards, but because of the servers they are going in we have to use the half-height version.
+Recently we picked up 11 "300GB OCZ Z-Drive PCIe SSD":http://www.oczenterprise.com/ssd-products/z-drive-c-series.html cards to put in some new servers we bought. Don't ask me to explain what and why because this was somewhat of an unusual purchase, but suffice it to say we're going to be running a lot of fast VMs on top of this storage. I would have liked to get the full height cards, but because of the servers they are going in we have to use the half-height version.
 
 Look for some performance and configuration posts in the future, along with updates on using FusionIO on RHEL 6 as I've updated the server those are installed in on to RHEL 6.
 
