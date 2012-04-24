@@ -10,7 +10,7 @@ h1. {{ page.title }}
 
 p(meta). 27 June - 2011 - Edmonton
 
-%{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I'll be posting about that and a few other things in the next short while.
+%{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I'll be posting about that and a few other PCIe-SSD subjects in the next short while.
 
 h2. FusionIO IODrive Overview
 
