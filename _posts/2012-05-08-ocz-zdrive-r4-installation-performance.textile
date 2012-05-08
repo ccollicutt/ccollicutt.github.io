@@ -46,7 +46,7 @@ When that tar file is downloaded and unzipped all there is inside is the _ocz10x
 
 <pre>
 <code>
-]# wget http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz 
+# wget http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz 
 --2012-05-08 21:40:23--  http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz
 Resolving www.oczenterprise.com... 74.52.187.58
 Connecting to www.oczenterprise.com|74.52.187.58|:80... connected.
