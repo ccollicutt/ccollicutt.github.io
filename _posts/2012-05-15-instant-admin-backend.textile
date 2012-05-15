@@ -8,7 +8,7 @@ h1. {{ page.title }}
 
 p(meta). 15 May - 2012 - Edmonton
 
-Recently I have been working on a web-based administrative back end, and have found doing so unusually easy, mostly because of the combination of "Bottle":http://bottlepy.org/, a python micro-framework, "Elixir":http://elixir.ematia.de/, a wrapper over top of "SQLAlchemy":http://www.sqlalchemy.org/ (which is itself an SQL toolkit and "ORM":http://en.wikipedia.org/wiki/Object-relational_mapping), Twitter's "bootstrap":http://twitter.github.com/bootstrap/, scaffolding for websites, and finally "Datatables":http://datatables.net/, which enables advanced interactions with HTML tables.
+Recently I have been working on a web-based administrative backend, and have found doing so unusually easy, mostly because of the combination of "Bottle":http://bottlepy.org/, a python micro-framework, "Elixir":http://elixir.ematia.de/, a wrapper over top of "SQLAlchemy":http://www.sqlalchemy.org/ (which is itself an SQL toolkit and "ORM":http://en.wikipedia.org/wiki/Object-relational_mapping), Twitter's "bootstrap":http://twitter.github.com/bootstrap/, scaffolding for websites, and finally "Datatables":http://datatables.net/, which enables advanced interactions with HTML tables.
 
 The only difficulty I had, and it was slight, was integrating bootstrap and datatables together, but this "post":http://datatables.net/blog/Twitter_Bootstrap_2 helped out quite a bit.
 
