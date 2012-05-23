@@ -254,6 +254,8 @@ I believe that in some cases with SSD, PCIe or otherwise, it's not a bad idea to
 
 So I'm going to reformat these drives to 100% usage. Just for fun. Why not get back that 100g because the performance/endurance at 100% is going to be fine for our usage.
 
+%{color:blue}Note:% Brand new drives won't have to be formatted. I'm only doing this because I had formatted the drives when they were in the other server. 
+
 %{color:red}Warning:% Reformatting will obviously delete any data on these drives!
 
 <pre>
@@ -301,18 +303,18 @@ Found 2 ioDrives in this system with 1 ioDrive Duo
 Fusion-io driver version: 2.2.3 build 66
 
 Adapter: ioDrive Duo
-	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:59507
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:XXXXX
 	External Power: NOT connected
 	PCIE Power limit threshold: 24.75W
 	Sufficient power available: Unknown
 	Connected ioDimm modules:
-	  fct0:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77143
-	  fct1:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77144
+	  fct0:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:XXXXX
+	  fct1:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:XXXXX
 
 fct0	Attached as 'fioa' (block device)
-	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77143
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:XXXXX
 	Alt PN:68Y7382
-	Located in slot 0 Upper of ioDrive Duo SN:59507
+	Located in slot 0 Upper of ioDrive Duo SN:XXXXX
 	PCI:8f:00.0
 	Firmware v5.0.6, rev 101583
 	322.55 GBytes block device size, 396 GBytes physical device size
@@ -321,9 +323,9 @@ fct0	Attached as 'fioa' (block device)
 	Media status: Healthy; Reserves: 100.00%, warn at 10.00%
 
 fct1	Attached as 'fiob' (block device)
-	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77144
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:XXXXX
 	Alt PN:68Y7382
-	Located in slot 1 Lower of ioDrive Duo SN:59507
+	Located in slot 1 Lower of ioDrive Duo SN:XXXXX
 	PCI:90:00.0
 	Firmware v5.0.6, rev 101583
 	322.55 GBytes block device size, 396 GBytes physical device size
