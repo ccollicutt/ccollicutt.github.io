@@ -30,7 +30,7 @@ The kernel I am running is stock RHEL 6:
 <pre>
 <code>
 [root@srv ~]# uname -a
-Linux v3.library.ualberta.ca 2.6.32-220.17.1.el6.x86_64 #1 \
+Linux example.com 2.6.32-220.17.1.el6.x86_64 #1 \
 SMP Wed May 16 00:01:37 BST 2012 x86_64 x86_64 x86_64 GNU/Linux
 </code>
 </pre>
