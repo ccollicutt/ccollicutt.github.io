@@ -56,7 +56,7 @@ What you get is one 4U, dual CPU server (24 cores counting hyperthreading), with
 
 (Terrible image...but you can kind of see the two internal hard-drives.)
 
-So with those two internal slots, plus 24 bays in the front, and 12 in the back is a total of 38 3.5" slots, 36 of them hot swappable. Or, put another way, if using 3TB SATA drives...114TB of raw storage.
+So with those two internal slots, plus 24 bays in the front, and 12 in the back is a total of 38 3.5" slots, 36 of them hot swappable. Or, put another way, if using 3TB SATA drives...114TB of raw storage. (Also I think you can fit four 2.5" drives internally instead of two 3.5" drives. But don't quote me on that.)
 
 h2. Bulk storage costs
 
