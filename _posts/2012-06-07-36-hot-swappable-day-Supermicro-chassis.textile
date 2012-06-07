@@ -88,6 +88,12 @@ Further, tier one vendors will usually certify their hardware for particular ope
 
 Personally, I don't like spending 3 hours on the phone with the tier one support, going through generic call scripts with someone who doesn't care about my problem in the least, and then having the local support tech either be a "cell phone with hands" or cancel four times in a row before simply replacing the whole motherboard because they have no idea what is actually wrong. I suppose that sounds kind of negative, but those are real anecdotes. :) PS. We have lots of tier one vendor servers...
 
+h2. Bonus
+
+The java IMPI gui works great on Linux! Some tier one vendors don't...and they make you pay extra to actually use the remote console. (*cough* HP *cough*)
+
+That said...don't look at how they store passwords in the ssh interface. Just don't.
+
 h2. Conclusion
 
 I feel that in specialized applications systems like this supermicro server can be very effective. Especially if it leaves money on the table for test infrastructure. I'd rather have twelve (nine production, three in test) of these boxes than two four-socket tier one servers. 
