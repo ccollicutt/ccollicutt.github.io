@@ -44,6 +44,8 @@ Why not get this out of the way? That's what you're here for, isn't it? :) The b
 | Kingston 24GB Pack  | SM KVR1066D3Q8R7SK3/24G | 2 |
 | SATA power splitter |	SM CBL-0082L | 1 |
 
+The total cost for the above is around *$4000*.
+
 What you get is one 4U, dual CPU server (24 cores counting hyperthreading), with 48GB of RAM, the MB supports up to 196GB I believe, and room for 36 hot swappable drives, PLUS two internal OS drives that are actually bracketed deep inside the chassis, ie. difficult to get out. 
 
 %{color:blue}Note:% I've done my best to make sure the above is correct, and I do have exactly that hardware, but don't base your business on those specs without doing some testing. Order one server and see how it goes before ordering a dozen+. 
