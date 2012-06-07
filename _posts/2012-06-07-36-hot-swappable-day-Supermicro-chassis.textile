@@ -90,7 +90,7 @@ Personally, I don't like spending 3 hours on the phone with the tier one support
 
 h2. Bonus
 
-The java IMPI gui works great on Linux! Some tier one vendors don't...and they make you pay extra to actually use the remote console. (*cough* HP *cough*)
+The Java IPMI remote console gui works great on Linux! Some tier one vendors don't...and they make you pay extra to actually use the remote console. (*cough* HP *cough*)
 
 That said...don't look at how they store passwords in the ssh interface. Just don't.
 
