@@ -58,7 +58,7 @@ So with those two internal slots, plus 24 bays in the front, and 12 in the back 
 
 h2. Bulk storage costs
 
-The amount of data an organization has to store never seems to go down, only up up UP!--probably at least 50% per year. High-end, so called Enterprise storage, can cost between $50K-$100K per terabyte, where K is thousands. 
+The amount of data an organization has to store never seems to go down, only up up UP!--probably at least 50% per year. High-end, "enterprise storage", can cost between $50K-$100K per terabyte, where K is thousands. 
 
 I'm not kidding. It's _really_ that much, and there are few organizations that can afford to have their storage increase by 50% per year at that cost. Everywhere I've worked has started out with a large Enterprise SAN and quickly realized they can't afford it.
 
