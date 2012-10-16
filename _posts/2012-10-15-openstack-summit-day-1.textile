@@ -29,7 +29,7 @@ Not much to say here, some summit housekeeping with trippy techno rave music to 
 
 h2. Open Compute
 
-The first session I attended was by "Cole Crawford":https://twitter.com/coleinthecloud of the "Open Compute Foundation":http://opencompute.org/. Basically this was an overview of the history of things like the 19" rack (it came from waaaaay back from the train system) and how we need to change our standards to allow things like interoperability and other good things.
+The first session I attended was by "Cole Crawford":https://twitter.com/coleinthecloud of the "Open Compute Foundation":http://opencompute.org/. Basically this was an overview of the history of things like the 19" rack (it came from waaaaay back from the train system) and how we need to change our standards to allow things like interoperability and other good stuff.
 
 I was hoping to find out how a small organization--like the one that I work for--could be involved in Open Compute, specifically how we could access similar hardware as Facebook and others are using. I didn't quite get that out of the presentation, but hopefully in the future I will be able to get us into Open Compute hardware in some fashion or another.
 
@@ -43,7 +43,7 @@ Having worked in a world class library that was interested in running petabytes 
 
 I think that in situations where we need to store a lot of replicated data--such as what a library or researcher would like to, or rather *should* like to store--object storage such as swift is a great way to go. (Though that said, perhaps systems like "Amazon's Glacier":http://aws.amazon.com/glacier/ make more sense for those use cases, but maybe not.) I was at a presentation by the then "CIO of the University of Alberta":http://webdocs.cs.ualberta.ca/~jonathan/ who figured there was three to five petabytes of research data on campus that needs to be preserved. That's a lot of storage, especially when factoring in replication, and it really needs to happen at some point--and it can't just be a huge tape system.
 
-Further, considering that libraries and researchers  (ie. their respective Universities and organizations), are supposed to work together it would make sense to be able to have some kind of interoperability between object storage clouds, private or otherwise, even if it's just for some separation geography-wise.
+Further, considering that libraries and researchers  (ie. their respective Universities and organizations), are supposed to work together it would make sense to be able to have some kind of interoperability between object storage clouds, private or otherwise, even if it's just for some geographic separation.
 
 Certainly Colonly is going to be a project to keep an eye on as object storage evolves and we try to do it across data centers and organizations.
 
