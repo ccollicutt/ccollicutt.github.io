@@ -35,9 +35,11 @@ The guys from CloudScaling talk about redundancy patterns. This was actually pre
 
 # "HA" pairs are not the only type of redundancy
 ** Airplanes require seven catastrophic failures to fall out of the sky, whereas with HA pairs you just need one layer to fail
-** Create small failure domains that don't propogate = scale up
+** Create small failure domains that don't propagate = scale up
 # Alternative redundancy patterns
 # Redundancy patterns in Open Source Cloud Software
+
+CloudScaling have come up with a methodology for "HA" they call Service Distribution.
 
 Service Distribution
 * Resilient
