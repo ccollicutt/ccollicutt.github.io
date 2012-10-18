@@ -14,7 +14,7 @@ h2. Keynotes
 
 HP says something enterprise business-like. Not too sure. 100s of billions of "spend" available. Capex -> Opex. Many, many slides with business pictographs.
 
-"Troy Toman":https://twitter.com/troytoman from Rackspace talks about how proud they are of OpenStack. Brags about how Rackspace's contribution percentage has actually reduced from 54% in Essex and 30% in Folsom and how that is a good thing. 
+"Troy Toman":https://twitter.com/troytoman from Rackspace talks about how proud they are of OpenStack. Brags about how Rackspace's contribution percentage has actually reduced from 54% in Essex and 30% in Folsom and how that is a good thing.
 
 Notes from Rackspace's production usage of OpenStack:
 * They have Quantum and "Melange":http://wiki.openstack.org/Melange in production
@@ -76,9 +76,9 @@ h2. Cloud Hosted Desktops and OpenStack
 
 Ken Ringdahl, Vice President Engineering, Desktone discusses Desktop as a Service. I'm interested in this topic not because I'm interested in the topic, but because the project I'm currently working on is essentially desktop in the cloud via "Apache VCL":https://cwiki.apache.org/VCL/apache-vcl.html and I'm constantly thinking about how to get off VCL and away from it's 40k lines of perl, and just use OpenStack with a thin layer on top of it. The reality is that OpenStack has 95% of the code required to implement a service similar to VCL.
 
-So Ken goes through his slides. Mentions VDI and that VDI is hard! Capex, buy more hardware, can't fit it in their data center, SAN administrators, etc. VDI is tough.
+So Ken goes through his slides. Mentions VDI and that VDI is hard! Capex, buy more hardware, can't fit it in their data center, SAN administrators, etc. VDI is tough. But DaaS is not VDI.
 
-The point of the session is that VDI is a three billion dollar market and is a new market that OpenStack can access. Further he talks about the fact that running a desktop resource manager/broker on top of OpenStack can create operational and other cost savings. It also allows and organization like Desktone to focus on user experience versus running infrastructure.
+The point of the session is that DaaS is a three billion dollar market and is a new business area that OpenStack can access. Further he talks about the fact that running a desktop resource manager/broker on top of OpenStack can create operational and other cost savings. It also allows and organization like Desktone to focus on user experience versus running infrastructure.
 
 Desktops are Different
 * Storage is key
