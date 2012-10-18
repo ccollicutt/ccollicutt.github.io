@@ -14,7 +14,7 @@ h2. Keynotes
 
 HP says something enterprise business-like. Not too sure. 100s of billions of "spend" available. Capex -> Opex. Many, many slides with business pictographs.
 
-"Troy Toman":https://twitter.com/troytoman from Rackspace talks about how proud they are of OpenStack. Brags about how Rackspace's contribution percentage has actually reduced from 54% in Essex and 30% in Folsom and how that is a good thing.
+"Troy Toman":https://twitter.com/troytoman from Rackspace talks about how proud they are of OpenStack. Brags about how Rackspace's contribution percentage has actually reduced from 54% in Essex and 30% in Folsom and how that is a good thing, which it is. :)
 
 Notes from Rackspace's production usage of OpenStack:
 * They have Quantum and "Melange":http://wiki.openstack.org/Melange in production
