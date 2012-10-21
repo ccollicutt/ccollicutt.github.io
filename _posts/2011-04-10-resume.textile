@@ -49,7 +49,7 @@ I gained the bulk of my security experience--and my understanding that "siloing"
 
 h2. Skills
 <p></p>
-* Professional Unix/Linux systems development and operations administrator
+* Professional Unix/Linux systems administrator
 * Operating private clouds based on OpenStack
 * Experience with large, modern storage systems
 * Information security expert (CISSP, GCUX)[1]
