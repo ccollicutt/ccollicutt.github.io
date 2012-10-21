@@ -80,7 +80,7 @@ h2. Experience
 
 * Cloud Developer - Educational Services, Startups  - Non-profit Research Organization - June 2012 to Present
 * Senior Unix Systems and Storage Administrator - Digital Preservation - Top 20 University Library - April 2011 to June 2012
-* Unix Systems Administrator - Production Services & Research - Large Online and Distance University - Oct 2007 to April 2011
+* Unix Systems Administrator - Production Services and Research - Large Online and Distance University - Oct 2007 to April 2011
 * IT Services - Various - July 2005 - Sept 2007
 * Systems Administrator - Banking - Private Company - May 2004 to June 2005
 * Security Systems Administrator - Large Online and Distance University - Dec 2001 to June 2004
