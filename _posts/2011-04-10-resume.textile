@@ -61,7 +61,7 @@ h2. Skills
 
 h2. Projects
 <p></p>
-* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski/tree/sqlalchemy (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2] called _The Labinski_!
+* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2] called _The Labinski_!
 * "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
 * Installed and performance tested multiple vendor PCIe-SSD cards
 * Development of a one petabyte+ storage system
