@@ -55,6 +55,7 @@ h2. Skills
 * Linux Operating System Packaging (eg. RPM)
 * Experience with large, modern storage systems
 * Information security expert (CISSP, GCUX)[1]
+* Scripting in python, bash
 * Life-long learning
 <p></p>
 
