@@ -1,0 +1,90 @@
+---
+layout: post
+title: Resume and Contact
+categories:
+---
+
+h1. {{ page.title }}
+
+p(meta). Updated 20 October - 2012 - Edmonton
+
+!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_security.jpg!
+_(Taken at the 2012 OpenStack Summit)_
+
+h2. Contact
+<p></p>
+* Name: Curtis
+* Email: curtis@serverascode.com
+* Twitter: "@serverascode":https://twitter.com/serverascode
+* Github: "curtisgithub":https://github.com/curtisgithub _(I know...not the best account name)_ 
+* Hacker News: "serverascode":http://news.ycombinator.com/user?id=serverascode</a>
+* Stack Exchange: "curtis":http://stackoverflow.com/users/1460882/curtis 
+<p></p>
+
+h2. Goals
+
+I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum will be in OpenStack.
+
+My dream job would be to work at a great company. Sounds simple, but what defines a great compay? As far as I'm concerned, it's one that's fast moving, yet thoughtful, and willing to fail fast. A company that accomplishes a lot in a short amount of time, and that doesn't mean 100 hour weeks for its employees. I'd like to be part of a team that creates great products and services, open source or not.
+
+I would like to work in an organization that fosters diversity in its staff and works hard to maintain that diversity, not just in terms of gender and ethnicity, but also in terms of what staff do outside their work life.
+
+I'd also like to work for a company with a good sense of humor. I don't think sense of humor gets enough attention these days, though I admit that is a difficult requirement for an entire organization to meet.
+
+Finally, I would like to work in an environment where I can learn from my peers, which likely means going to a place where everyone is smarter than I am, and where they can help bring me up to their level. If I'm lucky I can give them something in return, and hopefully contribute to the open source community as well.
+
+_(And since we're talking dream jobs, it would be nice to bring my dog to work every once in a while.)_
+
+h2. Background
+
+Most of my career has been spent in Systems Administration. I have recently branched out to working as a  "Cloud Developer" mostly around the OpenStack ecosystem. While that title likely has a short lifespan, I do believe it's currently accurate, especially when one considers the somewhat recently initiated devops movement. 
+
+I previously worked for a world-class library at a large Canadian university that wanted to archive and store digital artifacts (ie. our culture) for 500 years. That meant I learned a lot of about all kinds of modern storage systems--and I'm not just talking about your standard head-based fibre SAN, because that model just doesn't work for all situations. We needed "checksumming filesystems":http://en.wikipedia.org/wiki/ZFS. 
+
+While working at the library I was lucky enough to travel to San Francisco and meet the people behind the "Internet Archive":http://archive.org (an organization that has eight or nine petabytes of storage) find out what they were doing, and bring those concepts back and work on implementing some of them. I also worked with projects as diverse as a Canada-wide L2 networking to sync iRODS instances. Nothing like pinging a private network that is thousands of kilometres away. :)
+
+Prior to working in a library (which I can assure you is quite an experience, walking through the stacks to get to your office is amazing), I worked as a Systems Administrator at a large Canadian Online and and Distance Education university on several research projects as well as with scaling educational information systems such as Moodle. We  used Redhat Enterprise and Xen and KVM based virtualization quite heavily. In this position I was able to work on several performance testing projects, such as pushing millions and millions of messages through Zimbra using Jmeter, as well as package many systems into "RPM":http://en.wikipedia.org/wiki/RPM_Package_Manager.
+
+I gained the bulk of my security experience--and my understanding that "siloing" is not the best way to create security--at the same university where I was a the Security Administrator. I worked on firewalls (of course), intrusion detection, and layered security. There I began the process of moving the university away from a single monolithic commercial firewall to multiple firewalls based on OpenBSD. 
+
+h2. Skills
+<p></p>
+* Professional Unix/Linux systems development and operations administrator
+* Operating private clouds based on OpenStack
+* Experience with large, modern storage systems
+* Information security expert (CISSP, GCUX)[1]
+* Life-long learning
+<p></p>
+
+h2. Projects
+<p></p>
+* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski/tree/sqlalchemy (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2]
+* "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
+* Installed and performance tested multiple vendor PCIe-SSD cards
+* Development of a one petabyte+ storage system
+* Deployed iRODS across a Canarie Lightpath (ie. across Canada)
+* Deployed live migration capable virtual machine host cluster via XEN/KVM and SAN (ie. clustered LVM)
+* Deployed OpenBSD/pf as main firewall for large organization
+* Packaged and deployed systems such as Moodle, DSpace in production
+<p></p>
+
+h2. Education
+<p></p>
+* 2 Year After-degree in Information Security, 2001
+* Bachelor of Education, 2000
+<p></p>
+
+h2. Experience
+
+<p></p>
+
+* Cloud Developer - Educational Services, Startups  - Non-profit Research Organization - June 2012 to Present
+* Senior Unix Systems and Storage Administrator - Digital Preservation - Top 20 University Library - April 2011 to June 2012
+* Unix Systems Administrator - Production Services & Research - Large Online and Distance University - Oct 2007 to April 2011
+* IT Services - Various - July 2005 - Sept 2007
+* Systems Administrator - Banking - Private Company - May 2004 to June 2005
+* Security Systems Administrator - Large Online and Distance University - Dec 2001 to June 2004
+
+fn1. _I have allowed these certifications to expire_
+
+fn2. _Still an early beta stage project_
