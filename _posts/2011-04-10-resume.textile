@@ -27,7 +27,7 @@ I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansibl
 
 My dream job would be to work at a great company. Sounds simple, but what defines a great compay? As far as I'm concerned, it's one that's fast moving, yet thoughtful, and willing to fail fast. A company that accomplishes a lot in a short amount of time, and that doesn't mean 100 hour weeks for its employees. I'd like to be part of a team that creates great products and services, open source or not.
 
-I would like to work in an organization that fosters diversity in its staff and works hard to maintain that diversity, not just in terms of gender and ethnicity, but also in terms of what staff do outside their work life.
+I would like to work in an organization that fosters diversity in its staff and works hard to maintain that diversity, not just in terms of gender and ethnicity, but also what staff do outside their work life.
 
 I'd also like to work for a company with a good sense of humor. I don't think sense of humor gets enough attention these days, though I admit that is a difficult requirement for an entire organization to meet.
 
@@ -45,7 +45,7 @@ While working at the library I was lucky enough to travel to San Francisco and m
 
 Prior to working in a library (which I can assure you is quite an experience, walking through the stacks to get to your office is amazing), I worked as a Systems Administrator at a large Canadian Online and and Distance Education university on several research projects as well as with scaling educational information systems such as Moodle. We  used Redhat Enterprise and Xen and KVM based virtualization quite heavily. In this position I was able to work on several performance testing projects, such as pushing millions and millions of messages through Zimbra using Jmeter, as well as package many systems into "RPM":http://en.wikipedia.org/wiki/RPM_Package_Manager.
 
-I gained the bulk of my security experience--and my understanding that "siloing" is not the best way to create security--at the same university where I was a the Security Administrator. I worked on firewalls (of course), intrusion detection, and layered security. There I began the process of moving the university away from a single monolithic commercial firewall to multiple firewalls based on OpenBSD. 
+I gained the bulk of my security experience--and my understanding that "siloing" is not the best way to create security--at the same university where I was the Security Systems Administrator. I worked on firewalls (of course), intrusion detection, and layered security. There I began the process of moving the university away from a single monolithic commercial firewall to multiple firewalls based on OpenBSD. 
 
 h2. Skills
 <p></p>
@@ -61,7 +61,7 @@ h2. Skills
 
 h2. Projects
 <p></p>
-* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski/tree/sqlalchemy (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2]
+* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski/tree/sqlalchemy (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2] called _The Labinski_!
 * "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
 * Installed and performance tested multiple vendor PCIe-SSD cards
 * Development of a one petabyte+ storage system
