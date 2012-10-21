@@ -23,7 +23,7 @@ h2. Contact
 
 h2. Goals
 
-I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum will be in OpenStack.
+I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum will be in OpenStack. I would be very interested in working on a project developing tools related to OpenStack and security.
 
 My dream job would be to work at a great company. Sounds simple, but what defines a great compay? As far as I'm concerned, it's one that's fast moving, yet thoughtful, and willing to fail fast. A company that accomplishes a lot in a short amount of time, and that doesn't mean 100 hour weeks for its employees. I'd like to be part of a team that creates great products and services, open source or not.
 
