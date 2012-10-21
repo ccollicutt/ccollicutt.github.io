@@ -64,9 +64,9 @@ h2. SDSC
 
 Unfortunately, or fortunately, depending on your perspective, that was all the OpenStack security talks I was able to attend on Thursday because I had to go to a meeting at the San Digeo Super Computing Center, or the "SDSC":http://www.sdsc.edu/, and wasn't able to come back to the summit.
 
-I was excited to go to find out more about what they are doing, especially because they have one of the largest OpenStack Swift installations in the world. I think about five petabytes worth.
+I was excited to go to find out more about what they are doing, especially because they have one of the largest "OpenStack Swift installations":https://cloud.sdsc.edu/hp/index.php in the world. I think about five petabytes worth.
 
-They were also very excieted about their new supercomputer "Gordon":http://www.sdsc.edu/News%20Items/PR030512_gordon.html, which has a ton of SSD storage (ie. flash--get it...gordon + flash)
+They were also very excieted about their new supercomputer "Gordon":http://www.sdsc.edu/News%20Items/PR030512_gordon.html, which has a ton of SSD storage (ie. flash--get it...gordon + flash).
 
 Also they had some old tape systems they were retiring. Tape is not dead yet though!
 
