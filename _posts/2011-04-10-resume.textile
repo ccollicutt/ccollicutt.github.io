@@ -51,6 +51,8 @@ h2. Skills
 <p></p>
 * Professional Unix/Linux systems administrator
 * Operating private clouds based on OpenStack
+* Virtualization with Xen, KVM, VirtualBox
+* Linux Operating System Packaging (eg. RPM)
 * Experience with large, modern storage systems
 * Information security expert (CISSP, GCUX)[1]
 * Life-long learning
