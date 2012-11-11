@@ -35,7 +35,7 @@ win7-base.qcow2: QEMU QCOW Image (v2), 21474836480 bytes
 
 I am going to run 30 Windows 7 images with four gigs of ram and two virtual cpus each, based off a qcow2 snapshot from the original backing image.
 
-The server I am running this test on is a Dell c6220 with 32 cores and 128 gigs of main memory.  
+The server I am running this test on is a "Dell c6220":http://www.dell.com/us/enterprise/p/poweredge-c6220/pd with 32 HT cores and 128 gigs of main memory.  
 
 _ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 based filesystem used consideralby more IOPs than xfs because the jdb2 process was doing a lot of journaling. There are likely some settings I should be using with ext4 to get better performance, but instead I just hopped over to xfs and haven't gone back to ext4 yet._
 
