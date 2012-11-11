@@ -37,7 +37,7 @@ I am going to run 30 Windows 7 images with four gigs of ram and two virtual cpus
 
 The server I am running this test on is a Dell c6220 with 32 cores and 128 gigs of main memory.  
 
-ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 based filesystem used consideralby more IOPs than xfs because the jdb2 process was doing a lot of journaling. There are likely some settings I should be using with ext4 to get better performance, but instead I just hopped over to xfs and haven't gone back to ext4 yet.
+_ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 based filesystem used consideralby more IOPs than xfs because the jdb2 process was doing a lot of journaling. There are likely some settings I should be using with ext4 to get better performance, but instead I just hopped over to xfs and haven't gone back to ext4 yet._
 
 This is the little script I use to boot the vms:
 
