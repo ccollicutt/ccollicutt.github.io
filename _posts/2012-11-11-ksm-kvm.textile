@@ -1,0 +1,210 @@
+---
+layout: post
+title: KSM and KVM
+categories:
+---
+
+h1. {{ page.title }}
+
+p(meta). 11 November - 2012 - Edmonton!
+
+!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_edmonton.jpg!
+_(Winter in Edmonton. It's not that cold...yet.)_
+
+
+h2. KSM and KVM
+
+I recently found out about the "ksm":http://www.linux-kvm.org/page/KSM technology that is in Ubuntu 12.04 + kvm by default. ksm is a memory deduplication process. As far as I understand it, ksm can allow virtual machines (actually any application, not just virtualization) to share memory pages--it finds all duplicated memory pages and merges them, thereby saving memory in some situations.
+
+One of the projects I am working on is a classroom as a service, or virtual classrooms. Students can login to a web gui and request a reservation to a virtual machine image which they can then access with a RDP client. 
+
+In this project all of the images are based on--unfortunately--Windows 7. One would think that if we are running many similar Windows 7 images ksm could do a lot of de-duplication.
+
+I have been doing a few experiments in my spare time to see if ksm can help to over-commit memory. If I can I'd rather be able to run 400 virtual machines than 200. If we can over-commit on memory 1:2 or 1:4 there could be substantial cost savings for the project.
+
+h2. The Test
+
+I have a basic Windows 7 image in qcow2 format. 
+
+<pre>
+<code>
+root@ksm_test:/mnt/ksm-test$ file win7-base.qcow2
+win7-base.qcow2: QEMU QCOW Image (v2), 21474836480 bytes
+</code>
+</pre>
+
+I am going to run 30 Windows 7 images with four gigs of ram and two virtual cpus each, based off a qcow2 snapshot from the original backing image.
+
+The server I am running this test on is a Dell c6220 with 32 cores and 128 gigs of main memory.  
+
+ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 based filesystem used consideralby more IOPs than xfs because the jdb2 process was doing a lot of journaling. There are likely some settings I should be using with ext4 to get better performance, but instead I just hopped over to xfs and haven't gone back to ext4 yet.
+
+This is the little script I use to boot the vms:
+
+<pre>
+<code>
+root@ksm_test:~$ cat test_ksm.sh 
+#!/bin/bash
+
+# How much memory to boot with
+MEM=4048
+BACKING_DIR=/mnt/ksm-test
+BACKING_FILE=win7-base.qcow2
+SLEEP=60
+
+pushd $BACKING_DIR
+
+for i in {1..30}; do
+	echo "====> Starting a new instance..."
+	# Remove the old backing file
+	rm -f win7-$i.qcow2
+
+	# Create a new backing file that is a qcow2 snapshot of the original file
+	qemu-img create -f qcow2 -b $BACKING_FILE win7-$i.qcow2
+
+	# Actually start the intstance
+	/usr/bin/kvm \
+	-M pc-1.0 \
+	-smp 2,sockets=2,cores=1,threads=1 \
+	-enable-kvm \
+	-m $MEM \
+	-drive file=win7-$i.qcow2,if=virtio \
+	-boot d \
+	-net nic,model=virtio \
+	-net user \
+	-nographic \
+	-vnc :$i \
+	-device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
+	-daemonize
+
+	# Let's just sleep for a few seconds...
+	echo "====> Sleeping for $SLEEP..."
+	sleep $SLEEP 
+done
+
+popd
+
+exit 0
+</code>
+</pre>
+
+After that script runs we have 30 kvm Win7 instances running:
+
+<pre>
+<code>
+root@ksm_test:/mnt/ksm-test$ ps ax  |grep "bin\/kvm" | wc -l
+30
+</code>
+</pre>
+
+For the first while things are a little crazy on the host because 30 Windows 7 vms just booted in 30 minutes. After a few hours, or rather overnight, the vms settle down quite a bit to just doing a few IOPs each.
+
+As far as what these vms are doing--I login to a couple every once and a while just to make sure they are up, but otherwise they are doing nothing but whatever they do by default.
+
+h2. The Defaults
+
+ksm is enabled in Ubuntu by default when using kvm. However, the defaults are fairly conservative:
+
+<pre>
+<code>
+root@ksm_host:~$ cat /sys/kernel/mm/ksm/pages_to_scan 
+100
+root@ksm_host:~$ cat /sys/kernel/mm/ksm/sleep_millisecs 
+200
+</code>
+</pre>
+
+ksm will scan 100 pages, sleep for 200 miliseconds and then scan 100 more, and so on. But with millions of pages it will take a long, long time to scan all of them.
+
+I set the pages_to_scan to 20000 and sleep_millisecs to 20--I'm guessing these are pretty aggresive settings.
+
+<pre>
+<code>
+root@ksm_host:~$  echo "20000" > /sys/kernel/mm/ksm/pages_to_scan
+root@ksm_host:~$  echo "20" > /sys/kernel/mm/ksm/sleep_millisecs
+</code>
+</pre>
+
+<br />
+
+h2. The Results
+
+I suppose saying "results" sounds scientific. :) 
+
+The reality is that I'm really just cutting and pasting the ksm information that has been recorded after several days of running 30 Windows 7 virtual machines that should all be very close in terms of memory use.
+
+From the "ksm.txt":http://www.kernel.org/doc/Documentation/vm/ksm.txt file:
+
+<pre>
+<code>
+A high ratio of pages_sharing to pages_shared indicates good sharing,
+but a high ratio of pages_unshared to pages_sharing indicates wasted 
+effort. pages_volatile embraces several different kinds of activity, 
+but a high proportion there would also indicate poor use of madvise 
+MADV_MERGEABLE.
+</code>
+</pre>
+
+And the results of ksm after a few days of running 30 vms...
+
+</pre>
+
+<pre>
+<code>
+root@ksm_test:~$ for i in `ls -1 /sys/kernel/mm/ksm`; \
+do echo "===> $i"; cat /sys/kernel/mm/ksm/$i;  done
+===> full_scans
+5417
+===> pages_shared
+443355
+===> pages_sharing
+26704343
+===> pages_to_scan
+20000
+===> pages_unshared
+3164064
+===> pages_volatile
+183552
+===> run
+1
+===> sleep_millisecs
+20
+</code>
+</pre>
+
+Unfortunatley, by my calculations that is only ~1.7GB saved.
+
+The page size in this host is 4096 bytes.
+
+<pre>
+<code>
+root@ksm_test:~$ getconf PAGESIZE
+4096
+</code>
+</pre>
+
+So if we have 443355 pages shared, the we have saved this many bytes:
+
+<pre>
+<code>
+root@ksm_test:~$ echo "443355 * 4096" | bc
+1815982080
+</code>
+</pre>
+
+which is about 1.7GB. So while the ratio of page_shared to pages_sharing is high, which is good, I'm still not seeing the memory savings I would have expected. 
+
+<pre>
+<code>
+root@ksm_test:~$ free
+             total       used       free     shared    buffers     cached
+Mem:     131997772  131556896     440876          0     108448  108129628
+-/+ buffers/cache:   23318820  108678952
+Swap:     41943032     302836   41640196
+</code>
+</pre>
+
+So thanks for reading, and if you have any suggestions as to what I might be doing incorrectly, be it settings or my math or my general assumptions about ksm :), please let me know in the comments.
+
+Thanks,
+Curtis.
