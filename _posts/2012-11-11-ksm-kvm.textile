@@ -12,7 +12,7 @@ p(meta). 11 November - 2012 - Edmonton!
 _(Winter in Edmonton. It's not that cold...yet.)_
 
 
-_UPDATE: I'm still working on the numbers at the end with regards as to how much memory is actually being saved. I'm still trying to figure out what means what. :)_
+_UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!_
 
 h2. KSM and KVM
 
@@ -174,9 +174,7 @@ do echo "===> $i"; cat /sys/kernel/mm/ksm/$i;  done
 </code>
 </pre>
 
-Unfortunately, by my calculations that is only ~1.7GB saved.
-
-The page size in this host is 4096 bytes.
+So, if I understand these numbers correctly, pages_shared is the amound of memory ksk is actually using. Thus in this example, ksm is using 1.7GB of memory:
 
 <pre>
 <code>
@@ -185,7 +183,7 @@ root@ksm_test:~$ getconf PAGESIZE
 </code>
 </pre>
 
-So if we have 443355 pages shared, the we have saved this many bytes:
+So if we have 443355 pages shared, ksm is using this many bytes:
 
 <pre>
 <code>
@@ -194,7 +192,18 @@ root@ksm_test:~$ echo "443355 * 4096" | bc
 </code>
 </pre>
 
-which is about 1.7GB. So while the ratio of page_shared to pages_sharing is high, which is good, I'm still not seeing the memory savings I would have expected. 
+which is about 1.7GB.
+
+However, saved memory, ie. pages_sharing, is quite high! So this is good. :)
+
+<pre>
+<code>
+root@ksm_test:~$ echo $((26704343*`getconf PAGE_SIZE`/1024/1024/1024)) GB
+101 GB
+</code>
+</pre>
+
+I'm not sure how this equates to all the memory being used on the machine, but as far as ksm is concerned it's saving us about 100 gigs. Nice.
 
 <pre>
 <code>
