@@ -12,7 +12,7 @@ p(meta). 11 November - 2012 - Edmonton!
 _(Winter in Edmonton. It's not that cold...yet.)_
 
 
-_UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!_
+_UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!_ 
 
 h2. KSM and KVM
 
