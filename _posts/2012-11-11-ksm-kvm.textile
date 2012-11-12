@@ -12,6 +12,8 @@ p(meta). 11 November - 2012 - Edmonton!
 _(Winter in Edmonton. It's not that cold...yet.)_
 
 
+_UPDATE: I'm still working on the numbers at the end with regards as to how much memory is actually being saved. I'm still trying to figure out what means what. :)_
+
 h2. KSM and KVM
 
 I recently found out about the "ksm":http://www.linux-kvm.org/page/KSM technology that is in Ubuntu 12.04 + kvm by default. ksm is a memory de-duplication process. As far as I understand it, ksm can allow virtual machines (actually any application, not just virtualization) to share memory pages--it finds all duplicated memory pages and merges them, thereby saving memory in some situations.
