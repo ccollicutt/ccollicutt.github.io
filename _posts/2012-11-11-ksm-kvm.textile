@@ -215,6 +215,20 @@ Swap:     41943032     302836   41640196
 </code>
 </pre>
 
+Update: Now that I have a better understanding of what ksm is doing and what it's numbers mean, using a modified version of "this script":http://aionica.computerlink.ro/2011/08/ksm-kernel-samepage-merging-status/ we can see some interesting results, though in the below example I am running 60 2 gig 1 vcpu instances instead of 30 4 gig 2 vcpu instances like the rest of this post:
+
+<pre>
+<code>
+root@ksm_test:~$ ./ksm_stat.sh 
+Shared memory is 2071 MB
+Saved memory is 95514 MB
+Unshared memory is 21336 MB
+Volatile memory is 2549 MB
+Shared pages usage ratio is 46.11
+Unshared pages usage ratio is .22
+</code>
+</pre>
+
 So thanks for reading, and if you have any suggestions as to what I might be doing incorrectly, be it settings or my math or my general assumptions about ksm :), please let me know in the comments.
 
 Thanks,
