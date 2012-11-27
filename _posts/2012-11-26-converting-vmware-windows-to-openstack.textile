@@ -19,7 +19,7 @@ Let me note that I am not a "windows guy"--I haven't really used windows in the 
 
 h2. Moving the backend to OpenStack
 
-Currently we are in the process of moving the backed of our VCL system from a VMWare ESXi based cluster to OpenStack (Essex to be precise.) There are a lot of reasons for this move, and I won't get into them here.
+Currently we are in the process of moving the backend of our VCL system from a VMWare ESXi based cluster to OpenStack (Essex to be precise.) There are a lot of reasons for this move, and I won't get into them here.
 
 Unfortunately you can't just take an ESXi image and drop it into OpenStack and have it work. Certainly we can actually import the image into glance, as vmdk images are supported, but the OS on the image will not have the virtio drivers for disk and network installed, drivers that OpenStack uses by default.
 
@@ -29,7 +29,7 @@ This means we needed to find a way to convert the images from ones that work in 
 
 h2. virt-v2v to the rescue
 
-Fortunately RedHat provides a system called virt-v2v. This allows the cross-conversion of several different types of hypervisors.
+Fortunately RedHat provides a system called virt-v2v. This allows the cross-conversion of images for several different types of hypervisors.
 
 The main things I found out about RedHat and virt-v2v are:
 
