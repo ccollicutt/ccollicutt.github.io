@@ -13,6 +13,8 @@ h1. {{ page.title }}
 
 As I've mentioned in previous posts, I'm currently working on a project that uses Apache VCL to provide university students with the ability to remotely login to a virtual machine and use specialized software to complete their classwork--a virtual computer lab if you will.
 
+Because we are moving off our current backend to OpenStack, we need to convert Windows images from VMWare to something that will work in OpenStack/KVM.
+
 h2. Note about Windows...
 
 Let me note that I am not a "windows guy"--I haven't really used windows in the last 10 years. Because I have usually been employed as a Unix/Linux admin, I've always either ran OpenBSD, Linux, or OSX on my desktop, and literally never had to work with Windows. Until now of course. ;)
