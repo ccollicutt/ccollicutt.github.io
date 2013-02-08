@@ -68,7 +68,7 @@ SNIP!
 
 One thing to note is the -c switch on tcpflow, it means print to the console instead of files in the local directory.
 
-I would love to hear about other uses of tcpflow or ways to alter the output of tcpdump, so please let me know of anything interesting by commenting.
+I would love to hear about other uses of tcpflow or ways to alter the output of tcpdump, so please let me know of anything interesting by commenting. :)
 
 Thanks,
 Curtis.
