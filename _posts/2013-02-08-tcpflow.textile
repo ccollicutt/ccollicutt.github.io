@@ -7,7 +7,7 @@ categories:
 p(meta). 8 February - 2013 - Edmonton!
 
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_ales.jpg!
-_(winter on the UofA campuse, nice sunny day though)_
+_(winter on the UofA campus, nice sunny day though)_
 
 h1. {{ page.title }}
 
