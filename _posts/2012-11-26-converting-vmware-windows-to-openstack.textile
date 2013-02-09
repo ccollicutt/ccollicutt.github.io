@@ -149,7 +149,7 @@ h2. Bring that image into OpenStack
 
 Now that we have an image in the libvirt pool we configured, it's time to:
 
-# Convert the raw/vmdk image to qcow2 using "qeum-img".
+# Convert the raw/vmdk image to qcow2 using "qeme-img".
 # Import the converted qcow2 image into glance.
 # Boot the image once and manually login to finish off virt-v2v's "firstboot" scripts. This means you need an admin login to the image.
 # "Set" the hardware, make any changes to the instance such as updating and the like.
