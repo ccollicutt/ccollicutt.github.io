@@ -1,0 +1,29 @@
+---
+layout: post
+title: Canadian OpenStack Users Group - CanStack!
+categories:
+---
+
+!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/canstack_logo.png!
+
+p(meta). 20 February - 2013 - Edmonton!
+
+
+h1. {{ page.title }}
+
+Recently I have started helping out the "Canadian OpenStack Users Group":http://www.meetup.com/Canadian-OpenStack-Users-Group/. With the support of my employer, I've put up a website called "CanStack":http://canstack.ca and a "blog":http://blog.canstack.ca for that site as well. And, of course, the obligatory "twitter account":http://twitter.com/canstack. There is even a github repository for the "blog posts":http://github.com/canstack/blog_posts, so contributing a post is only a git commit away! :)
+
+The fun thing about the website and blog is that the website is hosted in a beta Canadian OpenStack-based cloud, and the blog is hosted in "Amazon S3":http://aws.amazon.com/s3/. I am a big proponent of object storage systems such as S3 and OpenStack Swift, so it was a good experience to get a static blog up on S3. 
+
+I use "jekyll":http://jekyllrb.com to generate the blog, just like I do this site, though "serverascode.com":http://serverascode.com is hosted by "github":http://github.com. Thanks github!
+
+My hope with the CanStack website and blog is that they will help to find more members to bring together in our monthly meetings, and that hopefully we can provide some useful information about OpenStack as well. 
+
+I just put up a "blog post":http://blog.canstack.ca/2013/02/14/vcl-openstack-reference-architecture.html on how we are using OpenStack in a virtual classroom project, complete with what server and network hardware we are using, and even what data center!
+
+So, if you are interested in what Canadians are doing with OpenStack, "canstack.ca":http://canstack.ca might be a good place to start.
+
+As always, comments, suggestions, and criticisms are welcome. :)
+
+Thanks,
+Curtis.
