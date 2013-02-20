@@ -14,9 +14,9 @@ h1. {{ page.title }}
 
 It's quite possible to over commit resources with the KVM hypervisor.
 
-I should say first that most of the work I've been doing around over committing in KVM is based on a project I am working in where the virtual machines are stateless. This makes over committing easier because if we run out of resources on a compute node and this causes a vm to crash, it's not the end of the world, the end-user can just restart their session.
+I should say first that most of the work I've been doing around over committing in KVM is based on a project I am working in where the virtual machines are stateless. This makes over committing easier because if we run out of resources on a compute node and this causes a vm to crash, it's not the end of the world--the end-user can just restart their session.
 
-To me over committing means having virtual machines running on a node where to total CPU, main memory (ie. ram), and disk than is available to the virtual machines is much larger than the actual physical resources available on the node. Hopefully five or ten times larger.
+To me over committing means having virtual machines running on a node where to total CPU, main memory (ie. ram), and disk that is available to the virtual machines is much larger than the actual physical resources available on the node. Hopefully five or ten times larger.
 
 h2. Hardware
 
