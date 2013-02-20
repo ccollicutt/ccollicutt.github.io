@@ -7,7 +7,7 @@ categories:
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_cs.jpg!
 _(Still winter in Edmonton, will have to blog a lot more in the summer)_
 
-p(meta). 8 February - 2013 - Edmonton!
+p(meta). 20 February - 2013 - Edmonton!
 
 
 h1. {{ page.title }}
