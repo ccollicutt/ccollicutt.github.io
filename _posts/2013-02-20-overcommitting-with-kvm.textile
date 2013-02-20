@@ -91,7 +91,7 @@ test_host:/mnt/intel$ file 263.img
 </code>
 </pre>
 
-This is also how OpenStack handles images. It puts one base image on the compute node and each subsequent instance based on that same image is a qcow2 snapshot. I suppose we could do the same with LVM if desired using snapshots.
+This is also how OpenStack handles images. It puts one base image on the compute node and each subsequent instance based on that same image is a qcow2 snapshot. I suppose we could do the same with LVM, if desired, using snapshots.
 
 h2. Can't over commit IOPS
 
