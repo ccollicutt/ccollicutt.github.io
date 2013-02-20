@@ -95,7 +95,7 @@ This is also how OpenStack handles images. It puts one base image on the compute
 
 h2. Can't over commit IOPS
 
-The part that is difficult in terms of running hundreds of vms on a single node is the amount of IOPS each vm takes up. In my experiments the Ubuntu Cloud Image doesn't really do anything at all in terms of IOPS--maybe one or two IOPS per image when they are idle. So if I'm running 300 images, they don't even use 300 IOPS when idle. Even during boot they hardly do anything. (Of course when they are working they could be using a lot of IOPS.)
+The part that is difficult in terms of running hundreds of vms on a single node is the amount of IOPS each vm takes up. In my experiments the Ubuntu cloud image doesn't really do anything at all in terms of IOPS--maybe one or two IOPS per image when they are idle. So if I'm running 300 images, they don't even use 300 IOPS when idle. Even during boot they hardly do anything. (Of course when they are working they could be using a lot of IOPS.)
 
 But, if I boot 100 Windows 7 images five minutes apart, I need 5000 IOPS. 
 
