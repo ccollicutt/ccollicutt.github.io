@@ -22,6 +22,14 @@ body {
   text-align: center;
 }
 
+blockquote {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 3px solid #ccc;
+} 
+
 h1, h2, h3, h4, h5, h6 {
   font-size: 100%;
 }
