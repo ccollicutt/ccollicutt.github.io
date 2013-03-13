@@ -42,7 +42,7 @@ compute02 ansible_ssh_host=192.168.100.133
 </code>
 </pre>
 
-And all of those IPs and names are reflected in the @PackStack.yml@, @files/PackStack.cfg@, and @Vagrantfile@ files. I don't know if they are the most descriptive names, but this is how I've currently organized it.
+And all of those IPs and names are reflected in the @PackStack.yml@, @files/packstack.cfg@, and @Vagrantfile@ files. I don't know if they are the most descriptive names, but this is how I've currently organized it.
 
 <pre>
 <code>
