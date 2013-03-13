@@ -15,7 +15,7 @@ I am a big fan, and user, of "OpenStack":http://openstack.org. I also really lik
 
 Recently on the Ansible mailing list the lead developer (and now CTO of "Ansibleworks":http://ansibleworks.com) "suggested that it was time to bring together":https://groups.google.com/forum/?fromgroups=#!topic/ansible-project/eNlPwjIHGGs everyone who is working, or wants to work with, both Ansible and OpenStack.
 
-One of the suggestions was to follow what "PackStack":https://github.com/stackforge/packstack has done--it's based on puppet--and port it over to Ansible. (NOTE: I'm not even sure that is the right git repo, things are moving so fast!) 
+One of the suggestions was to follow what "PackStack":https://github.com/stackforge/packstack has done--it's based on puppet--and port it over to Ansible. (NOTE: I'm not even sure that's the right git repo, things are moving so fast!) 
 
 While I had heard of PackStack before, I had never used it, so I decided it was time I took a look so that I can perhaps help with the OpenStack + Ansible project. Frankly, it was on my list of technology to check out because I always need to have some virtual machines running OpenStack, and it would be nice if there was an easy way to quickly build a multi-host OpenStack install (especially if I would like to contribute code back to the community at some point).
 
@@ -60,7 +60,7 @@ For example, here is what nova services are running where:
 
 <pre>
 <code>
-[root@apis PackStack(keystone_admin)]$ nova-manage service list
+[root@apis packstack(keystone_admin)]$ nova-manage service list
 Binary           Host       Zone  Status     State Updated_At
 nova-scheduler   scheduler  nova  enabled    :-)   2013-03-13 21:15:11
 nova-cert        apis       nova  enabled    :-)   2013-03-13 21:15:15
