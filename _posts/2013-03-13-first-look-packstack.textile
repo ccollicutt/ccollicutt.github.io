@@ -21,7 +21,7 @@ While I had heard of PackStack before, I had never used it, so I decided it was 
 
 Also--I'm sure Ansible will soon be one of Vagrants supported deployment systems, and when that happens it will be very easy to deploy OpenStack with Vagrant.
 
-So I spent a couple hours creating an "Ansible playbook":https://github.com/curtisgithub/ansible_playbooks/tree/master/PackStack that would simply fire off the PackStack command with a generic answer file. So I haven't ported anything from PackStack to Ansible--I'm simply using Ansible and Vagrant to create an environment for PackStack to do it's work.
+So I spent a couple hours creating an "Ansible playbook":https://github.com/curtisgithub/ansible_playbooks/tree/master/packstack that would simply fire off the PackStack command with a generic answer file. So I haven't ported anything from PackStack to Ansible--I'm simply using Ansible and Vagrant to create an environment for PackStack to do it's work.
 
 h2. RedHat/CentOS
 
