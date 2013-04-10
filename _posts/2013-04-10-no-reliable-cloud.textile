@@ -17,7 +17,7 @@ The Cloud Scaling presentation was one I enjoyed and considered thought provokin
 
 h2. No reliable cloud
 
-Here's a quote from the top of the "first post":http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/
+Here's a quote from the top of the "first post":http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/:
 
 bq. Stop wasting your time trying to [find a reliable cloud]. Stop wasting your time (and money) trying to build one. If you find a service provider that claims that they have it: Maybe question their understanding of cloud - and business.
 
