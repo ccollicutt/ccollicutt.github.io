@@ -21,7 +21,7 @@ Here's a quote from the top of the "first post":http://blog.hendrikvolkmer.de/20
 
 bq. Stop wasting your time trying to [find a reliable cloud]. Stop wasting your time (and money) trying to build one. If you find a service provider that claims that they have it: Maybe question their understanding of cloud - and business.
 
-I put that there to remind me of the point of the series of posts, because it was the attention grabbing headline. :)
+I put that there to remind me of the point of the series of posts, and because it was the attention grabbing headline. :)
 
 h2. tl;dr
 
