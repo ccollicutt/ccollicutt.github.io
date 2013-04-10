@@ -34,7 +34,7 @@ My thoughts on these posts come down to this:
 * Contain failure!
 * HA pairs are probably not the direction to go in to gain reliability
 * Clustering software often brings in complexity that can destroy reliability gains
-* Stateless systems are a lot more fun
+* Stateless systems are a lot more fun :)
 * Keep the stateful part of an application or system small
 
 Thinking about reliability in a cloud, especially an OpenStack cloud, is an interesting thought experiment. Fortunately, the OpenStack cloud I help to run, which is the back-end for a single application, is actually mostly stateless--except for machine images, the OpenStack database, and the application database.
