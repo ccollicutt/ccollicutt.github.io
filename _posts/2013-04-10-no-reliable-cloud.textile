@@ -11,7 +11,7 @@ p(meta). 10 April - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
-Recently "Hendrik Volkmer":http://blog.hendrikvolkmer.de/about/ put up a blog post entitled "There will be no reliable cloud":http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/. Part of it was based on a "presentation":http://engineering.cloudscaling.com/2013/03/service-resiliency-doesnt-always-mean-ha-or-cluster/ I watched at the last OpenStack summit--sure wish I was going to the Portland summit, but alas is not to be. 
+Recently "Hendrik Volkmer":http://blog.hendrikvolkmer.de/about/ put up a blog post entitled "There will be no reliable cloud":http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/. Part of it was based on a "presentation":http://engineering.cloudscaling.com/2013/03/service-resiliency-doesnt-always-mean-ha-or-cluster/ I watched at the last OpenStack summit (wish I was going to the Portland summit, but alas is not to be). 
 
 The Cloud Scaling presentation was one I enjoyed and considered thought provoking. I wrote a "few notes":http://serverascode.com/2012/10/17/openstack-summit-day-3.html on that presentation last year.
 
