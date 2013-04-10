@@ -37,7 +37,7 @@ My thoughts on these posts come down to this:
 * Stateless systems are a lot more fun :)
 * Keep the stateful part of an application or system small
 
-Thinking about reliability in a cloud, especially an OpenStack cloud, is an interesting thought experiment. Fortunately, the OpenStack cloud I help to run, which is the back-end for a single application, is actually mostly stateless--except for machine images, the OpenStack database, and the application database.
+Thinking about reliability in a cloud, especially an OpenStack cloud, is an interesting thought experiment. Fortunately, the OpenStack cloud I help to run, which is the back-end for a single application, is actually mostly stateless--except for machine images, the OpenStack database, and the application database. Not a lot of stateful information, except those darn windows images that are many tens of times the size of a standard Linux cloud image.
 
 h2. Notes from the part one post
 
