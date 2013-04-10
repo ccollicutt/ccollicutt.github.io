@@ -95,7 +95,7 @@ bq. Complexity + Scale => Reduced Reliability + Increased Chance of catastrophic
 ** Partial failure is desirable
 * Business side
 ** Software reliability is cheaper
-** Most web scale applications consider of a large stateless part and a small stateful piece
+** Most web scale applications consist of a large stateless part and a small stateful piece
 ** It does not make business sense to  provide a super-reliable cloud
 * A single compute node or even zone will never be reliable
 * Best not to consider virtual machines, "such as those in EC2, as servers":http://www.jamiebegin.com/why-an-ec2-instance-isnt-a-server/
