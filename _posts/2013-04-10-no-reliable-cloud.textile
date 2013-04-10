@@ -29,6 +29,7 @@ My thoughts on these posts come down to this:
 
 * He's mostly talking web-scale applications
 * A single zone will not be reliable
+* But still have to make zones as reasonably reliable as possible (where's the line?)
 * We should design reliable applications on top of unreliable zones (but how?)
 * Contain failure!
 * HA pairs are probably not the direction to go in to gain reliability
