@@ -30,7 +30,7 @@ One of the things I've learned about using brand new technologies is that they o
 
 I think this is the first time that I've encountered a plugin that was more expensive than the actual application it was plugging into, but I can understand the pricing because Fusion is probably under-valued, or at least under-priced. Plus the $79 goes towards the development of vagrant, which I use _a lot_.
 
-Recently I deployed "packstack":http://serverascode.com/2013/03/13/first-look-packstack.html via vagrant and *virtualbox*, and I wanted to do the same with vmware_fusion, but I ran into a few problems.
+Recently I deployed "packstack":http://serverascode.com/2013/03/13/first-look-packstack.html via vagrant and *virtualbox*, and I wanted to do the same with vmware_fusion, but I ran into a few problems, which I'm going to spend the rest of the post detailing.
 
 _NOTE: I should say that nothing here is the vmware_fusion plugins fault. I'm not blaming the plugin at all. Rather just detailing some of the pain points I've encountered, which will no doubt disappear as more people use vmware fusion and vagrant together, as as I get my act together. I'll try to update this post as I find out new information. :)_
 
