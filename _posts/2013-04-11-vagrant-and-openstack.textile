@@ -333,6 +333,7 @@ Bringing machine 'default' up with 'openstack' provider...
 #
 # Check status
 #
+
 $ vagrant status
 Current machine states:
 
