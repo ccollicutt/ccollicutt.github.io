@@ -19,6 +19,10 @@ _NOTE: Make sure your precise64 vm has more than the default memory of 512--I se
 
 _NOTE: "Here is a great post":http://blog.aaronorosen.com/building-a-multi-tier-application-with-openstack/ to follow on using devstack and grizzly and quantum, much of which I am reusing here._
 
+h2. Why?
+
+There is no spoon.
+
 h2. Install devstack
 
 "Devstack":http://devstack.org is a really useful development environment for openstack. If you want to try out the new features in openstack grizzly, this is an easy way.
