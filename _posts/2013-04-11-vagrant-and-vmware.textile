@@ -266,7 +266,7 @@ h2. Conclusion
 
 I love vagrant, but am having a heck of a time with vmware_fusion and centos6. Having said that, I *KNOW* that things are going to get better as I learn and as more people start using vagrant and vmware_fusion.
 
-Hats off to Mitchell for creating a create development tool!
+Hats off to Mitchell for creating a great development tool, one that I use every day!
 
 Thanks,
 Curtis.
