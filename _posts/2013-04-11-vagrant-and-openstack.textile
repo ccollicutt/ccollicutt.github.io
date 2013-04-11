@@ -172,8 +172,6 @@ vagrant-vmware-fusion (0.4.2)
 
 Before we get too far, let's create a keypair in devstack. 
 
-_NOTE: cirros doesn't support cloud-init anyways, so you can skip this part if you want._
-
 <pre>
 <code>
 vagrant@precise64:~$ source ~/devstack/openrc 
@@ -313,7 +311,6 @@ Vagrant.configure("2") do |config|
     # Not sure why but I feel like calling this vm whitney
     os.name = "whitney"
 
-    # These two configs won't be used in this post, cirros has no cloud-init
     os.ssh_username = "cirros"
     os.ssh_private_key = "~/.ssh/id_dsa.pub"
   end
@@ -406,7 +403,7 @@ vagrant@precise64:~$ nova show 419e5940-e068-42a4-bb28-68ad72f85d8a
 
 Nice.
 
-Now, unless we give this vm a "public ip" we won't be able to ssh in without hopping into the devstack host first, so _vagrant ssh_ isn't going to work, plus the cirros image has no cloud-init or anything anyways, but we should be able to ssh in from inside devstack and use the default cirros login and password (or you could take that extra step and add a "floating ip").
+Now, unless we give this vm a "public ip" we won't be able to ssh in without hopping into the devstack host first.
 
 But first...one. More. Step.
 
@@ -480,6 +477,8 @@ Linux cirros 3.2.0-37-virtual #58-Ubuntu SMP Thu Jan 24 15:48:03 UTC 2013 x86_64
 </code>
 </pre>
 
+_NOTE: I'm skipping the part about using the authorized_keys file cirros sets up for itself based on the keypair specified. But you can ssh into the cirros instance without a password if everything is setup right._
+
 <br />
 
 h2. Conclusion
@@ -510,7 +509,7 @@ Check in with openstack...
 <pre>
 <code>
 #
-# Vm gone!
+# vm gone!
 # 
 
 vagrant@precise64:~$ nova list
