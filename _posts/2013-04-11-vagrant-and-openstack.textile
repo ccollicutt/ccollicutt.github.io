@@ -477,7 +477,7 @@ Linux cirros 3.2.0-37-virtual #58-Ubuntu SMP Thu Jan 24 15:48:03 UTC 2013 x86_64
 </code>
 </pre>
 
-_NOTE: I'm skipping the part about using the authorized_keys file cirros sets up for itself based on the keypair specified. But you can ssh into the cirros instance without a password if everything is setup right._
+_NOTE: I'm skipping the part about using the authorized_keys file cirros sets up for itself based on the keypair specified. But you can ssh into the cirros instance without a password if everything is setup right, ssh -A, ssh-agent, etc._
 
 h2. Conclusion
 
