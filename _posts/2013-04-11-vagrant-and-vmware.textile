@@ -11,7 +11,7 @@ p(meta). 11 April - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
-After IRC, vagrant is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.
+After IRC, "vagrant":http://vagrantup.com is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.
 
 Recently Hashicorp released "Vagrant 1.1":http://www.hashicorp.com/blog which introduces the idea of "providers":http://docs.vagrantup.com/v2/providers/index.html. Previously vagrant only supported virtualbox, but now, with 1.1, plugins can be written to support almost any virtualization system that has a command line or API interface of some sort.
 
