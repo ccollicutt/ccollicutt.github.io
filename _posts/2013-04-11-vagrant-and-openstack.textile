@@ -21,7 +21,7 @@ _NOTE: "Here is a great post":http://blog.aaronorosen.com/building-a-multi-tier-
 
 h2. Install devstack
 
-"Devstack":http://devstack.org is a really useful development environment for openstack.
+"Devstack":http://devstack.org is a really useful development environment for openstack. If you want to try out the new features in openstack grizzly, this is an easy way.
 
 <pre>
 <code>
