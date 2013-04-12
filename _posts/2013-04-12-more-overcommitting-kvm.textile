@@ -44,7 +44,7 @@ root# echo "20" > /sys/kernel/mm/ksm/sleep_millisecs
 </code>
 </pre>
 
-Next--re-setup vswitch, as I have a kind of rigged-up configuration going, which needs some care after a reboot, so obviously this is just for testing, not production. :)
+Next--re-setup vswitch, as I have a kind of "rigged-up configuration":http://serverascode.com/2013/02/21/openvswitch.html going, which needs some care after a reboot, so obviously this is just for testing, not production. :)
 
 <pre>
 <code>
