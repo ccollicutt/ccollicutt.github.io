@@ -1,6 +1,6 @@
 ---
 layout: post
-title: More overcommitting with kvm
+title: More over committing with kvm
 categories:
 ---
 
