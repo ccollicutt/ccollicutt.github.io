@@ -266,7 +266,7 @@ But I will keep an eye out for other examples.
 
 h2. UPDATE (April 18th, 2013): New network problem
 
-This is a new one...now this can't be virtualbox's fault. I have no idea what to do with this issue...
+This is a new one...now this can't be virtualbox's fault. 
 
 <pre>
 <code>
@@ -286,7 +286,25 @@ networking is broken.
 </code>
 </pre>
 
-I can't seem to find anything on removing or changing vmnets in fusion, but it's only been an hour or so since this happened.
+Instructions from Mitchell, edit _/Library/Preferences/VMware\ Fusion/networking_ and:
+
+bq.. Get rid of all the lines in that file _except_ the ones that start with "answer VNET_1_" or "answer VNET_8_". We want to keep those, as they're the default networks that ship with Fusion. After that, open VMware Fusion.app, then run these commands in a separate terminal:
+
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --stop
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --configure
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --start
+
+Then run
+
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli --status
+
+And tell me the output. Should only have the vmnet1/vmnet8 devices. After
+THAT you shoudl be good to go again.
+
+VMware networking is an absolute nightmare. - "Mitchell":https://mail.google.com/mail/u/2/?ui=2&ik=7b53664106&view=om&th=13e1f0d872dd857b
+
+p. It sucks that it's an edge case, but I still hope that there is some code added to help in situations like this. Thanks to Mitchell for responding on the mailing list, as now I can continue on with other problems. :)
+
 
 h2. Conclusion
 
