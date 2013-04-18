@@ -286,6 +286,8 @@ networking is broken.
 </code>
 </pre>
 
+I can't seem to find anything on removing or changing vnets in fusion, but it's only been an hour or so since this happened.
+
 h2. Conclusion
 
 I love vagrant, but am having a heck of a time with vmware_fusion and centos6. Having said that, I *KNOW* that things are going to get better as I learn and as more people start using vagrant and vmware_fusion.
