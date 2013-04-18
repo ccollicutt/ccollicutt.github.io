@@ -34,7 +34,7 @@ I think this is the first time that I've encountered a plugin that was more expe
 
 Recently I deployed "packstack":http://serverascode.com/2013/03/13/first-look-packstack.html via vagrant and *virtualbox*, and I wanted to do the same with vmware_fusion, but I ran into a few problems, which I'm going to spend the rest of the post detailing.
 
-_NOTE: I should say that nothing here is the vmware_fusion plugins fault. I'm not blaming the plugin at all. Rather just detailing some of the pain points I've encountered, which will no doubt disappear as more people use vmware fusion and vagrant together, as as I get my act together. I'll try to update this post as I find out new information. :)_
+_NOTE: I should say that nothing here is the vmware_fusion plugins fault. I'm not blaming the plugin at all. Rather just detailing some of the pain points I've encountered, which will no doubt disappear as more people use vmware fusion and vagrant together, and as I get my act together. I'll try to update this post as I find out new information. :)_
 
 h2. Routes collide!
 
@@ -254,6 +254,8 @@ That's what I expect to see.
 
 h2. Example vagrantfiles
 
+_UPDATE (April 18th, 2013): This Vagrantfile now doesn't seem to work with Vagrant 1.2_
+
 I have been searching for good examples of vagrantfiles that use vmware_fusion.
 
 So far I've just found this one:
@@ -261,6 +263,28 @@ So far I've just found this one:
 * "https://github.com/uksysadmin/OpenStackCookBook-1/blob/master/Vagrantfile":https://github.com/uksysadmin/OpenStackCookBook-1/blob/master/Vagrantfile
 
 But I will keep an eye out for other examples.
+
+h2. UPDATE (April 18th, 2013): New network problem
+
+This is a new one...now this can't be virtualboxe's fault. I have no idea what to do with this issue...
+
+<pre>
+<code>
+$ vagrant up --provider=vmware_fusion
+Bringing machine 'percona0' up with 'vmware_fusion' provider...
+Bringing machine 'percona1' up with 'vmware_fusion' provider...
+Bringing machine 'percona2' up with 'vmware_fusion' provider...
+Bringing machine 'haproxy0' up with 'vmware_fusion' provider...
+Bringing machine 'haproxy1' up with 'vmware_fusion' provider...
+[percona0] Cloning Fusion VM: 'precise64'. This can take some time...
+[percona0] Verifying vmnet devices are healthy...
+The VMware network device 'vmnet1' can't be started because
+its routes collide with another device: 'vmnet13'. Please
+either fix the settings of the VMware network device or stop the
+colliding device. Your machine can't be started while VMware
+networking is broken.
+</code>
+</pre>
 
 h2. Conclusion
 
