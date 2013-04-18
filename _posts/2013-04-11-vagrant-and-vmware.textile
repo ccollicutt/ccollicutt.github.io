@@ -266,7 +266,7 @@ But I will keep an eye out for other examples.
 
 h2. UPDATE (April 18th, 2013): New network problem
 
-This is a new one...now this can't be virtualboxe's fault. I have no idea what to do with this issue...
+This is a new one...now this can't be virtualbox's fault. I have no idea what to do with this issue...
 
 <pre>
 <code>
@@ -286,7 +286,7 @@ networking is broken.
 </code>
 </pre>
 
-I can't seem to find anything on removing or changing vnets in fusion, but it's only been an hour or so since this happened.
+I can't seem to find anything on removing or changing vmnets in fusion, but it's only been an hour or so since this happened.
 
 h2. Conclusion
 
