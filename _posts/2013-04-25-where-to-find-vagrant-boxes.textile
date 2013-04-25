@@ -63,7 +63,7 @@ h2. Make your own
 
 "Veewee":https://github.com/jedi4ever/veewee is a good way to automate image creation. I've used it quite a bit, but that was a few months ago. It can take a bit of work to get it up and running.
 
-Puppet labs also "publishes":https://github.com/puppetlabs/puppet-vagrant-boxes some information on creating vagrant boxes, as well as "several boxes":http://puppet-vagrant-boxes.puppetlabs.com/.
+Puppet labs also "publishes":https://github.com/puppetlabs/puppet-vagrant-boxes some information on creating vagrant boxes, as well as "several pre-built boxes":http://puppet-vagrant-boxes.puppetlabs.com/.
 
 
 h2. Fedora
