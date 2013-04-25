@@ -5,7 +5,7 @@ categories:
 ---
 
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/IMG_0665_600px.jpg!
-(won't find any in the yellowhead brewery in downtown edmonton)
+(won't find any vagrant boxes in the yellowhead brewery in downtown edmonton, just beer)
 
 p(meta). 25 April - 2013 - Edmonton!
 
