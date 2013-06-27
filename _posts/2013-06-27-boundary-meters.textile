@@ -17,7 +17,7 @@ Creating a boundary meter on a server is not complicated, but it was not really 
 
 So, I have written a basic boundary meter module for ansible, and it is currently sitting in the "pull request":https://github.com/ansible/ansible/pull/3272 queue waiting to be reviewed, and hopefully added to the many "ansible modules":http://www.ansibleworks.com/docs/modules.html in core. 
 
-_Please note that both boundary and ansible move pretty fast, so it's likely that things will have changed even by the time I post this. :)_
+_NOTE: Both boundary and ansible move pretty fast, so it's likely that things will have changed even by the time I post this. :)_
 
 h2. Obtaining the ca.pem file
 
