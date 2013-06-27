@@ -50,7 +50,7 @@ I'm installing the bprobe client on ubuntu 12.04. Below I'll simply show the par
 #Snippet of an ansible playbook
 
 - name: ensure boundary repository is installed
-  action: apt_repository repo='https://apt.boundary.com/ubuntu/ precise universe'
+  action: apt_repository repo='deb https://apt.boundary.com/ubuntu/ precise universe'
   
 - name: ensure boundary repository gpg key is installed
   action: apt_key url=https://apt.boundary.com/APT-GPG-KEY-Boundary state=present
