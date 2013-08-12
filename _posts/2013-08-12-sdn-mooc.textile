@@ -90,7 +90,7 @@ h2. What now?
 
 So, the question is: Now that I have had a good introduction to SDN, where do I go from here?
 
-I don't really know. It's unlikely that I will be handed a real network to experiment with, other than perhaps one associated with a small OpenStack cluster, so this means I will have to work with virtualized networks, perhaps using Mininet. Trema is interesting to me because it (apparently) doesn't require something like Mininet, and can create virtualized networks on it's own.
+I don't really know. It's unlikely that I will be handed a real network to experiment with, other than perhaps one associated with a small OpenStack cluster, so this means I will have to work with virtualized networks, perhaps using Mininet. Trema is interesting to me because it (apparently) doesn't require something like Mininet, and can create virtualized networks on its own.
 
 One area I'm interested in doing some more research on is creating broken networks and seeing how that affects systems, especially distributed networking systems.
 
