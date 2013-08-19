@@ -47,7 +47,7 @@ Another thing was that the instructions for the assignments were occasionally in
 
 If you did cut and paste exactly what was shown, you would still end up having to futz around because you would find yourself in the wrong working directory, and command examples would not execute. I think part of the reason for this was the the assignments would change as the course was ongoing, but the documentation couldn't keep up.
 
-Another thing was that I was never quite sure what mark was required to pass the tests. At least one had to be 100% to pass, I believe, but even now I'm not sure. I think it's 70% on each quiz to pass. It may very well turn out that I didn't pass the course. No idea.
+Also I was never quite sure what mark was required to pass the tests. At least one had to be 100% to pass, I believe, but even now I'm not sure. I think it's 70% on each quiz to pass. It may very well turn out that I didn't pass the course. No idea.
 
 Finally, unless I'm mistaken, it wasn't possible to download the slides used in the video lectures. I would have been great to have access to the slides, and notes as well. Given this is the first MOOC I've taken I'm not sure if this is part of the general MOOC design or not. I didn't enjoy the lectures themselves, mostly because I just don't like the video-over-slides approach.
 
