@@ -6,7 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). Updated 20 October - 2012 - Edmonton
+p(meta). Updated 17 October - 2013 - Edmonton
 
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_security.jpg!
 _(Taken at the 2012 OpenStack Summit)_
@@ -23,23 +23,13 @@ h2. Contact
 
 h2. Goals
 
-I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum will be in OpenStack. I would be _very_ interested in working on a project developing tools related to OpenStack and security.
-
-My dream job would be to work at a great company. Sounds simple, but what defines a great compay? As far as I'm concerned, it's one that's fast moving, yet thoughtful, and willing to fail fast. A company that accomplishes a lot in a short amount of time, and that doesn't mean 100 hour weeks for its employees. I'd like to be part of a team that creates great products and services, open source or not.
-
-I would like to work in an organization that fosters diversity in its staff and works hard to maintain that diversity, not just in terms of gender and ethnicity, but also what staff do outside their work life.
-
-I'd also like to work for a company with a good sense of humor. I don't think sense of humor gets enough attention these days, though I admit that is a difficult requirement for an entire organization to meet.
-
-Finally, I would like to work in an environment where I can learn from my peers, which likely means going to a place where everyone is smarter than I am, and where they can help bring me up to their level. If I'm lucky I can give them something in return, and hopefully contribute to the open source community as well.
-
-_(And since we're talking dream jobs, it would be nice to bring my dog to work every once in a while.)_
+I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum (now Neutron) will be in OpenStack, and software defined networking in general.
 
 h2. Background
 
-Most of my career has been spent in Systems Administration. I have recently branched out to working as a  "Cloud Developer" mostly around the OpenStack ecosystem. While that title likely has a short lifespan, I do believe it's currently accurate, especially when one considers the somewhat recently initiated devops movement. 
+Most of my career has been spent in systems administration (now devops) and information security.
 
-I previously worked for a world-class library at a large Canadian university that wanted to archive and store digital artifacts (ie. our culture) for 500 years. That meant I learned a lot of about all kinds of modern storage systems--and I'm not just talking about your standard head-based fibre SAN, because that model just doesn't work for all situations. We needed "checksumming filesystems":http://en.wikipedia.org/wiki/ZFS. 
+I previously worked for a world-class library at a large Canadian university that wanted to archive and store digital artifacts for 500+ years. That meant I learned about many modern storage systems--and I'm not just talking about your standard head-based fibre SAN, because that model just doesn't work for every situation. We needed "checksumming filesystems":http://en.wikipedia.org/wiki/ZFS and/or object storage.
 
 While working at the library I was lucky enough to travel to San Francisco and meet the people behind the "Internet Archive":http://archive.org (an organization that has eight or nine petabytes of storage) find out what they were doing, and bring those concepts back and work on implementing some of them. I also worked with projects as diverse as a Canada-wide L2 networking to sync iRODS instances. Nothing like pinging a private network that is thousands of kilometres away. :)
 
@@ -50,19 +40,23 @@ I gained the bulk of my security experience--and my understanding that "siloing"
 h2. Skills
 <p></p>
 * Professional Unix/Linux systems administrator
+* "Devops":http://en.wikipedia.org/wiki/DevOps mindset
 * Operating private clouds based on OpenStack
 * Virtualization with Xen, KVM, VirtualBox
 * Linux Operating System Packaging (eg. RPM)
 * Experience with large, modern storage systems
 * Information security expert (CISSP, GCUX)[1]
-* Scripting in python, bash
+* Scripting in python, bash, ruby, perl, etc
 * Life-long learning
 <p></p>
 
 h2. Projects
 <p></p>
-* Lead developer on an open source "virtual lab":https://github.com/curtisgithub/labinski (ie. "DaaS":http://en.wikipedia.org/wiki/Desktop_virtualization) based on OpenStack[2] called _The Labinski_!
+* Added a boundary.com module to "Ansible":https://github.com/ansible/ansible/pull/3272
+* "Added":https://github.com/curtisgithub/Net-OpenStack-Compute "Gridcentric VMS":http://gridcentric.com/technology/vms/ support to the perl Openstack SDK for use with Apache VCL
+* "Ansible playbook":https://github.com/curtisgithub/vcl_ansible to deploy Apache VCL
 * "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
+* Stripe solid state drives to underly virtual desktop infrastructure; test bootstorms
 * Installed and performance tested multiple vendor PCIe-SSD cards
 * Development of a one petabyte+ storage system
 * Deployed iRODS across a Canarie Lightpath (ie. across Canada)
@@ -73,15 +67,16 @@ h2. Projects
 
 h2. Education
 <p></p>
-* 2 Year After-degree in Information Security, 2001
-* Bachelor of Education, 2000
+* 2 Year After-degree in Information Security (2001)
+* Bachelor of Education (2000)
+* Completed a "software defined networking":https://class.coursera.org/sdn-001/class "MOOC":http://en.wikipedia.org/wiki/Massive_open_online_course (2013)
 <p></p>
 
 h2. Experience
 
 <p></p>
 
-* Cloud Developer - Educational Services, Startups  - Non-profit Research Organization - June 2012 to Present
+* Sysadmin/Devop - Educational Services, Startups  - Non-profit Research Organization - June 2012 to Present
 * Senior Unix Systems and Storage Administrator - Digital Preservation - Top 20 University Library - April 2011 to June 2012
 * Unix Systems Administrator - Production Services and Research - Large Online and Distance University - Oct 2007 to April 2011
 * IT Services - Various - July 2005 - Sept 2007
