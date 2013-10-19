@@ -11,7 +11,7 @@ p(meta). 18 Oct - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
-To be honest it's been a while since I've worked in a security conscious environment. When I first started out my career I was extremely interested in security (and I still am) but the organizations I worked in were not as interested in the end-result as the process itself--ie. meeting certain requirements rather than actually being secure. 
+To be honest it's been a while since I've worked in a security conscious environment. When I first started out my career I was extremely interested in security (and I still am) but the organizations I worked in were not as interested in the end-result as much as the process itself--ie. meeting and checking off certain requirements rather than actually being secure. 
 
 As my career continued it just became too hard to do the things I thought were required to achieve reasonable information security, so in effect I gave up, and instead of being a security system administrator, or security analyst, whatever the title, I became a plain old systems administrator and started to focus more on storage and research systems, and now "cloud" technology (such as OpenStack), and the devops mindset.
 
