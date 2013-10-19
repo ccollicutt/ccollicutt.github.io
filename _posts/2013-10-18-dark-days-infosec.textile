@@ -5,7 +5,7 @@ categories:
 ---
 
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/eye.jpg!
-_(this is actually part of a display in a movie theatre)
+_(this is actually part of a display in a movie theater_)
 
 p(meta). 18 Oct - 2013 - Edmonton!
 
