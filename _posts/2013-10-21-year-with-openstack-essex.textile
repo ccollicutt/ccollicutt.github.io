@@ -115,4 +115,4 @@ While this does seem like some kind of bug, the held nbd mounts/images are limit
 
 h2. Essex has worked great
 
-While I've got a couple issues to look into, OpenStack Essex has worked great. Certainly no major issues to report. :)
+While I've got a couple issues to look into, OpenStack Essex has worked great. Certainly no major issues to report, but I'm still looking forward to eventually upgrading this system.
