@@ -84,5 +84,3 @@ h2. Experience
 * Security Systems Administrator - Large Online and Distance University - Dec 2001 to June 2004
 
 fn1. _I have allowed these certifications to expire_
-
-fn2. _Still an early beta stage project_

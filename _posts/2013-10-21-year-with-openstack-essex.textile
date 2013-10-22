@@ -75,7 +75,7 @@ I also have a problem in which it seems the Windows disk images are mounted via 
 
 <pre>
 <code>
-curtis@c01-02:~$ mount | grep nbd
+curtis@c2:~$ mount | grep nbd
 /dev/mapper/nbd15p1 on /tmp/openstack-disk-mount-tmp0lvNeR type fuseblk 
 (rw,nosuid,nodev,allow_other,blksize=4096)
 /dev/mapper/nbd14p1 on /tmp/openstack-disk-mount-tmpMrUDJF type fuseblk 
@@ -84,30 +84,7 @@ curtis@c01-02:~$ mount | grep nbd
 (rw,nosuid,nodev,allow_other,blksize=4096)
 /dev/mapper/nbd12p1 on /tmp/openstack-disk-mount-tmpOv9v9X type fuseblk 
 (rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd11p1 on /tmp/openstack-disk-mount-tmp3z66D8 type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd10p1 on /tmp/openstack-disk-mount-tmptI9xFH type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd9p1 on /tmp/openstack-disk-mount-tmpvFdQbr type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd8p1 on /tmp/openstack-disk-mount-tmp8muY_p type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd7p1 on /tmp/openstack-disk-mount-tmpYZhhCm type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd6p1 on /tmp/openstack-disk-mount-tmpwqD9vS type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd5p1 on /tmp/openstack-disk-mount-tmpLuUU6X type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd4p1 on /tmp/openstack-disk-mount-tmphkDsGK type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd3p1 on /tmp/openstack-disk-mount-tmpzrKrCZ type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd2p1 on /tmp/openstack-disk-mount-tmpja7NQl type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd1p1 on /tmp/openstack-disk-mount-tmpjNMLau type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
-/dev/mapper/nbd0p1 on /tmp/openstack-disk-mount-tmpjJurfc type fuseblk 
-(rw,nosuid,nodev,allow_other,blksize=4096)
+SNIP!
 </code>
 </pre>
 
