@@ -23,7 +23,12 @@ h2. Swift hardware
 
 First let me note that we are not yet in production with this hardware. I'll come back and update this post once we are.
 
-We bought two types of servers: 1) 4x proxy nodes and 2) 6x storage nodes. We will be deploying the small cluster in two separate geographical areas. We purchased the hardware from Silicon Mechanics who have been extremely helpful throughout the process. Their servers are based on Supermicro gear.
+We bought two types of servers: 
+
+# 4x proxy nodes
+# 6x storage nodes 
+
+We will be deploying the small cluster in two separate geographical areas. We purchased the hardware from Silicon Mechanics who have been extremely helpful throughout the process. Their servers are based on Supermicro gear.
 
 h3. Proxy Nodes
 
