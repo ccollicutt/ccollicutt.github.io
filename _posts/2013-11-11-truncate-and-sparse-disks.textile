@@ -10,7 +10,7 @@ h1. {{ page.title }}
 
 Just a quick post on creating sparse disks on Linux. 
 
-Currently I am working on deploying OpenStack Swift. I am using Vagrant and virtual machines to create an ansible playbook to deploy and manage Swift. To do that I have been using sparse disks to mimic real disks without actually having all the disk space required.
+Currently I am working on deploying "OpenStack Swift":http://docs.openstack.org/developer/swift/. I am using Vagrant and Virtualbox virtual machines to create an "Ansible":http://ansibleworks.com playbook to deploy and manage Swift. To do that I have been using sparse disks to mimic real disks without actually having all the disk space required.
 
 <pre>
 <code>
