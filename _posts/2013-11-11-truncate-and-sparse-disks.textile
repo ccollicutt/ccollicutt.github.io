@@ -15,8 +15,8 @@ Currently I am working on deploying OpenStack Swift. I am using Vagrant and virt
 <pre>
 <code>
 $ cd /var/tmp
-# Create a sparse file using the truncate command
 
+# Create a sparse file using the truncate command
 $ truncate --size 500G sparse_disk1.img
 $ ls -la sparse_disk1.img 
 -rw-rw-r-- 1 vagrant vagrant 536870912000 Nov 11 06:20 sparse_disk1.img
