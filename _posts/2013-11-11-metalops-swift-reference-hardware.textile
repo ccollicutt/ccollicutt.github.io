@@ -48,8 +48,8 @@ To start we only loaded each storage node with 10x 3TB drives, so we can add 26x
 
 * Silicon Mechanics Swift Storage Node
 * CPU: 2 x Intel Xeon E5-2630L, 2.0GHz (6-Core, HT, 15MB Cache, 60W) 32nm
-* RAM: 128GB (8 x 16GB DDR3-1600 ECC Registered 2R DIMMs) Operating at 1600 MT/s
-* Management: IPMI 2.0 & KVM with Dedicated LAN - Integrated
+* RAM: 128GB (8 x 16GB DDR3-1600 ECC Registered 2R DIMMs) 
+* 2x GB on-board NICS and 1x IPMI/BMC shared LAN port
 * Controller: I350 Dual-Port Ethernet, 2 Ports 6Gb/s SATA, and 8 Ports 3Gb/s SATA
 * LP PCIe 3.0 x16: LSI 9207-8i (8-Port Int, PCIe 3.0)
 * LP PCIe 3.0 x8 - 1: Intel X520-DA2 10GbE Dual-Port Server Adapter (82599ES) - 10GBASE-CR - SFP+ Direct Attach
