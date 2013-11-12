@@ -28,7 +28,7 @@ We bought two types of servers:
 # 4x proxy nodes
 # 6x storage nodes 
 
-We will be deploying the small cluster in two separate geographical areas. We purchased the hardware from Silicon Mechanics who have been extremely helpful throughout the process. Their servers are based on Supermicro gear.
+We will be deploying the small cluster in two separate geographical areas. We purchased the hardware from "Silicon Mechanics":http://www.siliconmechanics.com/ who have been extremely helpful throughout the process, especially with regards to getting us parts (the parts we forgot) fast, usually in a couple of days. Their servers are based on Supermicro gear.
 
 h3. Proxy Nodes
 
@@ -72,4 +72,3 @@ We did have some issues with these servers, though not due to the vendor whatsoe
 * The hdd screws that come with the 3.5" sleds in the storage nodes and the 2.5" sleds in the proxy nodes are too long for our 2.5" drives. So we had to order smaller screws.
 * We didn't order c13-c14 power cables to plugin to the standard rack power. Fortunately our datacenter was able to provide them or we wouldn't have been able to power up the servers.
 * The proxy rack rails are identical for the left and right rails. This means that in order to pull the server out of the rack the left rail release has to be pushed up, and the right release down. It took us a few minutes to figure this out. The storage node rails have distinct left and right rails.
-
