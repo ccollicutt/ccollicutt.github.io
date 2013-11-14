@@ -49,7 +49,7 @@ ca_key = /etc/keystone/ssl/certs/cakey.pem
 </code>
 </pre>
 
-And setup at least the publicurl endpoint to use https, eg:
+And setup at least the keystone "Identity Service" publicurl endpoint to use https, eg:
 
 <pre>
 <code>
