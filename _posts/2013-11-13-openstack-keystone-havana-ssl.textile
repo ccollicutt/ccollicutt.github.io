@@ -31,8 +31,7 @@ To create test SSL key file, run this command:
 
 <pre>
 <code>
-$ keystone-manage ssl_setup --keystone-user keystone \
-              --keystone-group keystone
+$ keystone-manage ssl_setup --keystone-user keystone --keystone-group keystone
 </code>
 </pre>
 
