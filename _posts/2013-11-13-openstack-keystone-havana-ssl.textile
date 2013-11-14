@@ -48,7 +48,7 @@ ca_key = /etc/keystone/ssl/certs/cakey.pem
 </code>
 </pre>
 
-And setup at least the keystone "Identity Service" publicurl endpoint to use https, eg:
+Setup at least the keystone "Identity Service" publicurl endpoint to use https, eg:
 
 <pre>
 <code>
@@ -56,7 +56,7 @@ https://$keystone_srv:5000/v2.0
 </code>
 </pre>
 
-And finally, when using the keystone command line client, use the insecure option (again, this is for testing):
+Finally, when using the keystone command line client, use the insecure option (again, this is for testing):
 
 <pre>
 <code>
