@@ -74,6 +74,16 @@ $ keystone --insecure user-list
 </code>
 </pre>
 
+
 The above assumes there is at least the admin user in keystone. Otherwise, with no users it will just complete with no results.
+
+If you don't use the insecure option you will get this error:
+
+<pre>
+<code>
+$ keystone user-list
+<attribute 'message' of 'exceptions.BaseException' objects> (HTTP Unable to establish connection to https://$keystone_srv/v2.0/users)
+</code>
+</pre>
 
 Please do let me know if I've made any errors by commenting, but so far this is working for me as a basic test of keystone with ssl support.
