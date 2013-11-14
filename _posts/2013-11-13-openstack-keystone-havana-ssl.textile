@@ -82,7 +82,8 @@ If you don't use the insecure option you will get this error:
 <pre>
 <code>
 $ keystone user-list
-<attribute 'message' of 'exceptions.BaseException' objects> (HTTP Unable to establish connection to https://$keystone_srv/v2.0/users)
+<attribute 'message' of 'exceptions.BaseException' objects> 
+	(HTTP Unable to establish connection to https://$keystone_srv/v2.0/users)
 </code>
 </pre>
 
