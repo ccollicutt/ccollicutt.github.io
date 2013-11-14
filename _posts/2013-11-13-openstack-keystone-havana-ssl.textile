@@ -14,7 +14,7 @@ h1. {{ page.title }}
 
 In this post I want to quickly go over getting SSL enabled in OpenStack Keystone, specifically the Havana release, and on Ubuntu 12.04. I am going to setup SSL with self-signed certificates for testing.
 
-Packages:
+Havana Ubuntu cloud repo and packages:
 
 <pre>
 <code>
