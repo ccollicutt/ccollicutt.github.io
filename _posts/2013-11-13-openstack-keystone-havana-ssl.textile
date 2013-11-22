@@ -88,4 +88,4 @@ $ keystone user-list
 
 Please do let me know if I've made any errors by commenting, but so far this is working for me as a basic test of keystone with ssl support.
 
-Finally, note that in most production situations, I believe keystone would be fronted by a separate SSL termination system of some kind. So this is just for testing, and perhaps getting to know keystone a bit better.
+Finally, note that in most production situations, I believe keystone would be fronted by a separate SSL termination system of some kind (eg. OpenBSD's relayd). So this is just for testing, and perhaps getting to know keystone a bit better.
