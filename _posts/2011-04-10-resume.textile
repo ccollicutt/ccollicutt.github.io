@@ -58,7 +58,7 @@ h2. Projects
 * "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
 * Stripe solid state drives to underly virtual desktop infrastructure; test bootstorms
 * Installed and performance tested multiple vendor PCIe-SSD cards
-* Development of a one petabyte+ storage system
+* Research of a one petabyte+ storage system
 * Deployed iRODS across a Canarie Lightpath (ie. across Canada)
 * Deployed live migration capable virtual machine host cluster via XEN/KVM and SAN (ie. clustered LVM)
 * Deployed OpenBSD/pf as main firewall for large organization
