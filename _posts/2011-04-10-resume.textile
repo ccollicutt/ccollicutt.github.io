@@ -52,6 +52,7 @@ h2. Skills
 
 h2. Projects
 <p></p>
+* Deploying OpenStack Swift with geo-replication
 * Added a boundary.com module to "Ansible":https://github.com/ansible/ansible/pull/3272
 * "Added":https://github.com/curtisgithub/Net-OpenStack-Compute "Gridcentric VMS":http://gridcentric.com/technology/vms/ support to the perl Openstack SDK for use with Apache VCL
 * "Ansible playbook":https://github.com/curtisgithub/vcl_ansible to deploy Apache VCL
