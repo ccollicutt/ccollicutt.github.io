@@ -23,7 +23,7 @@ h2. Contact
 
 h2. Goals
 
-I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Quantum (now Neutron) will be in OpenStack, and software defined networking in general.
+I would like to continue working with Linux, OpenBSD, OpenStack, Python, "Ansible":http://ansible.cc and other great Open Source software ("and hardware":http://opencompute.org) projects, especially projects related to devops, security, the "cloud," performance, monitoring, and modern storage systems such as object storage and those using solid state devices. I'm also interested in increasing my knowledge of networking, especially seeing how powerful projects like Neutron will be in OpenStack, software defined networking, as well as how large networks are constructed with techonologies such as MPLS, BPG, and others.
 
 h2. Background
 
