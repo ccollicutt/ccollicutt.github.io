@@ -8,7 +8,7 @@ categories:
 
 _(screenshot of supermicro bios via ipmi sol--ie. text based)_
 
-p(meta). 11 Nov - 2013 - Edmonton!
+p(meta). 13 Nov - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -62,3 +62,5 @@ terminal_2$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN chassis power on
 In a few seconds, or a minute perhaps, takes a while for these systems to boot up, you should see the server start to come up in terminal_1, and eventually it will drop you into the text based bios, an example of which you can see in the picture at the very top of this blog post.
 
 To exit, hit enter and then the "~" (tilde) key twice, and finally a ".". If you just enter one tilde then when you exit you will exit right out of your ssh session to the server that has access to the management network on which the IPMI interfaces are places, assuming that is, you have a secure management network.
+
+Note that IPMI interfaces are notoriously insecure, and using them definitely requires some though and resources, if available, to secure them.
