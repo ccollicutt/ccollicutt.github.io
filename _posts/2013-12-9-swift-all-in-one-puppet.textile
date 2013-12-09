@@ -22,7 +22,7 @@ Puppet is a mature configuration management system, which means it has a lot of 
 
 The way I decided to get into Puppet was to configure puppet manifests to deploy "OpenStack Swift All-in-one":http://docs.openstack.org/developer/swift/development_saio.html. Swift All-in-one is a way to run the an entire Swift system off of one virtual machine, and to deploy the Swift code from Git.
 
-h3. puppet-saio
+h3. Deploy Swift-all-in-one with the puppet-saio module
 
 I called the module SAIO and it can be found on the "Puppet Forge":http://forge.puppetlabs.com/serverascode/saio. 
 
