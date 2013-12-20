@@ -12,7 +12,9 @@ p(meta). 20 Dec - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
-I just thought I would mention that I've put up a "Puppet":http://forge.puppetlabs.com/serverascode and "Ansible":https://galaxy.ansibleworks.com/list#/users/10 modules for deploying the Pound proxy and load-balancer. I've been working on learning Puppet lately, so that is the reason for that module, and then just yesterday AnsibleWorks released their "playbook" site, called "Galaxy":https://galaxy.ansibleworks.com, which performs a similar function to the Puppet Forge, so I thought I would try putting together a playbook/module and uploading it.
+I just thought I would mention that I've put up "Puppet":http://forge.puppetlabs.com/serverascode and "Ansible":https://galaxy.ansibleworks.com/list#/users/10 modules for deploying the Pound proxy and load-balancer. 
+
+I've been working on learning Puppet lately, so that is the reason for that module, and then just yesterday AnsibleWorks released their "playbook" site, called "Galaxy":https://galaxy.ansibleworks.com, which performs a similar function to the Puppet Forge, so I thought I would try putting together a playbook/module and uploading it.
 
 So if you use puppet you can download my Pound module with:
 
