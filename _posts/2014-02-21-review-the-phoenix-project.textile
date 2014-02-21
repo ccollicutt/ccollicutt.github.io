@@ -12,7 +12,7 @@ h1. {{ page.title }}
 
 NOTE: May contain spoilers.
 
-Recently I have been reading books about DevOps--its (short) history and (old) influences. That meant reading _The Goal_ by Eliyahu M. Goldratt, which is a business novel about managing a factory using lean manufacturing concepts. _The Goal_ is heavily referenced in _The Phoenix Project_, and in fact Kim et al's book mirrors (in a good way) the style and format of Goldratt's book. (Though it leaves out much of the home life drama of the main character that is included in Goldratt's book.)
+Recently I have been reading books about DevOps--its (short) history and (old) influences. That meant reading _The Goal_ by Eliyahu M. Goldratt, which is a business novel about managing a factory using lean manufacturing concepts. _The Goal_ is heavily referenced in _The Phoenix Project_, and in fact Kim et al's book mirrors the style and format of Goldratt's book. (Though it leaves out much of the home life drama of the main character that is included in Goldratt's book.)
 
 In short the allegorical novel is about Bill Palmer, an IT manager who is suddenly promoted to VP of IT Operations in a large, struggling auto parts manufacturing company. Every IT department and project is a mess and will be familiar to anyone who has worked in the field. The book also uses the same Socratic method as _The Goal_ in that there is an eccentric Guru character, Erik, who helps Bill along the path towards success using questions that force critical thinking along the DevOps paradigm.
 
