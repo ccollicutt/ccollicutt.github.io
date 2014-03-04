@@ -18,7 +18,7 @@ bq.  When read, the /dev/random device will only return random bytes within the 
 A read from the /dev/urandom device will not block waiting for more entropy. As a result, if there is not sufficient entropy  in  the  entropy pool, the returned values are theoretically vulnerable to a cryptographic attack on the algorithms used by the driver. Knowledge of how to do this is not available in the current unclassified literature, but it is theoretically possible that such an attack may exist. If this is a concern in your application, use /dev/random instead.
 If  you are unsure about whether you should use /dev/random or /dev/urandom, then probably you want to use the latter. As a general rule,/dev/urandom should be used for everything except long-lived GPG/SSL/SSH keys. -- man 4 random on Ubuntu 12.04 Precise
 
-But on OSX they are the same device, and aren't a hardware random number genrator.
+But on OSX they are essentially the same device, and don't use a hardware random number generator.
 
 bq. /dev/urandom is a compatibility nod to Linux. On Linux, /dev/urandom will produce lower quality output if the entropy pool drains, while /dev/random will prefer to block and wait for additional entropy to be collected.  With Yarrow, this choice and distinction is not necessary, and the two devices behave identically. You may use either. -- man 4 random on OSX Mavericks
 
