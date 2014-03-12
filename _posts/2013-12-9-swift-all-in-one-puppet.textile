@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deploy Swift All-in-one with Puppet
+title: Deploy Swift All in one with Puppet
 categories: 
 ---
 

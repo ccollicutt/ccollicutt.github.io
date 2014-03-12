@@ -12,15 +12,15 @@ I've been doing some research on "hardening" or securing workstations--I prefer 
 
 When considering information security cryptography is extremely important. If you subscribe to the CIA triad (confidentiality, integrity, and availability), then cryptography can help with both the "C" and the "I."
 
-Usually the randomness used in cryptography on workstations comes from /dev/random and /dev/urandom. On Linux /dev/random and /dev/urandom are usually different devices. If the entropy during cryptographic key creation is not high, then the resulting keys will "not be as good":https://www.schneier.com/blog/archives/2008/05/random_number_b.html.
+Usually the randomness used in cryptography on workstations comes from /dev/random and /dev/urandom. On Linux /dev/random and /dev/urandom are different devices. If the entropy during cryptographic key creation is not high, then the resulting keys will "not be as good":https://www.schneier.com/blog/archives/2008/05/random_number_b.html.
 
 bq.  When read, the /dev/random device will only return random bytes within the estimated number of bits of noise in the entropy  pool. /dev/random should be suitable for uses that need very high quality randomness such as one-time pad or key generation. When the entropy pool is empty, reads from /dev/random will block until additional environmental noise is gathered.
 A read from the /dev/urandom device will not block waiting for more entropy. As a result, if there is not sufficient entropy  in  the  entropy pool, the returned values are theoretically vulnerable to a cryptographic attack on the algorithms used by the driver. Knowledge of how to do this is not available in the current unclassified literature, but it is theoretically possible that such an attack may exist. If this is a concern in your application, use /dev/random instead.
-If  you are unsure about whether you should use /dev/random or /dev/urandom, then probably you want to use the latter. As a general rule,/dev/urandom should be used for everything except long-lived GPG/SSL/SSH keys. -- man 4 random on Ubuntu 12.04 Precise
+If  you are unsure about whether you should use /dev/random or /dev/urandom, then probably you want to use the latter. As a general rule,/dev/urandom should be used for everything except long-lived GPG/SSL/SSH keys. NOTE: from man 4 random on Ubuntu 12.04 Precise
 
 But on OSX they are essentially the same device, and don't use a hardware random number generator.
 
-bq. /dev/urandom is a compatibility nod to Linux. On Linux, /dev/urandom will produce lower quality output if the entropy pool drains, while /dev/random will prefer to block and wait for additional entropy to be collected.  With Yarrow, this choice and distinction is not necessary, and the two devices behave identically. You may use either. -- man 4 random on OSX Mavericks
+bq. /dev/urandom is a compatibility nod to Linux. On Linux, /dev/urandom will produce lower quality output if the entropy pool drains, while /dev/random will prefer to block and wait for additional entropy to be collected.  With Yarrow, this choice and distinction is not necessary, and the two devices behave identically. You may use either. NOTE: from man 4 random on OSX Mavericks
 
 In fact, the devices use the "Yarrow":https://www.schneier.com/yarrow.html algorithm invented by Bruce Schneier and friends!
 
