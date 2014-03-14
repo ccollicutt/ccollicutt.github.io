@@ -4,7 +4,7 @@ title: boot2docker and libvirt
 categories: 
 ---
 
-p(meta). 12 March - 2014 - Edmonton!
+p(meta). 13 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
