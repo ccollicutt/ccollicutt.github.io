@@ -191,7 +191,7 @@ boot2docker4 started
 </code>
 </pre>
 
-The vms are getting IPs from dnsmasq which is configured by default by qemu.
+The vms are getting IPs from dnsmasq which is configured by default by libvirt.
 
 <pre>
 <code>
