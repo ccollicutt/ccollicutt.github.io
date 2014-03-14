@@ -22,7 +22,7 @@ h2. boot2docker
 
 The idea behind "boot2docker":https://github.com/boot2docker/boot2docker is to be able to use docker quickly, mostly on OSX. But OSX doesn't support containers (yet, maybe someday), so running docker natively isn't possible. 
 
-To use docker on OSX it has to be done inside a Linux virtual machine running in a hypervisor (like Virtualbox or VMWare Fusion) on top of OSX, likely via Vagrant.
+To use docker on OSX it has to be done inside a Linux virtual machine running in a hypervisor (like Virtualbox or VMWare Fusion) on top of OSX. This is what boot2docker does--provides a small Linux vm with docker installed, and helps get it all configured and provides a command line interface.
 
 From the github repo for boot2docker:
 
