@@ -28,7 +28,7 @@ root# qemu-img resize trusty-server-cloudimg-amd64-disk1.img +8G
 
 Above I downloaded the image, converted it from compressed to uncompressed, and then increase it's size by 8G, making it about a 10G image. If it's not resized it will be about 2G.
 
-Next create a backing file.
+Next create a snapshotted backing file which will allow us to keep the original image pristine.
 
 <pre>
 <code>
