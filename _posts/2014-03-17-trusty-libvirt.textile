@@ -83,7 +83,7 @@ root# cp user-data.img /var/lib/libvirt/images
 </code>
 </pre>
 
-With that file created, we can now boot the Trusty Tahr image.
+With that file created, we can now setup a libvirt xml file to boot the virtual machine.
 
 h2. Prepare a libvirt.xml file
 
