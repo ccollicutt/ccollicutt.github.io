@@ -14,7 +14,7 @@ Below I'll take a quick look at how to deploy the cloud image prepared by Ubuntu
 
 h2. Download the image
 
-First we download the cloud image from Ubuntu's site. Thankfully Ubuntu provides ready-to-go images. Thanks Ubuntu!
+First we download the cloud image from Ubuntu's site. Thankfully Ubuntu provides ready-to-go images.
 
 <pre>
 <code>
