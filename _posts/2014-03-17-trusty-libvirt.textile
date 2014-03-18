@@ -57,7 +57,7 @@ h2. Create a user-data file
 
 Essentially what this allows us to do is have a local disk file attached to the vm which "cloud-init":http://cloudinit.readthedocs.org/en/latest/ can use to setup the system as we would like it, at least by setting a password and/or an ssh key. 
 
-I'm not showing my public key below just because it doesn't fit well on the page. But just paste your public ssh key in after the "-".
+I'm not showing my public key below just because it doesn't fit well on the page. But just paste your public ssh key in after the "-". The password for the ubuntu user is set to "passw0rd" which is in fact not a good password. It might be better to either not set the password at all and just use and ssh key, or to set a very good password.
 
 <pre>
 <code>
