@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Boot Ubuntu Trusty with libvirt
+title: Boot Ubuntu Trusty Tahr 14.04 with libvirt
 categories: 
 ---
 
