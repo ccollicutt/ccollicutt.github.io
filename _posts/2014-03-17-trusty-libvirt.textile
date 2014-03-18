@@ -91,7 +91,7 @@ Here is an example libvirt xml file, in this case called trusty1.xml.
 
 <pre>
 <code>
-root@tpaz01:~/cloud-images# cat trusty1.xml 
+root# cat trusty1.xml 
 <domain type='kvm'>
     <name>trusty1</name>
     <memory>1048576</memory>
@@ -140,7 +140,7 @@ Now that the vm is booted, by default it should get an IP from dnsmasq, and has 
 
 <pre>
 <code>
-root@tpaz01:~/cloud-images# cat /var/lib/libvirt/dnsmasq/default.leases 
+root# cat /var/lib/libvirt/dnsmasq/default.leases 
 1395108553 52:54:00:6a:f1:c8 192.168.122.103 cloudimg *
 </code>
 </pre>
