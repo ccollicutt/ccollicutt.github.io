@@ -8,7 +8,7 @@ p(meta). 17 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
-Then next Ubuntu long term service (LTS) operating system, "Trusty Tahr or version 14.04":https://wiki.ubuntu.com/TrustyTahr/ReleaseSchedule, is currently expected to be released on April 27th of 2014, about a month away from the writing of this post.
+Then next Ubuntu long term service (LTS) operating system, "Trusty Tahr or version 14.04":https://wiki.ubuntu.com/TrustyTahr/ReleaseSchedule, is currently expected to be released on April 27th of 2014, about a month away from the writing of this post. So note that right now it is still beta.
 
 Below I'll take a quick look at how to deploy the cloud image prepared by Ubuntu with libvirt. The server running libvirt is Ubuntu 12.04, and is setup in a default manner, which means vms should get natted access to the Internet. We'll use libvirt + kvm on Ubuntu Precise to boot the Trusty Tahr image.
 
