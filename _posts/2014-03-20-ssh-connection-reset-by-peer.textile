@@ -8,7 +8,9 @@ p(meta). 20 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
-For the people of the future, the ones who get an error message about connections being reset by peer when trying to ssh into a server, check to see if the server does indeed have server keys in /etc/ssh. I spent like an hour or more looking into this. I'm not sure why, but an Ubuntu image I was using wouldn't create the servers ssh keys, though the files were there they were just of zero size.
+For the people of the future, the ones who get an error message about connections being reset by peer when trying to ssh into a server, check to see if the server does indeed have server keys in /etc/ssh. 
+
+I spent like an hour or more looking into this. I'm not sure why, but an Ubuntu image I was using wouldn't create the servers ssh keys, though the files were there...they were of zero size.
 
 Below is an example of an attempted connection.
 
@@ -53,4 +55,4 @@ root# service ssh restart
 </code>
 </pre>
 
-I have no idea why this is happening in this image.
+I have no idea why this is happening in this image. Obviously something is broken.
