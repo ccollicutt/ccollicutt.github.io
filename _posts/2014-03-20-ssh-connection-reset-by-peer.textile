@@ -44,7 +44,7 @@ Read from socket failed: Connection reset by peer
 </code>
 </pre>
 
-To fix this I regenerated the keys and restarted. Then I was able to ssh into the server.
+To fix this I regenerated the keys on the server (by logging into the console) and restarted. Then I was able to ssh into the server.
 
 <pre>
 <code>
