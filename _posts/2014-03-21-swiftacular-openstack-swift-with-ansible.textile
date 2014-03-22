@@ -33,7 +33,7 @@ bq. Swift is a highly available, distributed, eventually consistent object/blob 
 
 In several ways it is analogous to Amazon's S3 service, which has billions and billions of files/blobs/objects (whatever you want to call them) stored in it. 
 
-Most people who use the Internet or smartphones with mobile apps use object storage, they just don't know it because it's used in the background by the applications, such as ones that need to store many, many files, such as pictures. 
+Most people who use the Internet or smartphones with mobile apps use object storage, they just don't know it because it's used in the background by the applications, such as ones that need to store many, many files, like pictures. 
 
 h2. New features in Swift: Replication network and regions
 
@@ -183,7 +183,7 @@ Part of configuring OpenStack Swift involves adding devices to the ring. Thankfu
 
 That sounds complicated but it's fairly simple. Maybe a better example is if using Ansible to configure a webserver, and then using a delegation command to add the webserver to a loadbalancer.
 
-As an example, when a storage server is configured we can tell the proxy to add it's devices to the ring.
+As an example, when a storage server is configured we can tell the proxy to add it's devices to the ring. Below is an Ansible task that is part of Swiftacular that delegates configuration of a ring device when a storage node is being configured. The command actually runs on the Swift proxy.
 
 (Sorry the example swift-ring-builder command below will probably stretch across the screen. It's long and kinda complicated and is really meant to be invoked programatically.)
 
@@ -204,17 +204,17 @@ As an example, when a storage server is configured we can tell the proxy to add 
  </code>
  </pre>
 
-Delegation is very handy, especially with OpenStack Swift.
+Delegation is very handy, especially with OpenStack Swift where the proxy needs to know what devices each storage server has.
 
 h2. SSL/TLS
 
-I don't know why but much of the OpenStack documentation, especially around Keystone, which is the authentication system, avoids discussing how to deploy SSL enabled services. 
+I don't know why, but much of the OpenStack documentation, especially around Keystone, which is the authentication system, avoids discussing how to deploy SSL/TLS enabled services. 
 
 Swiftacular sets up Keystone and the swift-proxy server with SSL. Certainly it's not setup as you would do it in production (likely with with a dedicated set of SSL termination servers) but it's a good example. I don't think the OpenStack documentation should show deploying systems such as Keystone without SSL.
 
 h2. Conclusion
 
-Using the Swiftacular Ansible playbooks and roles, and using the provided Vagrantfile, it's fairly easy to get a small OpenStack cluster going on a good laptop. It also includes regions and a replication network setup. This could be a good basis for starting out with OpenStack Swift. 
+Using the Swiftacular Ansible playbooks and roles, and using the provided Vagrantfile, it's fairly easy to get a small OpenStack cluster going on a good laptop or workstation. It also includes regions and a replication network setup. This could be a good basis for starting out with OpenStack Swift. 
 
 As usual--if you have any questions, concerns, comments or criticism, do let me know. It's quite likely I've made a mistake somewhere here, small or large. :)
 
