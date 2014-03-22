@@ -43,7 +43,7 @@ Swift has a couple new features which are used in Swiftacular. Though I should n
 
 bq. Swift’s replication process is essential for consistency and availability of data. By default, replication activity will use the same network interface as other cluster operations. However, if a replication interface is set in the ring for a node, that node will send replication traffic on its designated separate replication network interface.
 
-The idea is that you could do some quality of service on the replication network, or split it off entirely from the standard Swift network, as likely the replication network would go across the link between regions, which are likely going to be in different data centers. The link would likely be lower bandwidth and higher latency. 
+The idea is that you could do some quality of service on the replication network, or split it off entirely from the standard Swift network, as likely the replication network would go across the link between regions, which are in most cases going to be in different data centers. The link would likely be lower bandwidth and higher latency. 
 
 "Regions":https://www.swiftstack.com/docs/admin/cluster_management/regions.html:
 
