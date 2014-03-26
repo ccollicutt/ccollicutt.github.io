@@ -1,6 +1,6 @@
 ---
 layout: post
-title: boot2docker
+title: boot2docker on OSX
 categories: 
 ---
  
