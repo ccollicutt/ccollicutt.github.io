@@ -4,7 +4,7 @@ title: boot2docker on OSX
 categories: 
 ---
  
-p(meta). 25 March - 2014 - Edmonton!
+p(meta). 26 March - 2014 - Edmonton!
 
 <pre>
 <code>
@@ -236,7 +236,3 @@ hi
 </pre>
 
 In reality we haven't come very far in this blog post, partially because there seems to be a bug in the particular versions of boot2docker and docker I am using, but at least we got boot2docker installed, and are ready to move onto actually using docker straight from OSX. Once I figure out that bug I'll come back and update this post with some more things I learned about Docker.
-
-
-
-
