@@ -21,8 +21,6 @@ First, I installed squid on the package caching server.
 <pre>
 <code>
 cache# yum install squid
-SNIP!
-cache# service squid start
 </code>
 </pre>
 
