@@ -8,7 +8,7 @@ p(meta). 29 March - 2014 - Edmonton!
 
 Today I began working on adding RedHat/CentOS support to my Ansible based project "Swiftacular":https://github.com/curtisgithub/swiftacular which deploys "OpenStack Swift":http://docs.openstack.org/developer/swift/.
 
-Because, right now, it takes several Vagrant/Virtualbox virtual machines to run swiftacular, I like to make sure that I configure a local package caching server so that I don't kill my Internet connection. 
+Because, right now, it takes several Vagrant/Virtualbox virtual machines to run swiftacular, I like to make sure that I configure a local package caching server so that I don't kill my Internet connection by downloading the same package multiple times. 
 
 When configuring Ubuntu vms I use apt-cacher-ng. But with RedHat I couldn't find, at least in a quick google search, a similar system for RedHat. (Though apparently apt-cacher-ng can cache rpms, though I haven't tried it.)
 
