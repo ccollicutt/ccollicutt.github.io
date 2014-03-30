@@ -95,6 +95,14 @@ baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
 </code>
 </pre>
 
+Next I removed the fastestmirror plugin:
+
+<pre>
+<code>
+server# rm -f /etc/yum/pluginconf.d/fastestmirror.conf 
+</code>
+</pre>
+
 Normally you wouldn't want to do this, but because of the mirror list there will be many squid cache misses. So baseurl is better, and a closer mirror would be better still.
 
 As an example, if I install php-common on one of the servers, then install it on another, it will hit the squid cache and just download it from there. So we only download the package once from the Internet, even if it's installed on several servers.
@@ -113,3 +121,10 @@ One thing I'm not sure about is the cache expiry time. I'm sure there are some o
 
 If anyone has any comment, questions, concerns, or criticisms, do let me know. :)
 
+h2. Ansible
+
+PS. Everything I'm doing above is automated with "Ansible":http://ansible.com.
+
+h2. Updates
+
+* Added removing fastestmirror plugin
