@@ -10,7 +10,7 @@ Today I began working on adding RedHat/CentOS support to my Ansible based projec
 
 Because, right now, it takes several Vagrant/Virtualbox virtual machines to run swiftacular, I like to make sure that I configure a local package caching server so that I don't kill my Internet connection by downloading the same package multiple times. 
 
-When configuring Ubuntu vms I use apt-cacher-ng. But with RedHat I couldn't find, at least in a quick google search, a similar system for RedHat. (Though apparently apt-cacher-ng can cache rpms, though I haven't tried it.)
+When configuring Ubuntu vms I use apt-cacher-ng. But with RedHat I couldn't find, at least in a quick google search, a similar system for RedHat. (Though apparently apt-cacher-ng can cache rpms, but I haven't tried it with Redhat repos.)
 
 I opted just to use squid. Surprisingly I couldn't find much for blog posts on using squid to proxy yum so I thought I'd post the what I did, which is very simple, in case anyone else was trying to do the same thing. I imagine there are better ways to do this, but this is what I did. :)
 
