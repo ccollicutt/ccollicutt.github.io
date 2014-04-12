@@ -35,10 +35,10 @@ But, if you would like to try deploying OpenStack Swift to CentOS 6 Swiftacular 
 
 <pre>
 <code>
-    #config.vm.box = "centos65"
-    #config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
-    config.vm.box = "precise64"
-    config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+#config.vm.box = "centos65"
+#config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
+config.vm.box = "precise64"
+config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 </code>
 </pre>
 
@@ -46,10 +46,10 @@ So if you would like to deploy to CentOS, simply make the Vagrantfile look like 
 
 <pre>
 <code>
-    config.vm.box = "centos65"
-    config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
-    #config.vm.box = "precise64"
-    #config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+config.vm.box = "centos65"
+config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
+#config.vm.box = "precise64"
+#config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 </code>
 </pre>
 
