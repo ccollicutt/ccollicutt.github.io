@@ -25,7 +25,9 @@ h1. {{ page.title }}
 
 h2. Providers
 
-For the most part it's used for getting used to how "Swift":http://docs.openstack.org/developer/swift/ works and is deployed and will usually be deployed using Vagrant and Virtualbox. One of the features I hope to add is the ability to use multiple provisioners, such as IaaS providers like as Digital Ocean, OpenStack, etc. Having said that, it's not required to use Vagrant, you could easily change some IPs around in the ansible hosts file and deploy to any servers, whether they are provided by Vagrant, virtual servers or even bare metal.
+For the most part Swiftacular is used for getting used to how OpenStack "Swift":http://docs.openstack.org/developer/swift/ works and is installed, and will usually be deployed using Vagrant and Virtualbox. 
+
+One of the features I hope to add is the ability to use multiple provisioners, such as IaaS providers like as Digital Ocean, OpenStack, etc. Having said that, it's not required to use Vagrant, you could easily change some IPs around in the ansible hosts file, make a couple changes in other spots, and deploy to any servers, whether they are provided by Vagrant, virtual servers or even bare metal.
 
 h2. Deploying to CentOS
 
