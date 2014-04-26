@@ -34,7 +34,7 @@ SNIP!
 </code>
 </pre>
 
-Each virtual machine booted using libvirt will have a default network configured. Below is a snipped of the xml defining the virtual machine. Note how the network to use is set to "default."
+Each virtual machine booted using libvirt will have a default network configured. Below is a snippet of the xml defining a virtual machine. Note how the network to use is set to "default."
 
 <pre>
 <code>
