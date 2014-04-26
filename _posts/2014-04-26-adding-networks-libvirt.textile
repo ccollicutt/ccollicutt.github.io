@@ -322,7 +322,7 @@ rtt min/avg/max/mdev = 0.284/0.284/0.284/0.000 ms
 
 Yup.
 
-So now we have five netowrks in libvirt, and virtual machines that can boot up and get a dhcp address on each of those networks. Hopefully this means I can work on automating testing of Swiftacular, probably by creating a custom inventory script.
+So now we have five networks in libvirt, and virtual machines that can boot up and get a dhcp address on each of those networks. Hopefully this means I can work on automating testing of Swiftacular, probably by creating a custom inventory script.
 
 Please let me know if you see any issues. One question I have is about the forward mode that should be set. I'm not sure it should be nat for my extra networks. Something to look into.
 
