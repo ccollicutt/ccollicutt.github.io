@@ -155,6 +155,7 @@ In order for those networks to be available to a virtual machine they need to be
 
 <pre>
 <code>
+SNIP!
         <interface type='network'>
             <source network='default'/>
                 <model type='virtio'/>
@@ -175,9 +176,9 @@ In order for those networks to be available to a virtual machine they need to be
             <source network='replication'/>
                 <model type='virtio'/>
         </interface>
+SNIP!
 </code>
 </pre>
-
 
 That snippet would have to be in every vm definition file.
 
