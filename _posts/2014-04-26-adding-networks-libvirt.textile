@@ -248,7 +248,7 @@ Now I have a vm called "testnetworks" running in libvirt. I can check the variou
 
 And we can see that it did.
 
-Also we can find out the macs that were randomly given to the vm from dumpxml.
+Also we can find out the macs that were randomly given to the vm via libvirt using virsh dumpxml.
 
 <pre>
 <code>
