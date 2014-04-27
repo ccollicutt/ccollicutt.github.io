@@ -68,7 +68,7 @@ So I google search for "digital ocean command line" and below are some of the re
 
 !https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/googlesearch.png!
 
-Let's get that. The github README for tugboat says "gem install tugboat."
+Let's get that. The "github README":https://github.com/pearkes/tugboat for tugboat says "gem install tugboat."
 
 <pre>
 <code>
