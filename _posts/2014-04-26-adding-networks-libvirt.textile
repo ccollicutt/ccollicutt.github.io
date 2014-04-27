@@ -9,7 +9,7 @@ p(meta). 26 April - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
-For my "Swiftacular":http://github.com/curtisgithub/swiftacular project I'd like to figure out if I can run some automated tests and create a new Swiftacular cluster using libvirt. My Swiftacular configuration currently has five networks used to create an OpenStack Swift cluster (complete with a separate replication network). My Vagrantfile for Swiftacular sets up those networks, so I need to replicate that in libvirt. 
+For my "Swiftacular":http://github.com/curtisgithub/swiftacular project I'd like to figure out if I can run some automated tests and create a new Swiftacular cluster using libvirt. My Swiftacular configuration currently has five networks used to create an OpenStack Swift cluster (complete with a separate replication network). My Vagrantfile for Swiftacular sets up those networks, so I need to replicate that configuration using libvirt. 
 
 By default with a libvirt host on Ubuntu 12.04 you get one network: the default network.
 
