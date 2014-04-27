@@ -11,13 +11,13 @@ p(meta). 26 April - 2014 - Edmonton!
 h1. {{ page.title }}
 
 
-Even though I have worked a great deal with OpenStack and various virtualization technologies, I haven't really used infrastructure as a service all that much. Being Canadian has made using Amazon Web Services unlikely as I normally work at organizations that have concerns (justified or not) about their data staying in Canada. Usually that means AWS is off the table from the start. I've used Rackspace a bit to test out their Rackspace files product which is based on OpenStack Swift and I've also used Heroku to deploy a "hubot":https://hubot.github.com/, but that's about it.
+Even though I have worked a great deal with OpenStack and various virtualization technologies, I haven't really used infrastructure as a service all that much. Being Canadian has made using Amazon Web Services unlikely as I normally work at organizations that have concerns (justified or not) about their data staying in Canada. Usually that means AWS is off the table. I've used Rackspace a bit to test out their Rackspace files product which is based on OpenStack Swift and I've also used Heroku to deploy a "hubot":https://hubot.github.com/, but that's about it.
 
 h2. Digital Ocean
 
 Digital Ocean (DO) keeps popping up in my RSS feeds, so I thought I'd give it a shot. From what I've read DO is a simplified IaaS provider that also separates itself from the rest of the pack by its use of only solid state drives--no spinning rust here. While I believe Rackspace now provides all SSDs, DO was kind of the first to really market themselves using SSDs (at least the first I was aware of at any rate).
 
-I mention the word "simplified" above. This is another way that I believe DO is distinguishing itself from other IaaS providers--a simplified web interface, and possibly a simplified product offering, and easy to understand pricing.
+I mention the word "simplified" above. This is another way that I believe DO is distinguishing itself from other IaaS providers--a simplified web interface, possibly a simplified product offering, and easy to understand pricing.
 
 h2. Sign-up
 
@@ -50,7 +50,7 @@ Most of these concepts are going to be in every IaaS provider. Create a virtual 
 
 h2. Add an SSH key
 
-A bit button says "Add SSH key."
+A big button says "Add SSH key." It's calling to me. :)
 
 !https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/sshkey.png!
 
@@ -359,7 +359,7 @@ Queuing destroy for 1539346 (tester)...done
 
 Now lets create tester2.
 
-But...first, I realized the API wants an SSH key ID, not key name. I edit ~/.tugboat and set my key to use the ID not the name "curtis.""
+But...first, I realized the API wants an SSH key ID, not key name. I edit ~/.tugboat and set my key to use the ID not the name "curtis."
 
 <pre>
 <code>
@@ -388,7 +388,7 @@ tester2 (ip: 162.243.253.240, status: active, region: 4, id: 1539401)
 </code>
 </pre>
 
-Now it's active again. Let's try ssh one more time...
+Now it's active. Try ssh one more time...
 
 <pre>
 <code>
@@ -407,7 +407,7 @@ eth0      Link encap:Ethernet  HWaddr 04:01:17:7d:ad:01
 </code>
 </pre>
 
-Nice!
+I can login. Nice!
 
 NOTE: It seemed like the IP took awhile to be available, longer than for the vm to become active. Not too sure what to make of that.
 
