@@ -17,7 +17,7 @@ h2. gpg-zip
 
 gpg-zip is handy utility that can tar a directory and then encrypt the resulting file. That file could then be placed anywhere, and, if gpg is working properly, unless someone has access to the private key of the public key that it was encrypted with (or they were set as the recipient), they should not be able to decrypt it. It's important to note that the encrypted file is only as secure as the private key. Obviously is someone has access to the private key then they can decrypt the file.
 
-First, I have a key that I'm going to use for this example. Creating keys and subkeys securely is a bit beyond the scope of this article. Here's a good blog post on "creating new gpg keys":http://www.bootc.net/archives/2013/06/07/generating-a-new-gnupg-key/.
+First, I have a key that I'm going to use for this example. Creating keys and subkeys securely is a bit beyond the scope of this article. Here's a good blog post on "creating new gpg keys":http://www.bootc.net/archives/2013/06/07/generating-a-new-gnupg-key/, and another "here":https://alexcabal.com/creating-the-perfect-gpg-keypair/.
 
 Below is the key I will use.
 
@@ -32,7 +32,7 @@ sub   2048R/25AEB942 2014-05-04
 </code>
 </pre>
 
-It's important to note that that key is not itself encrypted--it does not have a passphrase set, so it can be used by anyone who has access to a copy of the key. This is not a good thing to do with an important key, but in this case I am going to want to automate this process, and there is no good way, that I'm aware of, to have an automated process decrypt the key without the passphrase also being stored in cleartext.
+It's important to note that that key is not itself encrypted--it does not have a passphrase set, so it can be used by anyone who has access to a copy of the key. This is not a good thing to do with an important key, but in this case I am going to want to automate this process, and there is no good way, that I'm aware of, to have an automated process decrypt the key without the passphrase also being stored in cleartext. That being said, encrypting the file does not require the password to unlock the private key, but decrypting in an automated fashion would.
 
 Let's create a test directory with some files in it to gpg-zip.
 
