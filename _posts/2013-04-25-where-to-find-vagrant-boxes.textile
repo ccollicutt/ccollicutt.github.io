@@ -62,7 +62,7 @@ h2. Opscode Bento
 
 This "github repo":https://github.com/opscode/bento has tons of boxes, and also Packer templates to create your own.
 
-h2. PHusion Passenger
+h2. Phusion Passenger
 
 Phusion Passenger also creates and distributes some "vagrant boxes":https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/.
 
