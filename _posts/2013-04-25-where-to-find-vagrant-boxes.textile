@@ -8,6 +8,8 @@ p(meta). 25 April - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
+Update 2: "Vagrant Cloud":https://vagrantcloud.com has launched and I believe is now the best way to find Vagrant boxes.
+
 Update: Added Phusion Passenger url.
 
 This is just a quick post on a couple of places I know to find "vagrant":htp://vagrantup.com boxes. 
