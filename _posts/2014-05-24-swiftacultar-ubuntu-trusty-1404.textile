@@ -116,6 +116,22 @@ curtis$ ansible -m ping all
 
 Good.
 
+We can also use vagrant status to list all the vms. Their names should describe what they do fairly well. The lbssl server is the ssl termination point for the swift proxy. It's not doing any load balancing in this situation, but could if there were multiple proxy servers.
+
+<pre>
+<code>
+curtis$ vagrant status
+SNIP!
+swift-package-cache-01    running (virtualbox)
+swift-keystone-01         running (virtualbox)
+swift-lbssl-01            running (virtualbox)
+swift-proxy-01            running (virtualbox)
+swift-storage-01          running (virtualbox)
+swift-storage-02          running (virtualbox)
+swift-storage-03          running (virtualbox)
+</code>
+</pre>
+
 Now lets set the ansible variables. The default variables should work, but the passwords are set to CHANGEME.
 
 <pre>
