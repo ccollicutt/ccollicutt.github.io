@@ -177,7 +177,7 @@ swift-object 1.13.1-0ubuntu1
 </code>
 </pre>
 
-Now we can run a small test by uploading a text file into a container.
+Now we can run a small test by uploading a text file into a container. I usually run this from the package cache server that is created as part of Swiftacular. But you can run the swift command line client from anywhere that the proxy server can be accessed from.
 
 <pre>
 <code>
