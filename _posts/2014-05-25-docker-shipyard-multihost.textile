@@ -36,7 +36,7 @@ There are actually several similar systems being worked on right now that can ti
 
 h2. Setup the shipyard host
 
-This is as easy as starting a container. The shipyard project has a pre-created and distributed shiyard docker container. All we have to do is install that image and run it. Note that this will download a few hundred megabytes of images if they do not already exist on the docker host.
+This is as easy as starting a container. The shipyard project has a pre-created and distributed shipyard docker container. All we have to do is install that image and run it. Note that this will download a few hundred megabytes of images if they do not already exist on the docker host.
 
 <pre>
 <code>
