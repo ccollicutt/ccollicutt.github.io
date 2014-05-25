@@ -267,7 +267,9 @@ Also pretty chill.
 
 h2. Conclusion
 
-In the end what we have done here is fairly basic--just install a shipyard host and a couple of clients. I think this represents a good, simple implementation of that idea. Certainly there will be and are other systems that do the same thing and much more, but I think shipyard is a good way to get introduced to the concepts of a multihost docker system. I'd also like to automate the deployment of shipyard, but have a couple things to figure out, such as how to register the agent automatically, activating the hosts, as well as setup some sort of supervisory system for the agent. Also there are a few things that shipyard can do that I haven't touched on, such as the concept of applications.
+In the end what we have done here is fairly basic--just install a shipyard host and a couple of clients. Certainly there are other systems that do the same thing and much more, but I think shipyard is a good way to get introduced to the concepts of a multihost docker system. 
+
+I'd also like to automate the deployment of shipyard, but have a couple things to figure out, such as how to register the agent automatically, activating the hosts without the web gui, as well as setup some sort of supervisory system for the agent. Also there are a few things that shipyard can do that I haven't touched on, such as the concept of applications.
 
 Hopefully in the next couple of weeks I'll explore more with regards as to how shipyard works and what can be done with it, as well as consider how it compares and contrasts to other systems. I believe that containers are an important technology, and that there is room for simpler tools that can provide containers-as-a-service, perhaps as part of a PaaS system, or just on their own. There are many different and interesting ways to virtualize, compartmentalize, and control mulitihost systems.
 
