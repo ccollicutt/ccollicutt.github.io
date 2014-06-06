@@ -291,7 +291,7 @@ Out[20]: 'hi\n'
 </code>
 </pre>
 
-If you havnen't used busybox images with docker yet, I definitely suggest it. As well as with the debian:jessie image which is only 120MB, quite a bit smaller than, say, the Ubuntu images.
+If you haven't used busybox images with docker yet, I definitely suggest it. As well as with the debian:jessie image which is only 120MB, quite a bit smaller than, say, the Ubuntu images.
 
 h2. Conclusion
 
