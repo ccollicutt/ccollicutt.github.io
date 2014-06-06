@@ -94,7 +94,7 @@ Let's download the busybox image.
 
 <pre>
 <code>
-docker pull busybox
+$ docker pull busybox
 Pulling repository busybox
 71e18d715071: Download complete 
 98b9fdab1cb6: Download complete 
