@@ -17,7 +17,7 @@ In this post I thought I would take a quick look at using the "docker-py":https:
 
 h2. Install docker-py
 
-First, you need docker-py.
+First, you need docker-py. Note that in the examples show here I am using Ubuntu Trusty/14.04.
 
 <pre>
 <code>
