@@ -12,7 +12,7 @@ As I write this the first "Docker convention":https://twitter.com/hashtag/docker
 
 Docker has had, for a few versions, the ability to use btrfs as it's backing driver, instead of aufs.
 
-h2. Install btrfs
+h2. Install btrfs on Ubuntu 14.04/Trusty
 
 Before installing docker I'm going to setup btfrs.
 
