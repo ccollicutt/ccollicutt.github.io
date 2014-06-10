@@ -76,25 +76,12 @@ I've already created several containers and pulled images, actually just the bas
 
 <pre>
 <code>
-vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker
+vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker | head -5
 ID 258 gen 11 top level 5 path btrfs/subvolumes/511136ea3c5a64f264b78b5433614aec563103b4d4702f3ba7d4d2698e22c158
 ID 259 gen 16 top level 5 path btrfs/subvolumes/42eed7f1bf2ac3f1610c5e616d2ab1ee9c7290234240388d6297bc0f32c34229
 ID 260 gen 13 top level 5 path btrfs/subvolumes/c120b7cab0b0509fd4de20a57d0f5c17106f3451200dfbfd8c6ab1ccb9391938
 ID 261 gen 13 top level 5 path btrfs/subvolumes/d200959a3e91d88e6da9a0ce458e3cdefd3a8a19f8f5e6a1e7f10f268aea5594
 ID 262 gen 15 top level 5 path btrfs/subvolumes/120e218dd395ec314e7b6249f39d2853911b3d6def6ea164ae05722649f34b16
-ID 263 gen 21 top level 5 path btrfs/subvolumes/a9eb172552348a9a49180694790b33a1097f546456d041b6e82e4d7716ddb721
-ID 264 gen 18 top level 5 path btrfs/subvolumes/1f5049b3536eb73e7a660a672976ae9c19e8460bf57c2528f9c1e4b2c4bf309f
-ID 265 gen 19 top level 5 path btrfs/subvolumes/f06b02872d5253f5123284edcf49749b352400a1c5880b5ebf2864f5afddeb22
-ID 266 gen 18 top level 5 path btrfs/subvolumes/fd5373b3d93820744a327e609ee86166e5984d7377987f0fde78daeaa345705d
-ID 267 gen 19 top level 5 path btrfs/subvolumes/37fca75d01ffc49df7b99aacdbcd4a0ebae39de299787b8f77bb5b6698414308
-ID 270 gen 24 top level 5 path btrfs/subvolumes/1199cd2bf8836c199260d6143b47d42ccb1bcad2fe469c68f6e3560d40d25f78
-ID 273 gen 27 top level 5 path btrfs/subvolumes/bb458625b3d670fca9b3978ca58bbc2136f061abf0d60a43359a266cf7d9e824
-ID 276 gen 30 top level 5 path btrfs/subvolumes/f5c94afe5bc87c5dc0ef9d87107de0651b3061e44f51b6da425fd2dd83174fc9
-ID 279 gen 194 top level 5 path btrfs/subvolumes/cdb39ca128e6c921f1b0eb374b427f36d7dc8031f6d4c520e973e0103052848f
-ID 280 gen 32 top level 5 path btrfs/subvolumes/f5ad8003e5240a6192212c943d9ec3b8e70fab66b6eabaeba54a167599dfbda7-init
-ID 281 gen 33 top level 5 path btrfs/subvolumes/f5ad8003e5240a6192212c943d9ec3b8e70fab66b6eabaeba54a167599dfbda7
-ID 282 gen 195 top level 5 path btrfs/subvolumes/1f762fc6b093d00dfbbce2e2ab908098031506cc5120596665aa61e7489be353-init
-ID 283 gen 197 top level 5 path btrfs/subvolumes/1f762fc6b093d00dfbbce2e2ab908098031506cc5120596665aa61e7489be353
 </code>
 </pre>
 
