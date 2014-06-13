@@ -12,7 +12,7 @@ First, let met say that this is not about how to run a cluster of OpenStack Swif
 
 h2. Why Swift OnlyOne?
 
-I'm calling it Swift OnlyOne because it just has one server, one device, and is configured to do one replica. Swift All-in-one, on the other hand, sets up four servers and devices.
+I'm calling it Swift OnlyOne because it just has one server, one device, and is configured to do one replica. Swift All-in-one, on the other hand, sets up four servers and devices, though within one virtual machine.
 
 Most people will use Swift in a much larger context as typically Swift is used to store large amounts (petabytes!) of files. But in this case I just want a small deployment that can provide object storage to several other containers, or perhaps to do development against.
 
