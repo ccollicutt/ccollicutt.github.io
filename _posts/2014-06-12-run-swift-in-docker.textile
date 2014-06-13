@@ -22,7 +22,7 @@ If you have multiple containers on multiple hosts, and some of the containers ru
 
 h2. Use Swift OnlyOne
 
-First, because *Swift requires the filesystem have xattr*, so Docker must be setup with either btrfs or XFS (or some other xattr supporting file system). I have only used it with btrfs. So /var/lib/docker is a btrfs volume and the docker daemon is run with "-s btrfs".
+First, because *Swift requires the filesystem have xattr*, Docker must be setup with either btrfs or XFS (or some other xattr supporting file system). I have only used it with btrfs. So /var/lib/docker is a btrfs volume and the docker daemon is run with "-s btrfs".
 
 (NOTE: I have Vagrant file and Ansible playbook on "github":https://github.com/curtisgithub/vagrant-docker-btrfs that will setup a Vagrant-based virtual machine with docker and btrfs configured. So all you would have to do is clone that repo and run "vagrant up" to get docker + btrs.)
 
