@@ -14,7 +14,7 @@ h2. Why Swift OnlyOne?
 
 I'm calling it Swift OnlyOne because it just has one server, one device, and is configured to do one replica. Swift All-in-one, on the other hand, sets up four servers and devices, though within one virtual machine.
 
-Most people will use Swift in a much larger context as typically Swift is used to store large amounts (petabytes!) of files. But in this case I just want a small deployment that can provide object storage to several other containers, or perhaps to do development against.
+Most people will use Swift in a much larger context as typically Swift is used to store huge amounts (petabytes!) of files. But in this case I just want a small deployment that can provide object storage to several other containers, or perhaps to do development against.
 
 As an example--I think that OpenStack Swift is a perfect partner for Docker, and I don't just mean deploying Swift with Docker, I mean having Docker containers use Swift as a datastore. 
 
@@ -24,7 +24,7 @@ h2. Use Swift OnlyOne
 
 First, because *Swift requires the filesystem have xattr*, Docker must be setup with either btrfs or XFS (or some other xattr supporting file system). I have only used it with btrfs. So /var/lib/docker is a btrfs volume and the docker daemon is run with "-s btrfs".
 
-(NOTE: I have Vagrant file and Ansible playbook on "github":https://github.com/curtisgithub/vagrant-docker-btrfs that will setup a Vagrant-based virtual machine with docker and btrfs configured. So all you would have to do is clone that repo and run "vagrant up" to get docker + btrfs.)
+_NOTE: I have Vagrant file and Ansible playbook on "github":https://github.com/curtisgithub/vagrant-docker-btrfs that will setup a Vagrant-based virtual machine with docker and btrfs configured. So all you would have to do is clone that repo and run "vagrant up" to get docker + btrfs._
 
 <pre>
 <code>vagrant@host1:~$ sudo btrfs fi show /var/lib/docker
@@ -38,9 +38,7 @@ vagrant@host1:~$ ps ax | grep [d]ocker
 </code>
 </pre>
 
-There is a "github repository":https://github.com/curtisgithub/docker-swift-onlyone that has the Dockefile and Swift configuration files used for this example.
-
-Or you can pull it from the Docker repository.
+There is a "github repository":https://github.com/curtisgithub/docker-swift-onlyone that has the Dockefile and Swift configuration files used for this example, or you can pull it from the *Docker repository*.
 
 <pre>
 <code>vagrant@host1:~$ docker pull serverascode/swift-onlyone
@@ -248,4 +246,4 @@ I'm sure there is a lot that can be done to improve this Dockerfile, so please l
 
 h2. Issues
 
-At this time the proxy is not using SSL, nor is there an SSL terminator in front of the proxy, so it's all plain text. You wouldn't want to do this in production.
+* At this time the proxy is not using SSL, nor is there an SSL terminator in front of the proxy, so it's all plain text. You wouldn't want to do this in production.

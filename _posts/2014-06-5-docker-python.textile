@@ -270,7 +270,7 @@ If you haven't used busybox images with docker yet, I definitely suggest it. I a
 
 h2. Conclusion
 
-Docker is a fascinating new system and it's going to be used to build interesting new technologies, especially around cloud services. Using iPython we've explored how to programmatically create docker containers using the docker-py module. Now using python we can create those next gen ideas using docker and containers. 
+Docker is a fascinating new system and it's going to be used to build interesting new technologies, especially around cloud services. Using iPython we've explored how to programmatically create docker containers using the docker-py module. Now using python we can create those next generation ideas using docker and containers. 
 
 
 

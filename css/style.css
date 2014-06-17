@@ -309,8 +309,8 @@ header {
     width: auto;
     max-width: 860px;
     margin: 0 auto;
-    margin-top: 80px;
-    margin-bottom: 60px;
+    margin-top: 40px;
+    margin-bottom: 30px;
     padding: 0 80px;
     position: relative;
     -webkit-box-sizing: border-box;     /* Safari/Chrome, other WebKit */
@@ -333,6 +333,10 @@ p img {
 header nav {
     float: right;
     margin-top: 3px;
+}
+
+header ul li {
+    padding-top: 30px;
 }
 
 header nav ul li {
@@ -413,7 +417,7 @@ section {
     display: block;
     position: relative;
     background: #fff;
-    padding: 80px 50px;
+    padding: 40px 50px;
     width: auto;
     max-width: 860px;
     margin: 0 auto;
