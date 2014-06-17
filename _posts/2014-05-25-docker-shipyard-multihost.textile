@@ -32,7 +32,7 @@ h2. Shipyard
 
 bq. Shipyard gives you the ability to manage Docker resources including containers, images, hosts, and more all from a single management interface. Shipyard can manage multiple Docker hosts giving the flexibility to build redundant, highly available applications.
 
-There are actually several similar systems being worked on right now that can tie together multiple docker hosts. One example is Flynn which has "flynn-host":https://github.com/flynn/flynn-host, another is "OpenStack":https://wiki.openstack.org/wiki/Docker which can manage docker containers, yet another is "CoreOS":https://coreos.com/, and there are more out there. Typically these systems will do much more than just manage containers (or jobs) but they will all have that functionality. (Feel free to correct me if I'm wrong.)
+There are actually several similar systems being worked on right now that can tie together multiple docker hosts. One example is Flynn which has "flynn-host":https://github.com/flynn/flynn-host, another is "OpenStack":https://wiki.openstack.org/wiki/Docker which can manage docker containers, yet another is "CoreOS":https://coreos.com/, "Project Atomic":http://www.projectatomic.io/ is new...and there are more out there. Typically these systems will do much more than just manage containers (or jobs) but they will all have that functionality. (Feel free to correct me if I'm wrong.)
 
 h2. Setup the shipyard host
 

@@ -73,7 +73,7 @@ root# ./install_server.sh
 </code>
 </pre>
 
-At this point I had to edit the /etc/init.d/redis_6379.conf file because it had a bunch of "\n\n" newlines that weren't converted for some reason. I'll have to check into that later on.
+At this point I had to edit the /etc/init.d/redis_6379 file because it had a bunch of "\n\n" newlines that weren't converted for some reason. I'll have to check into that later on.
 
 The head of that file should look like this.
 

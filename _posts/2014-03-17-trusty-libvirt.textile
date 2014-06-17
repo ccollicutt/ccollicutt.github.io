@@ -3,7 +3,7 @@ layout: post
 title: Boot Ubuntu Trusty Tahr 14.04 with libvirt
 categories: 
 ---
-
+ 
 p(meta). 17 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
@@ -21,7 +21,8 @@ First we download the cloud image from Ubuntu's site. Thankfully Ubuntu provides
 root# cd /var/lib/libvirt/images
 root# wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
 root# mv trusty-server-cloudimg-amd64-disk1.img trusty-server-cloudimg-amd64-disk1.img.dist
-root# qemu-img convert -O qcow2 trusty-server-cloudimg-amd64-disk1.img.dist trusty-server-cloudimg-amd64-disk1.img
+root# qemu-img convert -O qcow2 trusty-server-cloudimg-amd64-disk1.img.dist \
+trusty-server-cloudimg-amd64-disk1.img
 root# qemu-img resize trusty-server-cloudimg-amd64-disk1.img +8G
 </code>
 </pre>
