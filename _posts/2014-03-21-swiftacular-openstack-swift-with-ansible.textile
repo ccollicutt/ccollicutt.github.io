@@ -3,21 +3,6 @@ layout: post
 title: Swiftacular - deploy OpenStack Swift with Ansible
 categories: 
 ---
- 
-p(meta). 21 March - 2014 - Edmonton!
-
-<pre>
-<code>
-  _________       .__  _____  __                      .__                
- /   _____/_  _  _|__|/ ____\/  |______    ____  __ __|  | _____ _______ 
- \_____  \\ \/ \/ /  \   __\\   __\__  \ _/ ___\|  |  \  | \__  \\_  __ \
- /        \\     /|  ||  |   |  |  / __ \\  \___|  |  /  |__/ __ \|  | \/
-/_______  / \/\_/ |__||__|   |__| (____  /\___  >____/|____(____  /__|   
-        \/                             \/     \/                \/  
-</code>
-</pre>
-
-<br>
 
 h1. {{ page.title }}
 
@@ -67,8 +52,7 @@ Requirements:
 Once you have those requirements, this is how to quickly deploy OpenStack Swift:
 
 <pre>
-<code>
-$ git clone git@github.com:curtisgithub/swiftacular.git
+<code>$ git clone git@github.com:curtisgithub/swiftacular.git
 $ cd swiftacular
 $ mkdir library
 # Checkout some modules to help with managing openstack 
@@ -90,8 +74,7 @@ $ pb site.yml
 After those commands have completed, you should end up with several virtual machines running.
 
 <pre>
-<code>
-$ vagrant status
+<code>$ vagrant status
 SNIP!
 swift-package-cache-01    running (virtualbox)
 swift-keystone-01         running (virtualbox)
@@ -107,8 +90,7 @@ SNIP!
 Those virtual machines comprise an OpenStack Swift cluster. While there is only one region setup by default, the storage servers are setup with a replication network. Both regions and the replication network are new features of OpenStack Swift. In /etc/swift of each of the storage servers there is both a replication configuration file and a standard server configuration.
 
 <pre>
-<code>
-root@swift-storage-01:~# ls /etc/swift/*-server
+<code>root@swift-storage-01:~# ls /etc/swift/*-server
 /etc/swift/account-server:
 account-replication.conf  account-server.conf
 
@@ -123,8 +105,7 @@ object-replication.conf  object-server.conf
 The replication server configuration file looks like this:
 
 <pre>
-<code>
-root@swift-storage-01:~# cat /etc/swift/object-server/object-replication.conf 
+<code>root@swift-storage-01:~# cat /etc/swift/object-server/object-replication.conf 
 [DEFAULT]
 devices = /srv/node
 bind_ip = 10.0.30.200
@@ -150,8 +131,7 @@ As can be seen above the replication server is listening on 10.0.30.200 where 10
 This is what the regular server config file looks like:
 
 <pre>
-<code>
-root@swift-storage-01:~# cat /etc/swift/object-server/object-server.conf      
+<code>root@swift-storage-01:~# cat /etc/swift/object-server/object-server.conf      
 [DEFAULT]
 devices = /srv/node
 bind_ip = 10.0.20.200
@@ -188,8 +168,7 @@ As an example, when a storage server is configured we can tell the proxy to add 
 (Sorry the example swift-ring-builder command below will probably stretch across the screen. It's long and kinda complicated and is really meant to be invoked programatically.)
 
  <pre>
- <code>
- {% raw  %}
+ <code>{% raw  %}
 
  - name: build account ring
    command: swift-ring-builder account.builder \
@@ -200,7 +179,6 @@ As an example, when a storage server is configured we can tell the proxy to add 
    when: "losetup.rc > 0"
  
  {% endraw  %}
-
  </code>
  </pre>
 

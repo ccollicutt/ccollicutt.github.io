@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Docker and btrfs
-categories: 
+categories:
+header_image: /img/met/DP813769.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/337702 
 ---
  
-p(meta). 9 June - 2014 - Edmonton!
-
 h1. {{ page.title }}
 
 As I write this the first "Docker convention":https://twitter.com/hashtag/dockercon?src=hash is going on in San Francisco (sounds funny to write it was "docker convention" instead of "dockercon"...a convention sounds like a scene from Fear and Loathing in Las Vegas), and Docker has hit 1.0 and been declared "production":https://twitter.com/solomonstre/status/476036477973831682 worthy.
@@ -19,16 +19,15 @@ Before installing docker I'm going to setup btfrs.
 In this example I have a disk device called /dev/vdb to use with btrfs. I've removed some of the output from the commands.
 
 <pre>
-<code>
-$ sudo su
+<code>$ sudo su
 $ apt-get install btrfs-tools
 $ mkfs.btrfs /dev/sdb
 $ mkdir /var/lib/docker
 $ mount /dev/sdb /var/lib/docker
 $ mount | grep btrfs
 /dev/sdb on /var/lib/docker type btrfs (rw)
- </code>
- </pre>
+</code>
+</pre>
 
 Now that btrfs is installed and a device is formatted and mounted under /var/lib/docker we can install docker.
 
@@ -37,8 +36,7 @@ h2. Install docker
 Next we need to install docker. It's important that we also configure docker to startup with the "-s btrfs" option as well.
 
 <pre>
-<code>
-$ apt-get install docker.io
+<code>$ apt-get install docker.io
 $ vi /etc/default/docker.io
 </code>
 </pre>
@@ -46,8 +44,7 @@ $ vi /etc/default/docker.io
 We need to change the DOCKER_OPTS entry to look like this:
 
 <pre>
-<code>
-$ grep DOCKER_OPTS docker.io 
+<code>$ grep DOCKER_OPTS docker.io 
 # Use DOCKER_OPTS to modify the daemon startup options.
 DOCKER_OPTS="-s btrfs"
 </code>
@@ -56,16 +53,14 @@ DOCKER_OPTS="-s btrfs"
 Now restart docker.
 
 <pre>
-<code>
-$ service docker.io restart
+<code>$ service docker.io restart
 </code>
 </pre>
 
 We should see that docker is running with "-s btrfs":
 
 <pre>
-<code>
-$ ps ax  |grep [d]ocker
+<code>$ ps ax  |grep [d]ocker
 10088 ?        Sl     0:02 /usr/bin/docker.io -d -s btrfs
 </code>
 </pre>
@@ -75,8 +70,7 @@ If it's not running with "-s btrfs" then ensure it's set to do so in /etc/defaul
 I've already created several containers and pulled images, actually just the base busybox image which is quite small, so if I run "btrfs subvolume list /var/lib/docker" I should see some subvolumes have been created.
 
 <pre>
-<code>
-vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker | head -5
+<code>vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker | head -5
 ID 258 gen 11 top level 5 path btrfs/subvolumes/511136ea3c5a64f264b78b5433614aec563103b4d4702f3ba7d4d2698e22c158
 ID 259 gen 16 top level 5 path btrfs/subvolumes/42eed7f1bf2ac3f1610c5e616d2ab1ee9c7290234240388d6297bc0f32c34229
 ID 260 gen 13 top level 5 path btrfs/subvolumes/c120b7cab0b0509fd4de20a57d0f5c17106f3451200dfbfd8c6ab1ccb9391938
@@ -88,8 +82,7 @@ ID 262 gen 15 top level 5 path btrfs/subvolumes/120e218dd395ec314e7b6249f39d2853
 And we can see the size of the btrfs file system.
 
 <pre>
-<code>
-$ btrfs filesystem df /var/lib/docker
+<code>$ btrfs filesystem df /var/lib/docker
 Data, single: total=1.01GiB, used=337.56MiB
 System, DUP: total=8.00MiB, used=16.00KiB
 System, single: total=4.00MiB, used=0.00
@@ -126,8 +119,7 @@ h2. Ansible playbook
 I've setup an "Ansible playbook":https://github.com/curtisgithub/vagrant-docker-btrfs with a "Vagrant":http://vagrantup.com file that will setup a virtual machine with docker and btrfs configured in the same way that I describe in this blog post. Vagrant will automatically provision the virtual machine using Ansible.
 
 <pre>
-<code>
-$ git clone https://github.com/curtisgithub/vagrant-docker-btrfs
+<code>$ git clone https://github.com/curtisgithub/vagrant-docker-btrfs
 $ cd vagrant-docker-btrfs
 $ vagrant up --provider virtualbox
 Bringing machine 'host1' up with 'virtualbox' provider...
@@ -148,8 +140,7 @@ $
 Now that that is booted up and configured, we can login and check a couple things.
 
 <pre>
-<code>
-$ vagrant ssh
+<code>$ vagrant ssh
 SNIP!
 vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker
 vagrant@host1:~$# none because we have no images or containers 
@@ -190,8 +181,6 @@ ID 266 gen 19 top level 5 path btrfs/subvolumes/d200959a3e91d88e6da9a0ce458e3cde
 ID 267 gen 19 top level 5 path btrfs/subvolumes/fd5373b3d93820744a327e609ee86166e5984d7377987f0fde78daeaa345705d
 </code>
 </pre>
-
-Cool beans.
 
 h2. Conclusion
 

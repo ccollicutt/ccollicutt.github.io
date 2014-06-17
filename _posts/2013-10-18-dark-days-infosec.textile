@@ -4,11 +4,6 @@ title: Dark days in information security
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/eye.jpg!
-_(this is actually part of a display in a movie theater_)
-
-p(meta). 18 Oct - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 To be honest it's been a while since I've worked in a security conscious environment. When I first started out my career I was extremely interested in security (and I still am) but the organizations I worked in were not as interested in the end-result as much as the process itself--ie. meeting and checking off certain requirements rather than actually being secure. 

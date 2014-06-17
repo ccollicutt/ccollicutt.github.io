@@ -6,22 +6,15 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 15 October - 2012 - San Diego
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_hotel.jpg!
-
-h1. OpenStack 2012 Summit
-
 This week I'm at the OpenStack 2012 Summit. It's by far the biggest conference I've been to. Usually I go to conferences on security, such as "H.O.P.E":http://en.wikipedia.org/wiki/Hackers_on_Planet_Earth or "CanSec":http://cansecwest.com/ or even smaller library related conferences. Given that OpenStack is one of the fastest growing open source projects of all time, it's no surprise to find out that the conference has grown from 75 people a couple years ago, to about 1300 this year, up from 700 only a year ago. It's massive and it's growing.
 
 h2. tl;dr
-<p></p>
+
 * Need to get into Ceph
 * Database as a service too
 * Upgrading is a big issue in OpenStack 
 * San Diego is nice 
 * OpenStack is kinda a big deal
-<p></p>
 
 h2. Opening "keynote"
 
@@ -54,38 +47,37 @@ The next session I attended was "Operating your OpenStack Private Cloud":http://
 A few points the speaker made:
 * Monitoring: statsd, graphite, etc
 * Operations tools don't exist for OpenStack (yet)--we need better ops tools so he wrote "Pulsar":https://github.com/JCallicoat/pulsar
-** Would be nice to see an operations dashboard (perhaps in horizon)
-** Eg. can't get a list of all instances on a node and their IP addresses
-** Some tools need hostnames and some need ids...why
-** DSH for Ubuntu, PSH for Redhat?
-** Don't forget your bashfu; still working with Linux :)
+* Would be nice to see an operations dashboard (perhaps in horizon)
+* Eg. can't get a list of all instances on a node and their IP addresses
+* Some tools need hostnames and some need ids...why
+* DSH for Ubuntu, PSH for Redhat?
+* Don't forget your bashfu; still working with Linux :)
 * Database backups
-** "Holland":http://hollandbackup.org/
+* "Holland":http://hollandbackup.org/
 * Performance and scale considerations
-** Block storage solution of some kind (cinder, or cinder + some vendor)
-** Local disk - raw image is only slightly faster than qcow2, but qcow2 may make better business sense
-** IO will degrade on local disks when glance copies images between machines
+* Block storage solution of some kind (cinder, or cinder + some vendor)
+* Local disk - raw image is only slightly faster than qcow2, but qcow2 may make better business sense
+* IO will degrade on local disks when glance copies images between machines
 * Scheduling
-** CFQ made the most sense
-** You have the power to change all this! You have the power to change your scheduler! Benchmark workloads and plan accordingly.
+* CFQ made the most sense
+* You have the power to change all this! You have the power to change your scheduler! Benchmark workloads and plan accordingly.
 * Lots of things you can do with glance performance-wise
-** Image caching
-** If you're using qcow2 it doesn't have to move the whole image (something to check into)
+* Image caching
+* If you're using qcow2 it doesn't have to move the whole image (something to check into)
 * Don't want swift to become unbalanced
 * They use chef for automated deployment
-** controller in 15 minutes
-** compute in two
+* controller in 15 minutes
+* compute in two
 * Day to day tasks
-** Made up of mostly dealing with new issues
-** Eg. resizing
-** Hardware failures...still have all this hardware
+* Made up of mostly dealing with new issues
+* Eg. resizing
+* Hardware failures...still have all this hardware
 * Don't forget--it's not (always) you, it's a bug
 * Nice thing about a private cloud is you can pick the architecture that matches your requirements
 * OpenStack/We need to provide an upgrade path (I hear this 20 times today)
 * Metrics
-** Load average is actually quite telling
-** How long does an API call take?
-<br />
+* Load average is actually quite telling
+* How long does an API call take?
 
 h2. Lunch!
 
@@ -109,8 +101,7 @@ The team has a desire to bring RedDwarf forward, and they want to involve more c
 You can get a test install using the below commands, and it will "fake" a nova backend.
 
 <pre>
-<code>
-$ git clone https://github.com/hub-cap/reddwarf_lite
+<code>$ git clone https://github.com/hub-cap/reddwarf_lite
 $ ./reddwarf_lite/bin/start_server.sh
 </code>
 </pre>
@@ -160,7 +151,6 @@ That said, it isn't quite perfect yet. There are enhancements being made in Griz
 NOTES: 
 * The Ceph file system is not recommended for production, but everything else is, such as RBD. If you don't use the Ceph file system you don't need metadata servers.
 * According to Josh, in terms of running OSDs on the same node as the hypervisor, as long as you have enough memory you should be Ok. Everything is running in userspace. This runs a bit counterintuitive to me, and also is contrary to one of the positive points made about block storage--decoupling. But it's a valid use case.
-<p></p>
 
 h2. From Folsom to Grizzy: A DevOps Upgrade Pattern
 

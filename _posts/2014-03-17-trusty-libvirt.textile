@@ -3,8 +3,6 @@ layout: post
 title: Boot Ubuntu Trusty Tahr 14.04 with libvirt
 categories: 
 ---
- 
-p(meta). 17 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -17,8 +15,7 @@ h2. Download the image
 First we download the cloud image from Ubuntu's site. Thankfully Ubuntu provides ready-to-go images.
 
 <pre>
-<code>
-root# cd /var/lib/libvirt/images
+<code>root# cd /var/lib/libvirt/images
 root# wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
 root# mv trusty-server-cloudimg-amd64-disk1.img trusty-server-cloudimg-amd64-disk1.img.dist
 root# qemu-img convert -O qcow2 trusty-server-cloudimg-amd64-disk1.img.dist \
@@ -32,8 +29,7 @@ Above I downloaded the image, converted it from compressed to uncompressed, and 
 Next create a snapshotted backing file which will allow us to keep the original image pristine.
 
 <pre>
-<code>
-root# qemu-img create -f qcow2 -b trusty-server-cloudimg-amd64-disk1.img trusty1.img
+<code>root# qemu-img create -f qcow2 -b trusty-server-cloudimg-amd64-disk1.img trusty1.img
 </code>
 </pre>
 
@@ -44,8 +40,7 @@ h2. Checkout cloud-localds
 We need to get cloud-utils from launchpad which includes a cloud-localds script. Using this script we can easily create an ISO file that can be used locally by the vm with cloud-init to configure the vm.
 
 <pre>
-<code>
-root# cd ~
+<code>root# cd ~
 root# bzr branch lp:cloud-utils
 root# ls cloud-utils/bin/cloud-localds 
 cloud-utils/bin/cloud-localds
@@ -61,8 +56,7 @@ Essentially what this allows us to do is have a local disk file attached to the 
 I'm not showing my public key below just because it doesn't fit well on the page. But just paste your public ssh key in after the "-". The password for the ubuntu user is set to "passw0rd" which is in fact not a good password. It might be better to either not set the password at all and just use and ssh key, or to set a very good password. This is just an example.
 
 <pre>
-<code>
-#cloud-config
+<code>#cloud-config
 password: passw0rd
 chpasswd: { expire: False }
 ssh_pwauth: True
@@ -78,8 +72,7 @@ h2. Build the user-data image
 Now we convert the user-data file to an ISO file.
 
 <pre>
-<code>
-root# ~/cloud-utils/bin/cloud-localds user-data.img user-data
+<code>root# ~/cloud-utils/bin/cloud-localds user-data.img user-data
 root# cp user-data.img /var/lib/libvirt/images
 </code>
 </pre>
@@ -91,8 +84,7 @@ h2. Prepare a libvirt.xml file
 Here is an example libvirt xml file, in this case called trusty1.xml.
 
 <pre>
-<code>
-root# cat trusty1.xml 
+<code>root# cat trusty1.xml 
 <domain type='kvm'>
     <name>trusty1</name>
     <memory>1048576</memory>
@@ -130,8 +122,7 @@ h2. Define and start the virtual machine
 Lets define and start the vm based on the images we created and the libvirt xml file.
 
 <pre>
-<code>
-root# virsh define trusty1.xml
+<code>root# virsh define trusty1.xml
 Domain trusty1 defined from trusty1.xml
 root# virsh start trusty1
 </code>
@@ -140,8 +131,7 @@ root# virsh start trusty1
 Now that the vm is booted, by default it should get an IP from dnsmasq, and has a random mac address. Figuring out the IP is not that easy with libvirt (if you know a way, let me know) but generally I look at the leases file or would set specific mac addresses to get specific IPs.
 
 <pre>
-<code>
-root# cat /var/lib/libvirt/dnsmasq/default.leases 
+<code>root# cat /var/lib/libvirt/dnsmasq/default.leases 
 1395108553 52:54:00:6a:f1:c8 192.168.122.103 cloudimg *
 </code>
 </pre>
@@ -149,8 +139,7 @@ root# cat /var/lib/libvirt/dnsmasq/default.leases
 From dnsmasq know that the instance has the 192.168.122.103 IP, we can ssh in. Note that because I put my ssh public key in I can ssh into the server without a password. I removed some content for brevity.
 
 <pre>
-<code>
-root# ssh ubuntu@192.168.122.103
+<code>root# ssh ubuntu@192.168.122.103
 Warning: Permanently added '192.168.122.103' (ECDSA) to the list of known hosts.
 Welcome to Ubuntu Trusty Tahr (development branch) (GNU/Linux 3.13.0-14-generic x86_64)
 SNIP!

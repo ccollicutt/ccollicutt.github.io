@@ -6,9 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 15 May - 2012 - Edmonton
-
-*UPDATE:* I've recently stopped using Elixir and have moved to using straight SQLAlchemy.
+_UPDATE: I've recently stopped using Elixir and have moved to using straight SQLAlchemy._
 
 Recently I have been working on a web-based administrative backend, and have found doing so unusually easy, mostly because of the combination of "Bottle":http://bottlepy.org/, a python micro-framework, "Elixir":http://elixir.ematia.de/, a wrapper over top of "SQLAlchemy":http://www.sqlalchemy.org/ (which is itself an SQL toolkit and "ORM":http://en.wikipedia.org/wiki/Object-relational_mapping), Twitter's "bootstrap":http://twitter.github.com/bootstrap/, scaffolding for websites, and finally "Datatables":http://datatables.net/, which enables advanced interactions with HTML tables.
 

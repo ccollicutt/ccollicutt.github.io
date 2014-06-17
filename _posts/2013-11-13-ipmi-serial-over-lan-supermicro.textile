@@ -2,13 +2,8 @@
 layout: post
 title: MetalOps - IPMI serial-over-lan and Supermicro systems
 categories: 
+header_image: https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/ipmi_supermicro.png
 ---
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/ipmi_supermicro.png!
-
-_(screenshot of supermicro bios via ipmi sol--ie. text based)_
-
-p(meta). 13 Nov - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -30,32 +25,28 @@ NOTE: Probably a good idea to change the ADMIN password. :)
 First, establish an SOL connection. Below I'm assuming the server has already been setup with it's IPMI static IP of 10.0.0.10.
 
 <pre>
-<code>
-terminal_1$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN sol activate
+<code>terminal_1$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN sol activate
 </code>
 </pre>
 
 Next, power down the server.
 
 <pre>
-<code>
-terminal_2$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN chassis power off
+<code>terminal_2$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN chassis power off
 </code>
 </pre>
 
 Then set it to boot into bios. I find this easier then trying to hit a key on startup.
 
 <pre>
-<code>
-terminal_2$ ipmitool -I lanplus -H 10.0.0.10-U ADMIN -P ADMIN chassis bootdev bios
+<code>terminal_2$ ipmitool -I lanplus -H 10.0.0.10-U ADMIN -P ADMIN chassis bootdev bios
 </code>
 </pre>
 
 And finally start the server again.
 
 <pre>
-<code>
-terminal_2$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN chassis power on
+<code>terminal_2$ ipmitool -I lanplus -H 10.0.0.10 -U ADMIN -P ADMIN chassis power on
 </code>
 </pre>
 

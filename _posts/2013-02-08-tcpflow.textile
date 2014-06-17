@@ -4,11 +4,6 @@ title: tcpflow
 categories:
 ---
 
-p(meta). 8 February - 2013 - Edmonton!
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_ales.jpg!
-_(winter on the UofA campus, nice sunny day though)_
-
 h1. {{ page.title }}
 
 This is just a quick little post on tcpflow.
@@ -20,8 +15,7 @@ However, I've been having an issue (and am still having an issue actually) with 
 In order to troubleshoot this I eventually started running tcpflow because it gave me cleaner output than tcpdump did...at least by default anyways. I'm sure that tcpdump can give me pretty much any output I need, but I liked the symplicity of tcpflow, for example:
 
 <pre>
-<code>
-[root@stats ~]# tcpflow -c port 2003
+<code>[root@stats ~]# tcpflow -c port 2003
 tcpflow[11791]: listening on eth0
 010.000.000.001.39216-010.000.000.006.02003: debbuild.cputotals.user 0 1360364000
 010.000.000.001.39216-010.000.000.006.02003: debbuild.cputotals.nice 0 1360364000
@@ -38,8 +32,7 @@ SNIP!
 vs.
 
 <pre>
-<code>
-[root@stats ~]# tcpdump -nnvvXSs 1514 -i eth0 port 2003
+<code>[root@stats ~]# tcpdump -nnvvXSs 1514 -i eth0 port 2003
 tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 1514 bytes
 22:59:32.650673 IP (tos 0x0, ttl 64, id 41032, offset 0, flags [DF], 
 proto TCP (6), length 103)
@@ -69,6 +62,3 @@ SNIP!
 One thing to note is the -c switch on tcpflow, it means print to the console instead of files in the local directory.
 
 I would love to hear about other uses of tcpflow or ways to alter the output of tcpdump, so please let me know of anything interesting by commenting. :)
-
-Thanks,
-Curtis.

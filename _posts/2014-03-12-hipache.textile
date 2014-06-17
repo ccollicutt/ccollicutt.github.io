@@ -2,9 +2,9 @@
 layout: post
 title: hipache
 categories: 
+header_image: /img/met/DT98.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/11234
 ---
-
-p(meta). 12 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -17,8 +17,7 @@ h2. Install new npm, nodejs, and hipache
 So first, get a recent version of nodejs.
 
 <pre>
-<code>
-# get a newer version of node
+<code># get a newer version of node
 root# grep DESC /etc/lsb-release 
 DISTRIB_DESCRIPTION="Ubuntu 12.04.4 LTS"
 root# sudo apt-get update
@@ -34,8 +33,7 @@ v0.10.26
 Next get a new npm...using npm.
 
 <pre>
-<code>
-root# apt-get install npm
+<code>root# apt-get install npm
 # now update npm using npm
 root# npm install npm -g --ca=null
 root# npm config set ca=""
@@ -47,12 +45,9 @@ root# npm --version
 Now install hipache.
 
 <pre>
-<code>
-root# npm install hipache -g
+<code>root# npm install hipache -g
 </code>
 </pre>
-
-Ok so far.
 
 h2. Install redis
 
@@ -61,8 +56,7 @@ hipache uses redis as a data store for webroutes.
 I installed version 2.8.7 stable from source.
 
 <pre>
-<code>
-root# wget http://download.redis.io/releases/redis-2.8.7.tar.gz
+<code>root# wget http://download.redis.io/releases/redis-2.8.7.tar.gz
 root# tar zxf redis-2.8.7.tar.gz
 root# cd redis-2.8.7
 root# make
@@ -78,8 +72,7 @@ At this point I had to edit the /etc/init.d/redis_6379 file because it had a bun
 The head of that file should look like this.
 
 <pre>
-<code>
-root# head redis_6379 
+<code>root# head redis_6379 
 #/bin/sh
 #Configurations injected by install_server below....
 EXEC=/usr/local/bin/redis-server
@@ -96,8 +89,7 @@ case "$1" in
 I configured redis to only to listen on localhost.
 
 <pre>
-<code>
-root# grep bind 6379.conf 
+<code>root# grep bind 6379.conf 
 # interfaces using the "bind" configuration directive, followed by one or
 # bind 192.168.1.100 10.0.0.1
 bind 127.0.0.1
@@ -111,29 +103,24 @@ h2. Start redis
 Use service to start redis.
 
 <pre>
-<code>
-root# service redis_6379 start
+<code>root# service redis_6379 start
 </code>
 </pre>
 
 It's now listening on 6379.
 
 <pre>
-<code>
-root# netstat -ant  |grep 6379  | grep LISTEN
+<code>root# netstat -ant  |grep 6379  | grep LISTEN
 tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN    
 </code>
 </pre>
-
-Onto hipache...
 
 h2. Start hipache
 
 Hipache provides an "upstart script":https://raw.githubusercontent.com/dotcloud/hipache/master/upstart.conf.
 
 <pre>
-<code>
-# hipache - distributed HTTP and websocket proxy
+<code># hipache - distributed HTTP and websocket proxy
 
 start on runlevel [2345]
 stop on runlevel [06]
@@ -150,8 +137,7 @@ end script
 I placed that in /etc/init/hipache.conf
 
 <pre>
-<code>
-root# ls /etc/init/hipache.conf 
+<code>root# ls /etc/init/hipache.conf 
 /etc/init/hipache.conf
 </code>
 </pre>
@@ -159,8 +145,7 @@ root# ls /etc/init/hipache.conf
 Finally we need a hipache config file.
 
 <pre>
-<code>
-root# cat /etc/hipache.json 
+<code>root# cat /etc/hipache.json 
 {
     "server": {
         "accessLog": "/var/log/hipache_access.log",
@@ -184,12 +169,9 @@ Obviously this is a test config with no password, but it is only listening on lo
 We can start hipache.
 
 <pre>
-<code>
-root# service hipache start
+<code>root# service hipache start
 </code>
 </pre>
-
-W00t!
 
 h2. Configure vhosts
 
@@ -198,8 +180,7 @@ vhosts for hiapche to proxy are entered into redis.
 Here's an example taken from the README:
 
 <pre>
-<code>
-$ redis-cli rpush frontend:www.dotcloud.com mywebsite
+<code>$ redis-cli rpush frontend:www.dotcloud.com mywebsite
 (integer) 1
 $ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.42:80
 (integer) 2

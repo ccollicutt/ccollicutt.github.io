@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 13 April - 2012 - Edmonton
-
 !https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/Photo0128.jpg!
 
 ...in one big box.

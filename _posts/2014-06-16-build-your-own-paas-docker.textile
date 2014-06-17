@@ -2,9 +2,9 @@
 layout: post
 title: Build your own platform as a service with Docker
 categories: 
+header_image: /img/met/DT95.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/10464
 ---
- 
-p(meta). 12 June - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -12,7 +12,7 @@ First off, "Docker":http://www.docker.com/ is not a "platform as a service" (Paa
 
 Second, for the most part I'm discussing the concept of building "your own PaaS" from my personal perspective, which is that I have a few blogs and Wordpress sites that I run for friends (ie. not a business venture or anything) and I have a single hardware server out there on the Internet that I use to do this. I thought it would be fun to use that server to think about how I one could provide a Wordpress PaaS that could potentially scale out to multiple hosts, even though I could never afford to or need to do that.
 
-In a way, what I'm doing is creating a proof of concept wordpress as a service, mostly for a single host which once in place could provide almost any application, and could potentially scale out to multiple container hosts.
+In a way, what I'm doing is creating a proof of concept (PoC) wordpress as a service, mostly for a single host which once in place could provide almost any application, and could potentially scale out to multiple container hosts.
 
 h2. Why not just use Dokku?
 
@@ -56,8 +56,7 @@ In my situation I am using "hipache":https://github.com/dotcloud/hipache which i
 My PoC python script, which is called "wpd" (more on that later), can dump the keys setup in redis for hipache. The below output means hipache will randomly balance requests for someapp.yourdomainapp.com to the two containers listed in redis.
 
 <pre>
-<code>
-$ wpd listkeys
+<code>$ wpd listkeys
 someapp.yourdomainapp.com
 ===> http://127.0.0.1:49156
 ===> http://127.0.0.1:49157
@@ -87,8 +86,7 @@ In Dokku code is pushed to a git repository which kicks off other processes. Thi
 However, in my wordpress example, the wordpress code is downloaded in the startup script. Once the container is started from the wordpress image, the startup script runs something like:
 
 <pre>
-<code>
-if [ ! -e /app/wp-settings.php ]; then
+<code>if [ ! -e /app/wp-settings.php ]; then
         cd /app
         curl -O http://wordpress.org/latest.tar.gz
         tar zxvf latest.tar.gz
@@ -113,8 +111,7 @@ I think Docker images should be fairly generic. Also you don't want to commit co
 For my wordpress example, I set environment variables with Docker. The Docker run command has the "-e" option which allows setting environment variables which will be exposed in the container. Below is an example.
 
 <pre>
-<code>
-$ docker run -e FOO=bar -e BAR=foo busybox env
+<code>$ docker run -e FOO=bar -e BAR=foo busybox env
 HOME=/
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=6cf2d6e8acb3
@@ -126,8 +123,7 @@ BAR=foo
 My wordpress startup script checks for a few environment variables
 
 <pre>
-<code>
-DB_NAME=${DB_NAME:-"wordpress"}
+<code>DB_NAME=${DB_NAME:-"wordpress"}
 DB_USER=${DB_USER:-"wordpress"}
 DB_PASSWORD=${DB_PASSWORD:-"wordpress"}
 DB_HOST=${DB_HOST:-$1}
@@ -141,8 +137,7 @@ Later on I'll talk about "tying the whole room together" which I do with a pytho
 Below is a snippet of python code used to start a container with environment variables.
 
 <pre>
-<code>
-env = {
+<code>env = {
   'DB_HOST': MYSQL_HOST,
   'DB_NAME': dbname,
   'DB_USER': dbname,
@@ -186,8 +181,7 @@ I'm working on a python script called "wpd" that ties all of this together, and 
 5. Adds that site to redis so that hipache can route/loadbalance requests to those containers
 
 <pre>
-<code>
-$ wpd
+<code>$ wpd
 usage: wpd [-h] {listkeys,addsite,listsites,addimage,deploysite,dumpsite} ...
 wpd: error: too few arguments
 </code>
@@ -211,7 +205,7 @@ In the end, I think that docker is a great system to use as a component in PaaS 
 
 h2. The Future!
  
-Obviously I'm leaving a lot out. There's a huge difference between toying around with a PoC like this and running a production PaaS. I haven't even mentioned the terms "service discovery" or "container scheduling", which theoretically things like etcd and "libswarm":https://github.com/docker/libswarm could take care of respectively, though I'm not sure libswarm will turn into a container scheduler. Recently Google released "kubernetes":https://news.ycombinator.com/item?id=7873897 which is as docker cluster manager of some kind. Apache Mesos also has its "Deimos":https://github.com/mesosphere/deimos project. Further, CoreOS has "fleet":https://github.com/coreos/fleet. Nor have I discussed limiting resources, such as container memory and CPU.
+Obviously I'm leaving a lot out. There's a huge difference between toying around with a PoC like this and running a production PaaS. I haven't even mentioned the terms "service discovery" or "container scheduling", which theoretically things like etcd and "libswarm":https://github.com/docker/libswarm could take care of respectively, though I'm not sure libswarm will turn into a container scheduler. Recently Google released "Kubernetes":https://news.ycombinator.com/item?id=7873897 which is as docker cluster manager of some kind. Apache Mesos also has its "Deimos":https://github.com/mesosphere/deimos project. Further, CoreOS has "fleet":https://github.com/coreos/fleet. Neither have I discussed limiting resources, such as container memory and CPU and a about a billion other things.
 
 
 

@@ -7,8 +7,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 20 July - 2011 - Edmonton
-
 Every IT group providing Linux servers will require some infrastructure services. What I mean by that is that there are services that Linux sysadmins need that help them to run their servers in a efficient, scalable way. 
 
 Production services need support from __infrastructure services__.
@@ -18,8 +16,6 @@ This post lists a basic collection of services that a Linux sysadmin might requi
 Notes:
 # I mention specific solutions, but there are many different ways to obtain the same basic infrastructure.
 # Most of what I discuss below is geared towards Redhat servers, but is also completely applicable to any Linux disto that has a packaging system, which is pretty much all of them.
-
-*:)*
 
 *1. Write documentation with mediawiki*
 

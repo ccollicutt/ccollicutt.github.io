@@ -4,11 +4,6 @@ title: MetalOps - OpenStack Swift reference hardware
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/supermicro.jpg!
-_(the hardware "stack")_
-
-p(meta). 11 Nov - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 I can't remember where I first heard the phrase metalops but I think it's an interesting term, much like devops and all the other ops (opops?). Technology rapidly changes, and so must definitions and labels and job titles, etc, etc. Whether these labels are correct or not, they are often useful. (As an aside, I really like the "Gartner Hype Cycle":http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp.)

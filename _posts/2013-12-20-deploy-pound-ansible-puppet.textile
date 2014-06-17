@@ -4,12 +4,6 @@ title: Deploy Pound with Ansible or Puppet
 categories: 
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/bubblebobble.jpg!
-
-_(one thing calgary has over edmonton is bubble bobble at the airport)_
-
-p(meta). 20 Dec - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 I just thought I would mention that I've put up "Puppet":http://forge.puppetlabs.com/serverascode and "Ansible":https://galaxy.ansibleworks.com/list#/users/10 modules for deploying the Pound proxy and load-balancer. 
@@ -19,16 +13,14 @@ I've been working on learning Puppet lately, so that is the reason for that modu
 So if you use puppet you can download my Pound module with:
 
 <pre>
-<code>
-$ puppet module install serverascode/pound
+<code>$ puppet module install serverascode/pound
 </code>
 </pre>
 
 or if you use ansible you can do:
 
 <pre>
-<code>
-$ ansible-galaxy install serverascode.pound
+<code>$ ansible-galaxy install serverascode.pound
 </code>
 </pre>
 

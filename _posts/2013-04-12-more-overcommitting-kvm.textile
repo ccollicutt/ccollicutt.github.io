@@ -4,11 +4,6 @@ title: More over committing with kvm
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/devils_tower_living_room.jpg!
-(very similar to one of my graphs below...coincidence?)
-
-p(meta). 12 April - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Previously I wrote about "overcommiting with kvm":http://serverascode.com/2013/02/20/overcommitting-with-kvm.html.
@@ -20,9 +15,9 @@ h2. Basic environment
 What we have is:
 
 * a single Dell C6220 node
-** 32 threads
-** 128GB of memory
-** two Intel 520 SSDs in a stripe
+* 32 threads
+* 128GB of memory
+* two Intel 520 SSDs in a stripe
 * ubuntu precise64 cloud image
 * qcow2 image snapshots
 * open vSsitch
@@ -38,8 +33,7 @@ First thing we do is reboot, just to start fresh. It doesn't really matter, but 
 First set ksm to do more scanning faster.
 
 <pre>
-<code>
-root# echo "20000" > /sys/kernel/mm/ksm/pages_to_scan
+<code>root# echo "20000" > /sys/kernel/mm/ksm/pages_to_scan
 root# echo "20" > /sys/kernel/mm/ksm/sleep_millisecs
 </code>
 </pre>
@@ -47,8 +41,7 @@ root# echo "20" > /sys/kernel/mm/ksm/sleep_millisecs
 Next--re-setup vswitch, as I have a kind of "rigged-up configuration":http://serverascode.com/2013/02/21/openvswitch.html going, which needs some care after a reboot, so obviously this is just for testing, not production. :)
 
 <pre>
-<code>
-$ sudo ifconfig br-int
+<code>$ sudo ifconfig br-int
 $ sudo ifconfig br-int up
 $ sudo ifconfig br-int 192.168.100.10 netmask 255.255.255.0
 </code>
@@ -59,8 +52,7 @@ That ip is what dnsmasq is set to listen on.
 I was running into an error where some taps existed already, and the boot script would start failing. I'm not sure why, and I just ended up deleting all the ports in the switch for that particular bridge, br-int.
 
 <pre>
-<code>
-#
+<code>#
 # Show/count all the ports
 # 
 
@@ -79,8 +71,7 @@ $ sudo for i in $(seq 1 300); do ovs-vsctl del-port br-int tap$i; done
 Now restart to make sure dnsmasq is listening on 102.168.100.10.
 
 <pre>
-<code>
-$ sudo service dnsmasq stop  
+<code>$ sudo service dnsmasq stop  
  * Stopping DNS forwarder and DHCP server dnsmasq
  [ OK ] 
 
@@ -105,16 +96,14 @@ If I booted 30 (note: 30, not 300) windows 7 vms the server's load would get so 
 Start instances!
 
 <pre>
-<code>
-root# ./kvm_ubuntu_openvswitch.sh 
+<code>root# ./kvm_ubuntu_openvswitch.sh 
 </code>
 </pre>
 
 After that completes there are ~300 vms running.
 
 <pre>
-<code>
-$ ps ax | grep "kvm -drive" | wc -l
+<code>$ ps ax | grep "kvm -drive" | wc -l
 301
 </code>
 </pre>
@@ -124,8 +113,7 @@ We can run tests on those vms.
 _NOTE: I haven't taken the time to tell dnsmasq to send dhcp information for more than a /24, so we only have 240 vms with an ip address._
 
 <pre>
-<code>
-$ wc -l /var/lib/misc/dnsmasq.leases 
+<code>$ wc -l /var/lib/misc/dnsmasq.leases 
 240 /var/lib/misc/dnsmasq.leases
 </code>
 </pre>
@@ -139,8 +127,7 @@ In my previous post a commenter suggested running _stress_, so that's what I'm d
 Using ansible, I'll run this stress command:
 
 <pre>
-<code>
-shell stress --cpu 1 --io 1 --vm 1 --vm-bytes 1024M --timeout 10s
+<code>shell stress --cpu 1 --io 1 --vm 1 --vm-bytes 1024M --timeout 10s
 </code>
 </pre>
 
@@ -149,8 +136,7 @@ across 20 vms at a time, running over all the vms that are reported by an invent
 Here's an example of running ansible's ping module across all those hosts.
 
 <pre>
-<code>
- $ ansible all -c ssh -i ./inventory.py -m ping -u ubuntu
+<code>$ ansible all -c ssh -i ./inventory.py -m ping -u ubuntu
  SNIP!
  192.168.100.98 | success >> {
     "changed": false, 
@@ -174,8 +160,7 @@ Note that the ips aren't in order, so .97 is the last host in this run. Suffice 
 Here's the simple ansible playbook I'll be running. These vms don't have access to the internet, and don't have stress installed, so I'm just copying over the package and installing it "manually", and then running the stress command.
 
 <pre>
-<code>
-$ cat load.yml 
+<code>$ cat load.yml 
 ---
 - hosts: all
   user: ubuntu
@@ -200,8 +185,7 @@ $ cat load.yml
 Let's run it across 20 vms at a time and see what happens.
 
 <pre>
-<code>
-$ ansible-playbook -u ubuntu -c ssh -i ./inventory.py -f 20 ./load.yml
+<code>$ ansible-playbook -u ubuntu -c ssh -i ./inventory.py -f 20 ./load.yml
 
 PLAY [all] ********************* 
 
@@ -259,6 +243,3 @@ First off, I'm not a scientist, didn't take statistics, etc. So I'm not sure wha
 Mostly this has generated more questions--such as what exactly is stress doing? How do we know when the vms are too unresponsive? What kind of overcommitting numbers do we want? What would happen if we used fio instead of _--io 1_ with stress? Do red lines in a graph make things seem worse? :)
 
 As usual, if anyone has any suggestions, questions, or critiques let me know in the comments!
-
-Thanks,
-Curtis.

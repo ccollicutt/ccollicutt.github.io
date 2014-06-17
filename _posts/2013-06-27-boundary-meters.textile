@@ -4,11 +4,6 @@ title: Deploying a boundary.com meter with ansible
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/IMG_0743_600px.jpg!
-_(it's summer in edmonton!)_
-
-p(meta). 27 June - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Lately we have started using "Boundary":http://boundary.com at work. While "puppet":https://forge.puppetlabs.com/puppetlabs/boundary  and "chef":https://github.com/boundary/bprobe_cookbook recipes and a "shell script":https://github.com/boundary/boundary_scripts already exist to deploy a boundary meter onto a node/server, there was not a way to easily deploy one using "ansible":http://ansibleworks.com, which is my preferred configuration management and orchestration tool. 
@@ -28,8 +23,7 @@ One file that the bprobe package and my ansible module do not provide is the ca.
 The easiest way to get that file is to grab it from the bprobe_cookbook github repo.
 
 <pre>
-<code>
-$ wget https://raw.github.com/boundary/bprobe_cookbook/master/files/default/ca.pem
+<code>$ wget https://raw.github.com/boundary/bprobe_cookbook/master/files/default/ca.pem
 $ md5sum ca.pem
 11f809a92ed1cc029c3ac86b42460a10  ca.pem
 </code>
@@ -46,8 +40,7 @@ While you don't need the bprobe client to create a meter, you do need bprobe in 
 I'm installing the bprobe client on ubuntu 12.04. Below I'll simply show the parts of my ansible playbook that setup the official boundary repository and install bprobe. Even if you don't use ansible it's pretty straightforward to understand what's happening.
 
 <pre>
-<code>
-#Snippet of an ansible playbook
+<code>#Snippet of an ansible playbook
 
 - name: ensure boundary repository is installed
   action: apt_repository repo='deb https://apt.boundary.com/ubuntu/ precise universe'
@@ -63,13 +56,10 @@ I'm installing the bprobe client on ubuntu 12.04. Below I'll simply show the par
 Once those three actions have run, bprobe will be installed.
 
 <pre>
-<code>
-$ which bprobe
+<code>$ which bprobe
 /usr/local/bin/bprobe
 </code>
 </pre>
-
-Cool beans.
 
 h2. Creating a meter
 
@@ -78,8 +68,7 @@ In order to start sending data to boundary's api, that's all done with a restful
 Once that module is available to ansible, using it to create a meter looks like the below:
 
 <pre>
-<code>
-- name: register boundary meter
+<code>- name: register boundary meter
   action: boundary_meter apikey=AAAAAAA apiid=BBBBBB state=present \
   name=${ inventory_hostname }
   notify: restart bprobe

@@ -4,11 +4,6 @@ title: Canadian OpenStack Users Group - CanStack!
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/canstack_logo.png!
-
-p(meta). 20 February - 2013 - Edmonton!
-
-
 h1. {{ page.title }}
 
 Recently I have started helping out the "Canadian OpenStack Users Group":http://www.meetup.com/Canadian-OpenStack-Users-Group/. With the support of my employer, I've put up a website called "CanStack":http://canstack.ca and a "blog":http://blog.canstack.ca for that site as well. And, of course, the obligatory "twitter account":http://twitter.com/canstack. There is even a github repository for the "blog posts":http://github.com/canstack/blog_posts, so contributing a post is only a git commit away! :)
@@ -24,6 +19,3 @@ I just put up a "blog post":http://blog.canstack.ca/2013/02/14/vcl-openstack-ref
 So, if you are interested in what Canadians are doing with OpenStack, "canstack.ca":http://canstack.ca might be a good place to start.
 
 As always, comments, suggestions, and criticisms are welcome. :)
-
-Thanks,
-Curtis.

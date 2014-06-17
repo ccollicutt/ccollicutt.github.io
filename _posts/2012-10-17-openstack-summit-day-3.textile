@@ -6,10 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 17 October - 2012 - San Diego
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_building.jpg!
-
 h2. Keynotes
 
 HP says something enterprise business-like. Not too sure. 100s of billions of "spend" available. Capex -> Opex. Many, many slides with business pictographs.
@@ -34,8 +30,8 @@ h2. Service Resiliency Doesn't Always mean "HA" or "Cluster"
 The guys from CloudScaling talk about redundancy patterns. This was actually pretty fascinating, and looks like they have taken care of a lot of scale-out redundancy, specifically not "HA-mmer" pairs, all the way up to the DB level, at which part they fall back to MMR MySQL.
 
 # "HA" pairs are not the only type of redundancy
-** Airplanes require seven catastrophic failures to fall out of the sky, whereas with HA pairs you just need one layer to fail
-** Create small failure domains that don't propagate = scale up
+* Airplanes require seven catastrophic failures to fall out of the sky, whereas with HA pairs you just need one layer to fail
+* Create small failure domains that don't propagate = scale up
 # Alternative redundancy patterns
 # Redundancy patterns in Open Source Cloud Software
 
@@ -46,9 +42,9 @@ Service Distribution
 * Stateless
 * Scale-out
 * Implementation
-** OSPF (quagga), Anycast (zebra), Load-balancing proxy (pound)
+* OSPF (quagga), Anycast (zebra), Load-balancing proxy (pound)
 * Perfect for site resiliency
-** Traditional HA pairs don't support this
+* Traditional HA pairs don't support this
 * Use ZeroMQ (peer-to-peer) vs RabittMQ and CloudScaling contributed the code back to OpenStack for ZeroMQ
 * Making data centers look like ISP backbones
 <p></p>
@@ -62,8 +58,6 @@ Topics Covered
 * Cloud-init
 * Config drive 2
 * Execute code from metadata in various ways
-<p></p>
-
 
 h2. Adding OpenVZ support to Nova
 
@@ -82,15 +76,16 @@ So Ken goes through his slides. Mentions VDI and that VDI is hard! Capex, buy mo
 
 The point of the session is that DaaS is a three billion dollar market and is a new business area that OpenStack can access. Further he talks about the fact that running a desktop resource manager/broker on top of OpenStack can create operational and other cost savings. It also allows and organization like Desktone to focus on user experience versus running infrastructure.
 
-Desktops are Different
+Desktops are Different:
+
 * Storage is key
-** Random IO
-** Write intensive IO 
-** Scale: 500 servers is a lot, 500 desktops is not
+* Random IO
+* Write intensive IO 
+* Scale: 500 servers is a lot, 500 desktops is not
 * Optimize OpenStack for DaaS
-** HA for desktops is different from servers
+* HA for desktops is different from servers
 * The future of VDI is non-persistence...nothing stored in VMs
 * # of VMs under management requires a different approach
-** Eg. VM and guest state changes
+* Eg. VM and guest state changes
 * Monitoring is critically important
 * DaaS encompasses all parts of OpenStack

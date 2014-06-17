@@ -2,11 +2,8 @@
 layout: post
 title: A year with OpenStack Essex
 categories:
+header_image: http://c179631.r31.cf0.rackcdn.com/openstack.jpg
 ---
-
-!http://c179631.r31.cf0.rackcdn.com/openstack.jpg!
-
-p(meta). 21 Oct - 2013 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -15,8 +12,7 @@ I've been using an OpenStack Essex installation (cluster? I never know what to c
 The system is made up of eight Dell C6220s with one "cloud controller" (ie. not highly available) and seven compute nodes. As of right now we have had almost 3500 virtual machines booted. That's not bad considering this OpenStack cloud is only used by one application (Apache VCL).
 
 <pre>
-<code>
-mysql> select id from instances order by id DESC limit 1;
+<code>mysql> select id from instances order by id DESC limit 1;
 +------+
 | id   |
 +------+
@@ -32,8 +28,7 @@ h2. Striped solid state drives
 Because we use OpenStack to essentially provide a VDI-lite service, one in which the VMs don't store any state, and Windows instances are heavy IOPS users, we moved to using striped solid state drives. We've been running the compute nodes that way for about three months and so far so good (prior to that they were running on spinning disks).
 
 <pre>
-<code>
-curtis@c2:~$ cat /proc/mdstat 
+<code>curtis@c2:~$ cat /proc/mdstat 
 Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10] 
 md127 : active raid0 sda5[0] sdc5[2] sdb5[1]
       2597588736 blocks super 1.2 256k chunks
@@ -74,8 +69,7 @@ The first is there was a security patch added to the nova package that double ch
 I also have a problem in which it seems the Windows disk images are mounted via ndb, I assume for some kind of file injection, but then not released. This can cause deleted image files to be hung onto by the file system, so disk space can fill up, but du will not be able to explain why (had to use lsof and look for deleted files).
 
 <pre>
-<code>
-curtis@c2:~$ mount | grep nbd
+<code>curtis@c2:~$ mount | grep nbd
 /dev/mapper/nbd15p1 on /tmp/openstack-disk-mount-tmp0lvNeR type fuseblk 
 (rw,nosuid,nodev,allow_other,blksize=4096)
 /dev/mapper/nbd14p1 on /tmp/openstack-disk-mount-tmpMrUDJF type fuseblk 

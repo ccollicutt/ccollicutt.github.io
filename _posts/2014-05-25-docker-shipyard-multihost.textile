@@ -2,11 +2,8 @@
 layout: post
 title: Manage docker hosts with shipyard
 categories: 
+header_image: https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_login.png
 ---
- 
-p(meta). 25 May - 2014 - Edmonton!
-
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_login.png!
 
 h1. {{ page.title }}
 
@@ -15,8 +12,7 @@ h1. {{ page.title }}
 It's pretty easy to install docker. Here I install it on Ubuntu Trusty 14.04.
 
 <pre>
-<code>
-vagrant@host1:~$ sudo apt-get install -y docker.io
+<code>vagrant@host1:~$ sudo apt-get install -y docker.io
 </code>
 </pre>
 
@@ -39,8 +35,7 @@ h2. Setup the shipyard host
 This is as easy as starting a container. The shipyard project has a pre-created and distributed shipyard docker container. All we have to do is install that image and run it. Note that this will download a few hundred megabytes of images if they do not already exist on the docker host.
 
 <pre>
-<code>
-vagrant@host1:~$ sudo docker.io run -i -t -v /var/run/docker.sock:/docker.sock shipyard/deploy setup
+<code>vagrant@host1:~$ sudo docker.io run -i -t -v /var/run/docker.sock:/docker.sock shipyard/deploy setup
 SNIP!
 eba9b5f1d1d1: Download complete 
 08852c160ec2: Download complete 
@@ -51,13 +46,10 @@ Shipyard Stack Deployed
 You should be able to login with admin:shipyard at http://<docker-host-ip>:8000
 You will also need to setup and register the Shipyard Agent. 
 See http://github.com/shipyard/shipyard-agent for details.
-
 </code>
 </pre>
 
 As the output says, the web gui can be accessed on the docker host and port 8000 with the default user/pass of admin/shipyard.
-
-Supachill!
 
 h2. Shipyard client
 
@@ -68,16 +60,14 @@ First, make sure Docker is listening on a localhost via tcp. By default--for sec
 Change the DOCKER_OPTS in /etc/default/docker to:
 
 <pre>
-<code>
-DOCKER_OPTS="-H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock"
+<code>DOCKER_OPTS="-H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock"
 </code>
 </pre>
 
 Then restart docker. Docker should be listening on 4243.
 
 <pre>
-<code>
-vagrant@host1:/etc/default$ netstat -ant  |grep 4243
+<code>vagrant@host1:/etc/default$ netstat -ant  |grep 4243
 tcp        0      0 127.0.0.1:4243          0.0.0.0:*               LISTEN  
 </code>
 </pre>
@@ -85,8 +75,7 @@ tcp        0      0 127.0.0.1:4243          0.0.0.0:*               LISTEN
 Now that the shipyard host is up and Docker is listening on a tcp port, we can register an agent. I installed shipyard-agent in /usr/local/bin by downloading the "latest release":https://github.com/shipyard/shipyard-agent/releases.
 
 <pre>
-<code>
-vagrant@host1$ sudo ./shipyard-agent -url http://192.168.5.89:8000 -register
+<code>vagrant@host1$ sudo ./shipyard-agent -url http://192.168.5.89:8000 -register
 2014/05/25 14:36:37 Using 10.0.2.15 for the Docker Host IP for Shipyard
 2014/05/25 14:36:37 If this is not correct or you want to use a different IP, \
 please update the host in Shipyard
@@ -99,8 +88,7 @@ vagrant@host1$
 Once the shipyard-agent with -register is run, it will appear in the shipyard web gui to be activated, but first lets run it with that key.
 
 <pre>
-<code>
-vagrant@host1:/usr/local/bin$ sudo ./shipyard-agent -address="192.168.5.89" \
+<code>vagrant@host1:/usr/local/bin$ sudo ./shipyard-agent -address="192.168.5.89" \
 -url http://192.168.5.89:8000 -key b3d356b1294d4a729cd43beac8d7c01c
 2014/05/25 14:50:39 Shipyard Agent (http://192.168.5.89:8000)
 2014/05/25 14:50:39 Listening on 192.168.5.89:4500
@@ -132,8 +120,7 @@ With shipyard managing the docker hosts, we can do things like pull the busybox 
 
 
 <pre>
-<code>
-vagrant@host1:~$ sudo docker.io images | grep busybox
+<code>vagrant@host1:~$ sudo docker.io images | grep busybox
 busybox     buildroot-2013.08.1   123fb16d32f8        26 hours ago        2.489 MB
 busybox     ubuntu-14.04          b9ca777960b9        26 hours ago        5.609 MB
 busybox     ubuntu-12.04          8ba0d1860bb6        26 hours ago        2.433 MB
@@ -145,8 +132,7 @@ busybox     latest                4c0f792ebd1e        38 hours ago        2.433 
 And on host2:
 
 <pre>
-<code>
-vagrant@host2:~$ sudo docker.io images | grep busybox
+<code>vagrant@host2:~$ sudo docker.io images | grep busybox
 busybox     buildroot-2013.08.1   123fb16d32f8        26 hours ago        2.489 MB
 busybox     ubuntu-14.04          b9ca777960b9        26 hours ago        5.609 MB
 busybox     ubuntu-12.04          8ba0d1860bb6        26 hours ago        2.433 MB
@@ -155,8 +141,6 @@ busybox     latest                4c0f792ebd1e        38 hours ago        2.433 
 </code>
 </pre>
 
-That's pretty chill. :)
-
 h2. Shipyard cli
 
 Most of what I have been showing with regards to shipyard is the web gui. But I'm not a big fan of web guis. I want to use virtual machines and containers programatically, or at the very least from the command line.
@@ -164,8 +148,7 @@ Most of what I have been showing with regards to shipyard is the web gui. But I'
 Shipyard has a golang "cli":https://github.com/shipyard/shipyard-cli that is in "active development and has limited functionality," but let's try it out.
 
 <pre>
-<code>
-curtis$ git clone https://github.com/shipyard/shipyard-cli
+<code>curtis$ git clone https://github.com/shipyard/shipyard-cli
 curtis$ cd shipyard-cli
 curtis$ make
 github.com/gcmurphy/getpass (download)
@@ -180,8 +163,7 @@ Makefile	cli		readme.md	shipyard
 Now that the shipyard binary has been compiled we can use it. 
 
 <pre>
-<code>
-curtis$ ./shipyard 
+<code>curtis$ ./shipyard 
 NAME:
    Shipyard CLI - Command line interface for Shipyard
 
@@ -215,8 +197,7 @@ GLOBAL OPTIONS:
 First we login.
 
 <pre>
-<code>
-curtis$ ./shipyard login
+<code>curtis$ ./shipyard login
 URL: http://192.168.5.89:8000
 Username: admin
 Password: 
@@ -228,8 +209,7 @@ Version (default: 1):
 The login command creates a .shipyard.cfg file for us so that we don't have to "login" again.
 
 <pre>
-<code>
-curtis$ cat ~/.shipyard.cfg 
+<code>curtis$ cat ~/.shipyard.cfg 
 {"Username":"admin","ApiKey":"cc7d9720798af55c05684d240a7b5186405d0e80",\
 "Url":"http://192.168.5.89:8000","Version":"1"}
 </code>
@@ -238,8 +218,7 @@ curtis$ cat ~/.shipyard.cfg
 Now we can run commands.
 
 <pre>
-<code>
-curtis$ ./shipyard hosts
+<code>curtis$ ./shipyard hosts
  host2 (192.168.5.90)
  host1 (192.168.5.89)
 curtis$ ./shipyard images
@@ -260,10 +239,6 @@ curtis$ ./shipyard images
  30e0b59613ff shipyard/shipyard:latest
 </code>
 </pre>
-
-
-
-Also pretty chill. 
 
 h2. Conclusion
 

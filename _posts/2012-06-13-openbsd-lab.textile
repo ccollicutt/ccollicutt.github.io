@@ -2,13 +2,10 @@
 layout: post
 title: My OpenBSD Lab
 categories:
+header_image: https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/openbsd_lab.jpg
 ---
 
 h1. {{ page.title }}
-
-p(meta). 13 June - 2012 - Edmonton
-
-!https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/openbsd_lab.jpg!
 
 Above you can see my little OpenBSD lab. For some reason my workplace has several different kinds of small form factor servers, such as the big silver Netcom box, a couple of "Soekris":http://soekris.com boxes, and I can't even tell what make/model the little blue boxes are. They are all essentially small, fanless servers with at least two ethernet ports. Since they weren't being used for anything and I needed to setup a few test installs of OpenBSD, I went to work. :)
 
@@ -21,8 +18,7 @@ Using this little lab I can test out all kinds of interesting OpenBSD functional
 Bridge up!
 
 <pre>
-<code>
-$ ifconfig bridge0 up
+<code>$ ifconfig bridge0 up
 </code>
 </pre>
 

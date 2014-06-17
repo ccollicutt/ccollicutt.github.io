@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 18 August - 2011 - Edmonton
-
 I have been packaging code into RPMs for internal use for about five years now. I'm not going to say I'm an expert at it--I'm still learning--but I'm getting better at it and I think that's a good thing.
 
 Recently I packaged a "piece of software":https://wiki.umiacs.umd.edu/adapt/index.php/Ace:Main that didn't have an existing RPM (AFAIK). I was then able to share that RPM, and installation instructions, with a partner institution so that they could easily install the software as well--in fact with one command. :)

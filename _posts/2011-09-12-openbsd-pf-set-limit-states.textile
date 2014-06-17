@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 12 September - 2011 - Edmonton
-
 So you have a OpenBSD firewall. Actually you have at least two because you are doing "carp":http://www.openbsd.org/faq/pf/carp.html for high availability (not load balancing but HA), right? 
 
 Awesome! It's fun isn't it? I suppose I have to admit it's more fun testing it in a lab environment than in production. *:)*
@@ -17,16 +15,14 @@ One thing I noticed when doing a bit of *non-scientific* load testing on a pair 
 Using a client laptop--an older core 2 duo with 4 gigs of ram and a 60 gig SSD drive (a Lenovo T61 specifically) on one side of the firewall and a virtualized web server with 512MB of RAM and one CPU on the other--I was able to hit the state limit in a couple of seconds with a command such as:
 
 <pre>
-<code>
-laptop$ siege -b -c 40 -r 100 http://testserver/testpage
+<code>laptop$ siege -b -c 40 -r 100 http://testserver/testpage
 </code>
 </pre>
 
 where the resulting test page looks like:
 
 <pre>
-<code>
-<html>
+<code><html>
 <body>
 hi there
 </body>
@@ -37,16 +33,14 @@ hi there
 When the @siege@ command is run I watch the state tables on the OpenBSD firewalls with a command such as:
 
 <pre>
-<code>
-openbsd_fw{1,2}#  while true; do pfctl -s info; sleep 1; done
+<code>openbsd_fw{1,2}#  while true; do pfctl -s info; sleep 1; done
 </code>
 </pre>
 
 With nothing happening the result of that command looks about like this:
 
 <pre>
-<code>
-openbsd_fw1$ pfctl -s info
+<code>openbsd_fw1$ pfctl -s info
 Status: Enabled for 0 days 00:22:05              Debug: err
 
 State Table                          Total             Rate
@@ -76,8 +70,7 @@ Counters
 We can see that the current limit is 10000:
 
 <pre>
-<code>
-openbsd_fw1$ pfctl -sm     
+<code>openbsd_fw1$ pfctl -sm     
 states        hard limit    10000
 src-nodes     hard limit    10000
 frags         hard limit     5000
@@ -89,8 +82,7 @@ table-entries hard limit   200000
 So lets fire up that @siege@ command and see what happens by watching the current entries on the firewall that has the master carp IP. (Note that with @pfsync@ all the states will be transferred to the backup firewall as well, but for simplicity let's focus on the master.)
 
 <pre>
-<code>
-openbsd_fw1$ ifconfig | grep -i master
+<code>openbsd_fw1$ ifconfig | grep -i master
         carp: MASTER carpdev fxp2 vhid 1 advbase 1 advskew 0
         status: master
         carp: MASTER carpdev fxp0 vhid 2 advbase 1 advskew 0
@@ -117,8 +109,7 @@ So you can see it only takes a couple seconds to hit that limit.
 Let's up it to 200000 and see what happens.
 
 <pre>
-<code>
-openbsd_fw1$ grep "set limit" /etc/pf.conf
+<code>openbsd_fw1$ grep "set limit" /etc/pf.conf
 set limit states 200000
 openbsd_fw1$ pfctl -nf /etc/pf.conf
 openbsd_fw1$ pfctl -f /etc/pf.conf
@@ -134,8 +125,7 @@ table-entries hard limit   200000
 Run the siege command on the client:
 
 <pre>
-<code>
-openbsd_fw1$ while true; do pfctl -s info | grep "current entries"; sleep 1; done 
+<code>openbsd_fw1$ while true; do pfctl -s info | grep "current entries"; sleep 1; done 
   current entries                       40               
   current entries                       40               
   current entries                       40               
@@ -166,8 +156,5 @@ And looks like we max out the @siege@ command now at about 30k sessions. Nice!
 To conclude, this was just a quick look at session limits on OpenBSD. If you're running a pf firewall it may be something to consider looking at to make sure you're not hitting the limit which would reduce the effectiveness of your firewall.
 
 Note that I haven't shown any memory usage from the firewall, but the small boxes have 512MB of RAM and even at 200K sessions the memory usage only went up very slightly so I don't think it's constrained for memory reasons.
-
-Thanks,
-Curtis.
 
 

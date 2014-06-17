@@ -4,11 +4,6 @@ title: First look at PackStack
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/garish_bike.jpg!
-_(Yup--an instagram picture of my garish orange single speed summer bike. But it's a summer bike!)_
-
-p(meta). 13 March - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 I am a big fan, and user, of "OpenStack":http://openstack.org. I also really like the "Ansible":http://ansible.cc configuration management and orchestration system. In fact, I use Ansible to deploy OpenStack, and all kinds of "other things":https://github.com/curtisgithub/ansible_playbooks as well.
@@ -32,8 +27,7 @@ h2. Host organization
 That repository also contains a Vagrant file, and an Ansible hosts file. I have four virtual machines making up a small OpenStack cluster:
 
 <pre>
-<code>
-$ cat ansible_hosts 
+<code>$ cat ansible_hosts 
 [openstack]
 apis ansible_ssh_host=192.168.100.130
 scheduler ansible_ssh_host=192.168.100.131
@@ -45,8 +39,7 @@ compute02 ansible_ssh_host=192.168.100.133
 And all of those IPs and names are reflected in the @PackStack.yml@, @files/packstack.cfg@, and @Vagrantfile@ files. I don't know if they are the most descriptive names, but this is how I've currently organized it.
 
 <pre>
-<code>
-$ grep "100\.13" Vagrantfile 
+<code>$ grep "100\.13" Vagrantfile 
 apis_config.vm.network :hostonly, "192.168.100.130" # nic3
 scheduler_config.vm.network :hostonly, "192.168.100.131" # nic3
 compute01_config.vm.network :hostonly, "192.168.100.132" # nic3
@@ -59,8 +52,7 @@ The @apis@ host is going to run horizon (not that I need it) and the front-facin
 For example, here is what nova services are running where:
 
 <pre>
-<code>
-[root@apis packstack(keystone_admin)]$ nova-manage service list
+<code>[root@apis packstack(keystone_admin)]$ nova-manage service list
 Binary           Host       Zone  Status     State Updated_At
 nova-scheduler   scheduler  nova  enabled    :-)   2013-03-13 21:15:11
 nova-cert        apis       nova  enabled    :-)   2013-03-13 21:15:15
@@ -81,8 +73,7 @@ First, tell Vagrant to build the servers.
 *NOTE:* You could have IP collisions if you have other virtual machines running--the IPs used here are hard-coded.
 
 <pre>
-<code>
-$ vagrant up
+<code>$ vagrant up
 [apis] Importing base box 'centos6'...
 [apis] The guest additions on this VM do not match the install version of
 VirtualBox! This may cause things such as forwarded ports, shared
@@ -102,8 +93,7 @@ SNIP!
 Once those are built you should have four vms running:
 
 <pre>
-<code>
-$ vagrant status
+<code>$ vagrant status
 Current VM states:
 
 apis                     running
@@ -120,8 +110,7 @@ VM, run `vagrant status NAME`.
 Once that's done, you can simply run the @packstack.yml@ playbook.
 
 <pre>
-<code>
-$ ansible-playbook -k -u root PackStack.yml 
+<code>$ ansible-playbook -k -u root PackStack.yml 
 SSH password: #enter the vagrant password of 'vagrant', just have to do this once
 
 PLAY [openstack] ********************* 
@@ -153,8 +142,7 @@ When it completes, there should be a multi-server OpenStack cluster running!
 Login to the @apis@ server:
 
 <pre>
-<code>
-$ ssh root@192.168.100.130
+<code>$ ssh root@192.168.100.130
 root@192.168.100.130's password: #vagrant password again
 Last login: Wed Mar 13 16:34:03 2013 from 192.168.100.1            
 [root@apis ~]# source keystonerc_admin 
@@ -166,8 +154,7 @@ Last login: Wed Mar 13 16:34:03 2013 from 192.168.100.1
 Because the Ansible playbook downloaded and installed the Cirros image, @nova image-list@ should give some output:
 
 <pre>
-<code>
-[root@apis ~(keystone_admin)]$ nova image-list
+<code>[root@apis ~(keystone_admin)]$ nova image-list
 +--------------------------------------+--------+--------+--------+
 | ID                                   | Name   | Status | Server |
 +--------------------------------------+--------+--------+--------+
@@ -193,8 +180,7 @@ h2. Issues/Caveats/Questions
 * I'm not even sure what version of OpenStack this installs...something to look into. Might have to jump to a more recent version of Fedora to get something like OpenStack Grizzly.
 
 <pre>
-<code>
-[root@apis ~(keystone_admin)]$ yum info openstack-nova-common
+<code>[root@apis ~(keystone_admin)]$ yum info openstack-nova-common
 Loaded plugins: fastestmirror, priorities
 Loading mirror speeds from cached hostfile
  * base: www.muug.mb.ca

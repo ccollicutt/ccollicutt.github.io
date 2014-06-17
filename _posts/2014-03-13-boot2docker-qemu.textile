@@ -4,8 +4,6 @@ title: boot2docker and libvirt
 categories: 
 ---
 
-p(meta). 13 March - 2014 - Edmonton!
-
 h1. {{ page.title }}
 
 "Docker":https://www.docker.io is so hot right now. Well, containers in general are. LXC just hit version 1.0 and the developers have declared it production ready. 
@@ -35,8 +33,7 @@ h2. Use boot2docker with libvirt
 First I downloaded the boot2docker iso from github.
 
 <pre>
-<code>
-root# wget \
+<code>root# wget \
 https://github.com/boot2docker/boot2docker/releases/download/v0.7.0/boot2docker.iso
 </code>
 </pre>
@@ -44,13 +41,10 @@ https://github.com/boot2docker/boot2docker/releases/download/v0.7.0/boot2docker.
 Then I created a qemu disk image from that iso.
 
 <pre>
-<code>
-root# qemu-img convert -O qcow2 boot2docker.iso /var/lib/libvirt/images/boot2docker.img
+<code>root# qemu-img convert -O qcow2 boot2docker.iso /var/lib/libvirt/images/boot2docker.img
 root# file /var/lib/libvirt/images/boot2docker.img: QEMU QCOW Image (v2), 25165824 bytes
 </code>
 </pre>
-
-<br />
 
 h2. boot2docker boot script
 
@@ -63,8 +57,7 @@ I've also added a second drive for each vm and in the script the drive image get
 I'm using sfdisk to partition a second file, and the partitioning may not be setup properly. I haven't done enough testing, but it's working so far. :)
 
 <pre>
-<code>
-root# cat boot2docker.sh 
+<code>root# cat boot2docker.sh 
 #!/bin/bash
 
 vmtype=boot2docker
@@ -169,8 +162,6 @@ exit 0
 </code>
 </pre>
 
-<br />
-
 h2. Create some boot2docker virtual machines
 
 If I run that script, which is a little noisy, I end up with four virtual machines running the boot2docker OS (which is based on Tiny Linux).
@@ -178,8 +169,7 @@ If I run that script, which is a little noisy, I end up with four virtual machin
 The script ends off by listing all the running vms on the box.
 
 <pre>
-<code>
-root# ./boot2docker.sh 
+<code>root# ./boot2docker.sh 
 SNIP!
 boot2docker4 started
  Id Name                 State
@@ -194,8 +184,7 @@ boot2docker4 started
 The vms are getting IPs from dnsmasq which is configured by default by libvirt.
 
 <pre>
-<code>
-root# cat /var/lib/libvirt/dnsmasq/default.leases 
+<code>root# cat /var/lib/libvirt/dnsmasq/default.leases 
 1394830266 fa:16:3e:18:89:04 192.168.122.246 * 01:fa:16:3e:18:89:04
 1394830262 fa:16:3e:18:89:03 192.168.122.245 * 01:fa:16:3e:18:89:03
 1394830263 fa:16:3e:18:89:02 192.168.122.244 * 01:fa:16:3e:18:89:02
@@ -208,8 +197,7 @@ I set the mac adresses in the script to be fa:16:3e:18:89:0X.
 Knowing the IPs the vms received from libvirt/dnsmasq, I can ssh into them. (The default user/pass is docker/tcuser.)
 
 <pre>
-<code>
-root# ssh docker@192.168.122.243
+<code>root# ssh docker@192.168.122.243
 Warning: Permanently added '192.168.122.243' (ECDSA) to the list of known hosts.
 docker@192.168.122.243's password: 
                         ##        .
@@ -232,8 +220,7 @@ boot2docker: 0.7.0
 And we can see that the second device, which is /dev/vdb, has indeed been mounted.
 
 <pre>
-<code>
-docker@boot2docker:~$ df -h
+<code>docker@boot2docker:~$ df -h
 Filesystem                Size      Used Available Use% Mounted on
 rootfs                    3.5G    223.4M      3.3G   6% /
 tmpfs                     1.9G         0      1.9G   0% /dev/shm
@@ -242,15 +229,12 @@ cgroup                    1.9G         0      1.9G   0% /sys/fs/cgroup
 </code>
 </pre>
 
-<br />
-
 h2. Use docker
 
 We can run docker version to see if it works.
 
 <pre>
-<code>
-docker@boot2docker:~$ docker version
+<code>docker@boot2docker:~$ docker version
 Client version: 0.9.0
 Go version (client): go1.2.1
 Git commit (client): 2b3fdf2
@@ -264,8 +248,7 @@ Last stable version: 0.9.0
 And also run a docker command. The first time we run a container type it'll have to be downloaded.
 
 <pre>
-<code>
-docker@boot2docker:~$ docker run ubuntu /bin/echo hello world
+<code>docker@boot2docker:~$ docker run ubuntu /bin/echo hello world
 Unable to find image 'ubuntu' locally
 Pulling repository ubuntu
 9f676bd305a4: Download complete 

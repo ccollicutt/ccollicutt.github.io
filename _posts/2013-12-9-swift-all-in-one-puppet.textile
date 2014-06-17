@@ -4,12 +4,6 @@ title: Deploy Swift All in one with Puppet
 categories: 
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/snow_tree.jpg!
-
-_(winter again...)_
-
-p(meta). 12 Dec - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 My current employer is deploying "OpenStack Swift object storage":http://docs.openstack.org/developer/swift/. I'm a big fan of object storage, and the deployment we are working on is one that will have two regions in separate timezones, so it's very interesting in terms of having a geo-replicated Swift cluster. 
@@ -33,8 +27,7 @@ h2. Vagrant
 One part that is not included in the Puppet module on the forge site is that there is also a Vagrant configuration file and some Puppet bootstrapping that will allow a simple <code>vagrant up</code> and a Swift All-in-one virtual machine will be built automatically.
 
 <pre>
-<code>
-$ git checkout https://github.com/curtisgithub/puppet-saio
+<code>$ git checkout https://github.com/curtisgithub/puppet-saio
 $ cd puppet-saio
 $ vagrant up
 SNIP!

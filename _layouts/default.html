@@ -1,66 +1,35 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
-<head>
-   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>{{ page.title }}</title>
-   <meta name="author" content="serverascode.com" />
-   <!-- syntax highlighting CSS -->
-   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+---
+layout: default
+title: Your New Jekyll Site
+---
 
-   <!-- Homepage CSS -->
-   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+{% include header.html %}
 
-   <!-- Typekit -->
-   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
-   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-</head>
-<body>
-
-<!-- orig theme for this jekyll based blog from: https://github.com/mojombo/mojombo.github.com/ -->
-
-<div class="site">
-  <div class="title">
-    <a href="/">serverascode.com</a>
-    <a class="extra" href="/2011/04/10/resume.html">resume + contact</a>
-    <a class="extra" href="/atom.xml">rss</a>
-    <a class="extra" href="http://twitter.com/serverascode">@serverascode</a>
-    <a class="extra" href="http://news.ycombinator.com/user?id=serverascode">hn</a>
-    <a class="extra" href="http://stackoverflow.com/users/1460882/curtis">se</a>
-  </div>
-  
-  {{ content }}
-  
-  <div class="footer">
-    <div class="contact">
-      <p>
-       serverascode.com - Edmonton, AB, Canada
-      </p>
-    </div>
-    <div class="contact">
-      <p>
-        <a href="http://github.com/curtisgithub/">github.com/curtisgithub</a><br />
-      </p>
-    </div>
-    <div class="rss">
-    </div>
-  </div>
+<div class="post_image">
+    <a href="http://www.metmuseum.org/collection/the-collection-online/search/11900"><img src="/img/met/ap80.1.2.R.jpg"></a>
 </div>
 
-<a href="http://github.com/curtisgithub"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+  <section>
+ 
 
-<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-24993723-1']);
-  _gaq.push(['_trackPageview']);
+    <div class="archives">
+      
+        {{ content }}
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+          <h5>Open Source Projects</h5>
+          <ul class="posts">
+             <li><a href="https://github.com/curtisgithub/swiftacular">Swiftacular:</a> A set of Ansible roles to deploy an OpenStack Swift cluster</li>
+             <li><a href="https://github.com/curtisgithub/pound">Ansible Pound:</a> An Ansible role to deploy the pound loadbalancer.</li>
+              <li><a href="https://forge.puppetlabs.com/serverascode/saio">Puppet SAIO:</a> A Puppet module to deploy OpenStack Swift All-in-one.</li>
+              <li><a href="https://forge.puppetlabs.com/serverascode/pound">Puppet Pound:</a> A Puppet module to deploy the pound loadbalancer.</li>
+               <li><a href="https://github.com/ansible/ansible/blob/devel/library/monitoring/boundary_meter">boundary_meter:</a> A Boundary module for the Ansible configuration management system.</li>
+                <li><a href="http://github.com/curtisgithub/kicker">kicker:</a> A python CLI to create Redhat Kickstart files from base templates.</li>
+         </ul>
 
-</script>
+    </div>
 
-</body>
-</html>
+    <br class="clear" />
+  </section>
+
+{% include footer.html %}

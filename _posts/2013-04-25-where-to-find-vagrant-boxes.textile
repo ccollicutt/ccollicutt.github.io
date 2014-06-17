@@ -4,8 +4,6 @@ title: Where to find vagrant boxes
 categories:
 ---
 
-p(meta). 25 April - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Update 2: "Vagrant Cloud":https://vagrantcloud.com has launched and I believe is now the best way to find Vagrant boxes.
@@ -23,8 +21,7 @@ Today ubuntu 13.04, aka raring ringtail, was "released":https://wiki.ubuntu.com/
 So it's quite simple to try out raring just by using vagrant and ubuntu's cloud images.
 
 <pre>
-<code>
-$ mkdir raring; cd raring
+<code>$ mkdir raring; cd raring
 $ vagrant init
 # Edit Vagrantfile and add the below
 $ grep box Vagrantfile | grep -v "#"
@@ -84,6 +81,3 @@ But, fedora is working on it!
 * "http://fedoraproject.org/wiki/Features/FirstClassCloudImages":http://fedoraproject.org/wiki/Features/FirstClassCloudImages
 
 I'll try to update this page as I find more resources. Please feel free to comment with suggestions. :)
-
-Thanks,
-Curtis.

@@ -2,23 +2,10 @@
 layout: post
 title: Swiftacular - deploy OpenStack Swift with Ansible on CentOS
 categories: 
+header_image: /img/met/DT1540.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/10482 
 ---
  
-p(meta). 12 April - 2014 - Edmonton!
-
-<pre>
-<code>
-  _________       .__  _____  __                      .__                
- /   _____/_  _  _|__|/ ____\/  |______    ____  __ __|  | _____ _______ 
- \_____  \\ \/ \/ /  \   __\\   __\__  \ _/ ___\|  |  \  | \__  \\_  __ \
- /        \\     /|  ||  |   |  |  / __ \\  \___|  |  /  |__/ __ \|  | \/
-/_______  / \/\_/ |__||__|   |__| (____  /\___  >____/|____(____  /__|   
-        \/                             \/     \/                \/  
-</code>
-</pre>
-
-<br>
-
 h1. {{ page.title }}
 
 "Swiftacular":https://github.com/curtisgithub/swiftacular is a project that can deploy an OpenStack Swift cluster using "Ansible":http://ansible.com. In this post I'll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.
@@ -38,8 +25,7 @@ By default the Vagrantfile that comes with Swiftacular will use the Ubuntu 12.04
 But, if you would like to try deploying OpenStack Swift to CentOS 6 Swiftacular supports that as well, and doing so is as easy as changing which box the Vagrantfile points to.
 
 <pre>
-<code>
-#config.vm.box = "centos65"
+<code>#config.vm.box = "centos65"
 #config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
 config.vm.box = "precise64"
 config.vm.box_url = "http://files.vagrantup.com/precise64.box"
@@ -49,8 +35,7 @@ config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 So if you would like to deploy to CentOS, simply make the Vagrantfile look like this:
 
 <pre>
-<code>
-config.vm.box = "centos65"
+<code>config.vm.box = "centos65"
 config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
 #config.vm.box = "precise64"
 #config.vm.box_url = "http://files.vagrantup.com/precise64.box"
@@ -66,8 +51,7 @@ Apparently RDO is a meaningless acronym, but I tend to think of it as "RedHat's 
 One thing I found while using RDO is that the rdo-release.repo has a priorities setting. Note the "priority=98" option below.
 
 <pre>
-<code>
-[vagrant@swift-proxy-01 yum.repos.d]$ cat rdo-release.repo 
+<code>[vagrant@swift-proxy-01 yum.repos.d]$ cat rdo-release.repo 
 [openstack-havana]
 name=OpenStack Havana Repository
 baseurl=http://repos.fedorapeople.org/repos/openstack/openstack-havana/epel-6/
@@ -84,8 +68,7 @@ This means that it will be used before other repos that don't have a priority se
 But, this requires the yum priorities plugin to work.
 
 <pre>
-<code>
-[vagrant@swift-proxy-01 yum.repos.d]$ rpm -qa | grep priorities
+<code>[vagrant@swift-proxy-01 yum.repos.d]$ rpm -qa | grep priorities
 yum-plugin-priorities-1.1.30-17.el6_5.noarch
 </code>
 </pre>
@@ -99,8 +82,7 @@ Once the Vagrantfile has been changed to use a CentOS 6 box and vagrant up has b
 Below I show that the servers are all CentOS 6.5.
 
 <pre>
-<code>
-curtis$ ansible -a "cat /etc/redhat-release" all
+<code>curtis$ ansible -a "cat /etc/redhat-release" all
 192.168.100.20 | success | rc=0 >>
 CentOS release 6.5 (Final)
 
@@ -127,8 +109,7 @@ CentOS release 6.5 (Final)
 Now to run the site playbook. Note that occasionally I've had to run the site playbook twice because of a "bug":https://github.com/curtisgithub/swiftacular/issues/12. So below is on the second run.
 
 <pre>
-<code>
-curtis$ #second run
+<code>curtis$ #second run
 curtis$ ansible-playbook site.yml 
 SNIP!
 PLAY RECAP ******************************************************************** 
@@ -145,8 +126,7 @@ PLAY RECAP ********************************************************************
 Once the Swiftacular playbook has completed successfully, swift is up and running.
 
 <pre>
-<code>
-curtis$ vagrant ssh swift-package-cache-01
+<code>curtis$ vagrant ssh swift-package-cache-01
 working on swift-package-cache-01 with ip of 192.168.100.20
 Last login: Sat Apr 12 09:26:12 2014 from 192.168.100.1
 Welcome to your Vagrant-built virtual machine.
@@ -183,8 +163,7 @@ test/swift17.txt
 Now that I've uploaded 100 files, and we have replicas set to 2, I can do a little digging around to see where files ended up.
 
 <pre>
-<code>
-curtis$ ansible -m shell -a "sudo find /srv | grep data | wc -l" storage
+<code>curtis$ ansible -m shell -a "sudo find /srv | grep data | wc -l" storage
 192.168.100.202 | success | rc=0 >>
 0
 

@@ -4,8 +4,6 @@ title: Truncate command and sparse disks
 categories:
 ---
 
-p(meta). 11 Nov - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Just a quick post on creating sparse disks on Linux. 
@@ -13,8 +11,7 @@ Just a quick post on creating sparse disks on Linux.
 Currently I am working on deploying "OpenStack Swift":http://docs.openstack.org/developer/swift/. I am using Vagrant and Virtualbox virtual machines to create an "Ansible":http://ansibleworks.com playbook to deploy and manage Swift. To do that I have been using sparse disks to mimic real disks without actually having all the disk space required.
 
 <pre>
-<code>
-$ cd /var/tmp
+<code>$ cd /var/tmp
 
 # Create a sparse file using the truncate command
 $ truncate --size 500G sparse_disk1.img
@@ -51,8 +48,7 @@ Filesystem      Size  Used Avail Use% Mounted on
 To unmount/remove...just go in reverse. :)
 
 <pre>
-<code>
-$ sudo umount /mnt/sparse_disk1
+<code>$ sudo umount /mnt/sparse_disk1
 $ sudo losetup -d /dev/loop0
 $ rm -f /var/tmp/sparse_disk1.img 
 </code>

@@ -3,9 +3,6 @@ layout: post
 title: Environment variables with Docker
 categories: 
 ---
- 
-p(meta). 29 May - 2014 - Edmonton!
-
 
 h1. {{ page.title }}
 
@@ -16,8 +13,7 @@ Docker supports setting environment variables with the -e switch.
 Below is the simplest example. As can be seen, the FOO variable is indeed set to bar within the container.
 
 <pre>
-<code>
-# docker run -e FOO=bar busybox env
+<code># docker run -e FOO=bar busybox env
 HOME=/
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=9c6f6cd077b2
@@ -28,8 +24,7 @@ FOO=bar
 Multiple variables can be added with multiple -e switches.
 
 <pre>
-<code>
-# docker run -e FOO=bar -e BAR=foo busybox env
+<code># docker run -e FOO=bar -e BAR=foo busybox env
 HOME=/
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=6cf2d6e8acb3
@@ -38,15 +33,12 @@ BAR=foo
 </code>
 </pre>
 
-Neat.
-
 h2. Using environment variables in a script in a docker image
 
 Below is a simple docker file that adds a script called run.sh to the image.
 
 <pre>
-<code>
-# file Dockerfile
+<code># file Dockerfile
 FROM busybox
 ADD run.sh run.sh
 RUN chmod +x run.sh
@@ -57,8 +49,7 @@ CMD ./run.sh
 This is what is in the run.sh script. If FOO is not set, the container should report "FOO is empty" and otherwise it should print what the variable has been set to.
 
 <pre>
-<code>
-# file run.sh
+<code># file run.sh
 #!/bin/sh
 
 if [ -z "$FOO" ]; then
@@ -72,8 +63,7 @@ fi
 I can now build that Dockerfile.
 
 <pre>
-<code>
-# ls
+<code># ls
 Dockerfile  run.sh
 # docker build -t testenv .
 Uploading context 3.584 kB
@@ -98,8 +88,7 @@ Removing intermediate container d86187fc3a6f
 Now that the image has been built, I can run a container based off it, and the run.sh script should execute.
 
 <pre>
-<code>
-# docker run testenv
+<code># docker run testenv
 FOO is empty
 </code>
 </pre>
@@ -107,8 +96,7 @@ FOO is empty
 And now adding the FOO environment variable to the docker run command:
 
 <pre>
-<code>
-# docker run -e FOO=bar testenv
+<code># docker run -e FOO=bar testenv
 FOO is bar
 # docker run -e FOO=$RANDOM testenv
 FOO is 10567

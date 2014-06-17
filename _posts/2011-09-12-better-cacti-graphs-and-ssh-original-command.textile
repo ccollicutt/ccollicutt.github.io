@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 12 September - 2011 - Edmonton
-
 So you're at the point where you want to monitor your servers performance. Actually let's take it a step further and you want to do this with "Cacti":http://www.cacti.net. Actually let's take _another_ step and say that you're going to use Cacti and "Better Cacti Graphs":http://code.google.com/p/mysql-cacti-templates/ (BCG)...and ssh.
 
 We're getting pretty specific here aren't we?
@@ -23,8 +21,7 @@ The point is that there are many (little known) options that can be put in a @au
 eg. The beginning of the key that I put in the cacti user's @authorized_keys@ file on the client server:
 
 <pre>
-<code>
-command="/usr/share/cacti-ssh-auth/ssh_commands_check.sh",from="SOME_IP_ADDRESS",
+<code>command="/usr/share/cacti-ssh-auth/ssh_commands_check.sh",from="SOME_IP_ADDRESS",
 no-port-forwarding,no-X11-forwarding ssh-dss SNIP_REST_OF_KEY!
 </code>
 </pre>
@@ -38,8 +35,7 @@ What this setting does is:
 The contents of the @ssh_commands_check.sh@ script look like this:
 
 <pre>
-<code>
-#!/bin/sh
+<code>#!/bin/sh
 
 # When using $SSH_ORIGINAL_COMMAND to watch what commands we get out
 # of better-cacti-graphs, this is what we see:
@@ -79,8 +75,7 @@ Great you say. But how did you find out _exactly_ what commands cacti is trying 
 I used something like:
 
 <pre>
-<code>
-command="echo $SSH_ORIGINAL_COMMAND >> /var/tmp/ssh_check_cmd.txt; $SSH_ORIGINAL_COMMAND",
+<code>command="echo $SSH_ORIGINAL_COMMAND >> /var/tmp/ssh_check_cmd.txt; $SSH_ORIGINAL_COMMAND",
 from="SOME_IP_ADDRESS",no-port-forwarding,no-X11-forwarding ssh-dss SNIP_REST_OF_KEY!
 </code>
 </pre>
@@ -88,8 +83,7 @@ from="SOME_IP_ADDRESS",no-port-forwarding,no-X11-forwarding ssh-dss SNIP_REST_OF
 and then @tail -f /var/tmp/ssh_check_cmd.txt@ and saw this:
 
 <pre>
-<code>
-client_server$ tail -f ssh_orig_cmd.txt 
+<code>client_server$ tail -f ssh_orig_cmd.txt 
 cat /proc/diskstats
 cat /proc/stat
 wget -U Cacti/1.0 -q -O - -T 5 "http://localhost/server-status?auto"
@@ -102,8 +96,5 @@ so we can be fairly sure that those are the commands the cacti monitor server is
 
 *NOTE* that I would suggest checking what commands the ssh cacti scripts are running and not blindly using the ones I put above because things could have changed since I put up this post. And in fact could be completely wrong. It will take a bit of time to figure this out.
 
-Also you can review the "code":http://code.google.com/p/mysql-cacti-templates/source/browse/trunk/scripts/ss_get_by_ssh.php for BCG's use of ssh to find out exactly what commands are running, but note that bash/ect might interpret things differently, so it's best to check with SSH_ORIGINAL_COMMAND. *:)*
-
-Thanks and good luck,
-Curtis.
+Also you can review the "code":http://code.google.com/p/mysql-cacti-templates/source/browse/trunk/scripts/ss_get_by_ssh.php for BCG's use of ssh to find out exactly what commands are running, but note that bash/ect might interpret things differently, so it's best to check with SSH_ORIGINAL_COMMAND.
 

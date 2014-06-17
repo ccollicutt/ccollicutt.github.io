@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 7 June - 2012 - Edmonton
-
 !https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/supermicro_stack_small.jpg!
 
 The above is the front of four Supermicro 36-bay chassis servers racked but not completely filled with drives.
@@ -21,8 +19,7 @@ This is the back of the server. As you can see, there are 12 hot swappable slots
 This is output from the bottom server that has four drives lit up:
 
 <pre>
-<code>
-# ls /dev/sd?
+<code># ls /dev/sd?
 /dev/sda  /dev/sdb  /dev/sdc  /dev/sdd  /dev/sde  /dev/sdf
 </code>
 </pre>
@@ -44,6 +41,7 @@ Why not get this out of the way? That's what you're here for, isn't it? :) The b
 | Kingston 24GB Pack  | SM KVR1066D3Q8R7SK3/24G | 2 |
 | SATA power splitter |	SM CBL-0082L | 1 |
 
+<br>
 The total cost for the above is around *$4000*.
 
 What you get is one 4U, dual CPU server (24 cores counting hyperthreading), with 48GB of RAM, the MB supports up to 196GB I believe, and room for 36 hot swappable drives, PLUS two internal OS drives that are actually bracketed deep inside the chassis, ie. difficult to get out. 
@@ -101,7 +99,3 @@ I feel that in specialized applications systems like this supermicro server can 
 I recommend using 5% of the budget for parts to go on the shelf, and 5%-25% for test.
 
 If you have any questions/concerns, please comment.
-
-
-Thanks,
-Curtis.

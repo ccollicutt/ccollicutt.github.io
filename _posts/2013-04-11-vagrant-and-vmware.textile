@@ -4,11 +4,6 @@ title: Vagrant and vmware
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/edmonton_pin.jpg!
-_(close up of an old map with many pin holes in edmonton, can barely even read it! Look, Barrhead too!)_
-
-p(meta). 11 April - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 After IRC, "vagrant":http://vagrantup.com is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.
@@ -45,8 +40,7 @@ bq. VirtualBox hangs on to its network devices ("vboxnet") for dear life. I have
 If you encounter the below error, either change subnets (perhaps in virtualbox, perhaps in the vagrantfile, not sure) or reboot.
 
 <pre>
-<code>
-$ vagrant up apis --provider=vmware_fusion
+<code>$ vagrant up apis --provider=vmware_fusion
 Bringing machine 'apis' up with 'vmware_fusion' provider...
 
 [apis] Verifying vmnet devices are healthy...
@@ -72,8 +66,7 @@ bq. VMX is an undocumented format. You'll have to google, unfortunately. :) -- "
 But at the very least here is how to set memory:
 
 <pre>
-<code>
-config.vm.provider :vmware_fusion do |p|
+<code>config.vm.provider :vmware_fusion do |p|
   p.vmx['memsize'] = '2048'
 end
 </code>
@@ -94,8 +87,7 @@ Unfortunately it doesn't seem to work when multiple interfaces are specified in 
 Here's the networking part of the config:
 
 <pre>
-<code>
-config.vm.network :private_network, ip: "172.10.0.200", :netmask => "255.255.0.0"
+<code>config.vm.network :private_network, ip: "172.10.0.200", :netmask => "255.255.0.0"
 config.vm.network :private_network, ip: "10.10.0.200", :netmask => "255.255.0.0" 
 </code>
 </pre>
@@ -103,8 +95,7 @@ config.vm.network :private_network, ip: "10.10.0.200", :netmask => "255.255.0.0"
 Let's boot it:
 
 <pre>
-<code>
-$ vagrant up --provider=vmware_fusion
+<code>$ vagrant up --provider=vmware_fusion
 Bringing machine 'default' up with 'vmware_fusion' provider...
 [default] Cloning Fusion VM: 'centos65fusion'. This can take some time...
 [default] Verifying vmnet devices are healthy...
@@ -127,8 +118,7 @@ Ooops, shouldn't be seeing the failed command.
 What's the networking like?
 
 <pre>
-<code>
-$ vagrant ssh
+<code>$ vagrant ssh
 [vagrant@vagrant-centos-6 ~]$ ifconfig
 eth0      Link encap:Ethernet  HWaddr 00:0C:29:24:6A:AD  
           inet addr:192.168.134.146  Bcast:192.168.134.255  Mask:255.255.255.0
@@ -157,17 +147,14 @@ Nope that's not what I wanted at all.
 Ok, now let's use the exact same vagrantfile but with the offical vmware_fusion ubuntu box.
 
 <pre>
-<code>
-config.vm.box = "precise64"
+<code>config.vm.box = "precise64"
 </code>
 </pre>
 
 Vagrant up!
 
 <pre>
-<code>
-
-#
+<code>#
 # Destroy the old one
 # 
 
@@ -269,8 +256,7 @@ h2. UPDATE (April 18th, 2013): New network problem
 This is a new one...now this can't be virtualbox's fault. 
 
 <pre>
-<code>
-$ vagrant up --provider=vmware_fusion
+<code>$ vagrant up --provider=vmware_fusion
 Bringing machine 'percona0' up with 'vmware_fusion' provider...
 Bringing machine 'percona1' up with 'vmware_fusion' provider...
 Bringing machine 'percona2' up with 'vmware_fusion' provider...
@@ -311,6 +297,3 @@ h2. Conclusion
 I love vagrant, but am having a heck of a time with vmware_fusion and centos6. Having said that, I *KNOW* that things are going to get better as I learn and as more people start using vagrant and vmware_fusion.
 
 Hats off to Mitchell for creating a great development tool, one that I use every day!
-
-Thanks,
-Curtis.

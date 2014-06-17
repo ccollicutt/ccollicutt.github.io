@@ -6,10 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 18 October - 2012 - San Diego
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_security.jpg!
-
 h2. Security Track!
 
 Having been a security administrator at a medium sized University; having taking fairly extensive education in Information Security; having attended security conferences like CanSec West and H.O.P.E I am happy that all of Thursday has a dedicated security track. Unfortunately I can only attend a couple of sessions, but at least I can do that much. :)
@@ -42,9 +38,9 @@ Three places to "put security" in OpenStack
 ** Coolest thing about Quantum is the ability to inject 3rd party products
 * Keystone
 * Nova
-** Security groups/firewalling with iptables
-** VLANS
-** Initial configuration of nova
+* Security groups/firewalling with iptables
+* VLANS
+* Initial configuration of nova
 
 Issues in Cloud Security
 * Host security

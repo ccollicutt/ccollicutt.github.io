@@ -2,11 +2,8 @@
 layout: post
 title: First look at Digital Ocean
 categories: 
+header_image: https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/digital_ocean_signup.png
 ---
- 
-p(meta). 26 April - 2014 - Edmonton!
-
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/digital_ocean_signup.png!
 
 h1. {{ page.title }}
 
@@ -71,8 +68,7 @@ So I google search for "digital ocean command line" and below are some of the re
 Let's get that. The "github README":https://github.com/pearkes/tugboat for tugboat says "gem install tugboat."
 
 <pre>
-<code>
-curtis$ sudo gem install tugboat
+<code>curtis$ sudo gem install tugboat
 SNIP!
 10 gems installed
 </code>
@@ -81,8 +77,7 @@ SNIP!
 I noticed that during the install a digital_ocean gem was brought down too:
 
 <pre>
-<code>
-curtis$ gem list | grep digital
+<code>curtis$ gem list | grep digital
 digital_ocean (1.0.1)
 </code>
 </pre>
@@ -92,8 +87,7 @@ I'm willing to bet that DO provides that gem, and Ruby code can take advantage o
 Now I've got a tugboat command.
 
 <pre>
-<code>
-curtis$ which tugboat
+<code>curtis$ which tugboat
 /usr/bin/tugboat
 </code>
 </pre>
@@ -101,8 +95,7 @@ curtis$ which tugboat
 Here are all the commands tugboat provides:
 
 <pre>
-<code>
-curtis$ tugboat
+<code>curtis$ tugboat
 Commands:
   tugboat add-key NAME                                 # Upload an ssh public key.
   tugboat authorize                                    # Authorize a DigitalOcean account with tugboat
@@ -138,8 +131,7 @@ The tugboat README says use "tugboat authorized" to setup the API information to
 Note that I found my API credentials and keys in the web gui under "API."
 
 <pre>
-<code>
-curtis$ tugboat authorize
+<code>curtis$ tugboat authorize
 Note: You can get this information from digitalocean.com/api_access
 
 Enter your client key: <REDACTED>
@@ -166,8 +158,7 @@ I set everything as default except put the right location for my local key, and 
 Lets see what I get from tugboat.
 
 <pre>
-<code>
-curtis$ tugboat droplets
+<code>curtis$ tugboat droplets
 You don't appear to have any droplets.
 Try creating one with `tugboat create`
 # so no droplets yet
@@ -180,8 +171,7 @@ curtis (id: 118429)
 What images are available? "--global" means show all images, not just my own images.
 
 <pre>
-<code>
-curtis$ tugboat images --global
+<code>curtis$ tugboat images --global
 My Images:
 No images found
 
@@ -246,8 +236,7 @@ I'm not going to leave these running all the time. I just want to experiment. On
 I'm going to boot a Ubuntu 14.04 32 bit image. First I need the image ID.
 
 <pre>
-<code>
-curtis$ tugboat images --global | grep 14.04
+<code>curtis$ tugboat images --global | grep 14.04
 Ubuntu 14.04 x32 (id: 3240033, distro: Ubuntu)
 Ubuntu 14.04 x64 (id: 3240036, distro: Ubuntu)
 Dokku v0.2.3 on Ubuntu 14.04 (id: 3288841, distro: Ubuntu)
@@ -257,8 +246,7 @@ Dokku v0.2.3 on Ubuntu 14.04 (id: 3288841, distro: Ubuntu)
 Now I can see that the ID is 3240033. I'm going to use that and my default tugboat settings to boot an instance.
 
 <pre>
-<code>
-curtis$ tugboat create tester -i 3240033
+<code>curtis$ tugboat create tester -i 3240033
 Queueing creation of droplet 'tester'...the server responded with status 404!
 
 You specified an invalid region for Droplet creation.
@@ -270,8 +258,7 @@ Double-check your parameters and configuration (in your ~/.tugboat file)
 Uh oh. Error message.
 
 <pre>
-<code>
-curtis$ tugboat regions
+<code>curtis$ tugboat regions
 Regions:
 San Francisco 1 (id: 3)
 New York 2 (id: 4)
@@ -283,8 +270,7 @@ Singapore 1 (id: 6)
 Looks like I have New York 1 set, when I need New York 2, which has ID 4.
 
 <pre>
-<code>
-curtis$ tugboat create tester -i 3240033 -r 4
+<code>curtis$ tugboat create tester -i 3240033 -r 4
 Queueing creation of droplet 'tester'...done
 </code>
 </pre>
@@ -292,8 +278,7 @@ Queueing creation of droplet 'tester'...done
 tugboat exits. Guess I'll have to check the status with tugboat droplets.
 
 <pre>
-<code>
-tester (ip: 162.243.253.240, status: new, region: 4, id: 1539322)
+<code>tester (ip: 162.243.253.240, status: new, region: 4, id: 1539322)
 # ... few seconds later
 curtis$ tugboat droplets
 tester (ip: 162.243.253.240, status: active, region: 4, id: 1539322)
@@ -303,8 +288,7 @@ tester (ip: 162.243.253.240, status: active, region: 4, id: 1539322)
 Ok, the droplet has status active. 
 
 <pre>
-<code>
-curtis$ ping -c 1 162.243.253.240
+<code>curtis$ ping -c 1 162.243.253.240
 PING 162.243.253.240 (162.243.253.240): 56 data bytes
 64 bytes from 162.243.253.240: icmp_seq=0 ttl=54 time=81.364 ms
 
@@ -319,8 +303,7 @@ I can ping it too.
 I'm going to try to ssh into the droplet.
 
 <pre>
-<code>
-curtis$ ssh root@162.243.253.240
+<code>curtis$ ssh root@162.243.253.240
 # hangs, and eventually asks for my password...
 </code>
 </pre>
@@ -328,8 +311,7 @@ curtis$ ssh root@162.243.253.240
 Hanging. Wonder why. Check my email while I'm waiting, turns out DO sends and email when a new vm is created. There is a password in the email. Oh no. It says that if I'd prefer not to receive emails with passwords in them then to add an ssh key to DO and also create droplets with that key. I was assuming tugboat was using the default key I set up. Maybe I need to specifically put in the key.
 
 <pre>
-<code>
-curtis$ tugboat help create
+<code>curtis$ tugboat help create
 Usage:
   tugboat create NAME
 
@@ -349,8 +331,7 @@ Create a droplet.
 I'll destroy and recreate my droplet.
 
 <pre>
-<code>
-curtis$ tugboat destroy tester
+<code>curtis$ tugboat destroy tester
 Droplet fuzzy name provided. Finding droplet ID...done, 1539346 (tester)
 Warning! Potentially destructive action. Please confirm [y/n]: y
 Queuing destroy for 1539346 (tester)...done
@@ -362,8 +343,7 @@ Now lets create tester2.
 But...first, I realized the API wants an SSH key ID, not key name. I edit ~/.tugboat and set my key to use the ID not the name "curtis."
 
 <pre>
-<code>
-curtis$ tugboat keys
+<code>curtis$ tugboat keys
 SSH Keys:
 curtis (id: 118429)
 curtis$ vi ~/.tugboat
@@ -378,8 +358,7 @@ curtis$ grep ssh_key ~/.tugboat
 Ok, let's try that again.
 
 <pre>
-<code>
-curtis$ tugboat create tester2 -i 3240033 -r 4
+<code>curtis$ tugboat create tester2 -i 3240033 -r 4
 Queueing creation of droplet 'tester2'...done
 curtis$ tugboat droplets
 tester2 (ip: 162.243.253.240, status: new, region: 4, id: 1539401)
@@ -391,8 +370,7 @@ tester2 (ip: 162.243.253.240, status: active, region: 4, id: 1539401)
 Now it's active. Try ssh one more time...
 
 <pre>
-<code>
-curtis$ ssh root@162.243.253.240
+<code>curtis$ ssh root@162.243.253.240
 SNIP!
 root@tester2:~# ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 04:01:17:7d:ad:01  
@@ -420,8 +398,7 @@ h2. Private network
 DO recently announced that they support "private networks":https://www.digitalocean.com/company/blog/introducing-private-networking/. But they aren't private in the way most would consider...instead it's one big open internal non-routable network. Every droplet that requests a private network can talk to any other droplet. Seems kind of wild-west to me. But that is how it works. 
 
 <pre>
-<code>
-root@tester2:~# ifconfig eth1
+<code>root@tester2:~# ifconfig eth1
 eth1      Link encap:Ethernet  HWaddr 04:01:17:7d:ad:02  
           inet addr:10.128.183.80  Bcast:10.128.255.255  Mask:255.255.0.0
           inet6 addr: fe80::601:17ff:fe7d:ad02/64 Scope:Link
@@ -440,8 +417,7 @@ h2. Destroy!
 I'm going to destroy that droplet so I don't leave it up and running and have it cost me. (Though that said, a month of a 512MB droplet isn't much more than a couple coffees at $5.)
 
 <pre>
-<code>
-curtis$ tugboat destroy tester2
+<code>curtis$ tugboat destroy tester2
 Droplet fuzzy name provided. Finding droplet ID...done, 1539401 (tester2)
 Warning! Potentially destructive action. Please confirm [y/n]: y
 Queuing destroy for 1539401 (tester2)...done

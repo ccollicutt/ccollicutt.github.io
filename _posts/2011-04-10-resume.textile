@@ -2,24 +2,19 @@
 layout: post
 title: Resume and Contact
 categories:
+header_image: /img/met/DT82.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/10154
 ---
 
 h1. {{ page.title }}
 
-p(meta). Updated 22 November - 2013 - Edmonton
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_security.jpg!
-_(Taken at the 2012 OpenStack Summit)_
-
 h2. Contact
-<p></p>
 * Name: Curtis
 * Email: curtis@serverascode.com
 * Twitter: "@serverascode":https://twitter.com/serverascode
 * Github: "curtisgithub":https://github.com/curtisgithub _(I know...not the best account name)_ 
 * Hacker News: "serverascode":http://news.ycombinator.com/user?id=serverascode</a>
 * Stack Exchange: "curtis":http://stackoverflow.com/users/1460882/curtis 
-<p></p>
 
 h2. Goals
 

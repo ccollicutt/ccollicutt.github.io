@@ -4,9 +4,6 @@ title: Using Docker with Python and iPython
 categories: 
 ---
  
-p(meta). 5 June - 2014 - Edmonton!
-
-
 h1. {{ page.title }}
 
 Right now "Docker":http://docker.io is one of the hottest projects on the planet, so that means some people aren't going to like it simply based on that fact alone.
@@ -20,20 +17,16 @@ h2. Install docker-py
 First, you need docker-py. Note that in the examples show here I am using Ubuntu Trusty/14.04.
 
 <pre>
-<code>
-$ pip install docker-py
- </code>
- </pre>
-
-Next!
+<code>$ pip install docker-py
+</code>
+</pre>
 
 h2. ipython
 
 I really like "iPython":http://ipython.org/ for exploring Python. It's kind of an advanced Python shell, but also does much more.
 
 <pre>
-<code>
-$ sudo apt-get install ipython
+<code>$ sudo apt-get install ipython
 SNIP!
 $ ipython
 Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
@@ -49,23 +42,19 @@ In [1]:
 </code>
 </pre>
 
-Good times.
-
 h2. Install docker
 
 If docker isn't already installed, then go ahead and install it.
 
 <pre>
-<code>
-$ sudo apt-get install docker.io
+<code>$ sudo apt-get install docker.io
 </code>
 </pre>
 
 I also alias docker.io to docker.
 
 <pre>
-<code>
-$ alias docker='docker.io'
+<code>$ alias docker='docker.io'
 $ docker version
 Client version: 0.9.1
 Go version (client): go1.2.1
@@ -80,21 +69,17 @@ Last stable version: 0.11.1, please update docker
 Docker should now have a socket open that we can connect to.
 
 <pre>
-<code>
-$ ls /var/run/docker.sock 
+<code>$ ls /var/run/docker.sock 
 /var/run/docker.sock
 </code>
 </pre>
-
-Super.
 
 h2. Pull an image
 
 Let's download the busybox image.
 
 <pre>
-<code>
-$ docker pull busybox
+<code>$ docker pull busybox
 Pulling repository busybox
 71e18d715071: Download complete 
 98b9fdab1cb6: Download complete 
@@ -120,8 +105,7 @@ If you're not familiar with iPython, have a look at the "tutorial":http://ipytho
 First, fire up ipython and import docker.
 
 <pre>
-<code>
-$ ipython
+<code>$ ipython
 Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
 Type "copyright", "credits" or "license" for more information.
 
@@ -138,8 +122,7 @@ In [1]: import docker
 Next we make a connection to Docker.
 
 <pre>
-<code>
-In [2]: c = docker.Client(base_url='unix://var/run/docker.sock',
+<code>In [2]: c = docker.Client(base_url='unix://var/run/docker.sock',
    ...:                   version='1.9',
    ...:                   timeout=10)
 </code>
@@ -150,8 +133,7 @@ Now we have a connection to Docker.
 iPython offers tab completion. If I type "c." and then hit the TAB key, ipython will show me what the Docker connection object has to offer. 
 
 <pre>
-<code>
-In [3]: c.
+<code>In [3]: c.
 c.adapters                      c.headers                       c.pull
 c.attach                        c.history                       c.push
 c.attach_socket                 c.hooks                         c.put
@@ -179,8 +161,7 @@ c.head                          c.proxies
 Let's look at c.images. I I put a "?" after the object, ipython will provide details about the object.
 
 <pre>
-<code>
-In [5]: c.images?
+<code>In [5]: c.images?
 Type:       instancemethod
 String Form:<bound method Client.images of <docker.client.Client object at 0x7f3acc731790>>
 File:       /usr/local/lib/python2.7/dist-packages/docker/client.py
@@ -192,8 +173,7 @@ Docstring:  <no docstring>
 And grab the busybox image.
 
 <pre>
-<code>
-In [6]: c.images(name="busybox")
+<code>In [6]: c.images(name="busybox")
 Out[6]: 
 [{u'Created': 1401402591,
   u'Id': u'71e18d715071d6ba89a041d1e696b3d201e82a7525fbd35e2763b8e066a3e4de',
@@ -225,8 +205,7 @@ Out[6]:
 Create a container. Note that I'm adding a command to be run, in this example the "env" command.
 
 <pre>
-<code>
-In [8]: c.create_container(image="busybox", command="env")
+<code>In [8]: c.create_container(image="busybox", command="env")
 Out[8]: 
 {u'Id': u'584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87',
  u'Warnings': None}
@@ -236,16 +215,14 @@ Out[8]:
 Start the container using the Id.
 
 <pre>
-<code>
-In [9]: c.start(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
+<code>In [9]: c.start(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
 </code>
 </pre>
 
 And we can check the logs, should see the output of the command "env" that we configured when the container was created.
 
 <pre>
-<code>
-In [11]: c.logs(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
+<code>In [11]: c.logs(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
 Out[11]: 'HOME=/\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nHOSTNAME=584459a09e6d\n'
 </code>
 </pre>
@@ -253,8 +230,7 @@ Out[11]: 'HOME=/\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
 If I run a container with the same options using the dokcer command line, I should see something similar.
 
 <pre>
-<code>
-$ docker run busybox env
+<code>$ docker run busybox env
 HOME=/
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=ce3ad38a52bf
@@ -266,8 +242,7 @@ As far as I can tell, docker-py does not have a run option, instead we have to c
 Here's another example:
 
 <pre>
-<code>
-In [17]: busybox = c.create_container(image="busybox", command="echo hi")
+<code>In [17]: busybox = c.create_container(image="busybox", command="echo hi")
 
 In [18]: busybox?
 Type:       dict

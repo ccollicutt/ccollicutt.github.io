@@ -2,9 +2,9 @@
 layout: post
 title: Swift OnlyOne - Run OpenStack Swift in Docker
 categories: 
+header_image: /img/met/DT4626.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/438417
 ---
- 
-p(meta). 12 June - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
@@ -27,8 +27,7 @@ First, because *Swift requires the filesystem have xattr*, Docker must be setup 
 (NOTE: I have Vagrant file and Ansible playbook on "github":https://github.com/curtisgithub/vagrant-docker-btrfs that will setup a Vagrant-based virtual machine with docker and btrfs configured. So all you would have to do is clone that repo and run "vagrant up" to get docker + btrfs.)
 
 <pre>
-<code>
-vagrant@host1:~$ sudo btrfs fi show /var/lib/docker
+<code>vagrant@host1:~$ sudo btrfs fi show /var/lib/docker
 Label: none  uuid: 732ee044-4b3a-4391-8b53-fd7da224c008
 	Total devices 1 FS bytes used 1.99GiB
 	devid    1 size 20.00GiB used 4.04GiB path /dev/sdb
@@ -44,8 +43,7 @@ There is a "github repository":https://github.com/curtisgithub/docker-swift-only
 Or you can pull it from the Docker repository.
 
 <pre>
-<code>
-vagrant@host1:~$ docker pull serverascode/swift-onlyone
+<code>vagrant@host1:~$ docker pull serverascode/swift-onlyone
 Pulling repository serverascode/swift-onlyone
 7e8283467cba: Download complete 
 SNIP!
@@ -56,8 +54,7 @@ d7279e38d8cd: Download complete
 Now we can run an interactive Swift OnlyOne container.
 
 <pre>
-<code>
-vagrant@host1:/vagrant/dockerfiles/swift-onlyone$ docker run -i -t serverascode/swift-onlyone /bin/bash
+<code>vagrant@host1:/vagrant/dockerfiles/swift-onlyone$ docker run -i -t serverascode/swift-onlyone /bin/bash
 root@f2f8ccb82c0e:/# /usr/local/bin/startmain.sh 
 Device d0r1z1-127.0.0.1:6010R127.0.0.1:6010/sdb1_"" with 1.0 weight got id 0
 Reassigned 128 (100.00%) partitions. Balance is now 0.00.
@@ -75,8 +72,7 @@ Note that I hit "ctrl-c" when it says "Starting to tail..." because when running
 We can see what processes are running, and there are quite a few, including rsyslog and memcached. Usually Docker models processes, but in this case I am taking a role-based approach to using Docker.
 
 <pre>
-<code>
-root@f2f8ccb82c0e:/# ps ax
+<code>root@f2f8ccb82c0e:/# ps ax
   PID TTY      STAT   TIME COMMAND
     1 ?        Ss     0:00 /bin/bash
    43 ?        Ss     0:00 /usr/bin/python /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
@@ -98,14 +94,13 @@ root@f2f8ccb82c0e:/# ps ax
    88 ?        S      0:00 /usr/bin/python /usr/bin/swift-account-server /etc/swift/account-server.conf
    89 ?        S      0:00 /usr/bin/python /usr/bin/swift-proxy-server /etc/swift/proxy-server.conf
    91 ?        R+     0:00 ps ax
-   </code>
-   </pre>
+</code>
+</pre>
 
 Now we can use Swift.
 
 <pre>
-<code>
-root@f2f8ccb82c0e:/# swift -A http://127.0.0.1:8080/auth/v1.0 -U test:tester -K testing stat
+<code>root@f2f8ccb82c0e:/# swift -A http://127.0.0.1:8080/auth/v1.0 -U test:tester -K testing stat
        Account: AUTH_test
     Containers: 0
        Objects: 0
@@ -143,16 +138,14 @@ root@f2f8ccb82c0e:/#
 We can also start the container in non-interactive mode, and add a port mapping.
 
 <pre>
-<code>
-vagrant@host1:~$ ID=$(docker run -d -p 8080 -t serverascode/swift-onlyone)
+<code>vagrant@host1:~$ ID=$(docker run -d -p 8080 -t serverascode/swift-onlyone)
 </code>
 </pre>
 
 Now that container should be running with a port mapped to 8080.
 
 <pre>
-<code>
-vagrant@host1:~$ docker ps
+<code>vagrant@host1:~$ docker ps
 CONTAINER ID        IMAGE                               COMMAND                CREATED             STATUS              PORTS                     NAMES
 0c57f60e1de6        serverascode/swift-onlyone:latest   /bin/sh -c /usr/loca   3 seconds ago       Up 3 seconds        0.0.0.0:49162->8080/tcp   loving_hawking      
 </code>
@@ -163,8 +156,7 @@ Above we can see that port 49162 on the container host is mapped to 8080 on the 
 We can also check the logs.
 
 <pre>
-<code>     
-vagrant@host1:~$ docker logs $ID
+<code>     vagrant@host1:~$ docker logs $ID
 Device d0r1z1-127.0.0.1:6010R127.0.0.1:6010/sdb1_"" with 1.0 weight got id 0
 Reassigned 128 (100.00%) partitions. Balance is now 0.00.
 Device d0r1z1-127.0.0.1:6011R127.0.0.1:6011/sdb1_"" with 1.0 weight got id 0
@@ -180,8 +172,7 @@ Let's run stat again, but this time from the container host, not the container.
 Note that it's not port 8080 any more for the auth url, it's 49162.
 
 <pre>
-<code>
-vagrant@host1:~$ swift -A http://127.0.0.1:49162/auth/v1.0 -U test:tester -K testing stat
+<code>vagrant@host1:~$ swift -A http://127.0.0.1:49162/auth/v1.0 -U test:tester -K testing stat
        Account: AUTH_test
     Containers: 0
        Objects: 0
@@ -200,8 +191,7 @@ swift.txt
 Check the logs again:
 
 <pre>
-<code>
-vagrant@host1:~$ docker logs $ID | tail
+<code>vagrant@host1:~$ docker logs $ID | tail
 Jun 12 16:33:16 0c57f60e1de6 account-replicator: Replication run OVER
 Jun 12 16:33:16 0c57f60e1de6 account-replicator: Attempted to replicate 1 dbs in 0.00341 seconds (292.99204/s)
 Jun 12 16:33:16 0c57f60e1de6 account-replicator: Removed 0 dbs
@@ -224,8 +214,7 @@ It would be best to run with a data only container as well, and use that volume 
 So first create a data only container.
 
 <pre>
-<code>
-vagrant@host1:~$ docker run -v /srv --name SWIFT_DATA busybox
+<code>vagrant@host1:~$ docker run -v /srv --name SWIFT_DATA busybox
 vagrant@host1:~$ docker ps --all  |grep SWIFT_DATA
 6c13b4e27320        busybox:buildroot-2014.02           /bin/sh                7 seconds ago       Exit 0                          SWIFT_DATA   
 </code>
@@ -234,16 +223,14 @@ vagrant@host1:~$ docker ps --all  |grep SWIFT_DATA
 Now we can create a docker container with "--volumes-from" the SWIFT_DATA container.
 
 <pre>
-<code>
-vagrant@host1:~$ ID=$(docker run -d -p 8080 --volumes-from SWIFT_DATA -t serverascode/swift-onlyone)
+<code>vagrant@host1:~$ ID=$(docker run -d -p 8080 --volumes-from SWIFT_DATA -t serverascode/swift-onlyone)
 </code>
 </pre>
 
 And if we inspect that container we can see where the container's volume is. Sorry that the lines will probably not wrap very nicely.
 
 <pre>
-<code>
-vagrant@host1:~$ docker inspect $ID | grep VolumesFrom
+<code>vagrant@host1:~$ docker inspect $ID | grep VolumesFrom
         "VolumesFrom": "SWIFT_DATA",
 vagrant@host1:~$ docker inspect $ID | grep "\/srv"
         "/srv": "/var/lib/docker/vfs/dir/8d437b57f36a2d849cece0752c8316c6916c31ec12fd9049d4203662806d3fe2"

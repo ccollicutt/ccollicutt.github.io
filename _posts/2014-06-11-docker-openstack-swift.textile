@@ -1,0 +1,46 @@
+---
+layout: post
+title: Docker and OpenStack Swift - Peas and Carrots
+categories: 
+---
+
+h1. {{ page.title }}
+
+Docker and OpenStack Swift go together like peas and carrots[1].
+
+Anyways, I am a big fan of object storage, and thus I like OpenStack Swift quite a bit. I am also a fan of containers and Docker. At this point you might think that I'm biased given the topic of this post is how Docker and OpenStack Swift work great together, but putting that bias aside as much as possible I'd like to explain why I think they go together like peas and carrots.
+
+h2. tl;dr
+
+If you can, use OpenStack Swift (or other eventually consistent object store) instead of a distributed file system (DFS).
+
+Accessing the same file data source from multiple containers on multiple container hosts is often solved with some kind of DFS. However, due to various ways that a distributed system can partition, the failure domain when using DFS can become rather large.  It's better, in my opinion, to use OpenStack Swift which provides availability and protection from partitioning in exchange for consistency (instead providing "eventual consistency").
+
+h2. Multiple Docker hosts
+
+I don't think there will be many cases where an organization will want to run only a single Docker host. If you do only want to run a single Docker host, then using a regular file system as compared to object storage will be fine. 
+
+But if you do (or will, at some point) run multiple Docker hosts then sharing data across multiple containers on different hosts is going to require some thinking, and the most common thing people will do is some kind of networked or distributed file system, such as nfs and gluster respectively. With a DFS, as you scale out, you add complexity and the potential for partitioning.
+
+h2. Scaling
+
+Presuming you have a somewhat large system that requires running components in multiple containers on multiple hosts, the ability to scale is going to be important. 
+
+So called "cloud computing", or infrastructure as a service (IaaS) more specifically, tends to mean you can't just "scale up" (ie. buy bigger servers) and instead have to "scale out" (ie. add more servers). This means more servers need to access the same data stores, and in terms of files again typically leads to some kind of distributed file system. NFS probably won't "scale out" unless you somehow shard.
+
+h2. Failure domains and (network) partitions
+
+Basically the "CAP theorem":http://en.wikipedia.org/wiki/CAP_theorem says you can't have availability and consistency at the same time. This is why DFS and distributed block storage (DBS) are hard. You can either have a DFS that is consistent, or available, but not both. (Of course this assumes you believe the CAP theorem is accurate.) But, as far as I know, all DFS try to be available and consistent. But we just said that's impossible. And therein lies the issue.
+
+OpenStack Swift, on the other hand, only tries to be available. That way it can survive partitioning.
+
+h2. Distributed file systems
+
+
+h2. Eventual consistency
+
+
+
+h2. Footnotes
+
+fn1.  I have to admit I recently rewatched Forrest Gump and have his manner of speaking stuck in my head. I don't actually think it's a great film (good, not great) but it's certainly a memorable one.

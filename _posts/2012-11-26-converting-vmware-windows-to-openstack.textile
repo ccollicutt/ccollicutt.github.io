@@ -4,11 +4,6 @@ title: Converting VMWare Windows images to OpenStack with virt-v2v
 categories:
 ---
 
-p(meta). 26 November - 2012 - Edmonton!
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/IMG_0329_600x600.jpg!
-_(some robot)_
-
 h1. {{ page.title }}
 
 As I've mentioned in previous posts, I'm currently working on a project that uses Apache VCL to provide university students with the ability to remotely login to a virtual machine and use specialized software to complete their classwork--a virtual computer lab if you will.
@@ -48,8 +43,7 @@ h2. Installing virt-v2v
 First, as I've mentioned, you need a hardware server with RedHat Enterprise 6.x on it.
 
 <pre>
-<code>
-[root@localhost ~]# cat /etc/redhat-release 
+<code>[root@localhost ~]# cat /etc/redhat-release 
 Red Hat Enterprise Linux Server release 6.3 (Santiago)
 </code>
 </pre>
@@ -59,8 +53,7 @@ It needs to be registered with the RedHat Network and have the "RHEL Server Supp
 !https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/rhn_entitlements_virt-v2v.png!
 
 <pre>
-<code>
-[root@localhost ~]# yum repolist
+<code>[root@localhost ~]# yum repolist
 Loaded plugins: product-id, rhnplugin, subscription-manager
 Updating certificate-based repositories.
 Unable to read consumer identity
@@ -75,8 +68,7 @@ repolist: 9,025
 Once those are configured, install the following packages.
 
 <pre>
-<code>
-[root@localhost ~]# yum install virt-v2v virtio-win libguestfs-winsupport libvirt
+<code>[root@localhost ~]# yum install virt-v2v virtio-win libguestfs-winsupport libvirt
 </code>
 </pre>
 
@@ -85,16 +77,14 @@ And then reboot.
 Once the server has rebooted, start libvirtd if it isn't already.
 
 <pre>
-<code>
-[root@localhost ~]# service libvirtd start
+<code>[root@localhost ~]# service libvirtd start
 </code>
 </pre>
 
 Next we need to add a storage pool to libvirt. In this example, just because of the way RHEL defaulted my temporary install, we have a huge /home/images directory in which to put the converted images.
 
 <pre>
-<code>
-[root@localhost ~]# df -h /home
+<code>[root@localhost ~]# df -h /home
 Filesystem            Size  Used Avail Use% Mounted on
 /dev/mapper/VolGroup-lv_home
                       5.4T  235G  4.9T   5% /home
@@ -111,8 +101,7 @@ Filesystem            Size  Used Avail Use% Mounted on
 Using that pool.xml file, we'll configure the pool.
 
 <pre>
-<code>
-[root@localhost ~]# virsh pool-create --file pool.xml
+<code>[root@localhost ~]# virsh pool-create --file pool.xml
 [root@localhost ~]# virsh pool-list
 Name                 State      Autostart 
 -----------------------------------------
@@ -124,8 +113,7 @@ virtimages           active     no
 Finally, we configure a .netrc file, obviously entering the proper ESXi host, login, and password.
 
 <pre>
-<code>
-[root@localhost ~]# cat .netrc
+<code>[root@localhost ~]# cat .netrc
 machine <esxi host> login <login> password <password>
 </code>
 </pre>
@@ -133,8 +121,7 @@ machine <esxi host> login <login> password <password>
 Now we can run virt-v2v!
 
 <pre>
-<code>
-[root@localhost images]# virt-v2v -ic esx://<esxi host>/?no_verify=1 -o libvirt
+<code>[root@localhost images]# virt-v2v -ic esx://<esxi host>/?no_verify=1 -o libvirt
  -os virtimages <exsi vm name>
 <esxi vm name>: 100% [========================]D 0h51m16s
 virt-v2v: WARNING: No mapping found for bridge interface public in config file. 
@@ -159,7 +146,4 @@ Now that we have an image in the libvirt pool we configured, it's time to:
 # Boot a new instance from the new image, the one created with _nova image-create_, just to make sure it all works out Ok.
 
 At this point you should, hopefully, have a working Windows image, one that was converted from VMWare ESXi!
-
-Thanks,
-Curtis.
 

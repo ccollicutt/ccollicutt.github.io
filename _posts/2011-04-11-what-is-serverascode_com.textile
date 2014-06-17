@@ -5,8 +5,6 @@ title: What is serverascode.com?
 
 h1. {{ page.title }}
 
-p(meta). 11 April 2011 - Edmonton
-
 serverascode.com has two major functions: 1) to document how I am working through the process of learning to treat servers as code, and 2) to be my systems administration resume.
 
 Starting with #2, I believe that in my line of work--Unix/Linux systems administration--in todays "market", a two page traditional resume will not get me the job I'm looking for. The only thing that will is a good set of open source contributions; that if servers are code, then much of what I do as a systems administrator should be available on-line in a source code repository. As I write this post, I only have a few lines of code available at "github":https://github.com/curtisgithub/kicker but as time goes on that will increase.

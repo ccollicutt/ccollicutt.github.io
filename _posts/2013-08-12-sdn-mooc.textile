@@ -4,11 +4,6 @@ title: Georgia Tech Coursera SDN MOOC
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/IMG_0834_600px.jpg!
-_(still summer in edmonton!)_
-
-p(meta). 12 Aug - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Recently I completed the "Software Defined Networking":https://class.coursera.org/sdn-001/wiki/view?page=syllabus (SDN) course presented by Dr. Nick Feamster of the Georgia Institute of Technology. The course was a massive open online course, otherwise known as a MOOC. (Some of the "earliest MOOCs":http://en.wikipedia.org/wiki/Massive_open_online_course#Early_MOOCs were put on by researchers associated with "Athabasca University":http://www.athabascau.ca, an Alberta based post secondary institution specializing in distance learning.)
@@ -83,8 +78,6 @@ The above is useful because most of the others work in combination with Mininet,
 * "Pyretic":http://frenetic-lang.org/pyretic/: A SDN programming language, or more specifically a domain specific language, aka DSL.
 * "Resonance":http://resonance.noise.gatech.edu/
 * "Interview with Jennifer Rexford":https://class.coursera.org/sdn-001/lecture/53: I thought this was a great interview.
-
-<p></p>
 
 h2. What now?
 

@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 23 May - 2012 - Edmonton
-
 In a previous "post":http://serverascode.com/serverascode/storage/2011/06/27/fusionio-drives-on-redhat-enterprise-5.html I had described how I deployed a IBM branded FusionIO drive on Redhat Enterprise 5.
 
 I am now running that same card on CentOS 6, and am using the new version (2.2.3) of "IBM's version of the driver":http://www-947.ibm.com/support/entry/portal/docdisplay?lndocid=MIGR-5085137.
@@ -18,8 +16,7 @@ Actually I think there is a "new-new":http://www.mysqlperformanceblog.com/2012/0
 CentOS version:
 
 <pre>
-<code>
-[root@srv ~]# cat /etc/redhat-release 
+<code>[root@srv ~]# cat /etc/redhat-release 
 CentOS release 6.2 (Final)
 </code>
 </pre>
@@ -28,8 +25,7 @@ CentOS release 6.2 (Final)
 The kernel I am running is stock RHEL 6:
 
 <pre>
-<code>
-[root@srv ~]# uname -a
+<code>[root@srv ~]# uname -a
 Linux example.com 2.6.32-220.17.1.el6.x86_64 #1 \
 SMP Wed May 16 00:01:37 BST 2012 x86_64 x86_64 x86_64 GNU/Linux
 </code>
@@ -38,8 +34,7 @@ SMP Wed May 16 00:01:37 BST 2012 x86_64 x86_64 x86_64 GNU/Linux
 This is what I see in terms of PCI devices for the FusionIO cards:
 
 <pre>
-<code>
-[root@srv ~]# lspci | grep -i fusion
+<code>[root@srv ~]# lspci | grep -i fusion
 8f:00.0 Mass storage controller: Fusion-io ioDimm3 (rev 01)
 90:00.0 Mass storage controller: Fusion-io ioDimm3 (rev 01)
 </code>
@@ -52,8 +47,7 @@ First, we download the zip file containing the RPMs from IBM.
 %{color:red}Warning:% These drivers are for the IBM version of the FusionIO cards. If you are not running the IBM version you probably need different drivers and RPMs.
 
 <pre>
-<code>
-# wget ftp://download2.boulder.ibm.com/ecc/sar/CMA/XSA/ibm_dd_highiop_ssd-2.2.3_rhel6_x86-64.zip
+<code># wget ftp://download2.boulder.ibm.com/ecc/sar/CMA/XSA/ibm_dd_highiop_ssd-2.2.3_rhel6_x86-64.zip
 SNIP!
 </code>
 </pre>
@@ -61,8 +55,7 @@ SNIP!
 Inside that zip are several RPMs:
 
 <pre>
-<code>
-[root@srv tmp]# mkdir fio
+<code>[root@srv tmp]# mkdir fio
 [root@srv tmp]# cd fio/
 [root@srv fio]# unzip ../ibm_dd_highiop_ssd-2.2.3_rhel6_x86-64.zip 
 Archive:  ../ibm_dd_highiop_ssd-2.2.3_rhel6_x86-64.zip
@@ -84,8 +77,7 @@ So far when I've been running these servers I haven't installed all of those RPM
 So lets install those RPMs:
 
 <pre>
-<code>
-[root@srv rhel6]# yum localinstall --nogpg \
+<code>[root@srv rhel6]# yum localinstall --nogpg \
  fio-common-2.2.3.66-1.0.el6.x86_64.rpm \
  libfio-2.2.3.66-1.0.el6.x86_64.rpm fio-util-2.2.3.66-1.0.el6.x86_64.rpm \
  fio-sysvinit-2.2.3.66-1.0.el6.x86_64.rpm \
@@ -115,8 +107,7 @@ Installed:
 As you can see the sysvinit RPM contains a couple of init.d files.
 
 <pre>
-<code>
-[root@srv rhel6]# rpm -qpl fio-sysvinit-2.2.3.66-1.0.el6.x86_64.rpm 
+<code>[root@srv rhel6]# rpm -qpl fio-sysvinit-2.2.3.66-1.0.el6.x86_64.rpm 
 /etc/init.d/iomemory-vsl
 /etc/sysconfig/iomemory-vsl
 </code>
@@ -125,17 +116,14 @@ As you can see the sysvinit RPM contains a couple of init.d files.
 Let's _chkconfig_ this on permanently.
 
 <pre>
-<code>
-[root@srv rhel6]# chkconfig iomemory-vsl on
-
+<code>[root@srv rhel6]# chkconfig iomemory-vsl on
 </code>
 </pre>
 
 We *also* need to enable _iomemory-vsl_ in _/etc/sysconfig/iomemory-vsl_.
 
 <pre>
-<code>
-[root@srv init.d]# cd /etc/sysconfig
+<code>[root@srv init.d]# cd /etc/sysconfig
 [root@srv sysconfig]# grep ENABLED iomemory-vsl 
 # If ENABLED is not set (non-zero) then iomemory-vsl init script will not be
 #ENABLED=1
@@ -150,8 +138,7 @@ ENABLED=1
 And we can start or restart iomemory-vsl:
 
 <pre>
-<code>
-[root@srv sysconfig]# service iomemory-vsl restart
+<code>[root@srv sysconfig]# service iomemory-vsl restart
 Stopping iomemory-vsl: 
 Unloading module iomemory-vsl
                                                            [FAILED]
@@ -170,16 +157,14 @@ fiob
 At this point I'm going to *reboot* the server as well, just to make sure everything is going to get loaded if the server spontaneously restarts, which they have been known to do. ;)
 
 <pre>
-<code>
-[root@srv sysconfig]# reboot
+<code>[root@srv sysconfig]# reboot
 </code>
 </pre>
 
 Now after the reboot there are a couple more block storage devices on this server:
 
 <pre>
-<code>
-[root@srv ~]# ls /dev/fio?
+<code>[root@srv ~]# ls /dev/fio?
 /dev/fioa  /dev/fiob
 </code>
 </pre>
@@ -187,8 +172,7 @@ Now after the reboot there are a couple more block storage devices on this serve
 We want to create a lvm physical volume (pv) on that block device:
 
 <pre>
-<code>
-[root@srv ~]# pvcreate /dev/fioa
+<code>[root@srv ~]# pvcreate /dev/fioa
   Device /dev/fioa not found (or ignored by filtering).
 </code>
 </pre>
@@ -196,8 +180,7 @@ We want to create a lvm physical volume (pv) on that block device:
 Ooops. Error message. What went wrong? Well, the "or ignored by filtering" is where to start looking. "This":https://support.fusionio.com/kb/enabling-an-iomemory-device-for-lvm-use/ FusionIO knowledge base entry (which you have to login to see, how annoying is that) shows that we need to add an entry to the _lvm.conf_ on the server:
 
 <pre>
-<code>
-Locate and edit the /etc/lvm/lvm.conf configuration file.
+<code>Locate and edit the /etc/lvm/lvm.conf configuration file.
 Add an entry similar to the following to that file:
 types = [ "fio", 16 ]
 </code>
@@ -206,8 +189,7 @@ types = [ "fio", 16 ]
 That is precisely what I will do.
 
 <pre>
-<code>
-[root@srv lvm]# grep types lvm.conf
+<code>[root@srv lvm]# grep types lvm.conf
     # List of pairs of additional acceptable block device types found 
     # types = [ "fd", 16 ]
     types = [ "fio", 16 ]
@@ -217,8 +199,7 @@ That is precisely what I will do.
 And now:
 
 <pre>
-<code>
-# let's see if the types were loaded
+<code># let's see if the types were loaded
 [root@srv ~]# lvm dumpconfig | grep types
   	types=["fio", 16]
 [root@srv ~]# pvcreate /dev/fioa
@@ -231,8 +212,7 @@ And now:
 And create a volume group and add the pvs to it.
 
 <pre>
-<code>
-[root@srv ~]# vgcreate hiops /dev/fioa
+<code>[root@srv ~]# vgcreate hiops /dev/fioa
   Volume group "hiops" successfully created
 [root@srv ~]# vgextend hiops /dev/fiob
   Volume group "hiops" successfully extended
@@ -259,8 +239,7 @@ So I'm going to reformat these drives to 100% usage. Just for fun. Why not get b
 %{color:red}Warning:% Reformatting will obviously delete any data on these drives!
 
 <pre>
-<code>
-# first detach the /dev/fioa
+<code># first detach the /dev/fioa
 [root@srv ~]# fio-detach /dev/fct0
 Detaching: [====================] (100%) -
 [root@srv ~]# fio-format -s 100% /dev/fct0
@@ -282,8 +261,7 @@ fioa
 And we can add that device back with _pvcreate_ and then we should see a larger drive:
 
 <pre>
-<code>
-[root@srv ~]# pvcreate /dev/fioa
+<code>[root@srv ~]# pvcreate /dev/fioa
   Physical volume "/dev/fioa" successfully created
 [root@srv ~]# pvs /dev/fioa
   PV         VG    Fmt  Attr PSize   PFree  
@@ -296,8 +274,7 @@ I reformatted the other side of the drive back to 100% as well. (With new drives
 And the fio-status now is:
 
 <pre>
-<code>
-[root@srv ~]# fio-status
+<code>[root@srv ~]# fio-status
 
 Found 2 ioDrives in this system with 1 ioDrive Duo
 Fusion-io driver version: 2.2.3 build 66
@@ -340,8 +317,7 @@ fct1	Attached as 'fiob' (block device)
 Finally we can create a logical volume (lv) to use.
 
 <pre>
-<code>
-[root@srv ~]# vgs hiops
+<code>[root@srv ~]# vgs hiops
   VG    #PV #LV #SN Attr   VSize   VFree  
   hiops   1   0   0 wz--n- 300.40g 300.40g
 [root@srv ~]# lvcreate -n test -L10.0G /dev/hiops
@@ -350,7 +326,4 @@ Finally we can create a logical volume (lv) to use.
 </pre>
 
 If you have any corrections or other comments, please let me know!
-
-Thanks,
-Curtis.
 

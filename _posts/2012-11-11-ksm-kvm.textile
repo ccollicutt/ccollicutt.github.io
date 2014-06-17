@@ -6,15 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 11 November - 2012 - Edmonton!
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_edmonton.jpg!
-_(Winter in Edmonton. It's not that cold...yet.)_
-
-
 _UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!_ 
-
-h2. KSM and KVM
 
 I recently found out about the "ksm":http://www.linux-kvm.org/page/KSM technology that is in Ubuntu 12.04 + kvm by default. ksm is a memory de-duplication process. As far as I understand it, ksm can allow virtual machines (actually any application, not just virtualization) to share memory pages--it finds all duplicated memory pages and merges them, thereby saving memory in some situations.
 
@@ -29,8 +21,7 @@ h2. The Test
 I have a basic Windows 7 image in qcow2 format. 
 
 <pre>
-<code>
-root@ksm_test:/mnt/ksm-test$ file win7-base.qcow2
+<code>root@ksm_test:/mnt/ksm-test$ file win7-base.qcow2
 win7-base.qcow2: QEMU QCOW Image (v2), 21474836480 bytes
 </code>
 </pre>
@@ -44,8 +35,7 @@ _ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 ba
 This is the little script I use to boot the vms:
 
 <pre>
-<code>
-root@ksm_test:~$ cat test_ksm.sh 
+<code>root@ksm_test:~$ cat test_ksm.sh 
 #!/bin/bash
 
 # How much memory to boot with
@@ -93,8 +83,7 @@ exit 0
 After that script runs we have 30 kvm Win7 instances running:
 
 <pre>
-<code>
-root@ksm_test:/mnt/ksm-test$ ps ax  |grep "bin\/kvm" | wc -l
+<code>root@ksm_test:/mnt/ksm-test$ ps ax  |grep "bin\/kvm" | wc -l
 30
 </code>
 </pre>
@@ -108,8 +97,7 @@ h2. The Defaults
 ksm is enabled in Ubuntu by default when using kvm. However, the defaults are fairly conservative:
 
 <pre>
-<code>
-root@ksm_host:~$ cat /sys/kernel/mm/ksm/pages_to_scan 
+<code>root@ksm_host:~$ cat /sys/kernel/mm/ksm/pages_to_scan 
 100
 root@ksm_host:~$ cat /sys/kernel/mm/ksm/sleep_millisecs 
 200
@@ -121,13 +109,10 @@ ksm will scan 100 pages, sleep for 200 milliseconds and then scan 100 more, and 
 I set the pages_to_scan to 20000 and sleep_millisecs to 20--I'm guessing these are pretty aggressive settings.
 
 <pre>
-<code>
-root@ksm_host:~$  echo "20000" > /sys/kernel/mm/ksm/pages_to_scan
+<code>root@ksm_host:~$  echo "20000" > /sys/kernel/mm/ksm/pages_to_scan
 root@ksm_host:~$  echo "20" > /sys/kernel/mm/ksm/sleep_millisecs
 </code>
 </pre>
-
-<br />
 
 h2. The Results
 
@@ -138,8 +123,7 @@ The reality is that I'm really just cutting and pasting the ksm information that
 From the "ksm.txt":http://www.kernel.org/doc/Documentation/vm/ksm.txt file:
 
 <pre>
-<code>
-A high ratio of pages_sharing to pages_shared indicates good sharing,
+<code>A high ratio of pages_sharing to pages_shared indicates good sharing,
 but a high ratio of pages_unshared to pages_sharing indicates wasted 
 effort. pages_volatile embraces several different kinds of activity, 
 but a high proportion there would also indicate poor use of madvise 
@@ -152,8 +136,7 @@ And the results of ksm after a few days of running 30 vms...
 </pre>
 
 <pre>
-<code>
-root@ksm_test:~$ for i in `ls -1 /sys/kernel/mm/ksm`; \
+<code>root@ksm_test:~$ for i in `ls -1 /sys/kernel/mm/ksm`; \
 do echo "===> $i"; cat /sys/kernel/mm/ksm/$i;  done
 ===> full_scans
 5417
@@ -177,8 +160,7 @@ do echo "===> $i"; cat /sys/kernel/mm/ksm/$i;  done
 So, if I understand these numbers correctly, pages_shared is the amound of memory ksk is actually using. Thus in this example, ksm is using 1.7GB of memory:
 
 <pre>
-<code>
-root@ksm_test:~$ getconf PAGESIZE
+<code>root@ksm_test:~$ getconf PAGESIZE
 4096
 </code>
 </pre>
@@ -186,8 +168,7 @@ root@ksm_test:~$ getconf PAGESIZE
 So if we have 443355 pages shared, ksm is using this many bytes:
 
 <pre>
-<code>
-root@ksm_test:~$ echo "443355 * 4096" | bc
+<code>root@ksm_test:~$ echo "443355 * 4096" | bc
 1815982080
 </code>
 </pre>
@@ -197,8 +178,7 @@ which is about 1.7GB.
 However, saved memory, ie. pages_sharing, is quite high! So this is good. :)
 
 <pre>
-<code>
-root@ksm_test:~$ echo $((26704343*`getconf PAGE_SIZE`/1024/1024/1024)) GB
+<code>root@ksm_test:~$ echo $((26704343*`getconf PAGE_SIZE`/1024/1024/1024)) GB
 101 GB
 </code>
 </pre>
@@ -206,8 +186,7 @@ root@ksm_test:~$ echo $((26704343*`getconf PAGE_SIZE`/1024/1024/1024)) GB
 I'm not sure how this equates to all the memory being used on the machine, but as far as ksm is concerned it's saving us about 100 gigs. Nice.
 
 <pre>
-<code>
-root@ksm_test:~$ free
+<code>root@ksm_test:~$ free
              total       used       free     shared    buffers     cached
 Mem:     131997772  131556896     440876          0     108448  108129628
 -/+ buffers/cache:   23318820  108678952
@@ -218,8 +197,7 @@ Swap:     41943032     302836   41640196
 Update: Now that I have a better understanding of what ksm is doing and what it's numbers mean, using a modified version of "this script":http://aionica.computerlink.ro/2011/08/ksm-kernel-samepage-merging-status/ we can see some interesting results, though in the below example I am running 60 2 gig 1 vcpu instances instead of 30 4 gig 2 vcpu instances like the rest of this post:
 
 <pre>
-<code>
-root@ksm_test:~$ ./ksm_stat.sh 
+<code>root@ksm_test:~$ ./ksm_stat.sh 
 Shared memory is 2071 MB
 Saved memory is 95514 MB
 Unshared memory is 21336 MB
@@ -230,6 +208,3 @@ Unshared pages usage ratio is .22
 </pre>
 
 So thanks for reading, and if you have any suggestions as to what I might be doing incorrectly, be it settings or my math or my general assumptions about ksm :), please let me know in the comments.
-
-Thanks,
-Curtis.

@@ -2,11 +2,10 @@
 layout: post
 title: Adding networks to libvirt
 categories: 
+header_image: /img/met/DP821057.jpg
+header_permalink: http://www.metmuseum.org/collection/the-collection-online/search/337499
 ---
  
-p(meta). 26 April - 2014 - Edmonton!
-
-
 h1. {{ page.title }}
 
 For my "Swiftacular":http://github.com/curtisgithub/swiftacular project I'd like to figure out if I can run some automated tests and create a new Swiftacular cluster using libvirt. My Swiftacular configuration currently has five networks used to create an OpenStack Swift cluster (complete with a separate replication network). My Vagrantfile for Swiftacular sets up those networks, so I need to replicate that configuration using libvirt. 
@@ -14,8 +13,7 @@ For my "Swiftacular":http://github.com/curtisgithub/swiftacular project I'd like
 By default with a libvirt host on Ubuntu 12.04 you get one network: the default network.
 
 <pre>
-<code>
-# virsh net-list
+<code># virsh net-list
 Name                 State      Autostart
 -----------------------------------------
 default              active     yes       
@@ -25,8 +23,7 @@ default              active     yes
 That default network comes with a bridge and a dnsmasq server to provide dhcp addresses.
 
 <pre>
-<code>
-# ifconfig | grep virbr
+<code># ifconfig | grep virbr
 virbr0    Link encap:Ethernet  HWaddr 52:54:00:a3:05:65  
 # ps ax  |grep dns
  4943 ?        S      0:02 /usr/sbin/dnsmasq -u libvirt-dnsmasq
@@ -37,8 +34,7 @@ SNIP!
 Each virtual machine booted using libvirt will have a default network configured. Below is a snippet of the xml defining a virtual machine. Note how the network to use is set to "default."
 
 <pre>
-<code>
-SNIP!
+<code>SNIP!
     <interface type='network'>
       <mac address='fa:16:3e:18:78:ae'/>
       <source network='default'/>
@@ -53,7 +49,6 @@ So first we need to add more networks, and then we need to configure virtual mac
 
 h2. More libvirt networks
 
-
 In Swiftacular I have five networks:
 
 * eth0 - default - Used by Vagrant
@@ -67,8 +62,7 @@ I'm going to replicate that with libvirt networks, and the eth0 network will be 
 Here is an xml definition file for the internal network I would like to add:
 
 <pre>
-<code>
-<network>
+<code><network>
   <name>internal</name>
   <forward mode='nat'/>
   <bridge name='internalbr0' stp='on' delay='0' />
@@ -84,8 +78,7 @@ Here is an xml definition file for the internal network I would like to add:
 Now that the xml file has been created, we can use virsh net-define to define it.
 
 <pre>
-<code>
-# virsh net-define internal_network.xml 
+<code># virsh net-define internal_network.xml 
 Network internal defined from internal_network.xml
 </code>
 </pre>
@@ -93,8 +86,7 @@ Network internal defined from internal_network.xml
 And we can see the network show up in virsh net-list.
 
 <pre>
-<code>
- virsh net-list --all
+<code># virsh net-list --all
 Name                 State      Autostart
 -----------------------------------------
 default              active     yes             
@@ -105,8 +97,7 @@ internal             inactive   no
 But as can bee seen above, the network is not active, nor set to autostart. So let's do that.
 
 <pre>
-<code>
-# virsh net-start internal
+<code># virsh net-start internal
 Network internal started
 
 # virsh net-autostart internal
@@ -123,8 +114,7 @@ internal             active     yes
 Also we have an internal bridge and a dnsmasq process for that network as well which sets up a leases file.
 
 <pre>
-<code>
-# brctl show  |grep internal
+<code># brctl show  |grep internal
 internalbr0		8000.525400185a02	yes		internalbr0-nic
 
 # ls /var/lib/libvirt/dnsmasq/internal.leases 
@@ -135,8 +125,7 @@ internalbr0		8000.525400185a02	yes		internalbr0-nic
 I'm going to setup the rest of my networks in the same fashion.
 
 <pre>
-<code>
-# virsh net-list 
+<code># virsh net-list 
 Name                 State      Autostart
 -----------------------------------------
 default              active     yes       
@@ -154,8 +143,7 @@ h2. Add network interfaces to libvirt vm definition file
 In order for those networks to be available to a virtual machine they need to be configured in the xml file that defines the vm.
 
 <pre>
-<code>
-SNIP!
+<code>SNIP!
         <interface type='network'>
             <source network='default'/>
                 <model type='virtio'/>
@@ -191,8 +179,7 @@ I have a user-data and meta-data file for each vm which is converted into an ima
 In my user-data file I configure the files that will setup eth2 to eth4 as dhcp. eth1 is already setup in the image, so I don't have to configure it with cloud-init.
 
 <pre>
-<code>
-SNIP!
+<code>SNIP!
 write_files:
   - content: |
       auto eth1
@@ -227,8 +214,7 @@ I have a script called generic.sh that creates a custom cloud-init image and con
 I am using Ubuntu 14.04 as the OS for the virtual machine. This has a different cloud-init version that Ubuntu 12.04 so there may be differences in terms of cloud-init if trying to boot a Precise vm vs a Trusty vm.
 
 <pre>
-<code>
-# ./generic.sh trusty testnetworks
+<code># ./generic.sh trusty testnetworks
 
 Domain testnetworks defined from /tmp/tmp.yJ6w0CO3A2
 
@@ -239,8 +225,7 @@ Domain testnetworks started
 Now I have a vm called "testnetworks" running in libvirt. I can check the various dnsmasq lease files in /var/lib/libvirt/dnsmasq/*.leases to see if it got an IP address.
 
 <pre>
-<code>
-# virsh list  |grep test
+<code># virsh list  |grep test
  40 testnetworks         running
 # cat /var/lib/libvirt/dnsmasq/internal.leases 1398535697 52:54:00:72:db:0e 10.0.20.68 testnetworks *
 </code>
@@ -251,8 +236,7 @@ And we can see that it did.
 Also we can find out the macs that were randomly given to the vm via libvirt using virsh dumpxml.
 
 <pre>
-<code>
-# virsh dumpxml testnetworks | grep mac
+<code># virsh dumpxml testnetworks | grep mac
     <type arch='x86_64' machine='pc-1.0'>hvm</type>
       <mac address='52:54:00:2d:52:8d'/>
       <mac address='52:54:00:72:db:0e'/>
@@ -265,8 +249,7 @@ Also we can find out the macs that were randomly given to the vm via libvirt usi
 If I ssh into the virtual machine I should be able to see all those interfaces and checkout the routing table. I can also get to the Internet via the default gateway.
 
 <pre>
-<code>
-# ssh ubuntu@10.0.20.68
+<code># ssh ubuntu@10.0.20.68
 SNIP!
 ubuntu@testnetworks:~$ ifconfig | grep eth
 eth0      Link encap:Ethernet  HWaddr 52:54:00:2d:52:8d  
@@ -298,8 +281,7 @@ So now I have five networks to play with!
 Let's boot one more to see if we have connectivity between two vms.
 
 <pre>
-<code>
-# ./generic.sh trusty testnetworks2
+<code># ./generic.sh trusty testnetworks2
 # cat /var/lib/libvirt/dnsmasq/internal.leases 
 1398535915 52:54:00:84:c2:b9 10.0.20.27 testnetworks2 *
 1398535697 52:54:00:72:db:0e 10.0.20.68 testnetworks *
@@ -309,8 +291,7 @@ Let's boot one more to see if we have connectivity between two vms.
 So we should be able to ping 10.0.20.27 from .68.
 
 <pre>
-<code>
-ubuntu@testnetworks:~$ ping -c 1 10.0.20.27
+<code>ubuntu@testnetworks:~$ ping -c 1 10.0.20.27
 PING 10.0.20.27 (10.0.20.27) 56(84) bytes of data.
 64 bytes from 10.0.20.27: icmp_seq=1 ttl=64 time=0.284 ms
 

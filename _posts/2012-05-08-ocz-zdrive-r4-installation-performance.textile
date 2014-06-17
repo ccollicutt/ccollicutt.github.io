@@ -6,8 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 8 May - 2012 - Edmonton
-
 In a previous "post":http://serverascode.com/2012/04/13/11-ocz-zdrive-r4s I mentioned how we had purchased 11 300GB "OCZ Z-Drive R4 PCIe-SSD cards":http://www.oczenterprise.com/ssd-products/z-drive-c-series.html. (Please note that this was a special case purchase--the cards didn't meet any specific requirements we had other than that they were easily available, PCIe-SSD, and low profile.)
 
 We bought the low profile version because these drives are going into the "Supermicro SC847E16-R1400LPB":http://www.supermicro.com/products/chassis/4U/847/SC847E1-R1400LP.cfm chassis (the subject of future posts), which have room for seven low profile cards. I believe the full height zdrive R4s are faster, so this is a compromise.
@@ -23,8 +21,7 @@ There is an "installation guide":http://www.oczenterprise.com/downloads/solution
 I'm running Centos 6.2 on these servers.
 
 <pre>
-<code>
-# cat /etc/redhat-release 
+<code># cat /etc/redhat-release 
 CentOS release 6.2 (Final)
 # uname -a
 Linux ocz_server 2.6.32-220.el6.x86_64 #1 SMP Tue Dec 6 19:48:22 GMT 2011 x86_64 x86_64 x86_64 GNU/Linux
@@ -35,8 +32,7 @@ Linux ocz_server 2.6.32-220.el6.x86_64 #1 SMP Tue Dec 6 19:48:22 GMT 2011 x86_64
 I'm using the:
 
 <pre>
-<code>
-Red Hat Enterprise Linux 6.x, CentOS 6.x 64-bit	1.0.0.1480	Mar 2, 2012
+<code>Red Hat Enterprise Linux 6.x, CentOS 6.x 64-bit	1.0.0.1480	Mar 2, 2012
 </code>
 </pre>
 
@@ -45,8 +41,7 @@ version of the driver.
 When that tar file is downloaded and unzipped all there is inside is the _ocz10xx.ko_ kernel module.
 
 <pre>
-<code>
-# wget http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz 
+<code># wget http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz 
 --2012-05-08 21:40:23--  http://www.oczenterprise.com/files/drivers/OCZ%20RHEL-Centos_6.x_64-Bit_r1480.tar.gz
 Resolving www.oczenterprise.com... 74.52.187.58
 Connecting to www.oczenterprise.com|74.52.187.58|:80... connected.
@@ -66,8 +61,7 @@ ocz10xx.ko
 which can be loaded by:
 
 <pre>
-<code>
-# insmod ocz10xx.ko
+<code># insmod ocz10xx.ko
 # lsmod | grep ocz
 ocz10xx               479350  1 
 </code>
@@ -76,8 +70,7 @@ ocz10xx               479350  1
 When that module is loaded the following is reported to dmesg:
 
 <pre>
-<code>
-ocz10xx: module license 'Proprietary' taints kernel.
+<code>ocz10xx: module license 'Proprietary' taints kernel.
 Disabling lock debugging due to kernel taint
 ocz10xx module is older than RHEL 6.2 ... applying fixups
   alloc irq_desc for 26 on node -1
@@ -112,8 +105,7 @@ Usually kernel modules go in _/lib/modules/`uname -r`_ but this module doesn't s
 What I did was build and RPM with three files:
 
 <pre>
-<code>
-# rpm -qf /etc/depmod.d/ocz-zdrive-r4.conf 
+<code># rpm -qf /etc/depmod.d/ocz-zdrive-r4.conf 
 ocz-zdrive-r4-r1480-2.el6.x86_64
 # rpm -qf /etc/modprobe.d/ocz-zdrive-r4.conf 
 ocz-zdrive-r4-r1480-2.el6.x86_64
@@ -125,8 +117,7 @@ ocz-zdrive-r4-r1480-2.el6.x86_64
 The _.conf_ files contain:
 
 <pre>
-<code>
-# cat /etc/depmod.d/ocz-zdrive-r4.conf 
+<code># cat /etc/depmod.d/ocz-zdrive-r4.conf 
 search /usr/share/ocz-zdrive-r4/module
 # cat /etc/modprobe.d/ocz-zdrive-r4.conf 
 alias ocz10xx ocz
@@ -136,8 +127,7 @@ alias ocz10xx ocz
 which will ensure that the _ocz10xx.ko_ module is loaded with all the other kernel modules, so that you can put file systems on the zdrive into fstab and have them mounted at boot:
 
 <pre>
-<code>
-# uptime
+<code># uptime
  23:05:24 up 15 min,  2 users,  load average: 0.00, 0.02, 0.00
 # lsmod | grep ocz
 ocz10xx               479350  1 
@@ -161,8 +151,7 @@ As I've said before, good performance testing is hard to do. All I can really do
 h3. Write bandwidth test
 
 <pre>
-<code>
-# fio --filename=/dev/sdg --direct=1 --rw=randwrite --bs=1m \
+<code># fio --filename=/dev/sdg --direct=1 --rw=randwrite --bs=1m \
 --size=5G --numjobs=4 --runtime=10 --group_reporting --name=file1
 file1: (g=0): rw=randwrite, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
 ...
@@ -201,8 +190,7 @@ Disk stats (read/write):
 h3. Read IOPS test
 
 <pre>
-<code>
-# fio --filename=/dev/sdg --direct=1 --rw=randread --bs=4k \
+<code># fio --filename=/dev/sdg --direct=1 --rw=randread --bs=4k \
 --size=5G --numjobs=64 --runtime=10 --group_reporting --name=file1
 file1: (g=0): rw=randread, bs=4K-4K/4K-4K, ioengine=sync, iodepth=1
 ...
@@ -250,8 +238,7 @@ Disk stats (read/write):
 h3. Read bandwidth test
 
 <pre>
-<code>
-# fio --filename=/dev/sdg --direct=1 --rw=randread --bs=1m --size=5G \
+<code># fio --filename=/dev/sdg --direct=1 --rw=randread --bs=1m --size=5G \
  --numjobs=4 --runtime=10 --group_reporting --name=file1
 file1: (g=0): rw=randread, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
 ...
@@ -289,8 +276,7 @@ Disk stats (read/write):
 h3. Write IOPS test
 
 <pre>
-<code>
-# fio --filename=/dev/sdg --direct=1 --rw=randwrite --bs=4k --size=5G \
+<code># fio --filename=/dev/sdg --direct=1 --rw=randwrite --bs=4k --size=5G \
 --numjobs=64 --runtime=10 --group_reporting --name=file
 file: (g=0): rw=randwrite, bs=4K-4K/4K-4K, ioengine=sync, iodepth=1
 ...
@@ -341,7 +327,4 @@ h2. Conclusion
 From a cursory look these drives seem to perform well. At least when they are brand new. :) We'll see how they perform over time.
 
 If anyone would like to see specific tests, please let me know.
-
-Thanks,
-Curtis.
 

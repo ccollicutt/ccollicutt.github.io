@@ -4,11 +4,6 @@ title: Software defined networking, Openvswitch, and Ubuntu 12.04
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_uofa_campus.jpg!
-_(sunny with snow as usual)_
-
-p(meta). 21 February - 2013 - Edmonton!
-
 h1. {{ page.title }}
 
 Recently I've been testing over committing on KVM. Once I started running hundreds of virtual machines (vms) on a single node, I realized that in order to get them to do anything I have to access them over the network to run something like "Ansible":http://ansible.cc playbooks designed to test load.
@@ -44,8 +39,7 @@ I put together an "ansible playbook":https://github.com/curtisgithub/ansible_pla
 I'm not going to directly cut and paste my "ansible playbook":https://github.com/curtisgithub/ansible_playbooks/blob/master/sdn/tasks/setup.yml into this post, but suffice it to say that most dependencies can be installed via @apt-get@, but there is one step required to build and module.
 
 <pre>
-<code>
-# Install these packages:
+<code># Install these packages:
 #   - openvswitch-datapath-source 
 #   - bridge-utils
 #   - module-assistant  
@@ -70,8 +64,7 @@ bq. "At its core, it’s a platform for the rapid development and prototyping of
 Hey, it's Python, it's Openflow...what else do I need. Sign me up. :)
 
 <pre>
-<code>
-$ cd /usr/local/src
+<code>$ cd /usr/local/src
 $ git clone http://github.com/noxrepo/pox
 $ zdaemon -p 'python /usr/local/src/pox/pox.py \
 --no-cli forwarding.l2_learning' -d start
@@ -81,8 +74,7 @@ $ zdaemon -p 'python /usr/local/src/pox/pox.py \
 And now Pox should be listening on port 6633:
 
 <pre>
-<code>
-$ netstat -ant | grep 6633
+<code>$ netstat -ant | grep 6633
 tcp        0      0 0.0.0.0:6633            0.0.0.0:*               LISTEN     
 $ sudo lsof -i | grep 6633
 python   34150   root    3u  IPv4 39211055      0t0  TCP *:6633 (LISTEN)
@@ -96,16 +88,14 @@ h2. Configure the bridge
 Now we can add a bridge to the openv switch.
 
 <pre>
-<code>
-$ ovs-vsctl add-br br-int
+<code>$ ovs-vsctl add-br br-int
 </code>
 </pre>
 
 And then configure br-int (or whatever you've called the bridge), and I'm using the eth2 interface in this example.
 
 <pre>
-<code>
-$ ovs-vsctl add-port br-int eth2; ifconfig eth2 0; ifconfig br-int <IPv4 Address> \
+<code>$ ovs-vsctl add-port br-int eth2; ifconfig eth2 0; ifconfig br-int <IPv4 Address> \
 netmask 255.255.255.0
 </code>
 </pre>
@@ -113,8 +103,7 @@ netmask 255.255.255.0
 Let's tell Openvswitch to use the Pox controller that is running.
 
 <pre>
-<code>
-$ ovs-vsctl set-controller br-int tcp:<IPv4 Address>:6633
+<code>$ ovs-vsctl set-controller br-int tcp:<IPv4 Address>:6633
 </code>
 </pre>
 
@@ -123,8 +112,7 @@ Finally we need interface up and down scripts.
 ifdown:
 
 <pre>
-<code>
-$ cat /sbin/ovs-ifdown
+<code>$ cat /sbin/ovs-ifdown
 #!/bin/sh 
 switch='br-int' 
 /sbin/ifconfig $1 0.0.0.0 down 
@@ -135,8 +123,7 @@ ovs-vsctl del-port ${switch} $1
 ifup:
 
 <pre>
-<code>
-$ cat /sbin/ovs-ifup
+<code>$ cat /sbin/ovs-ifup
 #!/bin/sh switch='br-int' 
 /sbin/ifconfig $1 0.0.0.0 up
  ovs-vsctl add-port ${switch} $1
@@ -150,16 +137,14 @@ h2. Booting a vm
 I'm booting vms via a script, and part of the @kvm@ command line options is the network tap, which uses the ifup/ifdown scripts:
 
 <pre>
-<code>
-  -net tap,script=/sbin/ovs-ifup,downscript=/sbin/ovs-ifdown
+<code>-net tap,script=/sbin/ovs-ifup,downscript=/sbin/ovs-ifdown
 </code>
 </pre>
 
 And, here is a running instance:
 
 <pre>
-<code>
-$ ps ax | grep "kvm -drive" | head -1
+<code>$ ps ax | grep "kvm -drive" | head -1
   9831 ?        Sl    21:01 kvm -drive if=virtio,file=/mnt/intel/1.img -m 2048 \
   -boot a -net nic,macaddr=52:54:00:a1:c0:fd \
   -net tap,script=/sbin/ovs-ifup,downscript=/sbin/ovs-ifdown -nographic -vnc :1 \
@@ -173,8 +158,7 @@ $ ps ax | grep "kvm -drive" | head -1
 Right now there's about 300 vms running on this single compute node.
 
 <pre>
-<code>
-$ ps ax  |grep "kvm -drive" | wc -l
+<code>$ ps ax  |grep "kvm -drive" | wc -l
 301
 </code>
 </pre>
@@ -186,8 +170,7 @@ h2. What now?
 Well, I've achieved my goal of getting Openvswitch up and running to enable networking between vms on a single compute node. 
 
 <pre>
-<code>
-ubuntu@ubuntu:~$ ifconfig eth0 | grep 192
+<code>ubuntu@ubuntu:~$ ifconfig eth0 | grep 192
           inet addr:192.168.100.111  Bcast:192.168.100.255  Mask:255.255.255.0
 ubuntu@ubuntu:~$ ping -c 1 192.168.100.23
 PING 192.168.100.23 (192.168.100.23) 56(84) bytes of data.
@@ -204,6 +187,3 @@ I think my next step will be to work in multiple virtual machines to see if I ca
 Another important thing to do is to get a test environment of OpenStack Folsom (or Grizzly) up and running to see how Quantum utilizes Openflow and SDN.
 
 I'm hoping to spend the next few days learning about "Pox":http://www.noxrepo.org/pox/about-pox/. Wish me luck. :)
-
-Thanks,
-Curtis.

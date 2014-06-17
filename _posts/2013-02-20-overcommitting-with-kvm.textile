@@ -4,12 +4,6 @@ title: Over committing with KVM
 categories:
 ---
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/winter_cs.jpg!
-_(Still winter in Edmonton, will have to blog a lot more in the summer)_
-
-p(meta). 20 February - 2013 - Edmonton!
-
-
 h1. {{ page.title }}
 
 It's quite possible to over commit resources with the KVM hypervisor.
@@ -23,8 +17,7 @@ h2. Hardware
 I am running these tests on a single Dell C6220 node. It has 32 cores (including hyperthreading), 128GB of main memory, and SSD drives.
 
 <pre>
-<code>
-test_host:~$ cat /proc/cpuinfo | grep processor | wc -l
+<code>test_host:~$ cat /proc/cpuinfo | grep processor | wc -l
 32
 </code>
 </pre>
@@ -38,8 +31,7 @@ The SSD drive types we are testing with are:
 Each of them is in a stripe/RAID0 configuration, so we have three striped devices, md2 (Samsung) and the poorly named md126 (Intel) and md127 (Dell).
 
 <pre>
-<code>
-test_host:~$ cat /proc/mdstat 
+<code>test_host:~$ cat /proc/mdstat 
 Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4]
 [raid10] 
 md0 : active raid1 sdb1[1] sda1[0]
@@ -84,8 +76,7 @@ h2. Disk space over committing
 This is straight forward: image snapshots. qcow2 images can be created as snapshots of a backing file.
 
 <pre>
-<code>
-test_host:/mnt/intel$ file 263.img 
+<code>test_host:/mnt/intel$ file 263.img 
 263.img: QEMU QCOW Image (v2), has backing file 
 (path /mnt/intel/precise-server-cloudimg-amd64-disk1.qcow2), 2147483648 bytes
 </code>
@@ -110,8 +101,7 @@ h2. Load
 Right now I have 300 Ubuntu images running, each being given 2048MB of memory. 
 
 <pre>
-<code>
-test_host:~$ ps ax | grep "kvm -drive" | wc -l
+<code>test_host:~$ ps ax | grep "kvm -drive" | wc -l
 300
 </code>
 </pre>
@@ -119,8 +109,7 @@ test_host:~$ ps ax | grep "kvm -drive" | wc -l
 And load and memory usage are just fine. A bit of swapping, but that's Ok.
 
 <pre>
-<code>
-top - 10:58:13 up 8 days, 23:55,  2 users,  load average: 1.35, 1.29, 1.92
+<code>top - 10:58:13 up 8 days, 23:55,  2 users,  load average: 1.35, 1.29, 1.92
 Tasks: 845 total,   2 running, 843 sleeping,   0 stopped,   0 zombie
 Cpu(s):  0.8%us,  3.1%sy,  0.0%ni, 95.9%id,  0.1%wa,  0.0%hi,  0.0%si,  0.0%st
 Mem:  131997760k total, 122223236k used,  9774524k free,   142448k buffers
@@ -132,8 +121,7 @@ SNIP!
 They have been running for a few days, and are not using much in terms of IOPS as they are completely idle. Below is the output from "iostat":http://linuxcommand.org/man_pages/iostat1.html. All the vms are running off qcow2 images on the Intel 520 based stripe, md126.
 
 <pre>
-<code>
-avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+<code>avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            0.67    0.00    3.08    0.05    0.00   96.20
 
 Device:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn
@@ -160,8 +148,7 @@ h2. Running tests
 Each vm gets its IPs from dnsmasq running on an "Openvswitch":http://openvswitch.org/ bridge (topic of a future blog post). So we have 300 tap devices.
 
 <pre>
-<code>
-test_host:~/performance_testing$ sudo ovs-vsctl show
+<code>test_host:~/performance_testing$ sudo ovs-vsctl show
 SNIP!
         Port "tap166"
             Interface "tap166"
@@ -177,8 +164,7 @@ test_host:~/performance_testing$ ifconfig | grep tap | wc -l
 I like using the "Ansible":http://ansible.cc configuration management system. I've written a custom inventory script that pulls the IPs out of the dnsmasq lease file.
 
 <pre>
-<code>
-test_host:~/performance_testing$ ansible all -c ssh -i ./inventory.py \
+<code>test_host:~/performance_testing$ ansible all -c ssh -i ./inventory.py \
 -m ping -u ubuntu
 SNIP 298 hosts!
 192.168.100.98 | success >> {
@@ -196,6 +182,3 @@ SNIP 298 hosts!
 Then, using that inventory and Ansible I can run whatever load tests I want across however many virtual instances I want. For example I could run "fio":http://linux.die.net/man/1/fio tests across 10% of the vms and watch the IOPS usage on the compute node.
 
 If you have any questions, criticisms or concerns, please let me know by posting in the comments. :)
-
-Thanks,
-Curtis.

@@ -2,15 +2,13 @@
 layout: post
 title: Book Review - The Phoenix Project
 categories: 
+header_image: https://raw2.github.com/curtisgithub/curtisgithub.github.com/master/img/the_phoenix_project.jpg
+
 ---
-
-!https://raw2.github.com/curtisgithub/curtisgithub.github.com/master/img/the_phoenix_project.jpg!
-
-p(meta). 21 Feb - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
-NOTE: May contain spoilers.
+_NOTE: May contain spoilers._
 
 Recently I have been reading books about DevOps--its (short) history and (old) influences. That meant reading _The Goal_ by Eliyahu M. Goldratt, which is a business novel about managing a factory using lean manufacturing concepts. _The Goal_ is heavily referenced in _The Phoenix Project_, and in fact Kim et al's book mirrors the style and format of Goldratt's book. (Though it leaves out much of the home life drama of the main character that is included in Goldratt's book.)
 

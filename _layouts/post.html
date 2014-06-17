@@ -1,38 +1,60 @@
 ---
-layout: default
+layout: post
 ---
-<div id="post">
-{{ content }}
+
+{% include header.html %}
+
+
+  {% if page.header_image %}
+<div class="post_image">
+    <a href="{{ page.header_permalink }}"><img src="{{ page.header_image }}"></a>
 </div>
+  {% endif %}
 
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
 
-<h2>Comments</h2>
+	<section>
+		<div class="eight columns">
+		   <!--
+			<h4 class="post_title"><a href="single-post.html">{{ page.title }}</a></h4>
+			<a href="archive.html"><span class="post_date">{{ page.date }}</span></a>
+			-->
 
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'serverascodecom'; // required: replace example with your forum shortname
+			{{ content }}
 
-    // The following are highly recommended additional parameters. Remove the slashes in front to use.
-    // var disqus_identifier = 'unique_dynamic_id_1234';
-    // var disqus_url = 'http://example.com/permalink-to-page.html';
+		<!--
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+		<div class="metadata">
+			<span><i class="icon-pencil"></i><a href="archive.html">Writer</a></span>
+			<span><i class="icon-time"></i><a href="archive.html">Date</a></span>
+			<span><i class="icon-list"></i><a href="archive.html">Tags/Category</a></span>
+		</div>
 
+		-->
+
+		<hr />
+
+		<div id="disqus_thread"></div>
+		<script type="text/javascript">
+		    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+		    var disqus_shortname = 'serverascodecom'; // required: replace example with your forum shortname
+
+		    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+		    // var disqus_identifier = 'unique_dynamic_id_1234';
+		    // var disqus_url = 'http://example.com/permalink-to-page.html';
+
+		    /* * * DON'T EDIT BELOW THIS LINE * * */
+		    (function() {
+		        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		    })();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+				
+		</div>
+		<br class="clear" />
+	</section>
+
+{% include footer.html %}
 

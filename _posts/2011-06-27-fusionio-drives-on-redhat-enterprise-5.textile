@@ -8,8 +8,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 27 June - 2011 - Edmonton
-
 %{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I'll be posting about that and a few other PCIe-SSD subjects in the next short while. - 24 Apr 2012
 
 h2. FusionIO IODrive Overview
@@ -17,8 +15,7 @@ h2. FusionIO IODrive Overview
 So at work we have a rather large "IBM x3850 x5":http://www-03.ibm.com/systems/x/hardware/enterprise/x3850x5/ server. It has 4 sockets each with six cores and hyperthreading (not that I'm necessarily a fan of hyperthreading--really I haven't done enough research to make up my mind) which ends up with RHEL5 seeing 48 CPUS.
 
 <pre>
-<code>
-$ cat /proc/cpuinfo | grep proc | wc -l
+<code>$ cat /proc/cpuinfo | grep proc | wc -l
 48
 </code>
 </pre>
@@ -28,8 +25,7 @@ Fun.
 But the important part of this post is that this server also has three 640GB "fusion-io drives":http://www.fusionio.com/products/iodrive-duo/ which I have installed and configured as a volume group called @fio@
 
 <pre>
-<code>
-$ ls /dev/fio
+<code>$ ls /dev/fio
 fio/  fioa  fiob  fioc  fiod  fioe  fiof  
 $ vgs fio
   VG   #PV #LV #SN Attr   VSize VFree
@@ -40,8 +36,7 @@ $ vgs fio
 and where the @fio[a,b,c,d,e,f]@ are the drives, with each 640 gig card actually appearing as 2 320 gig disks.
 
 <pre>
-<code>
-$ dmesg  |grep -i "found device"
+<code>$ dmesg  |grep -i "found device"
 fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:89:00.0: Found device 0000:89:00.0
 fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:8a:00.0: Found device 0000:8a:00.0
 fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:93:00.0: Found device 0000:93:00.0
@@ -50,7 +45,6 @@ fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:98:00.0: Found device 0000
 fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:99:00.0: Found device 0000:99:00.0
 </code>
 </pre>
-<br />
 
 h2. Resources
 
@@ -61,8 +55,7 @@ h2. Install
 Once the cards were put into the server, which is somewhat harrowing given their individual cost, and the server was booted, the software drivers that were downloaded from the IBM website were installed. This server runs RHEL5
 
 <pre>
-<code>
-$ cat /etc/redhat-release 
+<code>$ cat /etc/redhat-release 
 Red Hat Enterprise Linux Server release 5.6 (Tikanga)
 </code>
 </pre>
@@ -70,8 +63,7 @@ Red Hat Enterprise Linux Server release 5.6 (Tikanga)
 as that RHEL version that is what IBM supports for drivers.
 
 <pre>
-<code>
-$ rpm -i iodrive-driver-1.2.7.5-1.0_2.6.18_164.el5.x86_64.rpm \
+<code>$ rpm -i iodrive-driver-1.2.7.5-1.0_2.6.18_164.el5.x86_64.rpm \
 iodrive-firmware-1.2.7.6.43246-1.0.noarch.rpm \
 iodrive-jni-1.2.7.5-1.0.x86_64.rpm \
 iodrive-snmp-1.2.7.5-1.0.x86_64.rpm \
@@ -82,8 +74,7 @@ iodrive-util-1.2.7.5-1.0.x86_64.rpm \
 Currently I am using the drivers as they were downloaded, which means using a specific matching kernel to match. The drivers do come with a source RPM so that you can rebuild them for your latest kernel, but I have opted not to do that yet. So install the matching kernel
 
 <pre>
-<code>
-$ yum install kernel-2.6.18-164.el5
+<code>$ yum install kernel-2.6.18-164.el5
 </code>
 </pre>
 
@@ -92,8 +83,7 @@ and reboot.
 However, I am also using the amazing "ksplice":http://ksplice.com service to ensure that depsite the fact that I am using a rather old kernel to match the FusionIO drivers that the kernel is still up to date in terms of security issues:
 
 <pre>
-<code>
-$ uptrack-uname -r
+<code>$ uptrack-uname -r
 2.6.18-238.12.1.el5
 $ uname -r
 2.6.18-164.el5
@@ -105,16 +95,14 @@ The @uptrack-uname -r@ command asks uptrack what security equivalent version of 
 Once the drivers are installed we can load the modules
 
 <pre>
-<code>
-$ modprobe fio-driver
+<code>$ modprobe fio-driver
 </code>
 </pre>
 
 and now we can see the drives
 
 <pre>
-<code>
-$ ls /dev/fio*
+<code>$ ls /dev/fio*
 fioa  fiob  fioc  fiod  fioe  fiof 
 </code>
 </pre>
@@ -126,16 +114,14 @@ h2. Worker processes
 Once the drivers are installed there is a @/etc/init.d/iodrive@ startup script. One of the things this script does is startup some @worker@ processes which I believe are used to move data around the FusionIO drives to ensure their performance and longevity.
 
 <pre>
-<code>
-$ chkconfig --list iodrive
+<code>$ chkconfig --list iodrive
 iodrive 0:off	1:on	2:on	3:on	4:on	5:on	6:off
 </code>
 </pre>
 <br />
 
 <pre>
-<code>
-$ ps ax | grep worker
+<code>$ ps ax | grep worker
  5271 ?        S<   1169:51 [fct0-worker]
  5588 ?        S<   1168:07 [fct1-worker]
  5593 ?        S<   359:01 [fct2-worker]
@@ -153,8 +139,7 @@ h2. Configuration
 Given that we are going to manage the FusionIO drives via LVM, we will need to configure LVM to allow it. See this "knowledge base article":http://kb.fusionio.com/KB/a36/enabling-the-iodrive-for-lvm-use.aspx.
 
 <pre>
-<code>
-$ grep fio /etc/lvm/lvm.conf
+<code>$ grep fio /etc/lvm/lvm.conf
     types = [ "fio", 16 ]
 </code>
 </pre>
@@ -162,8 +147,7 @@ $ grep fio /etc/lvm/lvm.conf
 Then add each @/dev/fio*@ drive as a phyical volume and then add them to a volume group.
 
 <pre>
-<code>
-$ pvs | grep fio
+<code>$ pvs | grep fio
   /dev/fioa  fio    lvm2 a-   300.31G 320.00M
   /dev/fiob  fio    lvm2 a-   300.31G 100.31G
   /dev/fioc  fio    lvm2 a-   300.31G 100.31G
@@ -182,8 +166,7 @@ h2. fio-status
 Useful way to check the status of the FusionIO drives.
 
 <pre>
-<code>
-$ fio-status
+<code>$ fio-status
 
 Found 6 ioDrives in this system with 3 ioDrive Duos
 Fusion-io driver version: 1.2.7.5
@@ -269,15 +252,12 @@ fct5	Attached as 'fiof' (block device)
 </code>
 </pre>
 
-<br />
-
 h2. XFS
 
 Prior to finding out about the official knowledge base, I had decided to purchase a subscription from Redhat for the XFS file system. Then, upon reading this "kb article":http://kb.fusionio.com/KB/a43/filesystem-tuning.aspx, I found that they heavily recommend XFS as the file system to run on top of a FusionIO drive
 
 <pre>
-<code>
-XFS is currently the recommended filesystem. It can achieve up to 3x 
+<code>XFS is currently the recommended filesystem. It can achieve up to 3x 
 the performance of a tuned ext2/ext3 solution. At this time, there is 
 no know additional tuning for running XFS in a single- or multi-ioDrive 
 configuration 
@@ -287,8 +267,7 @@ configuration
 so that is the file system we use.
 
 <pre>
-<code>
-$ mount | grep fio
+<code>$ mount | grep fio
 /dev/mapper/fio-vault1 on /var/lib/vault1 type xfs (rw)
 </code>
 </pre>
@@ -312,8 +291,7 @@ Finally I read this kb article which suggested using the "fio utility":http://fr
 The fio tool is not in the RHEL repositories but it is in rpmforge/repoforge.
 
 <pre>
-<code>
-$ cd /var/tmp
+<code>$ cd /var/tmp
 $ wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
 $ rpm -Uvh rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
 $ yum repolist | grep forge
@@ -329,8 +307,7 @@ Here are a couple of example runs. Please note that at this point I do not know 
 It seems that the @fio@ benchmark utility suports @direct=1@ which means use non-buffered-io, thereby skipping memory cacheing and going straight to the disk.
 
 <pre>
-<code>
-$ cat fio-randwrite.fio 
+<code>$ cat fio-randwrite.fio 
 [randwrite[
 
 direct=1
@@ -382,8 +359,7 @@ Disk stats (read/write):
 And then a similar test using RAID10 SAS disk formated ext3.
 
 <pre>
-<code>
-$ cat fio-randwrite.fio 
+<code>$ cat fio-randwrite.fio 
 [randwrite[
 
 direct=1
@@ -438,7 +414,5 @@ Disk stats (read/write):
 </pre>
 
 That's a pretty big difference: @io=4556.0MB@ for the FusionIO drives versus @io=4096.0KB@ for the SAS RAID10. I'm going to have to look into this more! :)
-
-Thanks.
 
 PS. I found this "list":https://secure.wikimedia.org/wikipedia/en/wiki/List_of_device_bandwidths of device bandwidths interesting.

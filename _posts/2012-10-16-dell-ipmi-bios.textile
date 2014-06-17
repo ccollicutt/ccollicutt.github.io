@@ -6,13 +6,6 @@ categories:
 
 h1. {{ page.title }}
 
-p(meta). 16 October - 2012 - San Diego
-
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/sol_bios.png!
-_(BIOS access via the terminal)_
-
-h1. Accessing the BIOS in a terminal with ipmitool
-
 When I put my systems administrator hat on one of the things that bothers me is getting remote access to the BIOS. I love to use the command line, and any time I have to fire up a GUI of some kind to do work I get an icky feeling.
 
 So when I had to remotely access some Dell C6220s to turn on virtualization, which is off by default in these Dell servers, I didn't want to have to go through the rigamarole of getting the right OS configuration that would allow me to remotely access the console via a web-based Java GUI run out of Firefox. Even writing that sentence takes too long. So I thought I would try out serial over lan (SOL) access.
@@ -20,8 +13,7 @@ So when I had to remotely access some Dell C6220s to turn on virtualization, whi
 And it works! 
 
 <pre>
-<code>
-server2 $ ipmitool -I lanplus -H server1-ipmi -U root -P password sol activate
+<code>server2 $ ipmitool -I lanplus -H server1-ipmi -U root -P password sol activate
 [SOL Session operational.  Use ~? for help]
 
 Ubuntu 12.04.1 LTS server1 ttyS1
@@ -35,8 +27,7 @@ If we reboot the server we can see all the usual boot screens and can access the
 Here are some of the key mappings that will help to use ipmitool. The main thing to note is how to exit from the SOL session, and to do that you basically hit ENTER the a tilde, then a period. (For some reason this will usually log me not only out of the SOL session, but also the ssh session. Something to look into.)
 
 <pre>
-<code>
-server2 $ ipmitool -I lanplus -H 10.10.10.10 -U username -P password sol activate
+<code>server2 $ ipmitool -I lanplus -H 10.10.10.10 -U username -P password sol activate
 [SOL Session operational.  Use ~? for help]
 Here are some useful commands:
         KEY MAPPING FOR CONSOLE REDIRECTION:
@@ -65,8 +56,7 @@ Supported escape sequences:
 There are all kinds of things one can do with ipmitool other than terminal based BIOS access, and I won't list all of them here, but one nice thing is the ability to set the boot device, for example setting the boot device to disk and doing so for all future reboots.
 
 <pre>
-<code>
-server2 $ ipmitool -H 10.10.10.10 -U root -P password chassis bootdev disk \
+<code>server2 $ ipmitool -H 10.10.10.10 -U root -P password chassis bootdev disk \
 options=persistent
 </code>
 </pre>
@@ -74,8 +64,7 @@ options=persistent
 Here are the kernel configs I used to tell Ubuntu to use serial. Note that I added the "\" in the text below, so you can't just cut and paste it; needs to be all on one line.
 
 <pre>
-<code>
-pxeboot-server:/tftp/pxelinux.cfg# cat default 
+<code>pxeboot-server:/tftp/pxelinux.cfg# cat default 
 # D-I config version 2.0
 DEFAULT server
 prompt 0

@@ -3,12 +3,10 @@ layout: post
 title: ssh read from socket failed
 categories: 
 ---
- 
-p(meta). 20 March - 2014 - Edmonton!
 
 h1. {{ page.title }}
 
-UPDATE: This is likely because cloud-init is failing to get information from the various sources it can get information from.
+_UPDATE: This is likely because cloud-init is failing to get information from the various sources it can get information from._
 
 For the people of the future, the ones who get an error message about connections being reset by peer when trying to ssh into a server, check to see if the server does indeed have server keys in /etc/ssh. 
 
@@ -17,8 +15,7 @@ I spent like an hour or more looking into this. I'm not sure why, but an Ubuntu 
 Below is an example of an attempted connection.
 
 <pre>
-<code>
-root@client# ssh -vvvv ubuntu@192.168.122.217
+<code>root@client# ssh -vvvv ubuntu@192.168.122.217
 OpenSSH_5.9p1 Debian-5ubuntu1.1, OpenSSL 1.0.1 14 Mar 2012
 debug1: Reading configuration data /root/.ssh/config
 debug1: /root/.ssh/config line 1: Applying options for 192.168.122.*
@@ -49,8 +46,7 @@ Read from socket failed: Connection reset by peer
 To fix this I regenerated the keys on the server (by logging into the console) and restarted. Then I was able to ssh into the server.
 
 <pre>
-<code>
-root@server# ssh-keygen -q -f /etc/ssh/ssh_host_key -N '' -t rsa1
+<code>root@server# ssh-keygen -q -f /etc/ssh/ssh_host_key -N '' -t rsa1
 root@server# ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
 root@server# ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
 root@server# service ssh restart
