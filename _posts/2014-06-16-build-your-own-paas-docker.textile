@@ -200,7 +200,7 @@ optional arguments:
 
 As you can see it has a few options, such as "addsite" and "deploysite". It's not complete yet. Adding a site just enters it into the wpd database, and deploying it means starting up containers and adding the information to redis so that hipache can route http requests to them.
 
-What this would look like in a larger system...I'm not sure. It seems more like a customer management system than anything else.
+What this would look like in a larger system...I'm not sure. It seems like a user management system more than anything else--users have sites, sites have names, containers, images and datastores.
 
 h2. Issues
 
