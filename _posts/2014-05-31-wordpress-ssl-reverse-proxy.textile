@@ -20,8 +20,8 @@ The solution is adding an extra bit of configuration code to wp-config.php when 
 <code>define('FORCE_SSL_ADMIN', true);
 if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
        $_SERVER['HTTPS']='on';
- </code>
- </pre>
+</code>
+</pre>
 
 With that added to the top of wp-config.php I can now have hipache serve up plain http for all of the wordpress site except wp-login.php and /wp-admin. Hopefully I remember to look here next time... :) 
 
