@@ -28,7 +28,7 @@ http://<your_wp_URL>/wp-admin/install.php?step=2
 </code>
 </pre>
 
-This worked seemed like an Ok option, but the only thing I didn't like was that I would have to wait until the container was up to send the http request. Not only was it annoying to have to wait (it's containers after all) but it's not very secure to have the site up but not completely installed, ie. anyone who happened onto it could set the admin user name and password. Even if I didn't add the site to the web router to be available externally, it still doesn't feel right. So while this was Ok for some basic testing, it's not good enough.
+This worked and seemed like an Ok option, but the only thing I didn't like was that I would have to wait until the container was up to send the http request. Not only was it annoying to have to wait (it's containers after all) but it's not very secure to have the site up but not completely installed, ie. anyone who happened onto it could set the admin user name and password. Even if I didn't add the site to the web router to be available externally, it still doesn't feel right. So while this was Ok for some basic testing, it's not good enough.
 
 h2. Second try: wp_install() function
 
