@@ -218,7 +218,10 @@ In the end, I think that docker is a great system to use as a component in PaaS 
 
 h2. The Future!
  
-Obviously I'm leaving a lot out. There's a huge difference between toying around with a PoC like this and running a production PaaS. I haven't even mentioned the terms "service discovery" or "container scheduling", which theoretically things like etcd and "libswarm":https://github.com/docker/libswarm could take care of respectively, though I'm not sure libswarm will turn into a container scheduler. Recently Google released "Kubernetes":https://news.ycombinator.com/item?id=7873897 which is as docker cluster manager of some kind, though it currently only runs on GCE. Mesosphere is also working on its "Deimos":https://github.com/mesosphere/deimos project. Further, CoreOS has "fleet":https://github.com/coreos/fleet and Spotify "helios":https://github.com/spotify/helios. Neither have I discussed limiting resources, such as container memory and CPU and a about a billion other things, but I look forward to learning more.
+Obviously I'm leaving a lot out. There's a huge difference between toying around with a PoC like this and running a production PaaS. I haven't even mentioned the terms "service discovery" or "container scheduling", which theoretically things like etcd and "libswarm":https://github.com/docker/libswarm could take care of respectively, though I'm not sure libswarm will turn into a container scheduler. Recently Google released "Kubernetes":https://news.ycombinator.com/item?id=7873897 which is as docker cluster manager of some kind, though it currently only runs on GCE. Mesosphere is also working on its "Deimos":https://github.com/mesosphere/deimos project. Further, CoreOS has "fleet":https://github.com/coreos/fleet and Spotify "helios":https://github.com/spotify/helios. "Shipyard":http://serverascode.com/2014/05/25/docker-shipyard-multihost.html can also control multiple docker hosts. Also there is "Havok":https://github.com/ehazlett/havok which is a way to monitor docker containers and add them to vulcand via etcd. Neither have I discussed limiting resources, such as container memory and CPU and a about a billion other things, but I look forward to learning more.
 
+h2. Updates
 
+* Changed Apache Mesos to Mesosphere with regards to Deimos
+* Added Shipyard and Havok
 
