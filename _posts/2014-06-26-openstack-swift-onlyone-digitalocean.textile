@@ -127,7 +127,7 @@ Please note a couple of environment variables being set:
 * *SWIFT_SET_PASSWORDS=yes* The startmain.sh script for Swift OnlyOne will change the default password for each use to one password.
 
 <pre>
-<code>root@swift-onlyone:~# docker run -d -e SWIFT_SET_PASSWORDS=yes -e SWIFT_STORAGE_URL_SCHEME=https --volumes-from SWIFT_DATA --name SWIFT -t serverascode/swift-onlyone2
+<code>root@swift-onlyone:~# docker run -d -e SWIFT_SET_PASSWORDS=yes -e SWIFT_STORAGE_URL_SCHEME=https --volumes-from SWIFT_DATA --name SWIFT -t serverascode/swift-onlyone
 </code>
 </pre>
 
