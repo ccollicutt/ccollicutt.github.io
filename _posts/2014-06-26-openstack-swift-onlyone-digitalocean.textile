@@ -30,7 +30,9 @@ Dokku v0.2.3 on Ubuntu 14.04 (w/ Docker 1.0) (id: 4381169, distro: Ubuntu)
 </code>
 </pre>
 
-Let's boot it. 66 is the 512MB image.
+Let's boot it. 66 is the 512MB image. 
+
+_NOTE: If you really plan on using this for work instead of just testing Swift, a larger droplet size will likely be necessary. I did get some out of memory errors with the 512MB size._
 
 <pre>
 <code>curtis$ tugboat create swifty-onlyone -i 4296335 -s 66 -k 118429
@@ -245,4 +247,6 @@ Note that I just wanted to use that as a demonstration, not the actual use case 
 
 h2. Conclusion
 
-Now for $5 a month you have a little swift install. The storage on that instance is pretty limited, at 20GB, but at any rate you can put all kinds of "DevOps reactions":http://devopsreactions.tumblr.com/ gifs there if you want. Or, perhaps use it to create interesting, PoC scalable web systems. :)
+Now for $5 a month you have a little swift install. The storage on that instance is pretty limited, at 20GB, but at any rate you can put all kinds of "DevOps reactions":http://devopsreactions.tumblr.com/ gifs there if you want. Or, perhaps use it to create interesting, proof-of-concept scalable web systems.
+
+I should note as well that you could deploy OnlyOne in the same fashion on any Docker host, which is one of Docker's most interesting features.
