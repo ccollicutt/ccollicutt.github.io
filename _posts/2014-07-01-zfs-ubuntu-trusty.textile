@@ -13,7 +13,7 @@ ZFS is an amazing file system that is now also usable on Linux. One of ZFS' best
 
 There are other interesting file systems and ways to cache with solid state drives. "btrfs":https://btrfs.wiki.kernel.org/index.php/Main_Page is continually getting better (I use it with "Docker":http://serverascode.com/2014/06/09/docker-btrfs.html) and recently the Linux kernel gained a few ways to do SSD caching: dmcache, flashcache, and bcache.
 
-In my situation I have various media files from short films I've made that I need to backup and protect from bitrot. To do that I've decided to use ZFS on Linux. I worked with ZFS + FreeBSD a bit, but I also want the ability to mount many different types of file systems, and surprisingly FreeBSD doesn't support that many of them. I'm also a big far of XFS, which I believe FreeBSD only supports in read-only mode. So Linux it is. 
+In my situation I have various media files from short films I've made that I need to backup and protect from bitrot. To do that I've decided to use ZFS on Linux. I worked with ZFS + FreeBSD a bit, but I also want the ability to mount many different types of file systems, and surprisingly FreeBSD doesn't support that many of them. I'm also a big fan of XFS, which I believe FreeBSD only supports in read-only mode. So Linux it is. 
 
 h2. ZoL PPA
 
