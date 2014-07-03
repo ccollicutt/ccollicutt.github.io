@@ -7,7 +7,7 @@ categories:
  
 h1. {{ page.title }}
 
-I just physically added a ssd into my "home backup server":http://localhost:4000/2014/07/01/zfs-ubuntu-trusty.html and I would like to configure it as a zfs l2arc cache device. Doing so will mean recently used files will be accessed via the ssd drive instead of the slower spinning disks.
+I just physically added a ssd into my "home backup server":http://localhost:4000/2014/07/01/zfs-ubuntu-trusty.html and I would like to configure it as a zfs l2arc cache device. Doing so will mean new files will be written to the sdd first, then the spinning disk later, and that recently used files will be accessed via the ssd drive instead of the slower spinning disks. Depending on your workload, this should make most disk operations faster. 
 
 The ssd is /dev/sdc.
 
