@@ -122,7 +122,7 @@ Run status group 0 (all jobs):
 </code>
 </pre>
 
-Now the stats show some usage.
+Now the stats show some usage. The stats below are after a few test runs.
 
 <pre>
 <code>root@storage:/home/curtis# zpool iostat -v tank
