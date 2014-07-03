@@ -72,7 +72,7 @@ cache           -      -      -      -      -      -
 </code>
 </pre>
 
-We can run some fio tests on it. Interestingly zfs doesn't support "direct=1". Note that this is just a basic, example fio test. Fio is my favorite disk performance too.
+Fio is my favorite disk performance tool, so lets use that to test the new cache device. Note that this is just a basic, example fio test. Interestingly zfs doesn't support "direct=1". 
 
 <pre>
 <code>root@storage:/home/curtis# cat random-rw.fio 
