@@ -86,7 +86,7 @@ root@dwarf:~# keystone --version
 
 h2. Use Dwarf
 
-Create a default openstack rc file.
+Create a default openstack rc file and source it. Again note there is no real authentication.
 
 <pre>
 <code>root@dwarf:~# cat dwarfrc 
@@ -96,6 +96,7 @@ export OS_REGION_NAME=dwarf-region
 export OS_TENANT_NAME=dwarf-tenant
 export OS_USERNAME=dwarf-user
 export OS_PASSWORD=dwarf-password
+root@dwarf:~# . dwarfrc
 </code>
 </pre>
 
