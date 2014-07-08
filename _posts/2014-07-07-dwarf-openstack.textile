@@ -230,7 +230,7 @@ virbr0    8000.525400a6a92a yes   virbr0-nic
 
 Looks good.
 
-Boot a vm. I see there is an error reported, but the vm does indeed get started up. Something to look into, might have to do with the version of nova client being used. I certainly had some trouble with the glance client.
+Next: boot a vm. 
 
 <pre>
 <code>root@dwarf:~# nova boot --flavor 100 --image 56105cdc-00d8-4e69-beae-fbe20abcbe36 --key_name root test1
@@ -238,7 +238,9 @@ ERROR: 'NoneType' object has no attribute 'get'
 </code>
 </pre>
 
-That vm is running:
+I see there is an error reported, but the vm does indeed get started up. Something to look into, might have to do with the version of nova client being used. I certainly had some trouble with the glance client.
+
+That vm is now running:
 
 <pre>
 <code>root@dwarf:~# virsh list
