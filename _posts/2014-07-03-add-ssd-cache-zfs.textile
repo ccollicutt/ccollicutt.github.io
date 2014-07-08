@@ -7,9 +7,9 @@ categories:
  
 h1. {{ page.title }}
 
-I just physically added a ssd into my "home backup server":http://localhost:4000/2014/07/01/zfs-ubuntu-trusty.html and I would like to configure it as a zfs l2arc cache device. Doing so will mean new files will be written to the sdd first, then the spinning disk later, and that recently used files will be accessed via the ssd drive instead of the slower spinning disks. Depending on your workload, this should make most disk operations faster. 
+I just physically added a SSD into my "home backup server":http://localhost:4000/2014/07/01/ZFS-ubuntu-trusty.html and I would like to configure it as a ZFS l2arc cache device. Doing so will mean new files will be written to the SSD first, then the spinning disk later, and that recently used files will be accessed via the SSD drive instead of the slower spinning disks. Depending on your workload, this should make most disk operations faster. 
 
-The ssd is /dev/sdc.
+In my case, the SSD is /dev/sdc.
 
 <pre>
 <code>root@storage:/home/curtis# lsblk /dev/sdc
@@ -72,7 +72,7 @@ cache           -      -      -      -      -      -
 </code>
 </pre>
 
-Fio is my favorite disk performance tool, so lets use that to test the new cache device. Note that this is just a basic, example fio test. Interestingly zfs doesn't support "direct=1". 
+Fio is my favorite disk performance tool, so lets use that to test the new cache device. Note that this is just a basic, example fio test. Interestingly ZFS doesn't support "direct=1". 
 
 <pre>
 <code>root@storage:/home/curtis# cat random-rw.fio 
