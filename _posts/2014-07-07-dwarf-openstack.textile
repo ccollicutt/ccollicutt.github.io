@@ -7,7 +7,7 @@ categories:
  
 h1. {{ page.title }}
 
-"Dwarf":https://github.com/juergh/dwarf is this really cool little project by "Juerg Haefliger":https://github.com/juergh that provides a subset of the OpenStack APIs to use libvirt on a single host. For some context, here's the "original email":http://www.gossamer-threads.com/lists/openstack/dev/36420?search_string=dwarf;#36420 that was sent to the OpenStack list.
+"Dwarf":https://github.com/juergh/dwarf is this really cool little project by "Juerg Haefliger":https://github.com/juergh that provides a subset of the OpenStack APIs to use libvirt on a single host. For some context, here's the "original email":http://www.gossamer-threads.com/lists/openstack/dev/36420?search_string=dwarf;#36420 that was sent to the OpenStack list. What it does is allow you to use manage a single libvirt host as though it were OpenStack, ie. use nova, glance, and keystone commands to manage libvirt virtual machines.
 
 h2. Why?
 
