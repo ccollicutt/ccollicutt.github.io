@@ -197,6 +197,20 @@ No handlers could be found for logger "keystoneclient.httpclient"
 </code>
 </pre>
 
+Add a keypair. (Though cirros won't use it.)
+
+<pre>
+<code>
+root@dwarf:~# nova keypair-add --pub-key ~/.ssh/id_rsa.pub root
+root@dwarf:~# nova keypair-list
++------+-------------------------------------------------+
+| Name | Fingerprint                                     |
++------+-------------------------------------------------+
+| root | 7f:21:e1:9b:ee:3d:84:89:a5:bc:c1:3e:79:20:e5:c0 |
++------+-------------------------------------------------+
+</code>
+</pre>
+
 If you are nesting, ie. a vm inside a vm, before going further edit the default libvirt network. Change 192.168.122.0/24 to some other network, such as 10.0.0.0/24. 192.168.122.0/24 will likely already be in use and the default network won't start, and neither will libvirt based vms.
 
 <pre>
