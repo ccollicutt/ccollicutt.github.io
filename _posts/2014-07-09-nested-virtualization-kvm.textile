@@ -7,7 +7,7 @@ categories:
  
 h1. {{ page.title }}
 
-Recently I was working on getting virtual machines to boot inside a virtual machine (insert "inception":http://www.imdb.com/title/tt1375666/ joke here). However I was getting an error:
+Recently I was working on getting virtual machines to boot inside a virtual machine running on Ubuntu Trusty 14.04 (insert "inception":http://www.imdb.com/title/tt1375666/ joke here). However I was getting an error:
 
 <pre>
 <code>libvirtError: internal error no supported architecture for os type 'hvm'
