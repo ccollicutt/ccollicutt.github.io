@@ -32,7 +32,6 @@ First, clone the Swiftacular repository and add some libraries. (I should put th
 <pre>
 <code>curtis$ git clone https://github.com/curtisgithub/swiftacular.git
 curtis$ cd swiftacular
-curtis$ mkdir library
 curtis$ git clone https://github.com/openstack-ansible/openstack-ansible-modules library/openstack
 </code>
 </pre>
