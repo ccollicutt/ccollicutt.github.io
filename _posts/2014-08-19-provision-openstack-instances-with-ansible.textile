@@ -233,7 +233,7 @@ If I run nova list I can see the instances. (Note that in the private cloud I am
 
 h2. Conclusion
 
-At this point we have an ansible playook that can provision OpenStack instances, find out their ip address, and then configure them, all within one playbook. Of course to do this we have to use a custom inventory script, but I don't mind that. Python is a great language to do things like this in, and since Ansible is written in Python it's much easier.
+At this point we have an ansible playook that can provision OpenStack instances, find out their ip address, and then configure them, all in one playbook run. Of course to do this we have to use a custom inventory script, but I don't mind that. Python is a great language to do things like this in, and since Ansible is written in Python it's much easier.
 
 h2. Issues
 
