@@ -237,7 +237,7 @@ At this point we have an ansible playook that can provision OpenStack instances,
 
 h2. Issues
 
-* The nova.py script isn't very smart.
+* My custom nova.py script isn't very smart.
 
 * Depending on your OpenStack provider you may need to change the name of the network in the *set_fact* task, which below is set to the name "private." Sometimes different clouds have different default network names.
 
