@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Provision OpenStack Instances with Ansible
+title: Provision and Configure OpenStack instances in One Ansible Run 
 categories:
 
 ---
