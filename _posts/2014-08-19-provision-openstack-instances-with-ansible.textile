@@ -146,7 +146,7 @@ Just as an example, this is what the _nova_compute_ task looks like.
 
 h2. ssh_config
 
-I should also mention that I have a gateway server setup in my OpenStack tenant and that is configured to be used with the private OpenStack network for that tenant. So while my OpenStack instances have a private ip address, they can still be accessed remotely via the ssh gateway server. Another option would be to run ansible from inside the tenant.
+I should also mention that I have a gateway server setup in my OpenStack tenant and that is configured to be used with the private OpenStack network for that tenant. So while my OpenStack instances have a private ip address, they can still be accessed remotely via the ssh gateway server. Another option would be to run Ansible from inside the tenant.
 
 <pre>
 <code>host openstack-gw
@@ -246,7 +246,7 @@ h2. Issues
 </code>
 </pre>
 
-* Also, sometimes a particular instance won't come up. Just run the playbook again and as long as your OpenStack provider is working, everything should complete at some point. I found that sometimes it would take about a minute for some instances sshd to become available; that Ansible would have connection problems on the first run. Right now there is a 30 second pause in the playbook to try to account for that in a non-intelliegent way.
+* Also, sometimes a particular instance won't come up. Just run the playbook again and as long as your OpenStack provider is working, everything should complete at some point. I found that sometimes it would take about a minute for some instances sshd to become available; that Ansible would have connection problems on the first run. Right now there is a 30 second pause in the playbook to try to account for that in a non-intelligent way.
 
 * Another problem could be that OpenStack can have many instances with the same name, so there could be 10 "app2" servers. _nova_compute_ is using the name rather than the OpenStack uuid to see if instances are instantiated. Something to look into because that could go sideways quickly.
 
