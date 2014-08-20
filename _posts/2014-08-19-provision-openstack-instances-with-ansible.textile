@@ -239,7 +239,7 @@ h2. Issues
 
 * My custom nova.py script isn't very smart.
 
-* Depending on your OpenStack provider you may need to change the name of the network in the *set_fact* task, which below is set to the name "private." Sometimes different clouds have different default network names.
+* Depending on your OpenStack provider you may need to change the name of the network in the _set_fact_ task, which below is set to the name "private." Sometimes different clouds have different default network names.
 
 <pre>
 <code>{% raw %}- set_fact: ansible_ssh_host={{ nova.info.addresses.private[0].addr }}{% endraw %}
