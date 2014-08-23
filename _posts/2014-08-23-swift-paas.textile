@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Why OpenStack Swift is Important for Platform as a Service
+title: Why OpenStack Swift is Great for Platform as a Service
 categories:
 ---
 
