@@ -4,7 +4,7 @@ title: Install ZFS on Ubuntu Trusty 14.04
 categories:
 
 ---
- 
+
 h1. {{ page.title }}
 
 In this blog post I'll install "ZFS-on-Linux":http://zfsonlinux.org/ (ZoL) on trusty old Ubuntu Trusty 14.04.
@@ -13,7 +13,7 @@ ZFS is an amazing file system that is now also usable on Linux. One of ZFS' best
 
 There are other interesting file systems and ways to cache with solid state drives. "btrfs":https://btrfs.wiki.kernel.org/index.php/Main_Page is continually getting better (I use it with "Docker":http://serverascode.com/2014/06/09/docker-btrfs.html) and recently the Linux kernel gained a few ways to do SSD caching: dmcache, flashcache, and bcache.
 
-In my situation I have various media files from short films I've made that I need to backup and protect from bitrot. To do that I've decided to use ZFS on Linux. I worked with ZFS + FreeBSD a bit, but I also want the ability to mount many different types of file systems, and surprisingly FreeBSD doesn't support that many of them. I'm also a big fan of XFS, which I believe FreeBSD only supports in read-only mode. So Linux it is. 
+In my situation I have various media files from short films I've made that I need to backup and protect from bitrot. To do that I've decided to use ZFS on Linux. I worked with ZFS + FreeBSD a bit, but I also want the ability to mount many different types of file systems, and surprisingly FreeBSD doesn't support that many of them. I'm also a big fan of XFS, which I believe FreeBSD only supports in read-only mode. So Linux it is.
 
 h2. ZoL PPA
 
@@ -29,7 +29,8 @@ Now we can install ZoL. Installing will also compile a kernel module.
 _NOTE: I'm removing a lot of the output below for brevity; I usually mark that with SNIP!._
 
 <pre>
-<code>curtis@storage:~$ sudo apt-get install -y ubuntu-zfs 
+<code>curtis@storage:~$ sudo apt-get update
+curtis@storage:~$ sudo apt-get install -y ubuntu-zfs
 SNIP!
 zfs.ko:
 Running module version sanity check.
@@ -51,7 +52,7 @@ Now load the module.
 <pre>
 <code>curtis@storage:~$ modprobe zfs
 curtis@storage:~$ lsmod | grep zfs
-zfs                  1185541  0 
+zfs                  1185541  0
 zunicode              331251  1 zfs
 zavl                   15010  1 zfs
 zcommon                51321  1 zfs
@@ -67,23 +68,23 @@ I have an older computer that I am using as the zfs backup server. In this examp
 <pre>
 <code>curtis@storage:~$ lsblk
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda      8:0    0 119.2G  0 disk 
+sda      8:0    0 119.2G  0 disk
 ├─sda1   8:1    0 113.3G  0 part /
-├─sda2   8:2    0     1K  0 part 
+├─sda2   8:2    0     1K  0 part
 └─sda5   8:5    0     6G  0 part [SWAP]
-sdb      8:16   0   1.4T  0 disk 
-├─sdb1   8:17   0   200M  0 part 
-├─sdb2   8:18   0   1.4T  0 part 
-└─sdb3   8:19   0   128M  0 part 
-sdc      8:32   0 465.8G  0 disk 
-├─sdc1   8:33   0    64K  0 part 
-├─sdc2   8:34   0   462G  0 part 
-└─sdc3   8:35   0   3.8G  0 part 
-sdd      8:48   0   1.4T  0 disk 
-├─sdd1   8:49   0   200M  0 part 
-├─sdd2   8:50   0   1.4T  0 part 
-└─sdd3   8:51   0   128M  0 part 
-sr0     11:0    1  1024M  0 rom  
+sdb      8:16   0   1.4T  0 disk
+├─sdb1   8:17   0   200M  0 part
+├─sdb2   8:18   0   1.4T  0 part
+└─sdb3   8:19   0   128M  0 part
+sdc      8:32   0 465.8G  0 disk
+├─sdc1   8:33   0    64K  0 part
+├─sdc2   8:34   0   462G  0 part
+└─sdc3   8:35   0   3.8G  0 part
+sdd      8:48   0   1.4T  0 disk
+├─sdd1   8:49   0   200M  0 part
+├─sdd2   8:50   0   1.4T  0 part
+└─sdd3   8:51   0   128M  0 part
+sr0     11:0    1  1024M  0 rom
 </code>
 </pre>
 
@@ -180,3 +181,7 @@ In this post I've done a couple things:
 So far the performance has been fine. I get about 111MB/s write which is basically as fast as a 1GB network can go.
 
 Soon I'll add an SSD caching device which will get me more IOPS but I've hit the limit on the network.
+
+h2. Updates
+
+* Commenter Ofer B says _apt-get update_ is necessary, so I added that.
