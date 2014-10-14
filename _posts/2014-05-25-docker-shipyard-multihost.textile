@@ -2,7 +2,7 @@
 layout: post
 title: Manage docker hosts with shipyard
 categories: 
-header_image: https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_login.png
+header_image: https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/shipyard_login.png
 ---
 
 h1. {{ page.title }}
@@ -100,23 +100,23 @@ Once the shipyard-agent with -register is run, it will appear in the shipyard we
 
 host1 now appears in the web gui.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_new_host.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/shipyard_new_host.png!
 
 In the web gui we can manually activate the host. Also note that it picked the eth0 IP address which when using Vagrant is not the one we want to use, so I manually set it to the eth1 IP address which in my case is 192.168.5.89. There doesn't seem to be an option at this time to specify the IP.
 
 Once the IP is changed and the host is activated, we can click on containers and get a list of what is running.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_hosts.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/shipyard_hosts.png!
 
 Above we can see that the shipyard containers are displayed as running on host1, which is where the shipyard host was installed.
 
 I then went through the same process to add the second host. Now shipyard is managing two docker hosts: host1 and host2.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_both_hosts.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/shipyard_both_hosts.png!
 
 With shipyard managing the docker hosts, we can do things like pull the busybox image from the docker registry. By clicking on images->import and entering the tag of the docker image and clicking import again, the busybox image will be downloaded to both hosts.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/shipyard_busybox.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/shipyard_busybox.png!
 
 
 <pre>

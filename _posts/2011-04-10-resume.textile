@@ -12,7 +12,7 @@ h2. Contact
 * Name: Curtis
 * Email: curtis@serverascode.com
 * Twitter: "@serverascode":https://twitter.com/serverascode
-* Github: "curtisgithub":https://github.com/curtisgithub _(I know...not the best account name)_ 
+* Github: "ccollicutt":https://github.com/ccollicutt _(I know...not the best account name)_ 
 * Hacker News: "serverascode":http://news.ycombinator.com/user?id=serverascode</a>
 * Stack Exchange: "curtis":http://stackoverflow.com/users/1460882/curtis 
 
@@ -49,8 +49,8 @@ h2. Projects
 <p></p>
 * Deploying OpenStack Swift with geo-replication
 * Added a boundary.com module to "Ansible":https://github.com/ansible/ansible/pull/3272
-* "Ansible playbook":https://github.com/curtisgithub/vcl_ansible to deploy Apache VCL
-* "Deployment":https://github.com/curtisgithub/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
+* "Ansible playbook":https://github.com/ccollicutt/vcl_ansible to deploy Apache VCL
+* "Deployment":https://github.com/ccollicutt/ansible_playbooks/tree/master/openstack_essex and operation of a private cloud based on OpenStack
 * Stripe solid state drives to underly virtual desktop infrastructure; test bootstorms
 * Installed and performance tested multiple vendor PCIe-SSD cards
 * Research of a one petabyte+ storage system

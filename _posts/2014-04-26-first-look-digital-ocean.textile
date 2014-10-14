@@ -2,7 +2,7 @@
 layout: post
 title: First look at Digital Ocean
 categories: 
-header_image: https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/digital_ocean_signup.png
+header_image: https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/digital_ocean_signup.png
 ---
 
 h1. {{ page.title }}
@@ -29,7 +29,7 @@ h2. Simple web interface
 I'm definitely enjoying the simple web interface. I think there is a lot of room in IaaS to provide a very simple web gui. I think DO is doing a smart thing here, courting developers, simple web interface, simple usage, relatively low cost, and SSDs. AWS has tons of features and products that are difficult to understand, and what's more, it's hard to figure out what your bill is going to be (though again, I haven't used AWS much).
 
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/webgui.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/webgui.png!
 
 
 There's not much going on in the sidebar. Just:
@@ -49,11 +49,11 @@ h2. Add an SSH key
 
 A big button says "Add SSH key." It's calling to me. :)
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/sshkey.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/sshkey.png!
 
 Surprisingly I can't just upload the file I have to paste it into the text box. Sure. Once I do that it shows my key in the SSH keys list.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/sshkeylist.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/sshkeylist.png!
 
 Now I'm going to guess that having entered my CC information, and having uploaded at least one SSH key, I can now boot a droplet/vm/instance.
 
@@ -63,7 +63,7 @@ h2. Tugboat
 
 So I google search for "digital ocean command line" and below are some of the results. Looks like there is an command line app called "tugboat."
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/googlesearch.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/googlesearch.png!
 
 Let's get that. The "github README":https://github.com/pearkes/tugboat for tugboat says "gem install tugboat."
 
@@ -221,7 +221,7 @@ h2. Spend some money
 
 So now I assume I can create a droplet from the command line. But first lets look at how much this is going to cost me.
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/digital_ocean/pricing.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/digital_ocean/pricing.png!
 
 I should have clicked on hourly.
 

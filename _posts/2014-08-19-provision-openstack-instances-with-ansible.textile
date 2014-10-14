@@ -29,13 +29,13 @@ In order to use _nova_compute_, at least in the way that I am using it, we need 
 4) roles/openstack_instances/tasks/main.yml
 5) nova.py - a custom inventory script (ugly as it may be)
 
-Note that there is a "github repository":https://github.com/curtisgithub/ansible-provision-openstack that has all the files used in this example.
+Note that there is a "github repository":https://github.com/ccollicutt/ansible-provision-openstack that has all the files used in this example.
 
 For simplicities sake, all this playbook is going to do is create all of the virtual machines in OpenStack, and then ping them via a role called common.
 
 h3. nova.py and the hosts file
 
-Because of the "custom inventory script":https://github.com/curtisgithub/ansible-provision-openstack/blob/master/nova.py I'm using, called nova.py (but not the same as what comes with Ansible by default), I have a somewhat unusual ansible hosts file, though it does follow the typical Ansible hosts file format.
+Because of the "custom inventory script":https://github.com/ccollicutt/ansible-provision-openstack/blob/master/nova.py I'm using, called nova.py (but not the same as what comes with Ansible by default), I have a somewhat unusual ansible hosts file, though it does follow the typical Ansible hosts file format.
 
 Below we can see there is a group called _openstack_instances_ and there are four instances listed there, each with a flavor_id and group variable associated.
 

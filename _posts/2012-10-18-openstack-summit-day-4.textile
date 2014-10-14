@@ -66,6 +66,6 @@ They were also very excieted about their new supercomputer "Gordon":http://www.s
 
 Also they had some old tape systems they were retiring. Tape is not dead yet though!
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/sdsc_tape_silo.jpg!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/sdsc_tape_silo.jpg!
 _(old tape silo being retired; sad to see it go)_
 

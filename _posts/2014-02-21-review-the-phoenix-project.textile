@@ -2,7 +2,7 @@
 layout: post
 title: Book Review - The Phoenix Project
 categories: 
-header_image: https://raw2.github.com/curtisgithub/curtisgithub.github.com/master/img/the_phoenix_project.jpg
+header_image: https://raw2.github.com/ccollicutt/ccollicutt.github.com/master/img/the_phoenix_project.jpg
 
 ---
 

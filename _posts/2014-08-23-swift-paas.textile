@@ -84,7 +84,7 @@ I'm sure there are more good uses of object storage in a PaaS system, so if you 
 
 h2. Notes
 
-* Like OpenStack in general, Swift can be a bit difficult to deploy. It depends on your skillset (ie. Linux). Start with "Swift All-in-one":http://docs.openstack.org/developer/swift/development_saio.html to get an idea of the complexity. I don't think deploying Swift, or OpenStack completely, is that bad, but maybe some do. Also I have a project called "Swiftacular":https://github.com/curtisgithub/swiftacular that can setup a multi-host test OpenStack Swift system using Vagrant and Ansible.
+* Like OpenStack in general, Swift can be a bit difficult to deploy. It depends on your skillset (ie. Linux). Start with "Swift All-in-one":http://docs.openstack.org/developer/swift/development_saio.html to get an idea of the complexity. I don't think deploying Swift, or OpenStack completely, is that bad, but maybe some do. Also I have a project called "Swiftacular":https://github.com/ccollicutt/swiftacular that can setup a multi-host test OpenStack Swift system using Vagrant and Ansible.
 
 * PaaS is not a silver bullet, but I do think it helps to consider a platform as just a platform, with all its parts, good, bad, and missing. This is a great "blog post":http://blog.lusis.org/blog/2014/06/22/feedback-on-paas-realism/ (and the previous one, "_Paas for Realists_":http://blog.lusis.org/blog/2014/06/14/paas-for-realists/) which discuss what may or may not be missing from popular PaaS systems, and what people building PaaS systems should consider as requirements.
 

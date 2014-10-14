@@ -85,7 +85,7 @@ Lunch was Ok. There are so many people here it's tough to move around. And given
 
 Then I had a beer at the bar downstairs:
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/openstack_summit_2012_bar.jpg!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/openstack_summit_2012_bar.jpg!
 
 h2. Database as a Service
 

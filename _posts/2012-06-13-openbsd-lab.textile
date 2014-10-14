@@ -2,7 +2,7 @@
 layout: post
 title: My OpenBSD Lab
 categories:
-header_image: https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/openbsd_lab.jpg
+header_image: https://github.com/ccollicutt/ccollicutt.github.com/raw/master/img/openbsd_lab.jpg
 ---
 
 h1. {{ page.title }}

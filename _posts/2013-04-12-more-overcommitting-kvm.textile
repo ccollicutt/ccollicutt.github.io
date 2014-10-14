@@ -212,15 +212,15 @@ As soon as the load starts going up, that is when the test starts, and as soon a
 
 First run:
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/kvm_overcommitting_load_1.png! 
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/kvm_overcommitting_load_1.png! 
 
 Second run:
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/kvm_overcommitting_load_2.png! 
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/kvm_overcommitting_load_2.png! 
 
 Last load run:
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/kvm_overcommitting_load_3.png! 
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/kvm_overcommitting_load_3.png! 
 
 So with three runs we see a load of about 30, where a load of 32 would be Ok with me, given we have 32 threads in this server.
 
@@ -228,7 +228,7 @@ Also, let's watch some iops.
 
 I gathered iops data using _iostat_.
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/kvm_overcommitting_io_1.png! 
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/kvm_overcommitting_io_1.png! 
 
 Ooof, that's a misleading graph, isn't it? An increase of one iop is absolutely nothing. A rounding error perhaps.
 

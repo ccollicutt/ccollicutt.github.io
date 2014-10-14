@@ -86,6 +86,6 @@ console=ttyS1,115200 earlyprint=serial,ttyS1,115200
 
 Finally I'll show a screenshot of a text install happening, and I am watching that via text-based SOL access.
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/sol_install.png!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/sol_install.png!
 
 So give SOL a shot, and let me know if I've made any mistakes in this post, or if there are other interesting things that can be done with ipmitool. :)

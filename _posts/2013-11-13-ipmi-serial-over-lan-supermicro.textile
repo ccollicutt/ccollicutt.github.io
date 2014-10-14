@@ -2,7 +2,7 @@
 layout: post
 title: MetalOps - IPMI serial-over-lan and Supermicro systems
 categories: 
-header_image: https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/ipmi_supermicro.png
+header_image: https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/ipmi_supermicro.png
 ---
 
 h1. {{ page.title }}

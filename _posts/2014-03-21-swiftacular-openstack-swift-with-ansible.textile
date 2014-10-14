@@ -6,7 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-A few months ago I put a good amount of working into learning more about OpenStack Swift and how to deploy it. I used Ansible as my configuration management system, and called the whole project "Swiftacular":https://github.com/curtisgithub/swiftacular.
+A few months ago I put a good amount of working into learning more about OpenStack Swift and how to deploy it. I used Ansible as my configuration management system, and called the whole project "Swiftacular":https://github.com/ccollicutt/swiftacular.
 
 Recently I realized that I forgot to blog about it, so I decided it was time to fix that. :)
 
@@ -40,7 +40,7 @@ h2. Deploying OpenStack Swift with Ansible
 
 I like to use Ansible because it's straightforward to understand and executes over ssh instead of some custom RPC type system requiring a client running on the remote system and certificates. ssh is awesome. Ansible is awesome. Swift is awesome. Radical!
 
-First off, you can find the repository containing all the Ansible playbooks and roles needed to deploy Swift "here":https://github.com/curtisgithub/swiftacular. That repository also contains a README file that will likely be more up to date than this blog post.
+First off, you can find the repository containing all the Ansible playbooks and roles needed to deploy Swift "here":https://github.com/ccollicutt/swiftacular. That repository also contains a README file that will likely be more up to date than this blog post.
 
 Requirements:
 
@@ -52,7 +52,7 @@ Requirements:
 Once you have those requirements, this is how to quickly deploy OpenStack Swift:
 
 <pre>
-<code>$ git clone git@github.com:curtisgithub/swiftacular.git
+<code>$ git clone git@github.com:ccollicutt/swiftacular.git
 $ cd swiftacular
 $ mkdir library
 # Checkout some modules to help with managing openstack 

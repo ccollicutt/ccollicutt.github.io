@@ -6,7 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-I am a big fan, and user, of "OpenStack":http://openstack.org. I also really like the "Ansible":http://ansible.cc configuration management and orchestration system. In fact, I use Ansible to deploy OpenStack, and all kinds of "other things":https://github.com/curtisgithub/ansible_playbooks as well.
+I am a big fan, and user, of "OpenStack":http://openstack.org. I also really like the "Ansible":http://ansible.cc configuration management and orchestration system. In fact, I use Ansible to deploy OpenStack, and all kinds of "other things":https://github.com/ccollicutt/ansible_playbooks as well.
 
 Recently on the Ansible mailing list the lead developer (and now CTO of "Ansibleworks":http://ansibleworks.com) "suggested that it was time to bring together":https://groups.google.com/forum/?fromgroups=#!topic/ansible-project/eNlPwjIHGGs everyone who is working, or wants to work with, both Ansible and OpenStack.
 
@@ -16,7 +16,7 @@ While I had heard of PackStack before, I had never used it, so I decided it was 
 
 Also--I'm sure Ansible will soon be one of Vagrants supported deployment systems, and when that happens it will be very easy to deploy OpenStack with Vagrant.
 
-So I spent a couple hours creating an "Ansible playbook":https://github.com/curtisgithub/ansible_playbooks/tree/master/packstack that would simply fire off the PackStack command with a generic answer file. So I haven't ported anything from PackStack to Ansible--I'm simply using Ansible and Vagrant to create an environment for PackStack to do it's work.
+So I spent a couple hours creating an "Ansible playbook":https://github.com/ccollicutt/ansible_playbooks/tree/master/packstack that would simply fire off the PackStack command with a generic answer file. So I haven't ported anything from PackStack to Ansible--I'm simply using Ansible and Vagrant to create an environment for PackStack to do it's work.
 
 h2. RedHat/CentOS
 

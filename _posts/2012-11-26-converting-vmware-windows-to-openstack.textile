@@ -50,7 +50,7 @@ Red Hat Enterprise Linux Server release 6.3 (Santiago)
 
 It needs to be registered with the RedHat Network and have the "RHEL Server Supplementary" and "RHEL V2VWIN" channels enabled, as per the below image.
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/rhn_entitlements_virt-v2v.png!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/rhn_entitlements_virt-v2v.png!
 
 <pre>
 <code>[root@localhost ~]# yum repolist

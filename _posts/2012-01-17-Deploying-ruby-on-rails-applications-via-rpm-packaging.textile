@@ -53,7 +53,7 @@ h2. The spec file
 
 Building a RPM requires, among other things, a spec file. This file is the heart of a RoR RPM deployment.
 
-I have put an example spec file up on "github":https://github.com/curtisgithub/Ruby-on-Rails-Example-RPM-Deployment-spec-file to peruse and abuse. Again, it's not going to work out of the box, but it's a good example, or will be at some point. :)
+I have put an example spec file up on "github":https://github.com/ccollicutt/Ruby-on-Rails-Example-RPM-Deployment-spec-file to peruse and abuse. Again, it's not going to work out of the box, but it's a good example, or will be at some point. :)
 
 The build portion of the spec file is what is interesting in terms of deploying a RoR app with RPM.
 

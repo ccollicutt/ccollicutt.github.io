@@ -87,11 +87,11 @@ As I mentioned in my "previous post":http://serverascode.com/2012/10/15/openstac
 * CORS Support - Better integrate with the browser security model
 * Optimize concurrent reads 
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/nebula_pool.jpg!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/nebula_pool.jpg!
 _(Nebula logo projected on the pool at the club)_
 
 h2. Parties
 
 This night I went to both the Rackspace and Nebula parties, though I came back to the hotel pretty early. At the Rackspace party I learned that Miramar, the location of the flight school in Top Gun, is only a few minutes away and actually watched some military jets maneuvering out over the ocean. Surprised no one sang _You've Lost That Loving Feeling_. ;)
 
-!https://raw.github.com/curtisgithub/curtisgithub.github.com/master/img/topgun.jpg!
+!https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/topgun.jpg!

@@ -6,7 +6,7 @@ categories:
 
 h1. {{ page.title }}
 
-Recently I updated my "Swiftacular":https://github.com/curtisgithub/swiftacular project to support Ubuntu Trusty 14.04 and OpenStack Icehouse (which Trusty comes with by default).
+Recently I updated my "Swiftacular":https://github.com/ccollicutt/swiftacular project to support Ubuntu Trusty 14.04 and OpenStack Icehouse (which Trusty comes with by default).
 
 Swiftacular installs OpenStack Swift using Ansible on CentOS 6.5, Ubuntu 12.04, and Ubuntu 14.04. In CentOS and Ubuntu 12.04 it installs the OpenStack Havana release of Swift, and in Ubuntu 14.04 it uses Icehouse.
 
@@ -30,7 +30,7 @@ h2. Setup OpenStack Swift using Swiftacular
 First, clone the Swiftacular repository and add some libraries. (I should put this all into a make file--it's on the todo list!)
 
 <pre>
-<code>curtis$ git clone https://github.com/curtisgithub/swiftacular.git
+<code>curtis$ git clone https://github.com/ccollicutt/swiftacular.git
 curtis$ cd swiftacular
 curtis$ git clone https://github.com/openstack-ansible/openstack-ansible-modules library/openstack
 </code>

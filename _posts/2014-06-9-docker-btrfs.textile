@@ -116,10 +116,10 @@ And, as far as I know at this point, that's it--we're now running docker with bt
 
 h2. Ansible playbook
 
-I've setup an "Ansible playbook":https://github.com/curtisgithub/vagrant-docker-btrfs with a "Vagrant":http://vagrantup.com file that will setup a virtual machine with docker and btrfs configured in the same way that I describe in this blog post. Vagrant will automatically provision the virtual machine using Ansible.
+I've setup an "Ansible playbook":https://github.com/ccollicutt/vagrant-docker-btrfs with a "Vagrant":http://vagrantup.com file that will setup a virtual machine with docker and btrfs configured in the same way that I describe in this blog post. Vagrant will automatically provision the virtual machine using Ansible.
 
 <pre>
-<code>$ git clone https://github.com/curtisgithub/vagrant-docker-btrfs
+<code>$ git clone https://github.com/ccollicutt/vagrant-docker-btrfs
 $ cd vagrant-docker-btrfs
 $ vagrant up --provider virtualbox
 Bringing machine 'host1' up with 'virtualbox' provider...

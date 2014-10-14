@@ -8,7 +8,7 @@ header_permalink: http://www.metmuseum.org/collection/the-collection-online/sear
  
 h1. {{ page.title }}
 
-"Swiftacular":https://github.com/curtisgithub/swiftacular is a project that can deploy an OpenStack Swift cluster using "Ansible":http://ansible.com. In this post I'll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.
+"Swiftacular":https://github.com/ccollicutt/swiftacular is a project that can deploy an OpenStack Swift cluster using "Ansible":http://ansible.com. In this post I'll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.
 
 h2. Providers
 
@@ -106,7 +106,7 @@ CentOS release 6.5 (Final)
 </code>
 </pre>
 
-Now to run the site playbook. Note that occasionally I've had to run the site playbook twice because of a "bug":https://github.com/curtisgithub/swiftacular/issues/12. So below is on the second run.
+Now to run the site playbook. Note that occasionally I've had to run the site playbook twice because of a "bug":https://github.com/ccollicutt/swiftacular/issues/12. So below is on the second run.
 
 <pre>
 <code>curtis$ #second run

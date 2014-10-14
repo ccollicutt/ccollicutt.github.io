@@ -6,11 +6,11 @@ categories:
 
 h1. {{ page.title }}
 
-!https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/supermicro_stack_small.jpg!
+!https://github.com/ccollicutt/ccollicutt.github.com/raw/master/img/supermicro_stack_small.jpg!
 
 The above is the front of four Supermicro 36-bay chassis servers racked but not completely filled with drives.
 
-!https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/supermicro_back_small.jpg!
+!https://github.com/ccollicutt/ccollicutt.github.com/raw/master/img/supermicro_back_small.jpg!
 
 This is the back of the server. As you can see, there are 12 hot swappable slots in the back. The motherboard has room for seven low profile boards of varying PCIe speeds.
 
@@ -50,7 +50,7 @@ What you get is one 4U, dual CPU server (24 cores counting hyperthreading), with
 
 %{color:blue}Note:% You would need to find a local vendor to put the pieces together, or you could do it yourself--but I don't recommend that. I'd put 5% of the total cost aside for professional assembly. We were lucky enough that our vendor was willing to put them together for free--at least on the first order. :)
 
-!https://github.com/curtisgithub/curtisgithub.github.com/raw/master/img/supermicro_internal_hard_drive_small.jpg!
+!https://github.com/ccollicutt/ccollicutt.github.com/raw/master/img/supermicro_internal_hard_drive_small.jpg!
 
 (Terrible image...but you can kind of see the two internal hard-drives.)
 

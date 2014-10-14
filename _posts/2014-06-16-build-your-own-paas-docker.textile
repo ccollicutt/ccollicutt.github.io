@@ -44,7 +44,7 @@ At this point, at minimum, you have a wildcard DNS entry pointing to an IP on yo
 
 h2. Web router
 
-!https://raw.githubusercontent.com/curtisgithub/curtisgithub.github.com/master/img/somedomain.png!
+!https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/somedomain.png!
 (_Above: hipache non-existent domain page_)
 
 I'm not sure what to call this layer. Heroku calls this "HTTP routing":https://devcenter.heroku.com/articles/http-routing. Web routing works for me.

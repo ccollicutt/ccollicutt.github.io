@@ -63,7 +63,7 @@ Once those three actions have run, bprobe will be installed.
 
 h2. Creating a meter
 
-In order to start sending data to boundary's api, that's all done with a restful api, we need to register a meter. In order to do that with ansible, you'll need the "boundary_meter module":https://github.com/curtisgithub/ansible/blob/devel/library/monitoring/boundary_meter I (initially) wrote, which by now, if I'm lucky, will be in ansible's core set of modules.
+In order to start sending data to boundary's api, that's all done with a restful api, we need to register a meter. In order to do that with ansible, you'll need the "boundary_meter module":https://github.com/ccollicutt/ansible/blob/devel/library/monitoring/boundary_meter I (initially) wrote, which by now, if I'm lucky, will be in ansible's core set of modules.
 
 Once that module is available to ansible, using it to create a meter looks like the below:
 

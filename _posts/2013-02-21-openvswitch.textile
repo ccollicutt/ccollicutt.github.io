@@ -34,9 +34,9 @@ I'm not really doing anything new here--though I hope to at some point... :)
 
 h2. Installation
 
-I put together an "ansible playbook":https://github.com/curtisgithub/ansible_playbooks/blob/master/sdn/tasks/setup.yml to install Openvswitch in Ubuntu 12.04. There is no easy, direct way (that I'm aware of) to install Openvswitch in Precise...unfortunately I just can't do @apt-get install openvswitch@ and have everything work like magic. I guess building the module is the only unusual thing, and this will disappear in future versions of Ubuntu--perhaps it's already not necessary in 12.10, not sure, haven't looked it up.
+I put together an "ansible playbook":https://github.com/ccollicutt/ansible_playbooks/blob/master/sdn/tasks/setup.yml to install Openvswitch in Ubuntu 12.04. There is no easy, direct way (that I'm aware of) to install Openvswitch in Precise...unfortunately I just can't do @apt-get install openvswitch@ and have everything work like magic. I guess building the module is the only unusual thing, and this will disappear in future versions of Ubuntu--perhaps it's already not necessary in 12.10, not sure, haven't looked it up.
 
-I'm not going to directly cut and paste my "ansible playbook":https://github.com/curtisgithub/ansible_playbooks/blob/master/sdn/tasks/setup.yml into this post, but suffice it to say that most dependencies can be installed via @apt-get@, but there is one step required to build and module.
+I'm not going to directly cut and paste my "ansible playbook":https://github.com/ccollicutt/ansible_playbooks/blob/master/sdn/tasks/setup.yml into this post, but suffice it to say that most dependencies can be installed via @apt-get@, but there is one step required to build and module.
 
 <pre>
 <code># Install these packages:

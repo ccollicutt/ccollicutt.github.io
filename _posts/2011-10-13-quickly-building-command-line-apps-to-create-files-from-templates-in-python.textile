@@ -8,13 +8,13 @@ categories:
 
 h1. {{ page.title }} 
 
-First, let me say that I am not an expert in Python. :) That said, I have been working on a "script":http://github.com/curtisgithub/kicker for a while now that creates a kickstart file from a command line application that uses:
+First, let me say that I am not an expert in Python. :) That said, I have been working on a "script":http://github.com/ccollicutt/kicker for a while now that creates a kickstart file from a command line application that uses:
 
 # a configuration file to get defaults,
 # command line options to add or override options, and
 # "cheetah template":http://www.cheetahtemplate.org/ files.
 
-I think I finally have a good system for doing this, and could see it being useful to others in terms of writing their own quick application to generate some kind of text file from a command line application using the above three points, and what I have done is commited a set of "skeleton files":https://github.com/curtisgithub/cli-template-generator so that you could do this yourself very easily.
+I think I finally have a good system for doing this, and could see it being useful to others in terms of writing their own quick application to generate some kind of text file from a command line application using the above three points, and what I have done is commited a set of "skeleton files":https://github.com/ccollicutt/cli-template-generator so that you could do this yourself very easily.
 
 h2. Dependencies
 
@@ -29,7 +29,7 @@ h2. Using the cli-template-generator
 First, clone the @cli-template-generator@ repository.
 
 <pre>
-<code>$ git clone git@github.com:curtisgithub/cli-template-generator.git
+<code>$ git clone git@github.com:ccollicutt/cli-template-generator.git
 Cloning into cli-template-generator...
 remote: Counting objects: 8, done.
 remote: Compressing objects: 100% (6/6), done.
