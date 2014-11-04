@@ -28,6 +28,8 @@ I really don't have any complaints. Most of the below notes are minor issues or 
 
 * FTP backup: They do provide 100GB of FTP backup which I used. I gpg-zipped my backup files and uploaded them to the FTP server. If I was running a production service I'd find a way to go off-site with those backups, but it's great that So You Start provides 100Gb of backup.
 
+* No 2-factor authentication to the admin panel, so if your login was compromised then your server is owned. I'm not even sure if the higher end OVH service provides this, not that they should differentiate on that feature.
+
 * ECC memory: my server was ECC, but many of the So You Start models are not. On the range page they do incidate which servers are ECC and the rest are not. This is something to pay attention to if you want to avoid memory errors cropping up. As of this writing it seems like none of the models with SSDs are ECC.
 
 <pre>
