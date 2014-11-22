@@ -17,10 +17,11 @@ In my situation I have various media files from short films I've made that I nee
 
 h2. ZoL PPA
 
-The easiest way to get ZoL is to use the ZFS-native PPA.
+The easiest way to get ZoL is to use the ZFS-native PPA. The software-properties-common package is required for the add-apt-repository command.
 
 <pre>
-<code>curtis@storage:~$ sudo apt-add-repository ppa:zfs-native/stable
+<code>curtis@storage:~$ sudo apt-get install software-properties-common
+curtis@storage:~$ sudo add-apt-repository ppa:zfs-native/stable
 </code>
 </pre>
 
