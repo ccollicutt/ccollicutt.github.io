@@ -8,7 +8,7 @@ h1. {{ page.title }}
 
 There are a lot of package managers.
 
-Some of them provide binary packages, which are pre-compiled. But others don't, especially ones around programming language packages such as pip (python) and rubygems (ruby). Basically if you want to install a pip or gem package you have to have a build environment (ie. compilers, make, etc) installed on each instance or container in order to install the packages. That increases the size of images, and increases the attack surface of the instance/container, among other things.
+Some of them provide binary packages, which are pre-compiled. But others don't, especially ones around programming language packages such as pip (python) and rubygems (ruby). Basically if you want to install a pip or gem package you have to have a build environment (ie. compilers, make, etc) installed on each instance or container in order to install the packages. That increases the size of images, and magnifies the attack surface of the instance/container, among other things.
 
 h2. Before I get too far...
 
@@ -22,7 +22,7 @@ However, if you want to use plugins, many of them use the "sensu-plugins" gem, s
 
 bq. If you have installed Sensu from the omnibus packages you can continue to installing the check-procs.rb plugin. Otherwise we need to install the sensu-plugin gem which has various helper classes used by many of the community plugins.
 
-However, I believe that would mean ensuring plugins are called using the "embedded" ruby.
+Unfortunately, I believe that would mean ensuring plugins are called using the "embedded" ruby.
 
 Example:
 
