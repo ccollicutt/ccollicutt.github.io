@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Non-cartesian OpenStack
+title: Non-Cartesian OpenStack
 header_image: /img/bachelard.png
 categories:
 ---
