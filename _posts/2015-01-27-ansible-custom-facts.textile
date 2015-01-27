@@ -13,7 +13,7 @@ I like Ansible. It's not perfect but nothing is. Recently I was playing around w
 
 h2. A bash script
 
-I just wanted a simple script to parse the ip address of the server nad return a private ip based on the last octet of the address.
+I just wanted a simple script to parse the ip address of the server and return a private ip based on the last octet of the address.
 
 This is the script I ended up using.
 
@@ -30,7 +30,7 @@ EOF
 </code>
 </pre>
 
-Using ansible I put that file into the /etc/ansible/facts.d directory. Note it has to be exectuable, return json, and end with the .fact extension.
+Using ansible I put that file into the /etc/ansible/facts.d directory. Note it has to be executable, return json, and end with the .fact extension.
 
 <pre>
 <code>ubuntu@trusty2:~$ cd /etc/ansible/facts.d/
