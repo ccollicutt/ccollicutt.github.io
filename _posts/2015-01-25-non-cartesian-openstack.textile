@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Non-Cartesian OpenStack
-header_image: /img/bachelard.png
+header_image: /img/bachelard.jpg
 categories:
 ---
 
@@ -37,7 +37,7 @@ Lechte further describes this as Bachelard's anti-Cartesian stance, and goes on 
 
 bq. ...that reality is never simple, and that in the history of science attempts to achieve simplicity...have invariable turned out to be over-simplification.
 
-!/img/continuum.png!
+!/img/continuum.jpg!
 
 h2. Rejection of over-simplification
 
@@ -47,4 +47,4 @@ While I'm not even worthy of the title of armchair philosopher, I do think it's 
 
 I end this blog post with a picture of the coordinates of an OpenStack system, so that you can easily find it. :)
 
-!/img/coordinates.png!
+!/img/coordinates.jpg!
