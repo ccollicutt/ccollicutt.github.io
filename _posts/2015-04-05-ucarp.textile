@@ -93,7 +93,7 @@ Here's the output from running ansible across all the nodes looking for the ucar
 <pre>
 <code>$ ansible -m shell -a "ip ad sh | grep bond0.777:ucarp" ucarp-node
 node1 | success | rc=0 >>
-    inet 192.168.1.9/32 brd 192.168.1.9 scope global bond0.603:ucarp
+    inet 192.168.1.9/32 brd 192.168.1.9 scope global bond0.777:ucarp
 
 node2 | FAILED | rc=1 >>
 
