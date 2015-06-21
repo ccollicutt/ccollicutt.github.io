@@ -1,0 +1,46 @@
+---
+layout: post
+title: Monitorama 2015
+categories:
+---
+
+h1. {{ page.title }}
+
+Last week I was privileged to attend the 2015 Monitorama conference. It's a great small conference that deals with the area of monitoring, from logging to metrics to stream processessing, alerting, people...everything. It's actually a giant topic.
+
+It's amazing how many different kinds of conferences there are. Recently I was at the OpenStack Vancouver summit which has about 6000 people and takes over a huge conference center. Compared to Monitorama the summit is a massive, "enterprisey-feeling" event where they have to feed 6000 people lunch. In "The Pearl" of Portland, you can just walk out the door and there are tons of restaurants and food trucks serving great food.
+
+h2. The Presentations
+
+Here I'll just go through some of the presentations I recall. I missed a few presentations because of work, so this isn't necessarily a list of "the best" presentations or anything like that, just ones that were memorable for me.
+
+* "Zero to Capacity Planning":https://github.com/Randommood/ZerotoCapacityPlanning - If I recall correctly this was the journey the presenter Inés Sombra went on to find out about capacity planning and do something about it. The "slides":https://speakerdeck.com/randommood/zero-to-capacity-planning are online. In order to plan to grow you need to monitor your infrastructure and then decided when to add more capacity.
+
+* *I'm a designer and I'm here to help* - I think there was a lot to learn from this. The first thing anyone does when adding a monitoring solution is make sure there are a bunch of graphs to show people. Who knows what those graphs actually mean or if they are of any use is another matter. (Can't find the slides online.)
+
+* *Observability, Interactivity and Mental Models in Web Operations* - Benjamin Anderson gave a very interesting talk. Unfortunately I can't find the slides online. Will update when I can find them. Let's just say "anthropomorphizing systems."
+
+* "Engineering Happiness":https://speakerdeck.com/lauraxt/engineering-happiness - Process, software...and people. This presentation went over some ideas around what metrics one could monitor to determine how people are feeling, but not from a creepy perspective, rather looking at things like hours worked or technical debt to try to determine employee happiness (ie. working too much makes people unhappy). We certainly all want to be happy at work and this presentation gave some ideas on how to make that happen.
+
+* "The Dark Art of Container Monitoring":http://sssslide.com/www.slideshare.net/LorisDegioanni/monitorama-slides - Basically, sysdig is amazing and the sysdig monitoring cloud can map your infrastructure and make it zoomable, which drew some gasps from the audience.
+
+* "Measuing Hard to Measure Things":https://speakerdeck.com/chrissiebrodigan/measuring-hard-to-measure-things - Chrissie Brodigan gave a great talk on the user research work she does at Github. The talk was really about dealing with people at a macro level to make things better for individuals. She was really focussed on making things better, and in one particular case, making Github Enterprise easier to adraministrate. One thing I realized is that often organizations only have surveys to determine how people feel about products and they need demographic information in those surveys to do the math right.
+
+* "Stream Processing Inside Librato":http://www.slideshare.net/Librato2015/stream-processing-at-librato - Dave Josephsen gave one of the first talks at Monitorama 2015 on stream processing, essentially comparing stream processing with signal processing using the sound mixer as an example.
+
+* Dave Josephsen also gave an emotional talk on imposter syndrome, through relating stories of his difficult time in the Marines. It was an amazing presentation full of honesty and vulnerability--two very difficult things to do in the modern world.
+
+h2. Technologies
+
+Here are some technologies I wrote down in my notes as the conference went on:
+
+* "StandUps":http://www.standu.ps
+* sysdig
+* zktraffic
+* Tinypulse
+* Bosun
+* Heka
+
+h2. Conclusion
+
+I'm constantly amazed at how organizers can pull off conferences like this; how good they are at dealing with people and trying to make things better in the IT industry. I was also impressed at how honest some of the presenters were in terms of being open about their fears and themselves in general. At the end I kept thinking of what "Big Chris says":https://www.youtube.com/watch?v=-U4Pvodwm0U in _Lock Stock and Two Smoking Barrels_: "It's been emotional."
