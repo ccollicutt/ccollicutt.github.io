@@ -9,7 +9,7 @@ h1. {{ page.title }}
 
 For some reason I am a glutton for punishment as I try to "TLS enable all the things" which doesn't always work out. Note that the "rabbitmq documentation":https://www.rabbitmq.com/ssl.html for SSL/TLS is pretty good; I'm not showing here much more than you can get from that, but I thought I'd post it anyway. :)
 
-Anyways, one of the more interesting things I've enabled TLS on lately is Rabbitmq. What's more this is in production right now and is working fine. There is some debate as to whether or not it's a good idea to do TLS with Rabbitmq, espescially if it's an internal only queue, but I think it's always best to encrypt when we can. I suppose there is the possibility of performance issues, but I don't mind throwing hardware at it. I should also note that I'm just doing "over the wire" encryption. The certificates aren't being used for authentication. (Future work.)
+Anyways, one of the more interesting things I've enabled TLS on lately is Rabbitmq. What's more this is in production right now and is working fine. There is some debate as to whether or not it's a good idea to do TLS with Rabbitmq, especially if it's an internal only queue, but I think it's always best to encrypt when we can. I suppose there is the possibility of performance issues, but I don't mind throwing hardware at it. I should also note that I'm just doing "over the wire" encryption. The certificates aren't being used for authentication. (Future work.)
 
 This is an example configuration for a three node Rabbitmq cluster:
 
