@@ -15,7 +15,7 @@ h2. The Presentations
 
 Here I'll just go through some of the presentations I recall. I missed a few presentations because of work, so this isn't necessarily a list of "the best" presentations or anything like that, just ones that were memorable for me.
 
-* "Zero to Capacity Planning":https://github.com/Randommood/ZerotoCapacityPlanning ("video":https://vimeo.com/131377938) - If I recall correctly this was the journey the presenter Inés Sombra went on to find out about capacity planning and do something about it. The "slides":https://speakerdeck.com/randommood/zero-to-capacity-planning are online. In order to plan to grow you need to monitor your infrastructure and then decided when to add more capacity.
+* "Zero to Capacity Planning":https://github.com/Randommood/ZerotoCapacityPlanning ("video":https://vimeo.com/131377938) - If I recall correctly this was the journey the presenter Inés Sombra went on to find out about capacity planning and do something about it. The "slides":https://speakerdeck.com/randommood/zero-to-capacity-planning are online. In order to plan to grow you need to monitor your infrastructure and then decide when to add more capacity. But what does that actually mean? How does it happen?
 
 * Stephen Boak - *I'm a designer and I'm here to help* ("video":https://vimeo.com/131385892) - I think there was a lot to learn from this. The first thing anyone does when adding a monitoring solution is make sure there are a bunch of graphs to show people. Who knows what those graphs actually mean or if they are of any use is another matter. (Can't find the slides online.)
 
