@@ -16,9 +16,9 @@ Here's a query to find these "zombie" volumes. I'm building somewhat on this "bl
 +-----------------------------------------+--------------------------------------+----------+------------+-------------------+--------------------------------------+
 | VM Name                                 | VM UUID                              | VM State | Vol Status | Vol Attach Status | Vol UUID                             |
 +-----------------------------------------+--------------------------------------+----------+------------+-------------------+--------------------------------------+
-| coolvol0                                | 2cf50467-044e-4f6c-8aad-283fb1c18f49 | deleted  | in-use     | attached          | 59a92e86-df60-4046-9cbe-221f9501cc5d |
-| wickedvol2                              | 80f837ec-a076-4116-8443-34c17ff8b363 | deleted  | in-use     | attached          | 92926e7e-8015-449e-893e-e84b4a7a9fdc |
-| supervol20                              | 7b6a15b2-b9ad-439b-a05f-acf6af4e7a86 | deleted  | in-use     | attached          | ffc905ad-6655-4e8b-8e21-6322e93773c4 |
+| coolvm1                                 | 2cf50467-044e-4f6c-8aad-283fb1c18f49 | deleted  | in-use     | attached          | 59a92e86-df60-4046-9cbe-221f9501cc5d |
+| coolvm2                                 | 80f837ec-a076-4116-8443-34c17ff8b363 | deleted  | in-use     | attached          | 92926e7e-8015-449e-893e-e84b4a7a9fdc |
+| coolvm3                                 | 7b6a15b2-b9ad-439b-a05f-acf6af4e7a86 | deleted  | in-use     | attached          | ffc905ad-6655-4e8b-8e21-6322e93773c4 |
 +-----------------------------------------+--------------------------------------+----------+------------+-------------------+--------------------------------------+
 3 rows in set (0.00 sec)
 </code>
