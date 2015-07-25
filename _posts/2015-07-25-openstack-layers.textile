@@ -8,7 +8,7 @@ header_permalink: https://www.flickr.com/photos/druclimb/16993017815/in/photolis
 
 h1. {{ page.title }}
 
-I think anyone who has looked into OpenStack has read that it is complicated and difficult to install let alone operate over time. However, that's not the point of this post--rather the point of this short post is just to discuss what pieces are involved in OpenStack and how I tend to approach deploying it. 
+I think anyone who has looked into OpenStack has read that it is complicated and difficult to install let alone operate over time. However, that's not the point of this post--rather the point of this short post is just to discuss what pieces are involved in OpenStack and how I tend to approach deploying it--an approach that I feel simplifies the system somewhat.
 
 Computering is complicated. Sometimes it helps to simplify it from a high level, and I use "layers" to do that. What's more this model can help people who don't have to understand every single component of the entire system to get in idea of what it looks like. An OpenStack production system can be very large, especially when considering all the ancilliary infrastructure required.
 
@@ -22,7 +22,7 @@ Before starting these layers I have applied the base OS to every server, and the
 
 h2. The Layers
 
-I use Ansible to deploy OpenStack. Perhaps that's why I've settled on the layer strategy. Ansible pretty much works in a serial fashion, one task after another, one playbook after another. Ansible is applied "top to bottom" versus something like Puppet where modules are compiled and then applied, so order isn't defined unless it's specifically defined.
+I use Ansible to deploy OpenStack. Perhaps that's why I've settled on the layer strategy. Ansible pretty much works in a serial fashion, one task after another, one playbook after another. Ansible is applied "top to bottom" versus something like Puppet where modules are compiled and then applied. So with Puppet order isn't defined unless it's specifically defined.
 
 The basic layers are below. Some of the layers are more complicated than others, ie. have more tasks to complete.
 
