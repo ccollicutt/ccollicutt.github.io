@@ -7,7 +7,7 @@ header_image: /img/cinder_block.jpg
 
 h1. {{ page.title }}
 
-For some reason I ended up with a few volumes that were attached to non-existent virtual machines--ie. the vm had been deleted, but cinder thinks it is still attached to the vm. But the vm doesn't exist so you can't unattach or delete the volume. Maybe it's a chicken-egg volume not a zombie.
+For some reason I ended up with a few volumes that were attached to non-existent virtual machines--ie. the vm had been deleted, but cinder thinks it is still attached to the vm. But the vm doesn't exist so you can't unattach or delete the volume. Maybe it's a chicken-egg volume not a zombie volume.
 
 Here's a query to find these "zombie" volumes. I'm building somewhat on this "blog post":http://blog.carlos-spitzer.com/openstack-delete-cinder-orphan-volumes/. (Don't tell anyone but this was my first ever join SQL command--I haven't had to work much with databases.) This join was kind of fun because I had to pull information from both the nova and cinder databases, so note that it is using both the cinder and nova databases and expecting that their names will be "cinder" and "nova" respectively.
 
@@ -24,7 +24,7 @@ Here's a query to find these "zombie" volumes. I'm building somewhat on this "bl
 </code>
 </pre>
 
-Once I found all the volumes I considered "zombie" I updated their status manually in the cinder database. This was not much fun from an operator perspective. I think there is a "force_detach" command comming in future cinders.
+Once I found all the volumes I considered "zombie" I updated their status manually in the cinder database. This was not much fun from an operator perspective. I think there is a "force_detach" command coming in future cinders.
 
 <pre>
 <code>MariaDB [cinder]> update volumes set attach_status='detached',status='available',instance_uuid=NULL where id='6fbd830c-3976-4427-be4b-c4daa11f9f49';
