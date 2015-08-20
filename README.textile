@@ -1,7 +1,7 @@
 h1. ccollicutt.github.com blog
 
-This was forked from https://github.com/mojombo/mojombo.github.com . 
+The theme is commercial. I bought it, so unless you buy a license from the original seller you can't use it. :) Sorry, I'm just terrible with CSS so I had no choice.
 
 h1. License
 
-_posts is copyright ccollicutt, but the rest is licensed MIT by Tom Preston-Werner (https://github.com/mojombo)
+_posts is copyright ccollicutt.
