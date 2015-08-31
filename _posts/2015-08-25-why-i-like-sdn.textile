@@ -59,6 +59,6 @@ So, while there are many popular new technologies (some would say "over-hyped," 
 <hr >
 
 [[1]]: It's not like it really matters whether it's Java, C, Go, or some other language. I just happen to like Go.
-[[2]]: I'm really asking. Is it?
-[[3]]: Midokura has open sourced their application. But it is definitely more like open core. There aren't a lot of non-Midokura contributors. But again, networking gear isn't free either.
+[[2]]: Midokura has open sourced their application. But it is definitely more like open core. There aren't a lot of non-Midokura contributors. But again, networking gear isn't free either.
+[[3]]: I'm really asking. Is it?
 [[4]]: "Does Centralized Control Plane Make Sense?":http://blog.ipspace.net/2014/05/does-centralized-control-plane-make.html
