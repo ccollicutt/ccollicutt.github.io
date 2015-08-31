@@ -14,7 +14,7 @@ The only startup I'm aware of that did all three, Socketplane, was bought by Doc
 
 h2. I use SDN everyday
 
-As a systems administrator, I tend to concern myself with applying technologies in production, which is the say that theory is not enough. I use Midokura's Midonet (which is open source[[2]]) to provide multi-tenant virtual private networks for openstack users. It's in production and has been for months. Midonet acts as a plugin to Neutron and centralizes state in a Zookeeper cluster. Everything's been working great. My point is that I am using a software defined network every day to meet customers needs, and I think it would be difficult to do it without some kind of SDN system.
+As a systems administrator, I tend to concern myself with applying technologies in production, which is to say that theory is not enough. I use Midokura's Midonet (which is open source[[2]]) to provide multi-tenant virtual private networks for openstack users. It's in production and has been for months. Midonet acts as a plugin to Neutron and centralizes state in a Zookeeper cluster. Everything's been working great. My point is that I am using a software defined network every day to meet customers needs, and I think it would be difficult to do it without some kind of SDN system.
 
 There are quite a few "plugins" (or perhaps "network models" would be a better term) for OpenStack that could be considered SDN. If you don't like overlay or encapsulation models and prefer a large layer 3 design, perhaps "Project Calico":http://www.projectcalico.org/ would be of interest. Also the neutron team and some large OpenStack deployers are working on a large layer 3 design.
 
