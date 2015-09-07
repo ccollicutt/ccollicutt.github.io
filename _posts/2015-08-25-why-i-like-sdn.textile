@@ -12,7 +12,7 @@ Recently, I helped give a presentation on SDN to the "Edmonton Go":https://edmon
 
 The only startup I'm aware of that did all three, Socketplane, was bought by Docker before they even put out a real product. I'm surprised there aren't more Go-based SDN startups. Maybe there are and I'm just not aware of them. Maybe they all get bought before they get a twitter account. [[1]]
 
-h2. I use SDN everyday
+h2. I use SDN every day
 
 As a systems administrator, I tend to concern myself with applying technologies in production, which is to say that theory is not enough. I use Midokura's Midonet (which is open source[[2]]) to provide multi-tenant virtual private networks for openstack users. It's in production and has been for months. Midonet acts as a plugin to Neutron and centralizes state in a Zookeeper cluster. Everything's been working great. My point is that I am using a software defined network every day to meet customers needs, and I think it would be difficult to do it without some kind of SDN system.
 
