@@ -318,6 +318,48 @@ Threads fairness:
 </code>
 </pre>
 
+For some kind of comparison, good or bad, here's the same test run on a single instance of the default mysql server you get when you install it on Ubuntu trusty. Same instance type as the above tests were run on.
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ ./sysbench-run-test.sh 
+sysbench 0.5:  multi-threaded system evaluation benchmark
+
+Running the test with following options:
+Number of threads: 8
+Random number generator seed is 0 and will be ignored
+
+
+Threads started!
+
+OLTP test statistics:
+    queries performed:
+        read:                            700000
+        write:                           200000
+        other:                           100000
+        total:                           1000000
+    transactions:                        50000  (511.80 per sec.)
+    read/write requests:                 900000 (9212.48 per sec.)
+    other operations:                    100000 (1023.61 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          97.6936s
+    total number of events:              50000
+    total time taken by event execution: 781.2354s
+    response time:
+         min:                                  5.55ms
+         avg:                                 15.62ms
+         max:                                234.14ms
+         approx.  95 percentile:              24.31ms
+
+Threads fairness:
+    events (avg/stddev):           6250.0000/163.33
+    execution time (avg/stddev):   97.6544/0.01
+
+</code>
+</pre>
+
 h2. More work to do
 
 So, like I said, these are just a bunch of notes I took when messing around with a virtual Galera cluster and doing some basic research into performance testing. I'll update this post as I continue on. Now that I have a virtualized test cluster that I can destroy and rebuild at will I can really get into understanding how it works and what the failure domains are, as well as how it performs. Eventually I would like to get "MariaDB MaxScale":https://mariadb.com/products/mariadb-maxscale into the loop as well, and send writes to one host and reads to all.
