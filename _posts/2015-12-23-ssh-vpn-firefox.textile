@@ -21,7 +21,7 @@ h2. Setup SSH Session
 It can be this easy:
 
 <pre>
-<code>$ ssh -D 8080 you@some.remote.host
+<code>your-laptop$ ssh -D 8080 you@some.remote.host
 some.remote.host$ # now logged in to remote host, ssh proxy is setup
 </code>
 </pre>
