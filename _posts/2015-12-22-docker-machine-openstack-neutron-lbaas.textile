@@ -321,10 +321,10 @@ With the swarm setup and the apache-php-5 container image ready, containers can 
 <code>docker-machine ~ [swarm-1]$ docker run -p 80:80 -p 443:443 -d 10.0.33.7:5000/apache-php-5
 fd30a72b4c112374c70b1609f5ffe773ce7121f69da2005f066fb151a89f100b
 docker-machine ~ [swarm-1]$ docker ps
-CONTAINER ID        IMAGE                         COMMAND                CREATED              STATUS              PORTS                                            NAMES
-fd30a72b4c11        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About a minute ago   Up About a minute   10.0.33.30:80->80/tcp, 10.0.33.30:443->443/tcp   swarm-3/admiring_booth
-240da9c443bc        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About an hour ago    Up About an hour    10.0.33.27:80->80/tcp, 10.0.33.27:443->443/tcp   swarm-1/drunk_wilson
-f085a644174e        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About an hour ago    Up About an hour    10.0.33.28:80->80/tcp, 10.0.33.28:443->443/tcp   swarm-2/awesome_einstein
+CONTAINER ID        IMAGE                         COMMAND                CREATED             STATUS              PORTS                   NAMES
+51166cb9c64c        10.0.33.7:5000/apache-php-5   "apache2-foreground"   12 hours ago        Up 11 hours         10.0.33.27:80->80/tcp   swarm-1/stupefied_wright
+adc5bdca0cba        10.0.33.7:5000/apache-php-5   "apache2-foreground"   12 hours ago        Up 12 hours         10.0.33.30:80->80/tcp   swarm-3/loving_jepsen
+3ee186d80986        10.0.33.7:5000/apache-php-5   "apache2-foreground"   12 hours ago        Up 12 hours         10.0.33.28:80->80/tcp   swarm-2/serene_booth
 </code>
 </pre>
 
