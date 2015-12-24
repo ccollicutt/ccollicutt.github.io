@@ -1,0 +1,497 @@
+---
+layout: post
+title: Docker Machine, OpenStack, and Neutron LBaaS
+categories:
+header_image: /img/glitch6.jpg
+header_permalink: https://flic.kr/p/7H6aD1 
+---
+
+h1. {{ page.title }}
+
+In this post I'll setup a docker swarm using OpenStack as the IaaS provider and then boot some containers that are loadbalanced by a Neutron-based LBaaS.
+
+I was re-introduced to docker via this interesting "post":http://container-solutions.com/using-binpack-with-docker-swarm/ that discusses docker-machine and the binpack strategy, which I must look into more, as I'm intersting in the area of binpacking. However this post just deals with setting up a small docker-machine cluster and loadbalancing it.
+
+h2. tl;dr
+
+Using an OpenStack cloud that has a loadbalancer-as-a-service (LBaaS) feature, I created a swarm of docker machines using...er docker-machine. I also created a private docker image repository server that the swarm machines use. Next up I added an index.php file to the php:5-apache image, ie. a new dockerfile with FROM php:5-apache, and pushed that image to the local private repository. Then I created three instances of that image and added the appropriate ports and IPs to the LBaaS pool. Finally I could curl the LBaaS public virtual IP (VIP), and would be "round-robinned" to the docker instances.
+
+<pre>
+<code>curtis-laptop$ while true; do curl http://<public vip>/; sleep 1; done
+version 2 51166cb9c64c
+version 2 adc5bdca0cba
+version 2 3ee186d80986
+^C
+</code>
+</pre>
+
+As you can see in the above output, the index.php on the webservers outputs the docker instance's hostname, which is part of its ID. With three containers as members of the lb, we see three unique hostnames, which means the traffic to the VIP is getting loadbalanced across the three containres.
+
+h2. Mistakes I made
+
+As a note, this blog post came from a couple hours of me messing around with docker-machine for the first time. It's been a while since I've used docker, and I'm behind on the new systems and features that are available. This means take anything I do here with a grain of salt, because I don't necessarily know what I'm doing. Especially around the management of images.
+
+While working on this blog post I made several silly mistakes and false starts, such as:
+
+* Using --swarm-master for every swarm node I created (not just the first one)
+* Could not find a good webserver/php docker image, first one I tried was "broken":https://hub.docker.com/r/eboraas/apache-php/. Finally realized I could use the php:5-apache image as a base.
+* Spent quite a while figuring out how to run an insecure private repository.
+* If I restarted the swarm nodes the swarm-agent container on each node did not startup automatically. Due to this I recieved TLS errors, but in reality it's failing to connect to port 3376 for docker machine, and that port will not be up if the swarm-master container isn't running.
+* Have to specify port for insecure-registry option.
+* Made some mistakes with local and remote (?) repositories with Docker...still working on this.
+
+The rest of this post will detail the steps I followed to setup this particular infrastructure.
+
+h2. OpenStack rc file
+
+I prefer to have an openstackrc file to source to use with docker-machine instead of setting up the command line switches.
+
+<pre>
+<code>#!/bin/bash
+export OS_USERNAME=<user>
+export OS_PASSWORD=<password>
+export OS_TENANT_NAME=<tenant>
+export OS_AUTH_URL=<auth url>
+export OS_REGION_NAME=<region>
+# basic trusty image from ubuntu cloud image
+export OS_IMAGE_ID=<trusty id>
+export OS_FLAVOR_ID=<flavor>
+# if you have VPC style openstack neutron to access
+export OS_NETWORK_ID=<network id>
+# the user for docker-machine to ssh in with
+export OS_SSH_USER=ubuntu
+</code>
+</pre>
+
+Source that file in order to provide the environment variables to docker-machine.
+
+<pre>
+<code>docker-machine$ source openstackrc
+</code>
+</pre>
+
+h2. OpenStack instances
+
+I created a "docker-machine" instance where I installed docker-machine and also setup a private repository on that node.
+
+Then using docker-machine and a proper OpenStack env file I created several swarm instances (more later on that). Don't create those instances yet, you just need a place to run docker-machine from and it's probably easiest to do that from an instance with the OpenStack tenant network.
+
+<pre>
+<code>docker-machine$ os server list
++--------------------------------------+-----------------------------+--------+---------------------------------+
+| ID                                   | Name                        | Status | Networks                        |
++--------------------------------------+-----------------------------+--------+---------------------------------+
+| 164cac1c-1762-417a-8f0c-397e1965db51 | swarm-3                     | ACTIVE | test-network=10.0.33.30            |
+| 62e0f05f-4818-427e-8be7-ae998304d1ec | swarm-2                     | ACTIVE | test-network=10.0.33.28            |
+| 65aa5c10-590a-4a0b-a2a3-debb8b53d1ca | swarm-1                     | ACTIVE | test-network=10.0.33.27            |
+| 0c60c7fe-2e19-4e39-bee2-2b09a79d9d17 | docker-machine              | ACTIVE | test-network=10.0.33.7, <public ip>|
++--------------------------------------+-----------------------------+--------+---------------------------------+
+</code>
+</pre>
+
+h2. Install docker machine
+
+Install the docker-machine CLI on the docker-machine instance. Doesn't seem to be a package for docker-machine.
+
+<pre>
+<code>docker-machine$ curl -L https://github.com/docker/machine/releases/download/v0.5.3/docker-machine_linux-amd64 >/usr/local/bin/docker-machine && \
+>     chmod +x /usr/local/bin/docker-machine
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   599    0   599    0     0   3760      0 --:--:-- --:--:-- --:--:--  3791
+100 14.1M  100 14.1M    0     0  18.5M      0 --:--:-- --:--:-- --:--:-- 35.8M
+docker-machine$ which docker-machine
+/usr/local/bin/docker-machine
+docker-machine$ docker-machine --version
+docker-machine version 0.5.3, build 4d39a66
+</code>
+</pre>
+
+h2. Bash completion
+
+I also setup the bash completion scripts for docker-machine.
+
+First I cloned the docker-machine repository.
+
+<pre>
+<code>docker-machine$ git clone https://github.com/docker/machine
+Cloning into 'machine'...
+remote: Counting objects: 14693, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 14693 (delta 3), reused 0 (delta 0), pack-reused 14683
+Receiving objects: 100% (14693/14693), 10.94 MiB | 11.63 MiB/s, done.
+Resolving deltas: 100% (7937/7937), done.
+Checking connectivity... done.
+</code>
+</pre>
+
+Then I sourced the bash completion scripts in my bashrc file.
+
+<pre>
+<code>source ~/machine/contrib/completion/bash/docker-machine.bash
+source ~/machine/contrib/completion/bash/docker-machine-prompt.bash
+source ~/machine/contrib/completion/bash/docker-machine-wrapper.bash
+PS1='[\u@\h \W$(__docker_machine_ps1 " [%s]")]\$ '
+</code>
+</pre>
+
+
+h2. Install docker on docker-machine instance 
+
+Just to be confusing I also installed docker on the docker-machine virtual machine. I added my user to the docker group and then re-logged in so that I could run docker commands without having to sudo to root.
+
+<pre>
+<code>docker-machine$ docker -v
+Docker version 1.9.1, build a34a1d5
+</code>
+</pre>
+
+I run the private docker image registry on the docker-machine host, not in the swarm. More on that later.
+
+<pre>
+<code>docker-machine$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+49a78c2588f7        registry:2          "/bin/registry /etc/d"   2 hours ago         Up About an hour    0.0.0.0:5000->5000/tcp   registry
+</code>
+</pre>
+
+h2. Create a private docker image repository
+
+It seems that if I want custom images on my docker swarm then they have to come from somewhere. I decided to setup a local registry so that each docker node in the swarm can obtain custom images from it.
+
+The "documentation":https://docs.docker.com/registry/ for creating your own internal, private repository is quite good and it's easy to do. Well, easy to create an "insecure" repository, ie. one that isn't properly protected by TLS and other measures. But, as usual, for the purposes of exploration, I created an insecure image repo.
+
+In this case the repo ends up on the IP of my docker-machine instance (not part of the swarm). Below is an example of an image in the 10.0.33.7:5000 repo.
+
+<pre>
+<code>docker-machine$ docker images | grep 10.0.33
+10.0.33.7:5000/apache-php-5   latest              ef50e992d38e        2 hours ago         480.5 MB
+</code>
+</pre>
+
+h2. Create a php:5-apache image that will echo hostname
+
+For the example, I want each host to print its hostname in the php page that apache gives out, so that I can see that each container is actually being used. That means putting a custom index.php file into the php:5-apache image, building it, and uploading it into the private repository.
+
+<pre>
+<code>docker-machine$ cat Dockerfile 
+FROM php:5-apache
+COPY index.php /var/www/html/index.php
+
+docker-machine$ cat index.php 
+<?php
+echo "version 2 ";
+echo gethostname();
+?>
+</code>
+</pre>
+
+The process is (afaik):
+
+1. Build image
+2. Tag image
+3. Push to private repository
+
+Example:
+
+<pre>
+<code>docker-machine$ docker build -t apache-php-5 .
+Sending build context to Docker daemon 4.096 kB
+Step 1 : FROM php:5-apache
+ ---> cb016a201e95
+Step 2 : COPY index.php /var/www/html/index.php
+ ---> 916c65313b03
+Removing intermediate container 609b66516729
+docker-machine$ docker tag -f apache-php-5 10.0.33.7:5000/apache-php-5
+docker-machine$ docker push 10.0.33.7:5000/apache-php-5
+The push refers to a repository [10.0.33.7:5000/apache-php-5] (len: 1)
+916c65313b03: Pushed 
+cb016a201e95: Image already exists 
+bf61c2e22863: Image already exists 
+1e2f9e5b3fb5: Image already exists 
+e70a54e5b8fe: Image already exists 
+869ca7daafc8: Image already exists 
+d5b98059a0c3: Image already exists 
+98990d4b1772: Image already exists 
+f90b4bdd0fe0: Image already exists 
+8cdb621c15a4: Image already exists 
+08d3d3dae3d4: Image already exists 
+619689ca2bd1: Image already exists 
+44f9dadf58c0: Image already exists 
+a53e1776c44e: Image already exists 
+9ee13ca3b908: Image already exists 
+latest: digest: sha256:c5044670f7a8e325791bd818826d1f1b7f3fbc6f62ab839232fdb0dffd289efc size: 49053
+</code>
+</pre>
+
+
+h2. Create the swarm
+
+Now using docker-machine we can create the swarm.
+
+<pre>
+<code>docker-machine$ docker run swarm create
+Unable to find image 'swarm:latest' locally
+latest: Pulling from library/swarm
+d681c900c6e3: Pull complete 
+188de6f24f3f: Pull complete 
+90b2ffb8d338: Pull complete 
+237af4efea94: Pull complete 
+3b3fc6f62107: Pull complete 
+7e6c9135b308: Pull complete 
+986340ab62f0: Pull complete 
+a9975e2cc0a3: Pull complete 
+Digest: sha256:c21fd414b0488637b1f05f13a59b032a3f9da5d818d31da1a4ca98a84c0c781b
+Status: Downloaded newer image for swarm:latest
+e922e4c46e469b4eb29d96f7d1723f08
+</code>
+</pre>
+
+Now that the swarm token is created we can boot some swarm instances. Start with the *swarm-master*. Note the "--engine-insecure-registry 10.0.33.7:5000" option. Also note that I'm using the token that the "docker run swarm create" command returned.
+
+<pre>
+<code>docker-machine$ docker-machine create -d openstack --swarm --swarm-master --swarm-discovery token://$TOKEN --engine-insecure-registry 10.0.33.7:5000 swarm-1
+# this will take a few minutes...
+</code>
+</pre>
+
+Now create two more swarm members.
+
+Second swarm member.
+
+<pre>
+<code>docker-machine$ docker-machine create -d openstack --swarm --swarm-discovery token://$TOKEN --engine-insecure-registry 10.0.33.7:5000 swarm-2
+</code>
+</pre>
+
+3rd swarm member.
+
+<pre>
+<code>docker-machine$ docker-machine create -d openstack --swarm --swarm-discovery token://$TOKEN --engine-insecure-registry 10.0.33.7:5000 swarm-3
+</code>
+</pre>
+
+Eval the environment for the swarm, so that when we use the docker command we are connecting to the swarm not the local docker host.
+
+<pre>
+<code>docker-machine$ eval $(docker-machine env --swarm swarm-1)
+docker-machine ~ [swarm-1]$
+</code>
+</pre>
+
+Now we can connect to the swarm. :)
+
+<pre>
+<code>docker-machine$ docker info
+Containers: 7
+Images: 11
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ swarm-1: 10.0.33.27:2376
+  └ Status: Healthy
+  └ Containers: 3
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 2.053 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=3.13.0-74-generic, operatingsystem=Ubuntu 14.04.3 LTS, provider=openstack, storagedriver=aufs
+ swarm-2: 10.0.33.28:2376
+  └ Status: Healthy
+  └ Containers: 2
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 2.053 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=3.13.0-74-generic, operatingsystem=Ubuntu 14.04.3 LTS, provider=openstack, storagedriver=aufs
+ swarm-3: 10.0.33.30:2376
+  └ Status: Healthy
+  └ Containers: 2
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 2.053 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=3.13.0-74-generic, operatingsystem=Ubuntu 14.04.3 LTS, provider=openstack, storagedriver=aufs
+CPUs: 3
+Total Memory: 6.158 GiB
+Name: swarm-1
+</code>
+</pre>
+
+h2. Start some containers
+
+With the swarm setup and the apache-php-5 container image ready, containers can be started up.
+
+<pre>
+<code>docker-machine ~ [swarm-1]$ docker run -p 80:80 -p 443:443 -d 10.0.33.7:5000/apache-php-5
+fd30a72b4c112374c70b1609f5ffe773ce7121f69da2005f066fb151a89f100b
+docker-machine ~ [swarm-1]$ docker ps
+CONTAINER ID        IMAGE                         COMMAND                CREATED              STATUS              PORTS                                            NAMES
+fd30a72b4c11        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About a minute ago   Up About a minute   10.0.33.30:80->80/tcp, 10.0.33.30:443->443/tcp   swarm-3/admiring_booth
+240da9c443bc        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About an hour ago    Up About an hour    10.0.33.27:80->80/tcp, 10.0.33.27:443->443/tcp   swarm-1/drunk_wilson
+f085a644174e        10.0.33.7:5000/apache-php-5   "apache2-foreground"   About an hour ago    Up About an hour    10.0.33.28:80->80/tcp, 10.0.33.28:443->443/tcp   swarm-2/awesome_einstein
+</code>
+</pre>
+
+So we have three containers with port 80 on the swarm node forwarding to port 80 in the container(s).
+
+h2. Create OpenStack loadbalancer
+
+The cloud I'm using has a loadbalancer feature. It's somewhat limited, in that it can only do TCP and round robin, but that's still useful, especially given the public VIP is handled at the OpenStack IaaS layer, and is not something I have to manage. Nor do I have to create any complicated methods to move a floating IP in case of the failure of a node.
+
+First the pool is created.
+
+<pre>
+<code>docker-machine$ neutron lb-pool-create --lb-method ROUND_ROBIN --protocol TCP --name docker-lb --subnet-id 832fc99e-42ab-4234-8a5f-acacde56713f
+Created a new pool:
++------------------------+--------------------------------------+
+| Field                  | Value                                |
++------------------------+--------------------------------------+
+| admin_state_up         | True                                 |
+| description            |                                      |
+| health_monitors        |                                      |
+| health_monitors_status |                                      |
+| id                     | e2e38662-a994-4e86-bc68-05bbe95b95ce |
+| lb_method              | ROUND_ROBIN                          |
+| members                |                                      |
+| name                   | docker-lb                            |
+| protocol               | TCP                                  |
+| provider               |                                      |
+| router_id              | 16ce36bd-94a2-4203-8e30-871134c47272 |
+| status                 | ACTIVE                               |
+| status_description     |                                      |
+| subnet_id              | 832fc99e-42ab-4234-8a5f-acacde56713f |
+| tenant_id              | 0b33fce4b64d4c288098344b3b443370     |
+| vip_id                 |                                      |
++------------------------+--------------------------------------+
+</code>
+</pre>
+
+Next members are added to the pool.
+
+<pre>
+<code>docker-machine$ neutron lb-member-create --address 10.0.33.27 --protocol-port 80 docker-lb
+Created a new member:
++--------------------+--------------------------------------+
+| Field              | Value                                |
++--------------------+--------------------------------------+
+| address            | 10.0.33.27                           |
+| admin_state_up     | True                                 |
+| id                 | 6a187959-49ea-4570-bbab-27c9427fd030 |
+| pool_id            | e2e38662-a994-4e86-bc68-05bbe95b95ce |
+| protocol_port      | 80                                   |
+| status             | ACTIVE                               |
+| status_description |                                      |
+| tenant_id          | 0b33fce4b64d4c288098344b3b443370     |
+| weight             | 1                                    |
++--------------------+--------------------------------------+
+docker-machine$ neutron lb-member-create --address 10.0.33.28 --protocol-port 80 docker-lb
+Created a new member:
++--------------------+--------------------------------------+
+| Field              | Value                                |
++--------------------+--------------------------------------+
+| address            | 10.0.33.28                          |
+| admin_state_up     | True                                 |
+| id                 | 3ae848e0-8d96-4b9a-afd2-b07ead463f78 |
+| pool_id            | e2e38662-a994-4e86-bc68-05bbe95b95ce |
+| protocol_port      | 80                                   |
+| status             | ACTIVE                               |
+| status_description |                                      |
+| tenant_id          | 0b33fce4b64d4c288098344b3b443370     |
+| weight             | 1                                    |
++--------------------+--------------------------------------+
+docker-machine$ neutron lb-member-create --address 10.0.33.30 --protocol-port 80 docker-lb
+Created a new member:
++--------------------+--------------------------------------+
+| Field              | Value                                |
++--------------------+--------------------------------------+
+| address            | 10.0.33.30                           |
+| admin_state_up     | True                                 |
+| id                 | a2c6a6c7-d300-4e76-9110-0ca22d4e5b76 |
+| pool_id            | e2e38662-a994-4e86-bc68-05bbe95b95ce |
+| protocol_port      | 80                                   |
+| status             | ACTIVE                               |
+| status_description |                                      |
+| tenant_id          | 0b33fce4b64d4c288098344b3b443370     |
+| weight             | 1                                    |
++--------------------+--------------------------------------+
+</code>
+</pre>
+
+Now a virtual IP for the loadbalancer. The subnet ID in this case is a public external network, not a VPC-style tenant network.
+
+<pre>
+<code>docker-machine$ neutron lb-vip-create --name docker-lbvip --protocol-port 80 --protocol TCP --subnet-id 832fc99e-42ab-4234-8a5f-acacde56713f docker-lb
+Created a new vip:
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| address             | 10.0.33.19                           |
+| admin_state_up      | True                                 |
+| connection_limit    | -1                                   |
+| description         |                                      |
+| id                  | 61f5c2b1-1af9-4c0a-8e26-c7130ede58a8 |
+| name                | docker-lbvip                         |
+| pool_id             | e2e38662-a994-4e86-bc68-05bbe95b95ce |
+| port_id             | ca71900c-10a1-4e22-8f48-0b2ce0d04ee2 |
+| protocol            | TCP                                  |
+| protocol_port       | 80                                   |
+| session_persistence |                                      |
+| status              | ACTIVE                               |
+| status_description  |                                      |
+| subnet_id           | 832fc99e-42ab-4234-8a5f-acacde56713f |
+| tenant_id           | 0b33fce4b64d4c288098344b3b443370     |
++---------------------+--------------------------------------+
+</code>
+</pre>
+
+Create a monitor.
+
+<pre>
+<code>docker-machine$ neutron lb-healthmonitor-create --delay 6 --type TCP --max-retries 3 --timeout 2
+Created a new health_monitor:
++----------------+--------------------------------------+
+| Field          | Value                                |
++----------------+--------------------------------------+
+| admin_state_up | True                                 |
+| delay          | 6                                    |
+| id             | c6b2ebbf-fa31-48f1-9861-96400ec2dcba |
+| max_retries    | 3                                    |
+| pools          |                                      |
+| tenant_id      | 0b33fce4b64d4c288098344b3b443370     |
+| timeout        | 2                                    |
+| type           | TCP                                  |
++----------------+--------------------------------------+
+</code>
+</pre>
+
+Associate that monitor to the loadblancer pool.
+
+<pre>
+<code>docker-machine$ neutron lb-healthmonitor-associate c6b2ebbf-fa31-48f1-9861-96400ec2dcba docker-lb
+Associated health monitor c6b2ebbf-fa31-48f1-9861-96400ec2dcba
+</code>
+</pre>
+
+h2. Curl away!
+
+Now we can curl the docker-lb VIP and hit each container...
+
+<pre>
+<code>curtis@laptop ~  $ while true; do curl http://<public vip>/; sleep 1; done
+version 2 51166cb9c64c
+version 2 adc5bdca0cba
+version 2 3ee186d80986
+^C
+</code>
+</pre>
+
+Phewph. That was a lot of typing.
+
+h2. docker-machine
+
+I quite like docker-machine. It seems like a rather simple way to get multiple docker hosts up and running and working together. I could see this being very useful for organizations that want to keep things simple. That said, I haven't looked "under the hood" so to speak, with regards as to how it's working. I would imaging running it in production would be considerably more difficult. I haven't even touched on use of volumes, etc.
+
+h2. Future work
+
+One thing to note is that I'm just running one container per host and using the host's external IP and port 80 as the endpoint for the loadbalancer. But what we'd really want to do is be able to have a container running on any port and have the lb round robin to that port, regardless of whether or not it's port 80 or some random port. That's a common thing to do. I did test it out quickly but using another port such as 8080 wasn't working with the lb. At some point a normal docker user would want to run many, many containers and have the lb use them. Something to figure out in the near future.
+
+Having said that, a strategy I might pursue regardless of how the lb works is to use the Neutron LBaaS as a layer 4 lb (which is what it is in this specific case) that brings the traffic onto layer 7 haproxy servers running in containers in the swarm which would further distribute traffic. That way the public VIP is highly available, and I can use the more powerful haproxy to do sophisticated loadbalancing at the application layer.
+
+
+Also--I'm reminded of how working with images with Docker is difficult. If I ever decide to use Docker in production I'd have to really work on getting the right image workflow. It also makes me wonder if anyone is working on a private Docker repository system as a service in OpenStack. That'd be interesting.
