@@ -25,7 +25,7 @@ version 2 3ee186d80986
 </code>
 </pre>
 
-As you can see in the above output, the index.php on the webservers outputs the docker instance's hostname, which is part of its ID. With three containers as members of the lb, we see three unique hostnames, which means the traffic to the VIP is getting loadbalanced across the three containres.
+As you can see in the above output, the index.php on the webservers outputs the docker instance's hostname, which is part of its ID. With three containers as members of the lb, we see three unique hostnames, which means the traffic to the VIP is getting loadbalanced across the three containers.
 
 h2. Mistakes I made
 
@@ -36,7 +36,7 @@ While working on this blog post I made several silly mistakes and false starts, 
 * Using --swarm-master for every swarm node I created (not just the first one)
 * Could not find a good webserver/php docker image, first one I tried was "broken":https://hub.docker.com/r/eboraas/apache-php/. Finally realized I could use the php:5-apache image as a base.
 * Spent quite a while figuring out how to run an insecure private repository.
-* If I restarted the swarm nodes the swarm-agent container on each node did not startup automatically. Due to this I recieved TLS errors, but in reality it's failing to connect to port 3376 for docker machine, and that port will not be up if the swarm-master container isn't running.
+* If I restarted the swarm nodes the swarm-agent container on each node did not startup automatically. Due to this I received TLS errors, but in reality it's failing to connect to port 3376 for docker machine, and that port will not be up if the swarm-master container isn't running.
 * Have to specify port for insecure-registry option.
 * Made some mistakes with local and remote (?) repositories with Docker...still working on this.
 
