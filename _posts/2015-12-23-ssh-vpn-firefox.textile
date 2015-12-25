@@ -21,7 +21,7 @@ h2. Setup SSH Session
 It can be this easy:
 
 <pre>
-<code>your-laptop$ ssh -D 8080 you@some.remote.host
+<code>your-laptop$ ssh -D 127.0.0.1:8080 you@some.remote.host
 some.remote.host$ # now logged in to remote host, ssh proxy is setup
 </code>
 </pre>
@@ -29,14 +29,15 @@ some.remote.host$ # now logged in to remote host, ssh proxy is setup
 You can see that ssh is listening on localhost 8080.
 
 <pre>
-<code>$ lsof -n -P -i :8080 -sTCP:LISTEN
-COMMAND  PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
-ssh     7549 curtis    4u  IPv6 1574075      0t0  TCP [::1]:8080 (LISTEN)
-ssh     7549 curtis    5u  IPv4 1574076      0t0  TCP 127.0.0.1:8080 (LISTEN)
+<code>laptop$ lsof -n -P -i :8080 -sTCP:LISTEN
+COMMAND   PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+ssh     27005 curtis    4u  IPv4 1769809      0t0  TCP 127.0.0.1:8080 (LISTEN)
 </code>
 </pre>
 
 You could also use the -N and -T switches to not execute a remote command and disable getting a tty.
+
+As long as that ssh session is up the proxy will be working.
 
 h2. Configuring Firefox
 
