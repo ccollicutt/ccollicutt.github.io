@@ -29,7 +29,7 @@ some.remote.host$ # now logged in to remote host, ssh proxy is setup
 You can see that ssh is listening on localhost 8080.
 
 <pre>
-<code>laptop$ lsof -n -P -i :8080 -sTCP:LISTEN
+<code>your-laptop$ lsof -n -P -i :8080 -sTCP:LISTEN
 COMMAND   PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
 ssh     27005 curtis    4u  IPv4 1769809      0t0  TCP 127.0.0.1:8080 (LISTEN)
 </code>
