@@ -1,3 +1,4 @@
 markdown: rdiscount
 #pygments: true
 highlighter: pygments
+permalink: /:year/:month/:day/:title.html
