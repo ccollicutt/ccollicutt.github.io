@@ -13,7 +13,7 @@ This is just a quick post on getting OpenVSwitch with DPDK installed on Ubuntu 1
 
 ## tl;dr
 
-Install the Ubuntu Liberty Cloud Archive. Then you can install openvswitch-switch-dpdk. However I have not completed the configuration component because there are some bugs, as well I'm lacking a baremetal server at the moment as I was working in AWS. So really this post is just to say that there is a DPCK OpenVSwitch for Ubuntu Trusty. I'll follow up with more information in a later post.
+Install the Ubuntu Liberty Cloud Archive. Then you can install openvswitch-switch-dpdk. However I have not completed the configuration component because there are some bugs, as well I'm lacking a baremetal server at the moment as I was working in AWS. So really this post is just to say that there is a DPDK OpenVSwitch for Ubuntu Trusty. I'll follow up with more information in a later post.
 
 ## Installation
 
