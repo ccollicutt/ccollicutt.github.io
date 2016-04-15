@@ -45,7 +45,7 @@ The topics are fairly varied. I was hoping to be able to categorize them, but it
 
 Below are some keywords I pulled out of the blurb for each talk.
 
-| Keyword                                                                                                |
+| Keyword                    |                  |                  |                      |              |
 | -------------------------- | ---------------- | ---------------- | -------------------- | ------------ |
 | VNF                        | Distributed NFV  | Service Chaining | Open Source          | vCPE         |
 | Panel                      | VM Placement     | Uptime           | Orchestration        | OPNFV        |
