@@ -11,6 +11,7 @@ I went through all the presentations in the [Telco/NFV](https://www.openstack.or
 
 Please note this is not a scientific look at the numbers by any stretch of the imagination:
 
+* This analysis is occurring before the summit.
 * I'm not sure about a couple of companies in terms of their size.
 * I'm not counting unique presenters, just the occurrences. So if the same person did three presentations I'd count them as three different presenters.
 * I wrote this up on 2016-04-14 and things may have changed by then.
@@ -57,7 +58,7 @@ Below are some keywords I pulled out of the blurb for each talk.
 
 Some of them were mentioned more than once, such as OPNFV, service chaining, and technologies like SR-IOV/CPU Pinning/NUMA/Huge Pages. Multi-site or distributed was mentioned a couple of times. Both OpenStack and OPNFV have ongoing Telecom/NFV related projects such as Congress and Tacker as well as Doctor that should be well represented.
 
-## Number of employees each company has
+## Number of employees
 
 Below is a table of the larger companies and how many people each employs. It's a considerable sum of over *two million employees!* That's a lot of people.
 
