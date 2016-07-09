@@ -92,7 +92,7 @@ Note the "stores" option, and that "file, http, swift" are configured.
 
 One caveat at this time is that the Glance V2 API does not seem to allow for setting an option when uploading an image as to which backend to use. Thus, with Glance V2 you will always be using the default_store, which in this example is Swift.
 
-But, if you use V1, you can set the "--store" option and chose a backend.
+But, if you use V1, you can set the "--store" option and choose a backend.
 
 ~~~bash
 ubuntu@uc-osclient-01:~$ glance --os-image-api 2 help image-create | grep "\-\-store" 
