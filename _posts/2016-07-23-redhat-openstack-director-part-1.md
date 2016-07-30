@@ -197,6 +197,6 @@ It seems counter-intuitive, but using something like [Kubernetes](http://kuberne
 
 ##Conclusion
 
-I've deployed large, production, high SLA OpenStack clouds before, and run them over time. Deploying is easy, operating is blood difficult. I know what is required...what works and what doesn't. Today my impression of Director is that it is fairly behind in terms of what successful, modern OpenStack operators are doing to manage their clouds. I have a lot more to learn about Director and Tripleo, but three or four weeks in I feel I have a good idea of what they offer.
+I've deployed large, production, high SLA OpenStack clouds before, and run them over time. Deploying is easy, operating is bloody difficult. I know what is required...what works and what doesn't. Today my impression of Director is that it is fairly behind in terms of what successful, modern OpenStack operators are doing to manage their clouds. I have a lot more to learn about Director and Tripleo, but three or four weeks in I feel I have a good idea of what they offer.
 
-Hopefully in the next post I'll know more about Day 2 capabilities, and perhaps I'll be more comfortable with it. Certainly there is no denying that behind the scene Director, based on Tripleo, is quite complicated and has many components to learn and understand. Perhaps those components allow for operational proficiency. Or perhaps not.
+Hopefully in the next post I'll know more about Day 2 capabilities, and perhaps I'll be more comfortable with it. Certainly there is no denying that behind the scenes Director, based on Tripleo, is quite complicated and has many components to learn and understand. Perhaps those components allow for operational proficiency. Or perhaps not.
