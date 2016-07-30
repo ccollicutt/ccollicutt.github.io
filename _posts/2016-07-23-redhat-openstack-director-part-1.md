@@ -1,6 +1,6 @@
 ---
 layout: post
-title: RedHat Director - Part 1 - Overview
+title: RedHat OpenStack Director - Part 1 - Overview
 categories:
 header_image: /img/iceberg.jpg
 header_permalink: https://flic.kr/p/9dVtm9
