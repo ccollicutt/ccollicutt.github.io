@@ -17,8 +17,8 @@ I just wanted a simple script to parse the ip address of the server and return a
 
 This is the script I ended up using.
 
-<pre>
-<code>#!/bin/bash
+~~~bash
+#!/bin/bash
 
 IP_INDEX=`hostname -i | cut -f 4 -d "."`
 
@@ -27,19 +27,17 @@ cat <<EOF
     "vpn_ip" : "10.0.0.$IP_INDEX"
 }
 EOF
-</code>
-</pre>
+~~~
 
 Using ansible I put that file into the /etc/ansible/facts.d directory. Note it has to be executable, return json, and end with the .fact extension.
 
-<pre>
-<code>ubuntu@trusty2:~$ cd /etc/ansible/facts.d/
+~~~bash
+ubuntu@trusty2:~$ cd /etc/ansible/facts.d/
 ubuntu@trusty2:/etc/ansible/facts.d$ ./tinc_facts.fact
 {
     "vpn_ip" : "10.0.0.22"
 }
-</code>
-</pre>
+~~~
 
 Pretty simple so far.
 
@@ -51,8 +49,8 @@ Here's a snippet of my playbook. It's creating the facts.d directory, copying ov
 
 I should be registering a variable and only reload the ansible_local if the facts.d scripts have changed on this particular run.
 
-<pre>
-<code>- name: ensure custom facts directory exists
+~~~bash
+- name: ensure custom facts directory exists
   file: >
     path=/etc/ansible/facts.d
     recurse=yes
@@ -66,9 +64,7 @@ I should be registering a variable and only reload the ansible_local if the fact
 
 - name: reload ansible_local
   setup: filter=ansible_local
-
-</code>
-</pre>
+~~~
 
 Otherwise, on the next Ansible run it'll be available.
 
@@ -76,20 +72,19 @@ Otherwise, on the next Ansible run it'll be available.
 
 It seems as though the fact gets loaded into the ansible_local namespace under the name of the name of the fact script.
 
-<pre>
-<code>$ ansible -m setup trusty2 | grep -A 4 ansible_local
+~~~bash
+$ ansible -m setup trusty2 | grep -A 4 ansible_local
         "ansible_local": {
             "tinc_facts": {
                 "vpn_ip": "10.0.0.22"
             }
         },
-</code>
-</pre>
+~~~
 
 I use the fact like this in my playbook.
 
-<pre>
-<code>{% raw %}- name: ensure subnet ip address is properly set in tinc host file
+~~~bash
+{% raw %}- name: ensure subnet ip address is properly set in tinc host file
   lineinfile: >
     dest=/etc/tinc/{{ vpn_name }}/hosts/{{ ansible_hostname }}
     line="Subnet = {{ ansible_local.tinc_facts.vpn_ip }}/32"
@@ -97,7 +92,6 @@ I use the fact like this in my playbook.
   notify:
     - restart tinc
 {% endraw %}
-</code>
-</pre>
+~~~
 
 And there we go, relatively simple custom facts for Ansible. Now we can do all sorts of silly things like make new ips based on old ips. haha.
