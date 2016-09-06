@@ -10,7 +10,11 @@ header_permalink: http://70sscifiart.tumblr.com/post/53902582514/a-beautiful-ang
 
 Even though I mostly work with OpenStack, I also quite like Amazon Web Services (AWS). Further I am doing a lot of work with containers, and have been doing so for a while--I was messing around with [Mesos](https://github.com/ccollicutt/ansible-mesos-playbook) two years ago.
 
-Kubernetes has a lot of attention right now. Docker has slightly cooled off, but is moving rapidly forwards [technology-wise](https://blog.docker.com/2016/06/docker-1-12-built-in-orchestration/). Kubernetes has recently reached some kind of front-runner status in terms of container management systems, though I should note that Docker is being used to manage containers in all the examples discussed in this blog post. Kubernetes does not provide containers directly, and instead uses an underlying system such as Docker, or more recently, [rkt](https://coreos.com/rkt/) for that layer. Kubernetes focuses on managing the deployment of containerized applications.
+Kubernetes has a lot of attention right now. Docker has slightly cooled off, but is moving rapidly forwards [technology-wise](https://blog.docker.com/2016/06/docker-1-12-built-in-orchestration/). Kubernetes has recently reached some kind of front-runner status in terms of container management systems, though I should note that Docker is being used as the container runtime in all the examples discussed in this blog post. Kubernetes does not provide containers directly, and instead uses an underlying system such as Docker, or more recently, [rkt](https://coreos.com/rkt/) for that layer. Kubernetes focuses on managing the deployment of containerized applications.
+
+## tl;dr
+
+I've released some [Ansible playbooks](https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible) and documents that will deploy Kubernetes into AWS, and configure Kubernetes to manage some AWS features like route tables and elastic load balancers.
 
 ## Kubernetes the Hard Way
 
@@ -26,15 +30,17 @@ k8s integrates well with AWS. For example, using the networking methodology that
 
 Further, when you create a service in k8s, it can automatically configure an AWS EC2 load balancer to expose the service externally. This includes creating appropriate security groups.
 
-There are a few other integrations that I have yet to configure in my KtHWAA repository, but the two important ones, 1) pod routes and 2) ELB are completed and work greate.
+There are a few other integrations that I have yet to configure in my KtHWAA repository, but the two important ones, 1) pod routes and 2) ELB are completed and work great.
 
-The ability of k8s to configure the IaaS around it is quite amazing. I'm sure most people understand that AWS IAM roles and policies can be created, but to me it means something special because the infrastructure I create in AWS, such as k8s, can also configure AWS features. It seems obvious, but that is extremely powerful. This is something that is lacking in OpenStack--the ability to create roles and policies and provide components, such as a virtual machine, the ability to alter the tenant infrastructure around it.
+The ability of k8s to configure the IaaS around it is quite amazing. I'm sure seasoned AWS users understand that IAM roles and policies are powerful, but to me it means something special because the infrastructure I create in AWS, such as k8s, can also configure AWS features. It seems obvious, but that is extremely dynamic. This capability is something that is lacking in OpenStack--the ability to create roles and policies and provide components, such as a virtual machine, the ability to alter the tenant infrastructure around it.
 
 I'm also impressed that the k8s project has put so much work in AWS integration. Given k8s is a Google led project, I'm happy to see them supporting other IaaS providers. So kudos to Google and the other members of the k8s project team.
 
 ## Using AWS with Ansible
 
 I ran into a few funny issues with Ansible modules and AWS, but overall I'm happy with how things turned out. I could do everything I needed to with Ansible, though certainly there are some improvements to be made. Even though Ansible has been around for a while the modules are constantly improving and as AWS continues to grow at an unprecedented pace I'm sure the Ansible will get better and better in terms of managing AWS, as will my ability to properly use both.
+
+One example is that, at this time, is not an ec2_group_facts module, so you can only get information about a security group if you create it with the ec2_group module. But that will be easily fixed.
 
 ## Forward Looking Statement
 
