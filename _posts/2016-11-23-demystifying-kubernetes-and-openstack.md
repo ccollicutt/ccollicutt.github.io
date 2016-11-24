@@ -50,7 +50,7 @@ If you decide to use containers to deploy OpenStack services, then you will eith
 
 If you would like to use a COE, or have additional feature requirements, then using k8s may be of value to you. You could use k8s to manage each OpenStack service. Not only can k8s schedule containers, it also has some additional features that helps to keep those containers running. But it also brings additional complexity. k8s still requires care and feeding like any complex system. If an OpenStack Operator is running 60 containers on 3 physical servers, it may not be worth the additional complexity to run k8s. 
 
-In this "control plane" example, k8s would only run the services required to provide the OpenStack "control plane."
+In this example, k8s would only run the services required to provide the OpenStack control plane.
 
 Certain OpenStack distributions, such as Mirantis', are working to alter their deployment system to use k8s as the underlying COE for the OpenStack control plane.
 

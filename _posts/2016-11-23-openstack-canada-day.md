@@ -80,4 +80,4 @@ The 2017 OpenStack Days Canada will be in Toronto. I look forward to attending a
 
 ## Thanks to the organizers
 
-I'm sure a lot of work went into this event. Thanks to the sponsors and organizers of the event, and I look forward to the 2017 event.
+I'm sure a lot of work went into this event. Thanks to the sponsors and organizers of the event, and I look forward to the 2017 OpenStack Days Canada.
