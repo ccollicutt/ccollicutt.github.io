@@ -204,6 +204,7 @@ This creates a Xenial image that has cloud-init installed but set to only use Co
 Then I just copy the resulting image to */httpboot/deployment_image.qcow2* and that is what will be deployed to the physical node.
 
 I should note that:
+
 * serial-console does not seem to work in Xenial
 * Adding a devuser in production is probably not a great idea
 
