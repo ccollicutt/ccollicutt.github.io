@@ -28,13 +28,13 @@ Now you need to read that queue.
 
 ## Reading messages on the firehose queue
 
-First you will need a script to read the queue.
+You will need a script to read the queue.
 
 I just grabbed one off of github, but it would be straight forward to write your own.
 
 <script src="https://gist.github.com/khomenko/2562165.js"></script>
 
-First, this particular script uses the pika library.
+This particular python script uses the pika library.
 
 ~~~bash
 ubuntu@rabbit:~$ virtualenv venv
@@ -42,7 +42,7 @@ ubuntu@rabbit:~$ . venv/bin/activate
 ubuntu@rabbit:~$ pip install pika
 ~~~
 
-Now you can turn on the firehost. I'm going to redirect to a file because there are a lot of messages.
+Now you can turn on the firehose. I'm going to redirect to a file because there are a lot of messages.
 
 ~~~bash
 (venv) ubuntu@rabbit:~$ time ./trace.py > trace.out
@@ -84,7 +84,7 @@ root@rabbit:~# rabbitmqctl trace_off
 Stopping tracing for vhost "/" ...
 ~~~
 
-You might need to empty out that queue once you are done.
+You might need to empty out the firehost queue.
 
 ~~~bash
 root@rabbit:~# rabbitmqctl list_queues | grep firehose
