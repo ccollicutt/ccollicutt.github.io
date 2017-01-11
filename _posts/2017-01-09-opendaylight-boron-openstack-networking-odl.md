@@ -134,4 +134,4 @@ My thoughts on the above, as well as additional capability not mentioned:
 
 1. [OVSDB Netvirt](http://docs.opendaylight.org/en/stable-boron/user-guide/ovsdb-netvirt.html)
 2. [OpenDaylight PDF](https://media.readthedocs.org/pdf/opendaylight/1.0.0/opendaylight.pdf)
-3. [NetVirt Basic Tutorial](http://schd.ws/hosted_files/opendaylightsummit2016/c9/ODL%20Summit%202016%20NetVirt%20Basic%20Tutorial%20(2).pdf)
+3. [NetVirt Basic Tutorial](https://docs.google.com/presentation/d/1VLzRIOEptSOY1b0w4PezRIQ0gF5vx7GyLKECWXRV5mE/edit#slide=id.g13650d2e5d_0_15)
