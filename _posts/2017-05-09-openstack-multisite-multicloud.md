@@ -54,7 +54,7 @@ However, V2 is is now default in OpenStack Ocata+. If you deploy Ocata you will 
 
 Unfortunately, this is just for Nova. I would love to see a similar model applied to all major OpenStack projects. But even if they all decided they wanted to do that, it would probably take a couple years for the changes to make their way into the releases.
 
-I'd also like to mention that, at least when Cells V2 is production ready, using it in combination with something like [routed provider networks](https://docs.openstack.org/newton/networking-guide/config-routed-networks.html) would be extremely powerful. I would consider routed provider networks complimentary to cells. Imagine doing Nova Cells V2 at the on a per rack basis, and also routed provider networks.
+I'd also like to mention that, at least when Cells V2 is production ready, using it in combination with something like [routed provider networks](https://docs.openstack.org/newton/networking-guide/config-routed-networks.html) would be extremely powerful. I would consider routed provider networks complimentary to cells. Imagine doing Nova Cells V2 on a per rack basis, and also routed provider networks.
 
 ## Shared LDAP
 
