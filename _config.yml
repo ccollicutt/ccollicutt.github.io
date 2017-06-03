@@ -1,4 +1,9 @@
-markdown: rdiscount
-#pygments: true
-highlighter: pygments
+#Others
+markdown: kramdown
+
+# Syntax highlighting
+highlighter: rouge
+kramdown:
+    input: GFM
+    syntax_highlighter: rouge
 permalink: /:year/:month/:day/:title.html
