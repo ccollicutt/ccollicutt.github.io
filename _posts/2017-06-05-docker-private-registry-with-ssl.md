@@ -150,7 +150,7 @@ a552ca691e49: Layer already exists
 latest: digest: sha256:eb52222d9a7e00426ad94eacaf442dd07e52243ecec7f328537515f0b4c035da size: 1155
 ```
 
-Now I have an internal, private repository that is using SSL so that I don't have to reconfigured all the Docker nodes to use an insecure repository, though one would still have to ensure the cacert is installed on all the Docker nodes.
+Now I have an internal, private repository that is using SSL so that I don't have to reconfigure all the Docker nodes to use an insecure repository, though one would still have to ensure the cacert is installed on all the Docker nodes.
 
 ## Conclusion
 
