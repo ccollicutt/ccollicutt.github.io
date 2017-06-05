@@ -21,7 +21,7 @@ Frankly the hardest part of this is getting the SSL certificates to work.
 
 I'm not 100% sure of the model I'm using to create the SSL certificates, but it is working with Docker. I don't know if you'd want to use it in production. :)
 
-First, I create a `ca.conf` file. You might want to edit the distinguished name variables as well as the CN and alt_names.
+First, I create a OpenSSL configuration file called `ca.conf`. You might want to edit the distinguished name variables as well as the CN and alt_names.
 
 ```
 [req]
@@ -48,7 +48,7 @@ basicConstraints = CA:true
 DNS.1 = ca.example.com
 ```
 
-Next I also created a `server.conf`. You will want to change the CN and IP.1 or DNS.1. I am using an IP.
+Next I also created a `server.conf` OpenSSL config file. You will want to change the CN and IP.1 or DNS.1. I am using an IP.
 
 ```
 [req]
@@ -149,6 +149,8 @@ a552ca691e49: Layer already exists
 8781ec54ba04: Layer already exists
 latest: digest: sha256:eb52222d9a7e00426ad94eacaf442dd07e52243ecec7f328537515f0b4c035da size: 1155
 ```
+
+Now I have an internal, private repository that is using SSL so that I don't have to reconfigured all the Docker nodes to use an insecure repository, though one would still have to ensure the cacert is installed on all the Docker nodes.
 
 ## Conclusion
 
