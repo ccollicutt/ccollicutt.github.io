@@ -20,10 +20,6 @@ Technically a load balancer service is not necessary to run an OpenStack cloud, 
 
 People who run OpenStack clouds have some choices they can make in terms of how the LBaaS operates within their cloud. One of the newer methods for providing LBaaS in an OpenStack cloud is the [Octavia](https://docs.openstack.org/octavia/latest/reference/introduction.html) project.
 
-**Octavia**
-
-There are a couple of backends that can be used to support LBaaS within an OpenStack cloud. One of them is Octavia, and that is what will be discussed in this post.
-
 >Octavia accomplishes its delivery of load balancing services by managing a fleet of virtual machines, containers, or bare metal servers—collectively known as amphorae—which it spins up on demand. This on-demand, horizontal scaling feature differentiates Octavia from other load balancing solutions, thereby making Octavia truly suited “for the cloud.”
 
 **Service Tenant / Service VM Model**
