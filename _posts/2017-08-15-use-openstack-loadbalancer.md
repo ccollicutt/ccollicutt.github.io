@@ -8,7 +8,7 @@ header_permalink: https://unsplash.com/search/photos/balance?photo=FO7bKvgETgQ
 
 # {{ page.title }}
 
-In a recent post I discussed the [OpenStack Octavia](http://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html) project which provides a backed to Neutron's LBaaS system.
+In a recent post I discussed the [OpenStack Octavia](http://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html) project which provides a backend to Neutron's LBaaS system.
 
 In this post I'll just go over a quick example of creating and using a load balancer and using it in OpenStack.
 
