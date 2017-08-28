@@ -65,7 +65,7 @@ $ os catalog list
 
 As can be seen above, there are no ports other than 443/https being used, nor any api-someserver.somecloud.com hostnames either. Everything is on the same hostname and then each service is identified using the `/servicetype/` model. I think it makes for cleaner URLs.
 
-## How is this accomplished?
+## How Is This Accomplished?
 
 There are a few things that have to be altered to accomplish this:
 
