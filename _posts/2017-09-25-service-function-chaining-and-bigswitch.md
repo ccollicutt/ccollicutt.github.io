@@ -97,7 +97,7 @@ Obviously anything one can do with the REST API can be done with Switchy, and of
 
 ## Conclusion
 
-Layer 1 port to port SFC is extremely powerful. It's important to note, however, that the BigSwtich example given here is not really one meant for NFV, as in NFV we have some kind of underlying infrastructure (termed the NFVi by ETSI), such as OpenStack, which manages many, many hypervisors, each with their own virtual switch. SFC that works in a multi-hypervisor/multi-switch environment looks much different than what is shown here, but this **IS** a stepping stone towards full blown SFC. What we have done here is
+Layer 1 port to port SFC is extremely powerful. It's important to note, however, that the BigSwtich example given here is not really one meant for NFV, as in NFV we have some kind of underlying infrastructure (termed the NFVi by ETSI), such as OpenStack, which manages many, many hypervisors, each with their own virtual switch. SFC that works in a multi-hypervisor/multi-switch environment looks much different than what is shown here, but this **IS** a stepping stone towards full blown SFC.
 
 ## PS.
 
