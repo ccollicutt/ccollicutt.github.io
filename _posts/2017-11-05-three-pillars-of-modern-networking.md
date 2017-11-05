@@ -12,7 +12,7 @@ Computer networking is at an interesting state. We have many new interesting tec
 
 I don’t have a classical networking background, no CCIE or anything like that, but I am very interested in new networking technologies and I believe in some cases my lack of traditional training (dare I say “baggage”) allows me a bit more room to operate in terms of adopting new technologies.
 
-Ultimately we still do networks with things like ARP, STP, VLANs, LACP and BGP. We connect relatively large broadcast domains together with layer 3 routes managed by BGP. That’s really about it. It does work, but we aren’t really moving ahead, even something like Ipv6 is just not seeing adoption. (There may be valid reasons for that, but I mention it anyways).
+Ultimately we still do networks with things like ARP, STP, VLANs, LACP and BGP. We connect relatively large broadcast domains together with layer 3 routes managed by BGP. That’s really about it. It does work, but we aren’t really moving ahead, even something like Ipv6 is just not seeing adoption. (There may be valid reasons for that, but I mention it anyways.)
 
 In this post I want to talk about three major technologies that can help to improve modern networking:
 
@@ -22,7 +22,7 @@ In this post I want to talk about three major technologies that can help to impr
 
 ## Network Automation
 
-At it’s base, Network Automation is the application of the same configuration management tooling and methodologies as have been applied to server infrastructure, but instead of servers we simply apply them to network switches and routers. That’s about it. Useful? Yes. Revolutionary? No.
+At its base, Network Automation is the application of the same configuration management tooling and methodologies as have been applied to server infrastructure, but instead of servers we simply apply them to network switches and routers. That’s about it. Useful? Yes. Revolutionary? No.
 
 Ansible, the configuration management tool I usually reach for (which has as many shortcomings as it does valuable features) has probably taken the lead in having the most easily accessible network automation tooling as well as scope of devices it is able to manage. Ansible’s module based approach makes it pretty simple for even novice developers (like myself) to create new modules and thus there are many core modules related to networking in Ansible.
 
