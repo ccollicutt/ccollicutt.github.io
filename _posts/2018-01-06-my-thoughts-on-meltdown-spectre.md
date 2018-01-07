@@ -62,7 +62,7 @@ I believe that diversity in technology is a good thing, and by this I mean diffe
 
 I know that many organizations are seeking to reduce cost by using commodity hardware, which usually just means virtualization on x86. I think that may be an overly simplistic way to look at the problem of reducing cost.
 
-Perhaps investing in other [CPUs](http://www.tomshardware.com/news/risc-v-not-vulnerable-meltdown-spectre-cpu-bugs,36231.html) is a good idea if only to achieve some diversity and avoid systemic risk. (Franly it would be pretty cool to have a non-x86 CPU laptop, we should just do that anyways.)
+Perhaps investing in other [CPUs](http://www.tomshardware.com/news/risc-v-not-vulnerable-meltdown-spectre-cpu-bugs,36231.html) is a good idea if only to achieve some diversity and avoid systemic risk. (Frankly it would be pretty cool to have a non-x86 CPU laptop, we should just do that anyways.)
 
 ## Conclusion
 
