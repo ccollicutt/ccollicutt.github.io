@@ -10,7 +10,7 @@ header_permalink: https://unsplash.com/photos/AtPbmIH97mA
 
 First off, I don't really expect anyone to care what I think about all this. That's the beauty of the Internet, I can just write what I'd like on my blog and it's easy to ignore this backwater HTML. :)
 
-But I do have some fairly strong thoughts on Meltdown and Spectre, which I consider to be a rather large mess and frankly fairly concerning for the future of humanity.
+But I do have some fairly strong thoughts on Meltdown and Spectre, which I consider to be a rather large mess and frankly fairly concerning for the future of humanity. (Certainly computing is only one of our problems though.)
 
 ## Computing power
 
