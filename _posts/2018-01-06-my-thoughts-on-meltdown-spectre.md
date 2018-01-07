@@ -74,6 +74,10 @@ This is a pretty rambling post, but I think it makes sense given the what's happ
 
 ## Bonus: fun tweets
 
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">This is interesting. This vulnerability illustrates an interesting economic upside for multi-tenant cloud providers:  REVENUE.  The vulnerability which they patched quickly drives CPU utilization up and they get to charge more based on CPU use! Rename Meltdown to “Cache-ing” $$$ <a href="https://t.co/fzBrpFWY4q">https://t.co/fzBrpFWY4q</a></p>&mdash; Hoff (@Beaker) <a href="https://twitter.com/Beaker/status/950024936130834432?ref_src=twsrc%5Etfw">January 7, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">It&#39;s impossible to reason about computer security in a meaningful manner anymore.  The gap between &quot;architectural behavior&quot; and &quot;micro-architectural implementation&quot; is so great, so dark, and is basically, &quot;Here be Dragons.&quot;  We cannot build solid structures on faulty foundations.</p>&mdash; Bitweasil (@Bitweasil) <a href="https://twitter.com/Bitweasil/status/949405590631022592?ref_src=twsrc%5Etfw">January 5, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
