@@ -22,6 +22,10 @@ But the Meltdown and Spectre issues have set me back a bit on that thinking. I'm
 
 With the recent WIFI hacks, SSL being in a poor state, and now massive CPU issues, things are not looking well (and in fact may never have never been)--I may have to do online banking on a [Raspberry Pi](https://www.raspberrypi.org/blog/why-raspberry-pi-isnt-vulnerable-to-spectre-or-meltdown/).
 
+This [NTY](https://www.nytimes.com/2018/01/06/opinion/looming-digital-meltdown.html) makes a good point:
+
+>As things stand, we suffer through hack after hack, security failure after security failure. If commercial airplanes fell out of the sky regularly, we wouldn’t just shrug. We would invest in understanding flight dynamics, hold companies accountable that did not use established safety procedures, and dissect and learn from new incidents that caught us by surprise.
+
 ## Who was part of the embargo?
 
 One thing that I hope comes out in the near future is a time line of who and what companies knew of the issue. I applaud Google for figuring this out, and letting people know. I think there was a lot of unfairness regarding how this all came about.
