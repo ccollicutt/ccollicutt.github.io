@@ -144,4 +144,6 @@ serverascode.com.      SOA    21600  ns-cloud-d1.googledomains.com. cloud-dns-ho
 www.serverascode.com.  CNAME  3600   serverascode.com.
 ```
 
-If that looks good then go to your registar and change the nameservers to Google's.
+If that looks good then go to your registar and change the nameservers to Google's, which is what I did.
+
+If you are reading this post then it must have worked!
