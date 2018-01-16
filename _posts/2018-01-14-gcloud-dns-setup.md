@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Setting Up Google DNS with gcloud
+title: Setting Up Google Cloud DNS with gcloud
 categories:
 header_image: /img/books.jpg
 header_permalink: https://unsplash.com/photos/Oaqk7qqNh_c
