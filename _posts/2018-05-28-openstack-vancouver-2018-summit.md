@@ -30,7 +30,7 @@ Vendors like to try to pin OpenStack to just being a set of APIs into which any 
 
 ## Network Slicing
 
-We presented a couple of talks at the summit. The one that probably resonated most with attendees was our presentation on [5G Network Slcing and OpenStack](https://www.youtube.com/watch?v=x_b4-w4Mrcg). Like a lot of technologies, it's not that easy to define what Network Slicing is, but I personally find it fascinating, if at the very least academically. Certainly Network Slicing will occur in some fashion, but it is possible we won't call it that...could just be some form of end to end virtualization.
+We presented a couple of talks at the summit. The one that probably resonated most with attendees was our presentation on [5G Network Slcing and OpenStack](https://www.youtube.com/watch?v=x_b4-w4Mrcg). Like a lot of technologies, it's not that easy to define what Network Slicing is, but I personally find it fascinating, if at the very least academically. Certainly Network Slicing will occur in some fashion, but it is possible we won't call it that...could just be some form of end to end virtualization. Or we could go all the way and build tools and APIs that meet all requirements for network slicing and create amazingly diverse networks and applications running on top of them, all the while providing secure, safe access for emergency communications.
 
 ## Code Drops - Airship, StarlingX, Akraino...
 
