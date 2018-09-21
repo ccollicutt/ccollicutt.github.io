@@ -2,7 +2,7 @@
 layout: post
 title: Local Persistent Volumes with Kubernetes
 categories:
-header_image: /img/buffalo.jpg
+header_image: /img/buffalo2.jpg
 header_permalink: https://unsplash.com/photos/ZOUSOJFzQHg
 ---
 
