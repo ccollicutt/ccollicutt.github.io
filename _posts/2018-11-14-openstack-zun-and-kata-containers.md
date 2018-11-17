@@ -2,8 +2,12 @@
 layout: post
 title: OpenStack Zun and Kata Containers
 categories:
+header_image: /img/kata-containers.jpg
+header_permalink: https://thenewstack.io/kata-containers-secure-lightweight-virtual-machines-container-environments/
 
 ---
+
+*(diagram of kata containers)*
 
 # {{ page.title }}
 
@@ -196,7 +200,7 @@ Note that the host kernel and the runc container kernel are the same.
 Let's see what kernel is in the kata-runtime based container.
 
 ```
-~# openstack appcontainer exec kata uname -a
+# openstack appcontainer exec kata uname -a
 Linux a41bb53476f6 4.14.67-139.container #1 SMP Mon Oct 22 22:43:15 UTC 2018 x86_64 GNU/Linux
 ```
 
