@@ -12,7 +12,7 @@ header_image: "/img/kyle-glenn-659836-unsplash.jpg"
 
 ## tldr;
 
-Leading the Unleadable is really more about generic leadership principles than it is about dealing with difficult employees or other challenging interpersonal issues at work. But that does not diminish the value of the book overall, and I would suggest that the relatively short time it takes to read this book is well worth it.
+[Leading the Unleadable](https://alanwillett.com/leading-the-unleadable/) is really more about generic leadership principles than it is about dealing with difficult employees or other challenging interpersonal issues at work. But that does not diminish the value of the book overall, and I would suggest that the relatively short time it takes to read this book is well worth it.
 
 ## Technology is Easy; People are Hard
 
@@ -22,7 +22,7 @@ However, if the DevOps paradigm has showed us anything, it's that of the triumvi
 
 ## Leading the Unleadable
 
-Leading the Unleadable (LtU), by Alan Willett, is a management and leadership book about dealing with difficult people. Interestingly the preface of this book, ie. the very first page, contains the following sentence:
+[Leading the Unleadable](https://alanwillett.com/leading-the-unleadable/) (LtU), by Alan Willett, is a management and leadership book about dealing with difficult people. Interestingly the preface of this book, ie. the very first page, contains the following sentence:
 
 >Sometimes leaders terminate difficult people too quickly, which harms the group by giving it no chance to change the difficult people and reclaim them.
 
