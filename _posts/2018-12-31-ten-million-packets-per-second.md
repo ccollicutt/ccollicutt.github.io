@@ -45,18 +45,28 @@ A quick example of running that code:
 EAL: Detected 16 lcore(s)
 EAL: No free hugepages reported in hugepages-1048576kB
 EAL: Probing VFIO support...
+EAL: PCI device 0000:03:00.0 on NUMA socket 0
+EAL:   probe driver: 8086:1521 net_e1000_igb
+EAL: PCI device 0000:03:00.1 on NUMA socket 0
+EAL:   probe driver: 8086:1521 net_e1000_igb
 EAL: PCI device 0000:81:00.0 on NUMA socket 1
 EAL:   probe driver: 8086:10fb net_ixgbe
-[INFO]  Found 1 usable devices:
-   Device 0: 0C:C4:7A:BB:70:70 (Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection)
+EAL: PCI device 0000:81:00.1 on NUMA socket 1
+EAL:   probe driver: 8086:10fb net_ixgbe
+[INFO]  Found 3 usable devices:
+   Device 0: 0C:C4:7A:92:63:7D (Intel Corporation I350 Gigabit Network Connection)
+   Device 1: 0C:C4:7A:BB:70:82 (Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection)
+   Device 2: 0C:C4:7A:BB:70:83 (Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection)
 [WARN]  device.config() without named arguments is deprecated and will be removed. See documentation for libmoons device.config().
-PMD: ixgbe_dev_link_status_print(): Port 0: Link Up - speed 0 Mbps - half-duplex
+PMD: ixgbe_dev_link_status_print(): Port 1: Link Up - speed 0 Mbps - half-duplex
 [INFO]  Waiting for devices to come up...
-[INFO]  Device 0 (0C:C4:7A:BB:70:82) is up: 10000 MBit/s
+[INFO]  Device 1 (0C:C4:7A:BB:70:82) is up: 10000 MBit/s
 [INFO]  1 device is up. 
 starting arp 
 starting send
 starting counter
+in send
+in counter
 [INFO]  starting in moongen loop
 [nil] TX: 5.48 Mpps, 4562 Mbit/s (5439 Mbit/s with framing)
 [nil] TX: 6.56 Mpps, 5455 Mbit/s (6504 Mbit/s with framing)
@@ -67,6 +77,8 @@ starting counter
 [nil] TX: 6.79 Mpps, 5645 Mbit/s (6731 Mbit/s with framing)
 [nil] TX: 6.77 Mpps, 5633 Mbit/s (6717 Mbit/s with framing)
 [nil] TX: 6.76 Mpps, 5624 Mbit/s (6706 Mbit/s with framing)
+[nil] TX: 6.79 Mpps, 5647 Mbit/s (6733 Mbit/s with framing)
+[nil] TX: 6.81 Mpps, 5664 Mbit/s (6753 Mbit/s with framing)
 SNIP!
 ```
 
