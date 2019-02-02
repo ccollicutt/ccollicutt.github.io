@@ -175,6 +175,8 @@ c01-03                 : ok=2    changed=0    unreachable=0    failed=0
 OK. (changed: false)
 ```
 
+All good again. :)
+
 ## Conclusion
 
-All that I did in this post was enable  host key checking in AWX and then do a simple verification that it was indeed checking hots keys, and failing with unknown host keys.
+All that I did in this post was enable  host key checking in AWX and then do a simple verification that it was indeed checking host keys, and failing with unknown host keys.
