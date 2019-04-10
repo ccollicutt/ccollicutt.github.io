@@ -42,10 +42,12 @@ Note that this will check the Kubernetes version as well through reading the `.k
 
 ## Audit
 
-Let's deploy an nginx container. 
+Let's deploy an nginx container.
+
+*NOTE: I alias kubectl to k*
 
 ```
-$ kubectl run nginx --image=nginxinc/nginx-unprivileged --port=8080
+$ k run nginx --image=nginxinc/nginx-unprivileged --port=8080
 ```
 
 It's up and running.
