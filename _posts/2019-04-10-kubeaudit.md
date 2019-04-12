@@ -1,12 +1,11 @@
 ---
 layout: post
-title: Kubeaudit
+title: First Look - Kubeaudit
 categories:
 
 ---
 
 # {{ page.title }}
-
 
 I wanted to call this article "Gleaming the Kube" but [someone](http://dougbtv.com/nfvpe/2017/05/12/kubernetes-from-source/) already did that.
 
@@ -38,7 +37,6 @@ INFO[0000] Kubernetes server version                     Major=1 Minor=13 Platfo
 ```
 
 Note that this will check the Kubernetes version as well through reading the `.kube/config`.
-
 
 ## Audit
 
@@ -94,7 +92,7 @@ spec:
 Apply the patch.
 
 ```
-$ kubectl patch deployment nginx --patch "$(cat nginx-unpriv-runasnonroot.yml)"
+$ k patch deployment nginx --patch "$(cat nginx-unpriv-runasnonroot.yml)"
 deployment.extensions/nginx patched
 ```
 
@@ -117,7 +115,7 @@ And now to run audit again:
 
 ```
 $ kubeaudit nonroot -n nginx-unpriv
-INFO[0000] Not running inside cluster, using local config 
+INFO[0000] Not running inside cluster, using local config
 ```
 
 No errors.
