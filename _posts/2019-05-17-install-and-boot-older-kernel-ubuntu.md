@@ -9,7 +9,7 @@ categories:
 
 Stangely it was hard to find good instructions on installing an older kernel and setting it to boot on Ubuntu 16.04. Here are some quick instructions.
 
-First, we have a Ubuntu 16.04 instance (in digital ocean) with the following kernel:
+The instance is Ubuntu 16.04 (in Digital Ocean) with the following kernel:
 
 ```
 root@old-kernely:~# uname -a
@@ -17,7 +17,7 @@ Linux old-kernely 4.4.0-148-generic #174-Ubuntu SMP Tue May 7 12:20:14 UTC 2019 
 root@old-kernely:~# 
 ```
 
-Let's install 4.4.0-22-generic.
+Install an older kernel, 4.4.0-22-generic.
 
 ```
 root@old-kernely:~# apt install linux-image-4.4.0-22-generic
@@ -71,7 +71,7 @@ done
 root@old-kernely:~# 
 ```
 
-OK now that we have the new kernel, how do we make it default. One way would be to reboot and chose that kernel at the grub menu but that is not that easy in a cloud environment, and wouldn't be a permanent change.
+OK, now that the new kernel is installed, how can it be made the default? One way would be to reboot and chose that kernel at the grub menu but that is not that easy in a cloud environment, and wouldn't be a permanent change.
 
 Figuring out what to put in /etc/default/grub isn't that easy. Let's look at the submenus and menuentries ([hat tip](https://unix.stackexchange.com/questions/198003/set-default-kernel-in-grub)).
 
@@ -84,25 +84,23 @@ root@old-kernely:~# awk '/menuentry/ && /class/ {count++; print count-1"****"$0 
 4****	menuentry 'Ubuntu, with Linux 4.4.0-22-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-22-generic-recovery-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
 ```
 
-Under the submenu at entry 3 is what we want. But numbering restarts with the submenu. So if we want to boot the 4.4.0-22 kernel we need submenu 1 and menuentry 2.
+Under the submenu at entry 3 is the older kernel. However, numbering restarts with the submenu. So to boot the 4.4.0-22 kernel the required entry is submenu 1 and menuentry 2.
 
-We add this to /etc/default/grub.
-
-Currently it's set to 0.
+We add this to /etc/default/grub. Currently it's set to 0.
 
 ```
 root@old-kernely:~# grep GRUB_DEFAULT /etc/default/grub
 GRUB_DEFAULT=0
 ```
 
-Lets set it to "1>2".
+Set it to "1>2".
 
 ```
 root@old-kernely:~# grep GRUB_DEFAULT /etc/default/grub
 GRUB_DEFAULT="1>2"
 ```
 
-And update grub.
+Update grub.
 
 ```
 root@old-kernely:~# update-grub
@@ -114,18 +112,17 @@ Found initrd image: /boot/initrd.img-4.4.0-22-generic
 done
 ```
 
-Then reboot.
+Reboot.
 
 ```
 root@old-kernely:~# reboot
 ```
 
-When the node reboots it's using the older kernel we specified.
+When the node reboots it's using the older kernel specified.
 
 ```
 root@old-kernely:~# uname -a
 Linux old-kernely 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
-root@old-kernely:~# 
 ```
 
 Presumably there is a better way to do this. Let me know in the comments!
