@@ -2,6 +2,8 @@
 layout: post
 title: Install a Linux Rootkit to Test Security Systems With
 categories:
+header_image: "/img/roots.jpg"
+header_permalink: "https://unsplash.com/photos/hW11fwjzVfA"
 
 ---
 
@@ -15,7 +17,7 @@ The one that I picked from that list, somewhat randomly, was [LilyOfTheValley](h
 
 ## WARNING
 
-Obviously this is a rootkit. Don't install it on your local machine. Get a temporary, disposable virtual machine. 
+Obviously this is a rootkit. Don't install it on your local machine. Get a temporary, disposable virtual machine. Also, please review the code in the rootkit files. You've been warned!
 
 ## Install
 
@@ -26,7 +28,7 @@ The kernel version in this example is 4.4.0-22 on Ubuntu 16.04.
 Linux old-kernely 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-Clone the repo.
+Clone the rootkit repo.
 
 ```
 # git clone https://github.com/En14c/LilyOfTheValley
@@ -106,7 +108,7 @@ Module.symvers
 README.md
 ```
 
-This is because the rootkit removes those files.
+This is because the rootkit makes those files "invisble."
 
 See line 409 of lilyofthevalley.c.
 
@@ -117,8 +119,6 @@ See line 409 of lilyofthevalley.c.
 	*/
 	if (strncmp(name,R00TKIT_NAME,R00TKIT_NAMELEN) == 0)
 		return 0;
-
-return org_rootfs_filldir(_buf,name,namelen,offset,ino,d_type);
 ```
 
 Create a file that starts with that particular string. Note how it's not visible in ls.
@@ -147,4 +147,3 @@ README.md
 ```
 
 With the module in place secuirty systems can be tested to see if they can find it.
-
