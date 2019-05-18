@@ -9,7 +9,7 @@ header_permalink: "https://unsplash.com/photos/ipyFZIl6Ok0"
 
 # {{ page.title }}
 
-A few months ago I listened Kelsey Hightower speak at a function in Toronto. During that talk he said something that has stuck with me for the last few days, and that is that you need a factory.
+A few months ago I listened Kelsey Hightower speak at a function in Toronto. During that talk he said something that has stuck with me, and that is that you need a factory.
 
 ## DevOps Produces Artifacts
 
