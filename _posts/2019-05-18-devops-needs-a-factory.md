@@ -11,7 +11,7 @@ header_permalink: "https://unsplash.com/photos/ipyFZIl6Ok0"
 
 A few months ago I listened Kelsey Hightower speak at a function in Toronto. During that talk he said something that has stuck with me for the last few days, and that is that you need a factory.
 
-## Defining DevOps
+## DevOps Produces Artifacts
 
 The definition and application of DevOps is oft-debated. However, the fact is that in as technologists we produce things--perhaps they are applications, ie. code, or systems that manage these applications (with automation now also code). Maybe the product is an IoS application or maybe it’s complex infrastructure--OpenStack, Kubernetes, large networks, what have you. Regardless, we create a product. Increasingly that product is generated or operated via the DevOps paradigm.
 
