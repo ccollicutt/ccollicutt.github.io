@@ -146,4 +146,4 @@ Module.symvers
 README.md
 ```
 
-With the module in place secuirty systems can be tested to see if they can find it.
+With the module in place security systems can be tested to see if they can find it.
