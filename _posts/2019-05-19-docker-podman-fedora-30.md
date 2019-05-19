@@ -208,7 +208,9 @@ Open Container Initiative specification.
 
 * You do not need to be root to run podman
 * As mentioned, [same commands](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/)
+
 >When building Podman, the goal was to make sure that Docker users could easily adapt. So all the commands you are familiar with also exist with Podman. In fact, the claim is made that if you have existing scripts that run Docker you can create a docker alias for podman and all your scripts should work (alias docker=podman).
+
 * "[Podman’s local repository is in /var/lib/containers instead of /var/lib/docker](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/)"
 * "[Podman uses a traditional fork/exec model (vs. a client/server model) for running containers.](https://opensource.com/article/18/10/podman-more-secure-way-run-containers)"
 * You won't be able to use docker-compose with podman, that could be an issue for some. There seems to be some [work in making transitioning to podman](https://developers.redhat.com/blog/2019/01/29/podman-kubernetes-yaml/) easier
