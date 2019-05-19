@@ -11,7 +11,7 @@ header_permalink: "https://unsplash.com/photos/XlA2994Txhw"
 
 ## tl;dr
 
-I reinstalled my laptop with Fedora 30. I tried to install a stable Docker, but the Docker repo for Fedora 30 stable doesn't exist. I realized podman is available and is a command for command replacement for Docker. So far I'm quite happy with it and actually kind of glad I was forced into it.
+I reinstalled my laptop with Fedora 30. I tried to install a stable Docker, but the Docker repo for Fedora 30 stable doesn't exist. I realized podman is available and is a command for command replacement for Docker. So far I'm quite happy with it and am actually kind of glad I was forced into it.
 
 ## What Distro to Run?
 
