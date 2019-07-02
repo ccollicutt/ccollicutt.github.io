@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mikrotik RB32011 Won't Reset to Default Configuration
+title: Mikrotik RB2011 Won't Reset to Default Configuration
 categories:
 header_image: "/img/rb2011.png"
 
