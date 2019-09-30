@@ -10,7 +10,7 @@ header_image: "/img/CRS326-24G-2S+RM.png"
 
 I have a bunch of loud noisy switches...*cough* Juniper EX4200s *cough*. I recently moved and haven't had the time yet to setup proper sound proofing for all my homelab gear and thus I need to be quieter where I can be. Lower power consumption would help too.
 
-So I bought a [Mikrotik CRS326-24G-2S+RM](https://mikrotik.com/product/CRS326-24G-2SplusRM) to be my main 1GB switch.
+So I bought a [Mikrotik CRS326-24G-2S+RM](https://mikrotik.com/product/CRS326-24G-2SplusRM) to be my main 1GB switch. I purchased the switch from [Solimedia](https://solimedia.net/) and it was about $250 CDN.
 
 ## Power Consumption and Volume
 
@@ -60,6 +60,7 @@ A few notes:
 * Set each VLAN ID separately so you can edit them easier later
 * `/interface bridge port` and `/interface bridge vlan` will be your friend
 * RouterOS reports "current tagged" and "current untagged" which can be confusing, use "print detail" to see what is actually tagged and untagged
+* Note "vlan-filtering=yes" during bridge creation. Many of the docs show starting with "vlan-filtering=no" while building the configuration because they don't want you to lock yourself out of the switch (if you are connected over the network) before you are done. So their examples are create the bridge, configure the switch, then finally turn vlan filtering on once you are done. But it would be easy to forget to turn it on. I changed the example above to set it to yes at the start.
 
 Also note that if you don't have an "H" beside a port then it's not being managed in hardware and will be slow.
 
@@ -83,4 +84,4 @@ One thing I do like about Mikrotik is that the OS comes with many features, even
 
 Finally, the switch is only 24 ports. Technically I'd have to have two of them to match the 48 ports of the EX4200. When you have many boxes ports will run out quickly.
 
-
+You can certainly find cheaper, older used switches, but they will likely be loud and power hungry.
