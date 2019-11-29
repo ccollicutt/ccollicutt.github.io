@@ -12,12 +12,12 @@ I would wager most, if not all, developers have edited a file on a remote server
 
 ## The Current Standard: Container Images
 
-Container images have vastly affected how we distribute software. Given the desire for many organizations to use Kubernetes, which relies on containers, which in turn rely on container images, the model of distributing singular binaries of an OS file system has become the default modern day standard.
+[Container images](https://www.opencontainers.org/) have vastly affected how we distribute software. Given the desire for many organizations to use [Kubernetes](https://pivotal.io/platform/pivotal-container-service), which relies on containers, which in turn rely on container images, the model of distributing singular binaries of an OS file system has become the default modern day standard.
 
 While in the past we may have used simple things like copying and rsync-ing files, operating system packages, even bit-torrent, we now strive to distribute OCI images.*
 We're All Distributed Programmers Now
 
-Cornelia Davis, CTO Pivotal, has this to say about modern day software development:
+Cornelia Davis, CTO Pivotal, has [this to say](https://devclass.com/2019/08/16/pivotal-cto-kubernetes-means-were-all-distributed-systems-programmers-now/) about modern day software development:
 
 >"...we’re all distributed systems programmers now. When I started my degree 30 years ago, that was niche. Now, in the cloud, everything is distributed..."
 
@@ -27,13 +27,13 @@ The prevalence of distributed systems means that we need to get software running
 
 I believe speed is key to the future of software distribution. How container images, or some other package, get from host is as important as how those packages are defined. I would like to have my software running globally in hundreds of milliseconds.
 
-One doesn't have to look much further than Uber's Kraaken project to see what might be involved in speeding up software distribution.
+One doesn't have to look much further than [Uber's Kraaken](https://eng.uber.com/introducing-kraken/) project to see what might be involved in speeding up software distribution.
 
 Kraaken is a peer to peer Docker registry:
 
 > Docker containers are a foundational building block of Uber’s infrastructure...but as the number and size of our compute clusters grew, a simple Docker registry setup with sharding and caches couldn’t keep up with the throughput required to distribute Docker images efficiently.
 
-Another interesting and speedy software distribution component is Chrome's Courgette (from 2009 no less). Courgette can be 10x more efficient than something like bsdiff (which itself is extremely bit thrifty). Courgette does not directly help container images, but it represents an efficient way to create a binary delta. Smaller deltas mean faster distribution. Faster distribution can mean more frequent updates.
+Another interesting and speedy software distribution component is [Chrome's Courgette](https://blog.chromium.org/2009/07/smaller-is-faster-and-safer-too.html) (from 2009 no less). Courgette can be 10x more efficient than something like [bsdiff](http://www.daemonology.net/bsdiff/) (which itself is extremely bit thrifty). Courgette does not directly help container images, but it represents an efficient way to create a binary delta. Smaller deltas mean faster distribution. Faster distribution can mean more frequent updates.
 
 > If the update is a tenth of the size, we can push ten times as many per unit of bandwidth.
 
@@ -45,12 +45,13 @@ bsdiff update: 704,512 bytes
 Courgette update: 78,848 bytes
 ```
 
-700k to 78k...that's a an impressive improvement resulting in many bits that don't have to traverse the network (and again, bsdiff is extremely efficient). For those of you that would like more information on the Courgette model, there is considerable research in the area, going back at least to exediff.
-What's Next
+700k to 78k...that's a an impressive improvement resulting in many bits that don't have to traverse the network (and again, [bsdiff](https://pdfs.semanticscholar.org/4697/3fb8c3b038648e1fe848a72275a75ff49fd2.pdf?_ga=2.252430473.1684130984.1567251025-566867337.1566753693) is extremely efficient). For those of you that would like more information on the Courgette model, there is considerable research in the area, going back at least to [exediff](https://robert.muth.org/Papers/1999-exediff.pdf).
+
+## What's Next
 
 At this time I believe there are at least three major things to think about when thinking about distributing code:
 
-* Peer to peer deployment (eg. Kraaken, )
+* Peer to peer deployment (eg. Kraaken)
 * Advanced delta encoding (ala Courgette and exediff)
 * Improvements in code injection / application restarts
 
