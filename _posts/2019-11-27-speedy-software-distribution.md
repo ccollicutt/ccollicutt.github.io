@@ -15,7 +15,8 @@ I would wager most, if not all, developers have edited a file on a remote server
 [Container images](https://www.opencontainers.org/) have vastly affected how we distribute software. Given the desire for many organizations to use [Kubernetes](https://pivotal.io/platform/pivotal-container-service), which relies on containers, which in turn rely on container images, the model of distributing singular binaries of an OS file system has become the default modern day standard.
 
 While in the past we may have used simple things like copying and rsync-ing files, operating system packages, even bit-torrent, we now strive to distribute OCI images.*
-We're All Distributed Programmers Now
+
+## We're All Distributed Programmers Now
 
 Cornelia Davis, CTO Pivotal, has [this to say](https://devclass.com/2019/08/16/pivotal-cto-kubernetes-means-were-all-distributed-systems-programmers-now/) about modern day software development:
 
