@@ -126,6 +126,6 @@ Not surprisingly the install has added sourcing an sdkman init script to `~/.bas
 
 Obviously there is no limit to the amount of inspection one could do on foreign code, nor the amount of changes an imported bash file could do to an OS. In this case all I've done is find out what files sdkman adds or changes, and review the diffs on one file. But at least it gives me an idea of what is going on with the install.
 
-Using docker to evaluate tools makes a lot of sense to me, mostly because I don't want to mess up my physical OS (which is actually running in a virtual machine, but I digress).
+Using docker to evaluate tools makes a lot of sense to me, mostly because I don't want to mess up my physical OS (which is actually running in a virtual machine, but I digress). Some people take this [much farther](https://github.com/jessfraz/dockerfiles) and use containers to run things like sdkman.
 
 Even though I've worked a lot with Docker, I've never tried to inspect the diffs of image layers. Likely that would be a better option that what I've done above. Something to look into...
