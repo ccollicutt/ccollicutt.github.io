@@ -44,7 +44,7 @@ But let's get to it.
     
 12.  [**Pulumi**](https://www.pulumi.com/)  \- Allows you to use "real" programming languages to manipulate cloud environments, including K8S. Interestingly supports multiple programming languages. _"Define infrastructure in JavaScript, TypeScript, Python, Go, or any .NET language, including C#, F#, and VB."_
     
-13.  [**Ballerina**](https://ballerina.io/)  \- _**"**__Ballerina is an open source programming language and platform for cloud-era application programmers to easily write software that just works."_ Write code in the ballerina language that can build K8S objects for you.
+13.  [**Ballerina**](https://ballerina.io/)  \- _"Ballerina is an open source programming language and platform for cloud-era application programmers to easily write software that just works."_ Write code in the ballerina language that can build K8S objects for you.
     
 14.  [**Kapitan**](https://github.com/deepmind/kapitan) - _"...a tool to manage complex deployments using jsonnet, kadet (alpha) and jinja2. Use Kapitan to manage your Kubernetes manifests, your documentation, your Terraform configuration or even simplify your scripts."_ Another tool wrapping jsonnet.
     
