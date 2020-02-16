@@ -5,6 +5,29 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 
+
+	<!-- Twitter cards -->
+	<meta name="twitter:site"    content="@{{ site.twitter_username }}">
+	<meta name="twitter:creator" content="@{{ site.twitter_username }}">
+	<meta name="twitter:title"   content="{{ page.title }}">
+
+	{% if page.summary %}
+	<meta name="twitter:description" content="{{ page.summary }}">
+	{% else %}
+	<meta name="twitter:description" content="{{ site.description }}">
+	{% endif %}
+
+	{% if page.header_image %}
+	<meta name="twitter:card"  content="summary_large_image">
+	<meta name="twitter:image" content="{{ site.url }}{{ page.header_image }}">
+	{% else %}
+	<meta name="twitter:card"  content="summary">
+	<meta name="twitter:image" content="{{ site.title_image }}">
+	{% endif %}
+	<!-- end of Twitter cards -->
+
+
+
 	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8">
