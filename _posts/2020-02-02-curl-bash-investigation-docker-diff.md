@@ -4,6 +4,7 @@ title: Investigating Curl Bash Installs with Docker
 categories:
 header_image: "/img/glitch-docker.jpg"
 header_permalink: "https://unsplash.com/photos/YeUVDKZWSZ4"
+summary: "Investigating what curl http:/somesite.com/bash.php | bash does to your system"
 
 ---
 
