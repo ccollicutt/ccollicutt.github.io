@@ -3,7 +3,7 @@ layout: post
 title: 20 Tools to Manage Kubernetes Manifests
 categories:
 header_image: "/img/tools.jpg"
-summary: "20 plus ways to generate kubernetes manifests"
+summary: "You don't want to write them by hand, do you?"
 
 ---
 
