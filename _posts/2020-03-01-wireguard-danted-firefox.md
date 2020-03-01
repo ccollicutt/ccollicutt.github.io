@@ -17,7 +17,6 @@ e.g. I run the below in a separate terminal and just leave it open.  (I could ha
 ssh -D 8888 remote-vpn
 ```
 
-
 Then Firefox is configured to use the local proxy. Note that I set it to proxy DNS as well.
 
 ![firefox proxy settings](/img/ff-proxy.jpg)
@@ -47,7 +46,7 @@ AllowedIPs = 192.168.100.1/32
 PersistentKeepalive = 25
 ```
 
-On the remote server. Note that I'm enabling/disabling nat for the wg0 internface IP based on whether the wg0 interface is up or down.
+On the remote server. Note that I'm enabling/disabling nat for the wg0 interface IP based on whether the wg0 interface is up or down.
 
 ```
 # cat wg0.conf 
@@ -168,6 +167,6 @@ danted  32313 nobody   62u  IPv4 618755      0t0  TCP 192.168.100.1:1080->192.16
 
 Using ssh was definitely simpler, but I wanted to try something else, specifically wireguard. But this means 1) setting up wireguard (FYI: is an out of tree kernel module), 2) adding a proxy and 3) configuring nat. At least one valuable option in using wireguard is that I can send all traffic through wireguard if I want to. I'm not right now, but I could.
 
-That said, I need to do some more work related to the proxy configuation, and whether dante is really the best option here. I'll experiment with this setup for a while and determine if there are better options. Do I recommend this setup? I think wireguard is an important technology, but I don't have a great understanding of it yet. So, of course, your mileage may vary.
+That said, I need to do some more work related to the proxy configuration, and whether dante is really the best option here. I'll experiment with this setup for a while and determine if there are better options. Do I recommend this setup? I think wireguard is an important technology, but I don't have a great understanding of it yet. So, of course, your mileage may vary.
 
 PS. I also need to check on ipv6 support for this setup, but I don't think my home internet provider supports it (lol).
