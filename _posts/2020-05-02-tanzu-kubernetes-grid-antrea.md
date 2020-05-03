@@ -4,7 +4,7 @@ title: Tanzu Kubernetes Grid and Antrea
 categories:
 header_image: "/img/antrea.jpg"
 header_permalink: "https://unsplash.com/photos/TnUelBKIDfM"
-summary: "Antrea is a Kubernetes networking solution intended to be Kubernetes native. It leverages Open vSwitch as the networking data plane."
+summary: "Antrea is a networking solution intended to be Kubernetes native. It leverages Open vSwitch as the networking data plane."
 
 ---
 
