@@ -271,7 +271,7 @@ spec:
 ClusterIP:
 
 ```
-$   k get svc
+$ k get svc
 NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 kubernetes   ClusterIP   100.64.0.1       <none>        443/TCP        23h
 nginx        NodePort    100.70.238.176   <none>        80:31710/TCP   30m
@@ -319,7 +319,7 @@ wget: can't connect to remote host (100.70.238.176): Connection timed out
 Let's check the flows now.
 
 ```
-$   k -n kube-system exec -it antrea-agent-hs5kp antrea-agent -- antctl get ovsflows -T IngressRule
+$ k -n kube-system exec -it antrea-agent-hs5kp antrea-agent -- antctl get ovsflows -T IngressRule
 Defaulting container name to antrea-agent.
 Use 'kubectl describe pod/antrea-agent-hs5kp -n kube-system' to see all of the containers in this pod.
 FLOW                                                                                                  
