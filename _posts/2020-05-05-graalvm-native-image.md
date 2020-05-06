@@ -4,7 +4,7 @@ title: GraalVM Native Images
 categories:
 header_image: "/img/graalvm.jpg"
 header_permalink: "https://unsplash.com/photos/oOS_Lm4mXo0"
-summary: "GraalVM Native Images allows the creation of Java programs that do not run on the Java VM"
+summary: "GraalVM Native Images allows the creation of Java programs contained in a single binary."
 
 ---
 
