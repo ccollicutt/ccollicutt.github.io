@@ -81,7 +81,7 @@ $ cd spring-graal-native-samples/function-netty
 $ ./build.sh
 ```
 
-*I was initially building this on a VM with 8GB of memory and no swap, and it crashed out. I bumped the memory to 12GB and it built. I see a note in the native image docs about memory for builds, but couldn't quite grok it.
+I was initially building this on a VM with 8GB of memory and no swap, and it crashed out. I bumped the memory to 12GB and it built. I see a note in the native image docs about memory for builds, but couldn't quite grok it.
 
 ```
 SNIP!
@@ -98,7 +98,7 @@ sys	0m17.460s
 FAILURE: an error occurred when compiling the native-image.
 ```
 
-The build takes a few minutes on this rather slow linux VM:
+With enough memory now, the build takes a few minutes:
 
 ```
 $ ./build.sh 
