@@ -10,7 +10,7 @@ summary: "Using Spring Cloud Gateway on Tanzu Application Service"
 
 # {{ page.title }}
 
-[Animal Rescue](https://github.com/spring-cloud-services-samples/animal-rescue) is a sample application used to demonstrate Spring Cloud Gateway, and Single Sign On, in the [Tanzu Application Service](https://tanzu.vmware.com/application-service) (TAS), which is based on Cloud Foundry. This particular demo has an an automated script that will deploy the microservice based Animal Rescue into TAS, and in doing so will setup a Spring Cloud Gateway (SCG) instance via a service in TAS. This makes it extremely easy to use and is completely available by self-service for developers.
+[Animal Rescue](https://github.com/spring-cloud-services-samples/animal-rescue) is a sample application used to demonstrate Spring Cloud Gateway, and Single Sign On, in the [Tanzu Application Service](https://tanzu.vmware.com/application-service) (TAS), which is based on Cloud Foundry. This particular demo has an an automated script that will deploy the microservice based Animal Rescue into TAS, and in doing so will setup a Spring Cloud Gateway (SCG) instance via a service in TAS. By using marketplace services in TAS developers get easy-to-use self-service access to single sign on and a API gateway.
 
 ## What's an API gateway?
 
