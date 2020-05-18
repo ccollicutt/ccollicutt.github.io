@@ -4,7 +4,7 @@ title: Virtual NSX-t and TKGI Lab
 categories:
 header_image: "/img/spidey.jpg"
 #header_permalink: ""
-summary: "Using Spring Cloud Gateway on Tanzu Application Service"
+summary: "A nested lab of NSX-T 2.5.1 and TKGI 1.7, deployed with EPMC"
 # v2 
 
 ---
