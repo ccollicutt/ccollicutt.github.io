@@ -122,6 +122,28 @@ xfreerdp /u:curtis /p:$PASS /v:$IP /f +fonts /floatbar /smart-sizing -grab-keybo
 
 That is working really well and I'm super happy with it.
 
-## Conclustion
+## Updates 
+
+zfs and docker issue...I could not remove a container, and had to use the below script to temporarily recreate the pool and then rm the container.
+
+```
+#!/bin/bash
+
+stuck=$(docker ps -a | grep Removal | cut -f1 -d' ')
+echo $stuck
+for container in $stuck; do
+	zfs_path=$(docker inspect $container | jq -c '.[] | select(.State | .Status == "dead")|.GraphDriver.Data.Dataset')
+	zfs_path=$(echo $zfs_path|tr -d '"')
+	sudo zfs destroy -R $zfs_path
+	sudo zfs destroy -R $zfs_path-init
+    sudo zfs create $zfs_path
+    sudo zfs create $zfs_path-init
+	docker rm $container
+done
+```
+
+
+
+## Conclusion
 
 So far, so good. Other than ZFS as the boot file system, I don't actually see that much different with Focal Fossa. Everything works fine like usual, yes, even sound!
