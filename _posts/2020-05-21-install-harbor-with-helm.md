@@ -54,7 +54,7 @@ $ grep -A 2 -B 2 harbor-certs harbor-values.yaml
 And deploy!
 
 ```
-helm install harbor-central harbor/harbor -f central-harbor-values.yaml
+helm install harbor-central harbor/harbor -f harbor-values.yaml
 ```
 
 There are probably several other ways to do this, but this is certainly one! Of course this CA is going to have to be distributed as well.
