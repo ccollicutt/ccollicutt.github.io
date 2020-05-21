@@ -3,7 +3,7 @@ layout: post
 title: Deploy Harbor with Helm and Custom CA Certs
 categories:
 header_image: "/img/harbor2.jpg"
-header_permalink: "https://commons.wikimedia.org/wiki/File:Fossa-drawing.jpg"
+header_permalink: "https://unsplash.com/photos/GKVZUKrdkPI"
 summary: "Configuring tls secrets and helm values for harbor and custom tls"
 
 ---
