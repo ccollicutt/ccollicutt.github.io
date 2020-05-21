@@ -10,9 +10,9 @@ summary: "Configuring tls secrets and helm values for harbor and custom tls"
 
 # {{ page.title }}
 
-This is just a quick post on how to use a custom CA with Helm and Harbor.
+This is just a quick post on how to use a custom CA with Helm and Harbor. I won't show installing helm or anything like that.
 
-Below are the versions deployed. Note that Harbor 2.0 has recently been released, but here we are using Harbor 1.10.2.
+Below are the versions deployed. Note that Harbor 2.0 has recently been released, but here we are using Harbor 1.10.2 as the helm chart hasn't been updated.
 
 ```
 $ helm ls
