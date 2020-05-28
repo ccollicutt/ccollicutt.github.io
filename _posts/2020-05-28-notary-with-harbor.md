@@ -3,8 +3,8 @@ layout: post
 title: TUF, Notary, and Harbor Registry
 categories:
 header_image: "/img/harbor-tuf3.jpg"
-header_permalink: "https://unsplash.com/photos/GKVZUKrdkPI"
-summary: "Configuring tls secrets and helm values for harbor and custom tls"
+header_permalink: "https://unsplash.com/photos/tvDSfHp0DS4"
+summary: "Software updates are a popular attack vector"
 
 ---
 
