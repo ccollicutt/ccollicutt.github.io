@@ -10,7 +10,7 @@ summary: "Software updates are a popular attack vector"
 
 # {{ page.title }}
 
-If you watch this [video](https://www.youtube.com/watch?v=Hnzc6va4l6k) by Justin Cormack, he starts it off by talking about an attack vector that is used successfully by "evil doers" time and time again...**software updates**. Securing software updates is complicated and can't be solved with simple solutions, and what's worse, when using simple solutions it actually kinda makes things worse. Without some kind of process/framework for managing updates, securing systems is impossible. Sure, securing software updates will require signing things digitally, most technical people get that, but that's just one part of the solution and it's not enough on its own.
+If you watch this [video](https://www.youtube.com/watch?v=Hnzc6va4l6k) by Justin Cormack, he starts it off by talking about an attack vector that is used successfully by "evil doers" time and time again...**software updates**. Securing software updates is complicated and can't be solved with simple solutions, and what's worse, when using simple solutions can make software updates ineffective. Without some kind of process/framework for managing updates, securing systems is impossible. Sure, securing software updates will require signing things digitally, most technical people get that, but that's just one part of the solution and it's not enough on its own.
 
 That's where [TUF](https://theupdateframework.io/), "The Update Framework," comes in.
 
