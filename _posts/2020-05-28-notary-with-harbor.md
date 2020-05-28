@@ -132,4 +132,4 @@ Events:
 
 ## Conclusion
 
-Here's a very basic example of using Notary and content trust in Harbor. To put this process into production would take a fair amount of consideration and should not be taken lightly. But if you want to quickly try out signing an image in combination with using content trust with Harbor, then it's quite simple to do. Deploying Harbor with Helm is also [straight forward](https://www.linuxfoundation.org/cloud-containers-virtualization/2017/10/cncf-host-two-security-projects-notary-tuf-specification/) if you have a k8s cluster to use. :)
+Here's a very basic example of using Notary and content trust in Harbor. To put this process into production would take a fair amount of consideration and should not be taken lightly. But if you want to quickly try out signing an image in combination with using content trust with Harbor, then it's quite simple to do. Deploying Harbor with Helm is also [straight forward](http://localhost:4000/2020/04/28/local-harbor-install.html) if you have a k8s cluster to use. :)
