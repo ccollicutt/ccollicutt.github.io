@@ -3,13 +3,13 @@ layout: post
 title: vSphere 7 with Kubernetes and NSXT 3.0
 categories:
 header_image: "/img/v7wk8s-1.jpg"
-summary: "Deploy Kubernetes with vSphere 7 and NSXT 3.0"
+summary: "Get k8s dial tone on vSphere!"
 
 ---
 
 # {{ page.title }}
 
-Kuberenetes is a commodity. There I said it. Sure, I work in the [Tanzu business unit of VMware](https://tanzu.vmware.com/), and we heavily value Kubernetes, as does VMware overall. VMware is a massive contributor to upstream Kubernetes--see [Cluster API](https://github.com/kubernetes-sigs/cluster-api) for example, and, well, there's the whole Kubernetes-built-into-vsphere thing. 
+Kuberenetes is a commodity. There I said it. Sure, I work in the [Tanzu business unit of VMware](https://tanzu.vmware.com/), and we heavily value Kubernetes, as does VMware overall. VMware is a massive contributor to upstream Kubernetes--see [Cluster API](https://github.com/kubernetes-sigs/cluster-api) for example, and, well, there's the whole Kubernetes-built-into-vsphere thing. But we are also very interested in what happens AFTER you have Kubernetes.
 
 At VMware we make it easy to get Kubernetes dial tone so that you can get to the good stuff, the important stuff: deploying applications. Dial tone is the easy part, writing new apps quickly and getting them running in production...that's hard. With that said, the majority of Tanzu's focus is on what you do *after* you have Kubernetes, and of course getting apps in production.
 
@@ -25,6 +25,8 @@ There are many great blog posts on the matter:
 * [vSphere with Kubernetes](http://www.boche.net/blog/2020/05/17/vsphere-with-kubernetes/)
 
 Any one of those will get you up and running. This post is my version of the above. That said, likely there is not quite enough here to get you completley up and running, but it will certainly provide you some direction.
+
+* This is also a great post on [troubleshooting](https://beyondelastic.com/2020/07/17/verify-and-troubleshoot-vsphere-7-with-kubernetes/)
 
 ## Networking
 
