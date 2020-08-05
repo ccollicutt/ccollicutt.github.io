@@ -27,3 +27,20 @@ Boom!
 ## Writing an Operator in Shell!
 
 See the [shell operator](https://github.com/flant/shell-operator). Good times!
+
+## Troubleshoot DNS
+
+See this [k8s doc](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
+
+```
+kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
+```
+
+Make sure you are in the default namespace.
+
+Run a dig command from the pod.
+
+```
+$ kubectl exec -i -t dnsutils -- dig +short google.com
+172.217.165.14
+```
