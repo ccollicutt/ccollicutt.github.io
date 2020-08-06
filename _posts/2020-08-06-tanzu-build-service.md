@@ -25,6 +25,8 @@ TBS uses Kubernetes CRDs.
 
 It's based on the upstream, open source tool [kpack](https://github.com/pivotal/kpack).
 
+If you want to review the features, checkout this [page](https://buildpacks.io/features/).
+
 ## How to Get the Tanzu Build Service
 
 As of today, TBS is not GA (generally available) but if you sign up for the [Tanzu Network](https://network.pivotal.io/) you can download the 0.2 non-GA release. 
