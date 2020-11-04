@@ -3,7 +3,7 @@ layout: post
 title:  Upgrade Tanzu Kubernetes Grid Multicloud 1.1.3 to 1.2
 categories:
 header_image: "/img/ocean.jpg"
-summary: "Upgrading to TKG 1.2 is easy!"
+summary: "In this post I take a quick look at upgrading TKG from 1.1.3 to 1.2 on vSphere. Once the upgrade is done, both management and workload clusters are Kubernetes 1.19!"
 
 ---
 
