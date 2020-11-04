@@ -60,9 +60,9 @@ Kubernetes v1.18.8: Photon v3 Kubernetes v1.18.8 OVA
 Kubernetes v1.17.11: Photon v3 Kubernetes v1.17.11 OVA
 ```
 
-* Upgrade the management cluster.
+First we upgrade the management cluster.
 
-I'm conservative so I copied the old config files first.
+* I'm conservative so I copied the old config files first.
 
 ```
 $ cp -rp ~/.tkg/ ~/.tkg-pre-1.2-upgrade
