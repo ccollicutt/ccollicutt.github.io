@@ -13,6 +13,9 @@
 
 	{% if page.summary %}
 	<meta name="twitter:description" content="{{ page.summary }}">
+	<!-- linked in -->
+	<meta property="og:description" content="{{site.description }}" />
+	<!-- end of linked in -->
 	{% else %}
 	<meta name="twitter:description" content="{{ site.description }}">
 	{% endif %}
@@ -20,14 +23,15 @@
 	{% if page.header_image %}
 	<meta name="twitter:card"  content="summary_large_image">
 	<meta name="twitter:image" content="{{ site.url }}{{ page.header_image }}">
+	<!-- linked in -->
+	<meta property="og:image" content="{{ site.url }}{{ page.header_image }}" />
+	<!-- end of linked in -->
 	{% else %}
 	<meta name="twitter:card"  content="summary">
 	<meta name="twitter:image" content="{{ site.title_image }}">
 	{% endif %}
 	<!-- end of Twitter cards -->
-	<!-- linked in -->
-	<meta property="og:image" content="{{ site.url }}{{ page.header_image }}" />
-	<!-- end of linked in -->
+
 
 
 
