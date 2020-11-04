@@ -28,7 +28,7 @@ And more!
 
 ## Upgrade from 1.1.3 to 1.2 (on vSphere)
 
-The [documenation](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-upgrade-tkg-management-cluster.html) for this process is great, and I'm mostly just repeating what it shows. Best to follow those docs, but sometimes having an example is nice.
+The [documentation](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-upgrade-tkg-management-cluster.html) for this process is great, and I'm mostly just repeating what it shows. Best to follow those docs, but sometimes having an example is nice.
 
 Initially I have the tkg 1.1.3 CLI.
 
