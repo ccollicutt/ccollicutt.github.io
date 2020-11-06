@@ -24,6 +24,16 @@ kubectl config view --minify --raw > cluster.kubeconfig
 
 Boom!
 
+## Merge Kube Configs
+
+Copy your backup, set an env var pointing to the backup config and the new standalone file, and use config view with the flatten option to produce a new, merged, config file, and finally copy that file back to ~/.kube/config.
+
+```
+$ cp ~/.kube/config ./config-backup 
+$ KUBECONFIG=./config-backup:./new-standalone.kubeconfig kubectl config view --flatten > new-kube-config
+$ cp new-kube-config ~/.kube/config 
+```
+
 ## Writing an Operator in Shell!
 
 See the [shell operator](https://github.com/flant/shell-operator). Good times!
