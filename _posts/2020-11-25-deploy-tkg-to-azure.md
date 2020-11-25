@@ -14,6 +14,8 @@ Tanzu Kubernetes Grid (TKG) 1.2 was recently released, and with it comes the abi
 
 For this post, let's focus on Azure.
 
+>NOTE: Read the official docs [here](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-mgmt-clusters-azure.html).
+
 ## Requirements
 
 ### TKG CLI
@@ -127,7 +129,15 @@ $ env | grep "AZURE\|MANAGEMENT_CLUSTER" | wc -l
 9
 ```
 
-If so, you are good to go to the next step and deploy a management cluster.
+If so, you are good to go to the next step.
+
+## Accept Image License
+
+Accept the license agreement for the images published to Azure. (This only has to be done once.)
+
+```
+az vm image terms accept --publisher vmware-inc --offer tkg-capi --plan k8s-1dot19dot1-ubuntu-1804
+```
 
 ## Deploy Management Cluster
 
