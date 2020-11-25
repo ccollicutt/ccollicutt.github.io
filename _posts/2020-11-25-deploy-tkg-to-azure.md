@@ -10,7 +10,7 @@ summary: "Setup TKG multicloud on Azure is easy."
 
 # {{ page.title }}
 
-Tanzu Kubernetes Grid (TKG) 1.2 was recently released, and with it comes the ability to deploy TKG to Azure. Prior to 1.2 you could deploy to vSphere and AWS, but now, with 1.2, Azure is also supported. So you can now run the same Kubernetes with the same life cycle manager across vSphere, AWS, and Azure. That's pretty powerful from a multicloud perspective.
+Tanzu Kubernetes Grid 1.2 (TKG) was recently released, and with it comes the ability to deploy TKG to Azure. Prior to 1.2 you could deploy to vSphere and AWS, but now, with 1.2, Azure is also supported. So you can now run the same Kubernetes with the same life cycle manager across vSphere, AWS, and Azure. That's pretty powerful from a multicloud perspective.
 
 For this post, let's focus on Azure.
 
@@ -22,17 +22,24 @@ For this post, let's focus on Azure.
 
 Use this [link](https://www.vmware.com/go/get-tkg) to access my.vmware.com and download the TKG CLI. You'll have to login to actually download.
 
+```
+$ tkg version
+Client:
+	Version: v1.2.0
+	Git commit: 05b233e75d6e40659247a67750b3e998c2d990a5
+```
+
+The above is the version of TKG that we'll be using for this post.
+
 ### Azure CLI
 
 Here are the [docs for the prerequisites](https://github.com/kubernetes-sigs/cluster-api-provider-azure/blob/master/docs/getting-started.md#prerequisites) for Azure's Cluster API implementation. But don't worry about reading that doc unless you want to. Not required.
-
-This post assumes that the `az` CLI has been setup and configured enough so that you can run something like:
 
 ```
 az account show 
 ```
 
-Next up...
+This post assumes that the `az` CLI has been setup and configured enough so that you can run something like the above.
 
 ### Docker
 
