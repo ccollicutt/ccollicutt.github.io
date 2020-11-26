@@ -70,7 +70,7 @@ docker ps
 
 Easy peasy.
 
-### ssh key
+### SSH Key
 
 We'll also need an ssh key in ssh format. If there isn't an ssh key setup, then the below command will create one.
 
@@ -80,7 +80,7 @@ ssh-keygen
 
 In this post I assume the key is in `~/.ssh/id_rsa.pub`.
 
-## Setup Variables 
+## Setup Azure and TKG Variables 
 
 First, decide on an Azure application name, such as "tkg-azure" and export that as a variable. This name is up to you.
 
