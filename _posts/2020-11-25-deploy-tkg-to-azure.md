@@ -4,7 +4,7 @@ title:  Install Tanzu Kubernetes Grid in Azure
 categories:
 header_image: "/img/azure.jpg"
 header_permalink: "https://commons.wikimedia.org/w/index.php?curid=44832559"
-summary: "Setup TKG multicloud on Azure is easy."
+summary: "A few variables and awaaay we go..."
 
 ---
 
