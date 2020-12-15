@@ -4,7 +4,7 @@ title:  Linux Budget Workstation
 categories:
 header_image: "/img/linux-workstation.jpg"
 header_permalink: "https://unsplash.com/photos/afUIOjaqjaM"
-summary: "Cheap, fast, good...just choose all three!"
+summary: "Cheap, fast, good...you can have all three!"
 
 ---
 
