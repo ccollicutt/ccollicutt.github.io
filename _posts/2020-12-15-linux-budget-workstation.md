@@ -40,5 +40,3 @@ I bought the parts at [Memory Express](https://www.memoryexpress.com/) and had t
 
 > NOTE: This video card is pretty limited, but works great to power a HDMI monitor.
 
-<iframe src="https://kit.co/embed?url=https%3A%2F%2Fkit.co%2Fccollicutt%2Flinux-budget-workstation" style="display: block; border: 0px; margin: 0 auto; width: 100%; height: 100vw; max-width: 700px; max-height: 700px" scrolling="no"></iframe>
-
