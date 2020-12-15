@@ -10,18 +10,20 @@ summary: "Cheap, fast, and great...yup"
 
 # {{ page.title }}
 
-There's not a lot of pieces to a desktop computer. Here's what I have, bought just after the pandemic started and it became clear I was going to be working from home for a substantial amount of time.
+There's not a lot of pieces to a desktop computer. Here's what I have, bought just after the pandemic started and it became clear I was going to be working from home for a substantial amount of time
 
 I had a few goals and requirements for this build:
 
 1. Low cost
 2. Lots of CPU
-3. 64GB of memory
+3. Minimum 64GB of memory
 4. No need for gaming
 
-I knew that I would run several VMs on the workstation, mostly to split out different things I need to do, for example access work related systems via a VPN in a windows based virtual machine, have a VM for doing demos, ect ect.
+I knew that I would run several VMs on the workstation, mostly to split out different things I need to do, for example access work related systems via a VPN in a Windows based virtual machine, have a VM for doing demos, ect ect, so I would need at least 64gb of memory.
 
-The cost of this build was, pre-tax, $1300 CDN! With Ontario tax and the $50 build fee it came out to just over $1500.
+## The Build
+
+The cost of this build was, pre-tax, $1300 CDN! With Ontario tax and the $50 build fee it came out to just over $1500. (I should note that this build was done about 7 months prior to this post, so it's been a while, a quick glance suggests the pricing is still about the same.)
 
 I bought the parts at [Memory Express](https://www.memoryexpress.com/) and had them build the system for an extra $50. They were great to work with.
 
@@ -35,6 +37,7 @@ I bought the parts at [Memory Express](https://www.memoryexpress.com/) and had t
 | Motherboard | Asus TUF B450-PRO GAMING w/ DDR4-2666 | $169.99 |
 | Video Card | Gigabyte GeForce GT 710 2GB GDDR5 Low-Profile PCI-E w/ HDMI, DVI | $79.99 |
 
-*NOTE: This video card is pretty limited. But works great to power a HDMI monitor.*
+> NOTE: This video card is pretty limited, but works great to power a HDMI monitor.
 
 <iframe src="https://kit.co/embed?url=https%3A%2F%2Fkit.co%2Fccollicutt%2Flinux-budget-workstation" style="display: block; border: 0px; margin: 0 auto; width: 100%; height: 100vw; max-width: 700px; max-height: 700px" scrolling="no"></iframe>
+
