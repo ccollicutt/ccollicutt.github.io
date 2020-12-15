@@ -40,3 +40,6 @@ I bought the parts at [Memory Express](https://www.memoryexpress.com/) and had t
 
 > NOTE: This video card is pretty limited, but works great to power a HDMI monitor.
 
+## Conclusion
+
+In the end, I couldn't be more happy with this build. It's stable, quiet, and, as far as I'm concerned, high performance. But, that said, I don't play video games, or do any GPU related activities. I just need to output to a monitor. It's the perfect workstation for me, both from a cost and an experience perspective.
