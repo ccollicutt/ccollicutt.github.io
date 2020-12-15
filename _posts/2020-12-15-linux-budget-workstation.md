@@ -16,6 +16,7 @@ I had a few goals and requirements for this build:
 
 1. Low cost
 2. Lots of CPU
+3. Not annoyingly loud
 3. Minimum 64GB of memory
 4. No need for gaming
 
