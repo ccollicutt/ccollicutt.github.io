@@ -3,7 +3,7 @@ layout: post
 title:  OpenBSD 6.9 on Protecli 6 Port Firewall
 categories:
 header_image: "/img/protecli2.jpg"
-summary: "Time to implement some homelab network isoliation"
+summary: "Time to implement some homelab network isolation"
 
 ---
 
