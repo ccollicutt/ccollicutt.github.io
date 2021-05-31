@@ -66,7 +66,7 @@ So get into the BIOS by pressing the `DEL` key when the box is booting up. Then 
 Once OpenBSD boots up, enter the following to setup the com port.
 
 ```
-stty com0 11500
+stty com0 115200
 set tty com0
 ```
 
