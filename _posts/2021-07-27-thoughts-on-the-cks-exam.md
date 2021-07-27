@@ -65,7 +65,7 @@ Know how to:
 
 ## Conclusion
 
-First, I have only listed a few major things on this blog post. To pass the test you'd need to know a lot more, and all of that is covered in the documentation for the test, at least in terms of what is on the test.
+Note that I have only listed a *few* major things on this blog post. To pass the test you'd need to know a lot more, and all of that is covered in the documentation for the test, at least in terms of what is on the test.
 
 I personally believe that practical..er...practice is most important in terms of studying for the test. Watch fewer videos and instead practice *actually implementing* practical technical things as quickly as possible via the command line and the vi editor. Make up your own questions if you have to. This is why Killer.sh and the Kodecloud labs and practice tests are so useful. I would spend at least 75% of my time, if not more, on practical hands on (timed if possible) labs and questions as opposed to standard video training. But...this is just my opinion.
 
