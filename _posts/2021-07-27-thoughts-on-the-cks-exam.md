@@ -9,7 +9,7 @@ summary: "Time to get really good at vi..."
 
 # {{ page.title }}
 
-First, let me say that Kuberentes is an extremely challenging piece of software to use, and, of course, to secure. I work at [VMware in the Tanzu group](https://tanzu.vmware.com/) and Kubernetes is a massive part of our portfolio--in fact it's the base of almost everything we do. But it's just the base. You have to add so much on top of Kuberentes to make it useful, and even more to secure it. But enough about that, let's talk about the Certified Kubernetes Security Specialist Certification (CKS).
+First, let me say that Kubernetes is an extremely challenging piece of software to use, and, of course, to secure. I work at [VMware in the Tanzu group](https://tanzu.vmware.com/) and Kubernetes is a massive part of our portfolio--in fact it's the base of almost everything we do. But it's just the base. You have to add so much on top of Kubernetes to make it useful, and even more to secure it. But enough about that, let's talk about the Certified Kubernetes Security Specialist Certification (CKS).
 
 ## tl;dr
 
