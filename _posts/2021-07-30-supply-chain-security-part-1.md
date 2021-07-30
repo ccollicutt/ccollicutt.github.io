@@ -24,7 +24,7 @@ There are many pieces to a modern, secure software supply chain. I say modern be
 
 ## tl;dr
 
-There are many tools to build container images, not just Dockerfiles. In fact, in large organizations, Dockerfiles are IMHO an anti-pattern. You need a tool that can 1) build images without Dockerfiles and 2) separates the OS from the app. [Buildpacks](https://buildpacks.io) solve these, and other, problems.
+There are many tools to build container images, not just Dockerfiles. In fact, in large organizations, Dockerfiles are IMHO an anti-pattern. You need a tool that can 1) build images without Dockerfiles and 2) separates the OS from the app. [Buildpacks](https://buildpacks.io) and more specifically [Paketo](https://paketo.io) solve these, and other, problems.
 
 ## Container Images
 
@@ -84,20 +84,26 @@ There are other things that a great OCI image build tool should have. I'll list 
 * Caching
 * Build images in unprivileged containers
 
-## Recommended Solution: Buildpacks/Paketo
+## Recommended Solution: Buildpacks and Paketo
 
-I think that [Buildpacks](https://buildpacks.io/features/) present a solution to a lot of the problems organizations will encounter when trying to build a secure software supply chain using container images.
+I think that [Buildpacks](https://buildpacks.io/features/)--and more specifically [Paketo](https://paketo.io)--present a solution to many of the problems organizations will encounter when trying to build a secure software supply chain using container images.
 
 With regards to my two main points:
 
 * **No Dockerfiles** - Buildpacks do not use Dockerfiles at all. They are not hidden away through abstraction, they just don't exist. Can't edit what doesn't exist. (Though if you want to create custom buildpacks, you can use Dockerfiles)
 * **Separation of Concerns** - The application, dependencies, and OS are separated out and in fact the resulting images can be "rebased" in which one layer is changed without affecting the others
 
-### Using kpack and buildpacks (but not Dockerfiles)
+### Using Pack and Paketo Buildpacks (but not Dockerfiles)
 
-Let's use pack to build a container image.
+#### Paketo
 
-First, install kpack which can be used to create buildpack based images. I'm doing so on Linux.
+First, what's Paketo? I would say that Paketo is a project that uses Buildpacks to provide container images that can run anywhere, including Kubernetes. As well they are supporting many runtimes. So, for the purposes of this post, we'll use Paketo Buildpacks to build apps. I would almost consider Paketo a distribution of usable, community generated buildpacks.
+
+#### Pack
+
+Pack is the tool that actually generates the Buildpack images so let's use pack to build a container image.
+
+First, install pack which can be used to create buildpack based images. I'm doing so on Linux.
 
 ```
 sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
@@ -105,7 +111,7 @@ sudo apt-get update
 sudo apt-get install pack-cli
 ```
 
-Now I've got pack.
+Now I've got the pack cli.
 
 ```
 $ which pack
@@ -114,87 +120,112 @@ $ pack version
 0.19.0
 ```
 
-Build an [app](https://buildpacks.io/docs/app-journey/). 
+Next, build an [app](https://buildpacks.io/docs/app-journey/). First checkout the sample.
 
 ```
-cd /tmp
-# clone the repo
-git clone https://github.com/buildpacks/samples
-# go to the app directory
-cd samples/apps/java-maven
-# build the app
-pack build myapp --builder cnbs/sample-builder:bionic
+git clone https://github.com/paketo-buildpacks/samples
+cd samples/java/maven/
+```
+
+Now build the app. 
+
+>NOTE: Here I'm calling the image "applications/maven".
+
+>NOTE: I'm using the Paketo buildpack found at "paketobuildpacks/builder:base".
+
+```
+pack build applications/maven --builder paketobuildpacks/builder:base
 ```
 
 Eg. output:
 
->NOTE: This is pulling Java dependencies, and, well, there are a lot of those to pull on the first build. 
+>NOTE: This is pulling Java dependencies, and, well, there are many of those to pull on the first build. 
 
 ```
-$ pack build myapp --builder cnbs/sample-builder:bionic
-bionic: Pulling from cnbs/sample-builder
-e7ae86ffe2df: Pull complete 
-15999ec6d9f8: Pull complete 
-bf5c9240fe8d: Pull complete 
-3e1318bc758f: Pull complete 
-0bc36cd0f998: Pull complete 
-f3822bcb9f02: Pull complete 
-357fefdf9bc9: Pull complete 
-a697cc8a1d5c: Pull complete 
-5c2e4179bee1: Pull complete 
-c4e3bdcbb8c3: Pull complete 
-04f9e5a54d38: Pull complete 
-c238db6a02a5: Pull complete 
-0cceee8a8cb0: Pull complete 
-53a52c7f9926: Pull complete 
-a302059dbdba: Pull complete 
-db1bbcc47135: Pull complete 
-4f4fb700ef54: Pull complete 
-Digest: sha256:b7edf381d738273ae4b382221c49385df28dd551839db584b76f4c65893142e8
-Status: Downloaded newer image for cnbs/sample-builder:bionic
-bionic: Pulling from cnbs/sample-stack-run
-e7ae86ffe2df: Already exists 
-15999ec6d9f8: Already exists 
-bf5c9240fe8d: Already exists 
-Digest: sha256:7606c5881eaa0a1aebb65861f12928f9f253c242d46c4ba836b2c002e2bb3cfb
-Status: Downloaded newer image for cnbs/sample-stack-run:bionic
-0.11.3: Pulling from buildpacksio/lifecycle
-5dea5ec2316d: Pull complete 
-6d75e71a489d: Pull complete 
-Digest: sha256:d6c578fbdf88f2e2594d9907307b17775e648656f62e1ae810d31c804f928cf9
-Status: Downloaded newer image for buildpacksio/lifecycle:0.11.3
+$ pack build applications/maven --builder paketobuildpacks/builder:base
+base: Pulling from paketobuildpacks/builder
+Digest: sha256:4fae5e2abab118ca9a37bf94ab42aa17fef7c306296b0364f5a0e176702ab5cb
+Status: Downloaded newer image for paketobuildpacks/builder:base
+base-cnb: Pulling from paketobuildpacks/run
+Digest: sha256:a285e73bc3697bc58c228b22938bc81e9b11700e087fd9d44da5f42f14861812
+Status: Downloaded newer image for paketobuildpacks/run:base-cnb
 ===> DETECTING
+7 of 18 buildpacks participating
+paketo-buildpacks/ca-certificates   2.3.2
+paketo-buildpacks/bellsoft-liberica 8.2.0
+paketo-buildpacks/maven             5.3.2
+paketo-buildpacks/executable-jar    5.1.2
+paketo-buildpacks/apache-tomcat     5.6.1
+paketo-buildpacks/dist-zip          4.1.2
+paketo-buildpacks/spring-boot       4.4.2
+===> ANALYZING
+Previous image with name "applications/maven" not found
+===> RESTORING
+===> BUILDING
+
+Paketo CA Certificates Buildpack 2.3.2
+  https://github.com/paketo-buildpacks/ca-certificates
+  Launch Helper: Contributing to layer
+    Creating /layers/paketo-buildpacks_ca-certificates/helper/exec.d/ca-certificates-helper
+
+Paketo BellSoft Liberica Buildpack 8.2.0
 SNIP!
-[builder] [INFO] Installing /workspace/pom.xml to /home/cnb/.m2/repository/io/buildpacks/example/sample/0.0.1-SNAPSHOT/sample-0.0.1-SNAPSHOT.pom
-[builder] [INFO] ------------------------------------------------------------------------
-[builder] [INFO] BUILD SUCCESS
-[builder] [INFO] ------------------------------------------------------------------------
-[builder] [INFO] Total time:  6.294 s
-[builder] [INFO] Finished at: 2021-07-27T20:11:15Z
-[builder] [INFO] ------------------------------------------------------------------------
+Paketo Spring Boot Buildpack 4.4.2
+  https://github.com/paketo-buildpacks/spring-boot
+  Creating slices from layers index
+    dependencies
+    spring-boot-loader
+    snapshot-dependencies
+    application
+  Launch Helper: Contributing to layer
+    Creating /layers/paketo-buildpacks_spring-boot/helper/exec.d/spring-cloud-bindings
+  Spring Cloud Bindings 1.7.1: Contributing to layer
+    Downloading from https://repo.spring.io/release/org/springframework/cloud/spring-cloud-bindings/1.7.1/spring-cloud-bindings-1.7.1.jar
+    Verifying checksum
+    Copying to /layers/paketo-buildpacks_spring-boot/spring-cloud-bindings
+  Web Application Type: Contributing to layer
+    Reactive web application detected
+    Writing env.launch/BPL_JVM_THREAD_COUNT.default
+  4 application slices
+  Image labels:
+    org.opencontainers.image.title
+    org.opencontainers.image.version
+    org.springframework.boot.version
 ===> EXPORTING
-[exporter] Adding layer 'samples/java-maven:jdk'
-[exporter] Adding 1/1 app layer(s)
-[exporter] Adding layer 'launcher'
-[exporter] Adding layer 'config'
-[exporter] Adding layer 'process-types'
-[exporter] Adding label 'io.buildpacks.lifecycle.metadata'
-[exporter] Adding label 'io.buildpacks.build.metadata'
-[exporter] Adding label 'io.buildpacks.project.metadata'
-[exporter] Setting default process type 'web'
-[exporter] Saving myapp...
-[exporter] *** Images (86fc0928e7a1):
-[exporter]       myapp
-[exporter] Adding cache layer 'samples/java-maven:jdk'
-[exporter] Adding cache layer 'samples/java-maven:maven_m2'
-Successfully built image myapp
+Adding layer 'paketo-buildpacks/ca-certificates:helper'
+Adding layer 'paketo-buildpacks/bellsoft-liberica:helper'
+Adding layer 'paketo-buildpacks/bellsoft-liberica:java-security-properties'
+Adding layer 'paketo-buildpacks/bellsoft-liberica:jre'
+Adding layer 'paketo-buildpacks/bellsoft-liberica:jvmkill'
+Adding layer 'paketo-buildpacks/executable-jar:classpath'
+Adding layer 'paketo-buildpacks/spring-boot:helper'
+Adding layer 'paketo-buildpacks/spring-boot:spring-cloud-bindings'
+Adding layer 'paketo-buildpacks/spring-boot:web-application-type'
+Adding 5/5 app layer(s)
+Adding layer 'launcher'
+Adding layer 'config'
+Adding layer 'process-types'
+Adding label 'io.buildpacks.lifecycle.metadata'
+Adding label 'io.buildpacks.build.metadata'
+Adding label 'io.buildpacks.project.metadata'
+Adding label 'org.opencontainers.image.title'
+Adding label 'org.opencontainers.image.version'
+Adding label 'org.springframework.boot.version'
+Setting default process type 'web'
+Saving applications/maven...
+*** Images (d7dcc3fd9295):
+      applications/maven
+Adding cache layer 'paketo-buildpacks/bellsoft-liberica:jdk'
+Adding cache layer 'paketo-buildpacks/maven:application'
+Adding cache layer 'paketo-buildpacks/maven:cache'
+Successfully built image applications/maven
 ```
 
-That's created this myapp image in my local Docker.
+That's created this "applications/maven" image in my local Docker.
 
 ```
-$ docker images | grep myapp
-myapp                                                                 latest             ffc5bf25a436   41 years ago     300MB
+$ docker images | grep application
+applications/maven                                                    latest             d7dcc3fd9295   41 years ago    269MB
 ```
 
 >NOTE: It says 41 years ago because it is a reproducable build. More on that maybe in other blog posts.
@@ -204,27 +235,31 @@ But where is the Dockerfile?
 ```
 $ tree
 .
+├── bindings
+│   └── maven
+│       ├── settings.xml
+│       └── type
 ├── mvnw
 ├── mvnw.cmd
 ├── pom.xml
+├── README.md
 └── src
-    └── main
-        ├── java
-        │   └── io
-        │       └── buildpacks
-        │           └── example
-        │               └── sample
-        │                   └── SampleApplication.java
-        └── resources
-            ├── application.properties
-            ├── banner.txt
-            ├── static
-            │   ├── buildpacks-logo.svg
-            │   └── favicon.png
-            └── templates
-                └── index.html
+    ├── main
+    │   ├── java
+    │   │   └── io
+    │   │       └── paketo
+    │   │           └── demo
+    │   │               └── DemoApplication.java
+    │   └── resources
+    │       └── application.properties
+    └── test
+        └── java
+            └── io
+                └── paketo
+                    └── demo
+                        └── DemoApplicationTests.java
 
-10 directories, 9 files
+14 directories, 9 files
 ```
 
 There is none! pack uses buildpacks and does NOT use a Dockerfile. Nice!
@@ -246,107 +281,132 @@ So let's rebase the image.
 Inspect the current version.
 
 ```
-$ pack inspect myapp
-Inspecting image: myapp
+$ pack inspect applications/maven
+Inspecting image: applications/maven
 
 REMOTE:
 (not present)
 
 LOCAL:
 
-Stack: io.buildpacks.samples.stacks.bionic
+Stack: io.buildpacks.stacks.bionic
 
 Base Image:
-  Reference: 0b2076fcd92b5a12e379c33818b97273f0380eba1850d2088fe2ce5576e4c767
-  Top Layer: sha256:09ac4cd31335f0b332b1b0718986fafbce0b29d18894c0bd92b2a0dec2aaec4a
+  Reference: 5eaa2a599cd59e0e1d67132de78d590ef0f34512ede6acefd09416548f52a994
+  Top Layer: sha256:10dd4d5e8186feb5b6ab2a877c80e1616e426ed383b7f19358b7703686fa4f9a
 
 Run Images:
-  cnbs/sample-stack-run:bionic
+  index.docker.io/paketobuildpacks/run:base-cnb
+  gcr.io/paketo-buildpacks/run:base-cnb
 
 Buildpacks:
-  ID                        VERSION        HOMEPAGE
-  samples/java-maven        0.0.1          https://github.com/buildpacks/samples/tree/main/buildpacks/java-maven
+  ID                                         VERSION        HOMEPAGE
+  paketo-buildpacks/ca-certificates          2.3.2          https://github.com/paketo-buildpacks/ca-certificates
+  paketo-buildpacks/bellsoft-liberica        8.2.0          https://github.com/paketo-buildpacks/bellsoft-liberica
+  paketo-buildpacks/maven                    5.3.2          https://github.com/paketo-buildpacks/maven
+  paketo-buildpacks/executable-jar           5.1.2          https://github.com/paketo-buildpacks/executable-jar
+  paketo-buildpacks/apache-tomcat            5.6.1          https://github.com/paketo-buildpacks/apache-tomcat
+  paketo-buildpacks/dist-zip                 4.1.2          https://github.com/paketo-buildpacks/dist-zip
+  paketo-buildpacks/spring-boot              4.4.2          https://github.com/paketo-buildpacks/spring-boot
 
 Processes:
-  TYPE                 SHELL        COMMAND        ARGS
-  web (default)        bash         java -jar target/sample-0.0.1-SNAPSHOT.jar
+  TYPE                  SHELL        COMMAND        ARGS
+  web (default)                      java           org.springframework.boot.loader.JarLauncher
+  executable-jar                     java           org.springframework.boot.loader.JarLauncher
+  task                               java           org.springframework.boot.loader.JarLauncher
 ```
 
-Rebasing using a much older image (and specifying this image by sha256; don't ask me how I found the older image). Of course, this would be done in reverse in the real world, where we would rebase with a newer image (that presumably has the security issues fixed). But for simplicity, given I've already created an image using the most recent run image, I'll go backwards here just for fun.
+Rebasing using a much older image. Of course, this would be done in reverse in the real world, where we would rebase with a newer image (that presumably has the security issues fixed). But for simplicity, given I've already created an image using the most recent run image, I'll go backwards here just for fun. Same idea no matter which way we go.
 
 ```
-$ pack rebase myapp --run-image cnbs/sample-stack-run:bionic@sha256:2ca156537bad95e4870e5e8a74b10e7b46b722add5ebb6eda9939e8ce8c7143b
-docker.io/cnbs/sample-stack-run@sha256:2ca156537bad95e4870e5e8a74b10e7b46b722add5ebb6eda9939e8ce8c7143b: Pulling from cnbs/sample-stack-run
-Digest: sha256:2ca156537bad95e4870e5e8a74b10e7b46b722add5ebb6eda9939e8ce8c7143b
-Status: Image is up to date for cnbs/sample-stack-run@sha256:2ca156537bad95e4870e5e8a74b10e7b46b722add5ebb6eda9939e8ce8c7143b
-Rebasing myapp on run image cnbs/sample-stack-run:bionic@sha256:2ca156537bad95e4870e5e8a74b10e7b46b722add5ebb6eda9939e8ce8c7143b
-Saving myapp...
-*** Images (5a08cc228d95):
-      myapp
-Rebased Image: 5a08cc228d95c0880b2d73593d68e5585abe5ae3bd8f8badf47213a50a7508a8
-Successfully rebased image myapp
+$ pack rebase applications/maven --run-image paketobuildpacks/builder:0.1.135-base
+0.1.135-base: Pulling from paketobuildpacks/builder
+71c12072e01c: Already exists 
+8ac523e239f0: Pulling fs layer 
+SNIP!
+72ad9888618d: Pull complete 
+4f4fb700ef54: Pull complete 
+Digest: sha256:06fc9acb3b8098f7b717420d35f9cd8485ea1f92ce540769a2924ad7a161dad7
+Status: Downloaded newer image for paketobuildpacks/builder:0.1.135-base
+Rebasing applications/maven on run image paketobuildpacks/builder:0.1.135-base
+Saving applications/maven...
+*** Images (b72546026b22):
+      applications/maven
+Rebased Image: b72546026b22fff4797625e36b8f4a6c0e4a5386fcd5460c12d173cb1000718e
+Successfully rebased image applications/maven
 ```
 
 Inspect that version:
 
 ```
-$ pack inspect myapp
-Inspecting image: myapp
+$ pack inspect applications/maven
+Inspecting image: applications/maven
 
 REMOTE:
 (not present)
 
 LOCAL:
 
-Stack: io.buildpacks.samples.stacks.bionic
+Stack: io.buildpacks.stacks.bionic
 
 Base Image:
-  Reference: afae70542bd2ad4e5b5bfa0830757f11c9dfc87f1bdd1c91b1ae6a9f5c6825bb
-  Top Layer: sha256:d2b6c5c45d095d805d8b7ddab2028fa94be7e8efb2814ac1a75d3e9319ae8244
+  Reference: a8b66bfbe49565ffa1c74374ed0a38fb91adb43fa4a7a7c740b3f099b93a9c78
+  Top Layer: sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef
 
 Run Images:
-  cnbs/sample-stack-run:bionic
+  index.docker.io/paketobuildpacks/run:base-cnb
+  gcr.io/paketo-buildpacks/run:base-cnb
 
 Buildpacks:
-  ID                        VERSION        HOMEPAGE
-  samples/java-maven        0.0.1          https://github.com/buildpacks/samples/tree/main/buildpacks/java-maven
+  ID                                         VERSION        HOMEPAGE
+  paketo-buildpacks/ca-certificates          2.3.2          https://github.com/paketo-buildpacks/ca-certificates
+  paketo-buildpacks/bellsoft-liberica        8.2.0          https://github.com/paketo-buildpacks/bellsoft-liberica
+  paketo-buildpacks/maven                    5.3.2          https://github.com/paketo-buildpacks/maven
+  paketo-buildpacks/executable-jar           5.1.2          https://github.com/paketo-buildpacks/executable-jar
+  paketo-buildpacks/apache-tomcat            5.6.1          https://github.com/paketo-buildpacks/apache-tomcat
+  paketo-buildpacks/dist-zip                 4.1.2          https://github.com/paketo-buildpacks/dist-zip
+  paketo-buildpacks/spring-boot              4.4.2          https://github.com/paketo-buildpacks/spring-boot
 
 Processes:
-  TYPE                 SHELL        COMMAND        ARGS
-  web (default)        bash         java -jar target/sample-0.0.1-SNAPSHOT.jar
+  TYPE                  SHELL        COMMAND        ARGS
+  web (default)                      java           org.springframework.boot.loader.JarLauncher
+  executable-jar                     java           org.springframework.boot.loader.JarLauncher
+  task                               java           org.springframework.boot.loader.JarLauncher
 ```
 
 If I run that app, which was rebased onto a much older run image...
 
 ```
-$ docker run --rm -p 8080:8080 myapp
-    |'-_ _-'|       ____          _  _      _                      _             _
-    |   |   |      |  _ \        (_)| |    | |                    | |           (_)
-     '-_|_-'       | |_) | _   _  _ | |  __| | _ __    __ _   ___ | | __ ___     _   ___
-|'-_ _-'|'-_ _-'|  |  _ < | | | || || | / _` || '_ \  / _` | / __|| |/ // __|   | | / _ \
-|   |   |   |   |  | |_) || |_| || || || (_| || |_) || (_| || (__ |   < \__ \ _ | || (_) |
- '-_|_-' '-_|_-'   |____/  \__,_||_||_| \__,_|| .__/  \__,_| \___||_|\_\|___/(_)|_| \___/
-                                              | |
-                                              |_|
+$ docker run --rm -p 8080:8080 applications/maven
+Setting Active Processor Count to 12
+Calculating JVM memory based on 38994352K available memory
+Calculated JVM Memory Configuration: -XX:MaxDirectMemorySize=10M -Xmx38598153K -XX:MaxMetaspaceSize=88998K -XX:ReservedCodeCacheSize=240M -Xss1M (Total Memory: 38994352K, Thread Count: 50, Loaded Class Count: 13299, Headroom: 0%)
+Adding 129 container CA certificates to JVM truststore
+Spring Cloud Bindings Enabled
+Picked up JAVA_TOOL_OPTIONS: -Djava.security.properties=/layers/paketo-buildpacks_bellsoft-liberica/java-security-properties/java-security.properties -agentpath:/layers/paketo-buildpacks_bellsoft-liberica/jvmkill/jvmkill-1.16.0-RELEASE.so=printHeapHistogram=1 -XX:ActiveProcessorCount=12 -XX:MaxDirectMemorySize=10M -Xmx38598153K -XX:MaxMetaspaceSize=88998K -XX:ReservedCodeCacheSize=240M -Xss1M -Dorg.springframework.cloud.bindings.boot.enable=true
 
-:: Built with Spring Boot :: 2.1.18.RELEASE
-SNIP!
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.3)
+
+2021-07-30 13:44:52.093  INFO 1 --- [           main] io.paketo.demo.DemoApplication           : Starting DemoApplication v0.0.1-SNAPSHOT using Java 11.0.12 on 331541f6d651 with PID 1 (/workspace/BOOT-INF/classes started by cnb in /workspace)
+2021-07-30 13:44:52.096  INFO 1 --- [           main] io.paketo.demo.DemoApplication           : No active profile set, falling back to default profiles: default
+2021-07-30 13:44:52.906  INFO 1 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2021-07-30 13:44:53.184  INFO 1 --- [           main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080
+2021-07-30 13:44:53.196  INFO 1 --- [           main] io.paketo.demo.DemoApplication           : Started DemoApplication in 1.376 seconds (JVM running for 1.646)
 ```
 
-I can curl it.
-
-```
-$ curl -s localhost:8080 | grep Hello
-        <h1>Hello, Buildpacker!</h1>
-```
-
-So as you can see it's simple and fast to "rebase" an image, ie. swap out the version of the OS but NOT the application, without having to go through an entire build, which indicates to me that the app and OS are separate components.
+So as you can see it's simple and fast to "rebase" an image, ie. swap out the version of the OS but NOT the application, without having to go through an entire build.
 
 ## Conclusion
 
-Dockerfiles are great, but not for building a secure software supply chain (not without a lot of extra work at least). There are other ways to build container images that lend themselves more easily to building a secure software supply chain.
+Dockerfiles are great, but, IMHO, not for building a secure software supply chain (not without considerable extra work at least). There are other ways to build container images that lend themselves more easily to building a secure software supply chain.
 
-I should mention that buildpacks and pack are just part of a full solution for managing images. Please check out [kpack](https://github.com/pivotal/kpack) and the [Tanzu Build service](https://tanzu.vmware.com/build-service) for more thoughts on what else is needed in the Kubernetes ecosystem.
+I should mention that buildpacks and pack are just part of a full solution for managing images. Please check out [kpack](https://github.com/pivotal/kpack) and the [Tanzu Build service](https://tanzu.vmware.com/build-service) for more thoughts on what else is needed in the Kubernetes ecosystem. More on that in future posts.
 
 ## Thanks
 
