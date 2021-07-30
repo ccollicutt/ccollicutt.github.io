@@ -97,7 +97,9 @@ With regards to my two main points:
 
 #### Paketo
 
-First, what's Paketo? I would say that Paketo is a project that uses Buildpacks to provide container images that can run anywhere, including Kubernetes. As well they are supporting many runtimes. So, for the purposes of this post, we'll use Paketo Buildpacks to build apps. I would almost consider Paketo a distribution of usable, community generated buildpacks.
+First, what's Paketo? I would say that Paketo is a project that uses Buildpacks to provide container images that can run anywhere, including Kubernetes. As well they support many language runtimes. I would almost consider Paketo a distribution of modern, well-considered, usable, community generated buildpacks that have taken what buildpacks have done and built upon it, by making them even more composable and modular.
+
+For the purposes of this post, I'll use Paketo Buildpacks to build apps which target Kubernetes. 
 
 #### Pack
 
