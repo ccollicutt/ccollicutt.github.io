@@ -65,6 +65,8 @@ To me Dockerfiles are an anti-pattern, especially in large organizations with ma
 
 ### Separation of Concerns
 
+![hashed layers](/img/hashed.jpg)
+
 I want a OCI build tool that separates, at the very least, the operating system from the application. I want to be able to swap out the OS without breaking, or even affecting, the application. This is because if there is one thing that we can depend on in IT, it's that the OS will have security issues, ie. CVEs, and we'll need to fix those CVEs to remain secure. However, if the application, and its dependencies, and its runtime, and the OS are all hashed together into a container image, and we can't swap any one of those without affecting the other layers, then that is a major security issue, as development and/or application operation teams will be (very) hesitant to update the image because they don't know what will happen to the application.
 
 An easy way to test is this capability is available in an OCI image tool is if we can use it to build an image "out of band" from the build pipeline. Can we update the OS of an image, most likely to fix any CVEs or bugs, and roll that image out to all applications that use it, without having to go through the entire application build pipeline? In most situations that would not be possible because the build pipeline and the images are so tightly intertwined that it is not feasible. But it *should be*.
