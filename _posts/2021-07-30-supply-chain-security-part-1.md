@@ -16,7 +16,7 @@ summary: "Dockerfiles aren't the only way to create container images..."
 
 **New Problem: I need to manage Dockerfiles**
 
-**New solution 2: ???**
+**New solution: ???**
 
 ## Overview
 
@@ -40,7 +40,7 @@ It's important to understand that anyone can build a tool that can create an ima
 
 First, what other tools are out there for building OCI compliant images?
 
->NOTE: Not all of these tools are maintained, and not all would be usable in production. This is just a list to show that there are several tools one can use build an OCI compliant image, not all of which use Dockerfiles. (However, that said, I don't think there are quite enough tools to show the vibrant OCI image building ecosystem that one would expect given the popularity of containers.)
+>NOTE: Not all of these tools are maintained, and not all would be usable in production. This is just a list to show that there are several tools one can use to build an OCI compliant image, not all of which use Dockerfiles. (However, that said, I don't think there are quite enough tools to show the vibrant OCI image building ecosystem that one would expect given the popularity of containers.)
 
 Here's an incomplete list:
 
@@ -61,7 +61,7 @@ As can be seen from the above there are several tools which could be used, as op
 
 My opinion is that a secure supply chain requires that there is, effectively, preferably, no Dockerfile. In my opinion, there's too much power in Dockerfiles, too many ways to make mistakes and create security issues to allow people to have access to them, or for them to even be available.
 
-To me Dockerfiles are an anti-pattern, especially in large organizations with many applications. However, please don't get me wrong, Dockerfiles have been and will continue to be an amazing tool for developers to build container images, bringing that capability to the masses. That said, using then as part of a secure supply chain is challenging...I believe too challenging for most organizations. It's preferable for the image build tool to not use Dockerfiles or at least abstract (hide) them away from the developers and application ops teams. However, when hiding things in technology we know that issues can and will still [leak out](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/), so perhaps best to just not have Dockerfiles at all.
+To me Dockerfiles are an anti-pattern, especially in large organizations with many applications. However, please don't get me wrong, Dockerfiles have been and will continue to be an amazing tool for developers to build container images, bringing that capability to the masses. That said, using them as part of a secure supply chain is challenging...I believe too challenging for most organizations. It's preferable for the image build tool to not use Dockerfiles or at least abstract (hide) them away from the developers and application ops teams. However, when hiding things in technology we know that issues can and will still [leak out](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/), so perhaps best to just not have Dockerfiles at all.
 
 ### Separation of Concerns
 
@@ -69,7 +69,7 @@ To me Dockerfiles are an anti-pattern, especially in large organizations with ma
 
 I want a OCI build tool that separates, at the very least, the operating system from the application. I want to be able to swap out the OS without breaking, or even affecting, the application. This is because if there is one thing that we can depend on in IT, it's that the OS will have security issues, ie. CVEs, and we'll need to fix those CVEs to remain secure. However, if the application, and its dependencies, and its runtime, and the OS are all hashed together into a container image, and we can't swap any one of those without affecting the other layers, then that is a major security issue, as development and/or application operation teams will be (very) hesitant to update the image because they don't know what will happen to the application.
 
-An easy way to test is this capability is available in an OCI image tool is if we can use it to build an image "out of band" from the build pipeline. Can we update the OS of an image, most likely to fix any CVEs or bugs, and roll that image out to all applications that use it, without having to go through the entire application build pipeline? In most situations that would not be possible because the build pipeline and the images are so tightly intertwined that it is not feasible. But it *should be*.
+An easy way to test if this capability is available in an OCI image tool is if we can use it to build an image "out of band" from the build pipeline. Can we update the OS of an image, most likely to fix any CVEs or bugs, and roll that image out to all applications that use it, without having to go through the entire application build pipeline? In most situations that would not be possible because the build pipeline and the images are so tightly intertwined that it is not feasible. But it *should be*.
 
 ### Other Needs
 
