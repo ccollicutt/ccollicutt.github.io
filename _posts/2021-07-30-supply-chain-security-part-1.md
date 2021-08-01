@@ -10,7 +10,7 @@ summary: "Dockerfiles aren't the only way to create container images..."
 
 # {{ page.title }}
 
-**Problem #1: I need to package software**
+**Problem : I need to package software**
 
 **Solution: Dockerfiles**
 
@@ -20,7 +20,7 @@ summary: "Dockerfiles aren't the only way to create container images..."
 
 ## Overview
 
-There are many pieces to a modern, secure software supply chain. I say modern because this series of posts will focus on what it takes to build a secure software supply chain when the target is Kubernetes--and Kubernetes means containers...and containers mean, you guessed it, container images. 
+There are many pieces to a modern, secure software supply chain. I say modern because this series of posts will focus on what it takes to build a secure software supply chain when the target for runnign these applications is Kubernetes. Kubernetes means containers...and containers mean, you guessed it, container images. So let's start there.
 
 ## tl;dr
 
@@ -59,9 +59,9 @@ As can be seen from the above there are several tools which could be used, as op
 
 ### No Dockerfiles
 
-My opinion is that a secure supply chain requires that there is, effectively, preferably, no Dockerfile. In my opinion, there's too much power in Dockerfiles, too many ways to make mistakes and create security issues to allow people to have access to them, or for them to even be available.
+My opinion is that a secure supply chain requires that there is, effectively, preferably, no Dockerfile. In my opinion, there's too much power in Dockerfiles, too many ways to make mistakes and create security issues to allow people to have access to them, or for them to even be available. Developers should not be spending time crafting Dockerfiles.
 
-To me Dockerfiles are an anti-pattern, especially in large organizations with many applications. However, please don't get me wrong, Dockerfiles have been and will continue to be an amazing tool for developers to build container images, bringing that capability to the masses. That said, using them as part of a secure supply chain is challenging...I believe too challenging for most organizations. It's preferable for the image build tool to not use Dockerfiles or at least abstract (hide) them away from the developers and application ops teams. However, when hiding things in technology we know that issues can and will still [leak out](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/), so perhaps best to just not have Dockerfiles at all.
+To me Dockerfiles are an anti-pattern, especially in large organizations with many applications. However, please don't get me wrong: Dockerfiles have been and will continue to be an amazing tool for developers to build container images, bringing that capability to the masses. That said, using them as part of a secure supply chain is challenging...I believe too challenging for most organizations. It's preferable for the image build tool to not use Dockerfiles or at least abstract (hide) them away from the developers and application ops teams. However, when hiding things in technology we know that issues can and will still [leak out](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/), so perhaps best to just not have Dockerfiles at all.
 
 ### Separation of Concerns
 
@@ -97,7 +97,9 @@ With regards to my two main points:
 
 #### Paketo
 
-First, what's Paketo? I would say that Paketo is a project that uses Buildpacks to provide container images that can run anywhere, including Kubernetes. As well they support many language runtimes. I would almost consider Paketo a distribution of modern, well-considered, usable, community generated buildpacks that have taken what buildpacks have done and built upon it, by making them even more composable and modular.
+First, what's Paketo? 
+
+I would say that Paketo is a project that uses Buildpacks to provide container images that can run anywhere, including Kubernetes. As well they support many language runtimes. I would almost consider Paketo a distribution of modern, well-considered, usable, community generated buildpacks that have taken what buildpacks have done and built upon it, by making them even more composable and modular.
 
 For the purposes of this post, I'll use Paketo Buildpacks to build apps which target Kubernetes. 
 
