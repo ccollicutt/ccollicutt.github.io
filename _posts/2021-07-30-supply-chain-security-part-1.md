@@ -34,7 +34,7 @@ If you get any one thing from this post, it's important to understand what a con
 
 >This specification defines how to create an OCI Image, which will generally be done by a build system, and output an image manifest, a filesystem (layer) serialization, and an image configuration. - [OCI](https://opencontainers.org/about/overview/)
 
-It's important to understand that anyone can build a tool that can create an image which meets this specification. Anyone. It *does not* have to be based on Dockerfiles. In fact I would suggest that while Dockerfiles are great they are not necessarily the best tool to use as part of building a secure software supply chain. There are other solutions, not many, but there are definitely choices that can be made (and I present one of them in this post).
+The reality is that anyone can build a tool that can create an image which meets this specification. Anyone. It *does not* have to be based on Dockerfiles. In fact I would suggest that while Dockerfiles are great they are not necessarily the best tool to use as part of building a secure software supply chain. There are other solutions, not many, but there are definitely choices that can be made (and I present one of them in this post).
 
 ## Examples of OCI Compliant Container Image Build Tools
 
