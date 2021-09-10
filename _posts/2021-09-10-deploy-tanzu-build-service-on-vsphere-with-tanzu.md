@@ -9,7 +9,7 @@ summary: "Don't tell me you're still using dockerfiles?"
 
 # {{ page.title }}
 
-In this post we'll deploy the Tanzu Build Service (TBS) onto a vSphere with Tanzu Kubernetes workload cluster.
+In this post we'll deploy the [Tanzu Build Service](https://tanzu.vmware.com/build-service) (TBS) onto a [vSphere with Tanzu](https://www.vmware.com/ca/products/vsphere/vsphere-with-tanzu.html) Kubernetes workload cluster.
 
 ## Requirements
 
