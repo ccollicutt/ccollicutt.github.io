@@ -19,6 +19,8 @@ In this post we'll deploy the [Tanzu Build Service](https://tanzu.vmware.com/bui
 
 ## About vSphere with Tanzu
 
+vSphere with Tanzu, what you may remember as being called "Project Pacific", is Kubernetes lifecycle management built directly into vSphere.
+
 VMware believes that you will have many Kubernetes clusters. Not just one or two or three. So, the main feature of vSphere with Tanzu is to manage the lifecycle of **many** Kubernetes clusters. The way we do this is by extending Kubernetes with something called Cluster API.
 
 This means, and this can be confusing, that when we want to create a Kubernetes cluster, we actually ask a specialized Kubernetes cluster--the Supervisor Cluster--to do this for us. So we use Kubernetes to deploy Kubernetes. Make sense?
