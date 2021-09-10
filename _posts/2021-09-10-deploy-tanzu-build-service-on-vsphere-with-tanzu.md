@@ -36,6 +36,8 @@ We need a cluster to install TBS into. That cluster needs a couple of things:
 
 First, let's deploy the cluster with larger disks.
 
+### Login to the Supervisor Cluster
+
 Ensure you are logged into your vSphere with Tanzu supervisor Kubernetes cluster.
 
 >NOTE: I alias `kubectl` to `k`.
@@ -72,6 +74,8 @@ dev-team-tundra
 test-ns
 ```
 
+### Switch the Desired Supervisor Namespace
+
 I'm going to deploy the TBS workload cluster into the `dev-team-tundra` supervisor namespace. So I'll switch to that config.
 
 ```
@@ -79,7 +83,9 @@ $ kc dev-team-tundra
 ✔ Switched to context "dev-team-tundra".
 ```
 
-set up a few variables that will be dependent on how you have set up the supervisor cluster, storage, etc.
+### Deploy a Workload Cluster
+
+Set up a few variables that will be dependent on how you have set up the supervisor cluster, storage, etc.
 
 >NOTE: Change these to fit your environment.
 
@@ -138,6 +144,8 @@ EOF
 ```
 
 After a few minutes the cluster will be deployed. (How long depends on the speed of your infrastructure, but say 15-20 minutes.)
+
+### Login to the Workload Cluster
 
 Once the new, completely separate k8s cluster is created, we use the `kubectl vsphere` plugin to login to the workload cluster, switch to that kube context, and from this point on we'll talk to that cluster's Kubernetes API, not the supervisor cluster.
 
