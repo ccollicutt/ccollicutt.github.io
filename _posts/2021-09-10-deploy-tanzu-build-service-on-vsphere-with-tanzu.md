@@ -17,6 +17,14 @@ In this post we'll deploy the [Tanzu Build Service](https://tanzu.vmware.com/bui
 2. A container image repository, such as Harbor, or Azure CR, etc, any compliant registry should do
 3. A place to run commands (a linux host is best IMHO)
 
+## About the Tanzu Build Service
+
+There are several ways to build container images (not just Dockerfiles).
+
+The Tanzu Build Service makes building container images easier, ie. no Dockerfiles, and provides an image control plane, which I believe Kubernetes sorely misses.
+
+>You have plenty of options for building containers from source code. Yet many require significant effort and ongoing maintenance to use them properly. And it can be hard to enforce security and operational rigor at scale. Tanzu Build Service offers the convenience of these workflows with more automation and the governance capabilities enterprises need.
+
 ## About vSphere with Tanzu
 
 vSphere with Tanzu, what you may remember as being called "Project Pacific", is Kubernetes lifecycle management built directly into vSphere.
