@@ -74,6 +74,8 @@ dev-team-tundra
 test-ns
 ```
 
+<br />
+
 ### Switch the Desired Supervisor Namespace
 
 I'm going to deploy the TBS workload cluster into the `dev-team-tundra` supervisor namespace. So I'll switch to that config.
@@ -82,6 +84,8 @@ I'm going to deploy the TBS workload cluster into the `dev-team-tundra` supervis
 $ kc dev-team-tundra
 ✔ Switched to context "dev-team-tundra".
 ```
+
+<br />
 
 ### Deploy a Workload Cluster
 
@@ -184,6 +188,8 @@ tanzu-build-service-cluster2-workers-268cf-9686cf46d-6sznb   Ready    <none>    
 tanzu-build-service-cluster2-workers-268cf-9686cf46d-d7nld   Ready    <none>                 33m   v1.20.7+vmware.1
 ```
 
+<br />
+
 ### Configure Pod Security Policy
 
 The supervisor cluster configures some default security which we will need to further configure to allow TBS to deploy into this cluster.
@@ -270,7 +276,7 @@ $ find /tmp/bundle/ | head
 /tmp/bundle/config/pod-webhook/deployment.yaml
 ```
 
-Onwards!
+<br />
 
 ## Deploy TBS
 
@@ -331,8 +337,6 @@ Succeeded
 ```
 
 And would want to see `succeeded`.
-
-TBS has now been deployed!
 
 ## Build an Image
 
