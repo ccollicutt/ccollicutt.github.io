@@ -3,7 +3,7 @@ layout: post
 title:  "Deploy Tanzu Build Service into a vSphere with Tanzu Workload Cluster"
 categories:
 header_image: "/img/tbs-on-vsphere.jpg"
-summary: "Don't tell me you're still using dockerfiles?"
+summary: "Build container images without Dockerfiles in vSphere with Tanzu"
 
 ---
 
