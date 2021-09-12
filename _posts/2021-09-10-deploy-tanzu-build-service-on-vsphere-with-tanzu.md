@@ -23,7 +23,7 @@ There are several ways to build container images (not just Dockerfiles).
 
 The Tanzu Build Service makes building container images easier, ie. no Dockerfiles, and provides an image control plane, which I believe Kubernetes sorely misses.
 
->You have plenty of options for building containers from source code. Yet many require significant effort and ongoing maintenance to use them properly. And it can be hard to enforce security and operational rigor at scale. Tanzu Build Service offers the convenience of these workflows with more automation and the governance capabilities enterprises need.
+>You have plenty of options for building containers from source code. Yet many require significant effort and ongoing maintenance to use them properly. And it can be hard to enforce security and operational rigor at scale. Tanzu Build Service offers the convenience of these workflows with more automation and the governance capabilities enterprises need. - [Tanzu Build Service](https://tanzu.vmware.com/build-service)
 
 ## About vSphere with Tanzu
 
@@ -367,7 +367,9 @@ Create a repository secret. TBS needs to have write access to the container imag
 
 Use `kp` to do that.
 
-set up some vars.
+>NOTE: `kp` is the kpack CLI. It's a way to use TBS and kpack. But it's important to understand that kp just talks to Kubernetes, we can get the same information out of Kubernetes using kubectl as we can with `kp`.
+
+Set up some vars.
 
 ```
 export SECRET_NAME=""
@@ -394,7 +396,7 @@ We need to ensure we're going to upload the newly built image to the right conta
 export REPOSITORY="your.container.image.repo/some-repo"
 ```
 
-Now ask TBS to build the image.
+Now ask TBS to build the image by using the `kp` CLI.
 
 >NOTE: This will take a while on the first build as all the maven dependencies will get downloaded...Spring Petclinic is written in Java.
 
