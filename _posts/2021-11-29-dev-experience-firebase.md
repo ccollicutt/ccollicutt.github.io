@@ -3,7 +3,7 @@ layout: post
 title:  "Dev Experience: Writing a NodeJS REST API with Firebase"
 categories:
 header_image: "/img/dx-firebase.jpg"
-summary: "How easy is it to write, test, and deploy code?"
+summary: "Starting my walkabout amongst the dev platforms"
 
 ---
 
