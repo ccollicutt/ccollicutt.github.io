@@ -122,6 +122,20 @@ To use it with Firebase I've added the following to the scripts section of my pa
 
 I've also got a CLI for using the DNS arecords demo API (I'm currently calling it Sparrow DNS) and I can easily integrate with it, and set the endpoint URL to the local URL that is setup when I use the Firebase emulator. This helps a lot with local testing.
 
+For example, if I want to use the CLI with the dev secrets...
+
+```
+doppler run -- ./scripts/sparrow-cli arecord list
+```
+
+But if I want to use the production environment...
+
+```
+doppler run --config prd -- ./scripts/sparrow-cli arecord list
+```
+
+I'll need to think about how to integrated the `doppler` CLI into the Sparrow CLI.
+
 ## Conclusion
 
 Again, so far I'm a big fan of Doppler, 1) because it works and 2) because it's obvious that they are not only talking about creating a great developer experience, they are actually doing it!
