@@ -33,7 +33,7 @@ What a great attitude.
 
 ## tl;dr
 
-I really like Doppler. I like pretty much everything about it. I like how it's setup, I like how it guides you through using it. I like that it has a CLI that I can integrate with everything. I like that it had examples for Firebase. Looks like there are integrations for Netlify and Vercel (two services I plan on checking out).
+I really like Doppler. I like pretty much everything about it. I like how it's setup, I like how it guides you through using it. I like that it has a CLI that I can integrate with everything. I like that it had examples for Firebase. Looks like there are integrations for Netlify and Vercel (two services I plan on checking out). I also like that it will copy secrets to each environment, and let you know when environments have secrets that don't exist in other environments.
 
 It's just a really well thought out secrets as a service, and I've only--just barely--scratched the surface of using it.
 
