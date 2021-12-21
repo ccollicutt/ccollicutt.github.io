@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Azure Functions, Managed Idenity, NodeJS, and Key Vault"
+title:  "Azure Functions, Managed Identity, NodeJS, and Key Vault"
 categories:
 header_image: "/img/azure-func-managed-identity.jpg"
 summary: "Apps need secrets to get secrets...or do they?"
