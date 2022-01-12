@@ -30,7 +30,7 @@ gke-gke-tap-1-default-pool-bb825ba8-3pgz   Ready    <none>   4d2h   v1.22.3-gke.
 gke-gke-tap-1-default-pool-bb825ba8-6v55   Ready    <none>   4d2h   v1.22.3-gke.700
 ```
 
-It has a bunch of nodes and is running the full TAP "profile".
+It has a bunch of nodes and is running the "full" TAP profile.
 
 ## What is the Tanzu Application Platform?
 
