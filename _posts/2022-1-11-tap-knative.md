@@ -230,3 +230,7 @@ So, that was pretty easy. Of course it's a simple demo application which lives i
 ## Conclusion
 
 The Tanzu Application Platform gives you cutting edge tools like serverless via knative. Now, the point of TAP isn't necessarily to just directly use knative like this, but I wanted to show that knative is indeed part, an integral part, of TAP, that you can use if you want to (by default most TAP demos will use knative) but you don't have to use it.
+
+Another thing to keep in mind in the context of this post, is exactly where did that hello-yeti container image come from? What if we want to deploy our own code? Not surprisingly, I'll look into that in the next post in this series. 
+
+Thanks for reading!
