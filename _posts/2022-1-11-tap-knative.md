@@ -11,7 +11,7 @@ summary: "With Tanzu's TAP you get access to knative...and much more!"
 
 ## tl;dr
 
-The point of this post is to show that knative is part of The [Tanzu Application Platform](https://tanzu.vmware.com/application-platform), AKA TAP, and one can use knative outside of TAP, directly with the kn cli, if desired. (Though, in the real world you would probably use the rest of TAP as well, but it's modular so you don't *have* to.)
+The point of this post is to show that knative is part of The [Tanzu Application Platform](https://tanzu.vmware.com/application-platform), AKA TAP, and one can use knative outside of TAP, directly with the kn CLI, if desired. (Though, in the real world you would probably use the rest of TAP as well, but it's modular so you don't *have* to.)
 
 In this post TAP has been deployed into a GKE cluster (yep, a GKE cluster). TAP includes knative, so in this post I'll deploy a simple demo app into the GKE cluster and that deployment will be done via the knative CLI. Serverless here we come!
 
@@ -111,7 +111,7 @@ $ tanzu package installed list --namespace tap-install
 
 That's a lot of stuff. Those pieces are currently part of the Tanzu Application Platform. But lets just use a single piece: knative.
 
-First I've got the `kn` cli.
+First I've got the `kn` CLI.
 
 ```
 $ which kn
