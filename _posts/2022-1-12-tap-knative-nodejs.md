@@ -226,3 +226,7 @@ While I'm using knative to help simplify using Kubernetes, which is great, I sti
 Another developer concern: how do I test all this? What if I change the code? Now I need to manually build the container image? Well, of course, no one would want to do that every time so there are several different ways to solve that problem, but it's still work.
 
 Plus we have all the other fun stuff like how do we observe our app while it's running in production, how do we debug, etc, etc. More to think about!
+
+## A Note on TAP
+
+I want to be clear here, the full Tanzu Application Platform takes on all these challenges and more. In these two posts I've simply been exploring the knative component of TAP, which is only a subset of TAP's capabilities, and in fact, when all of TAP is utilized the power is more than the sum of its parts.
