@@ -213,7 +213,7 @@ And "knative build" moved out into Tekton.
 
 Obviously having a container image is key to using knative, so we've got to build one somehow. From a knative project perspective, they moved the build from out of knative and into Tekton. But, is Tekton the best way to build images?
 
-What I can say for sure is that from the perspective of the Tanzu Application Platform, the way we(optionally, but by default) build container images is via the Tanzu Build Service (TBS), which is based on the open source projects [kpack](https://github.com/pivotal/kpack) and [Paketo](https://paketo.io/).
+What I can say for sure is that from the perspective of the Tanzu Application Platform, the way we (optionally, but by default) build container images is via the Tanzu Build Service (TBS), which is based on the open source projects [kpack](https://github.com/pivotal/kpack) and [Paketo](https://paketo.io/).
 
 That said, Tekton Pipelines are also installed and used in the Tanzu Application Service (more on that in some other future post) but they are not used to directly *build* images, that's done by TBS, at least by default. To run a container you have to have a container image, and thus to help in simplifying and securing Kubernetes TAP provides that capability. It's a must have feature.
 
