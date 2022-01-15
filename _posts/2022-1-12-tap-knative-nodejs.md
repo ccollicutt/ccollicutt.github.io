@@ -17,7 +17,7 @@ In an [earlier post](https://serverascode.com/2022/01/11/tap-knative.html) I dep
 Tanzu Application Platform (provides ->) Cloud Native Runtimes (provides ->) knative
 ```
 
-All of this is using the Tanzu Application Platform and in this example is running on a GKE cluster.t
+All of this is using the Tanzu Application Platform and in this example is running on a GKE cluster.
 
 ## Deploy a NodeJS application
 
