@@ -40,7 +40,7 @@ NAME         URL                                      LATEST             AGE   C
 hello-yeti   http://hello-yeti.cnr-demo.example.com   hello-yeti-00001   17h   3 OK / 3     True
 ```
 
-Now I want to add a new knative service, but this time in an image that I build, and t he app is running NodeJS.
+Now I want to add a new knative service, but this time in an image that I build, and the app is running NodeJS.
 
 Here's an [example knative NodeJS app](https://github.com/knative/docs/tree/main/code-samples/serving/hello-world/helloworld-nodejs).
 
