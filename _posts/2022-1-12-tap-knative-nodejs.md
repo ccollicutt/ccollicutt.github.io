@@ -229,4 +229,6 @@ Plus we have all the other fun stuff like how do we observe our app while it's r
 
 ## A Note on TAP
 
-I want to be clear here, the full Tanzu Application Platform takes on all these challenges and more. In these two posts I've simply been exploring the knative component of TAP, which is only a subset of TAP's capabilities, and in fact, when all of TAP is utilized the power is more than the sum of its parts.
+I want to be clear here, the full Tanzu Application Platform takes on all these challenges and more. In these two posts I've simply been exploring the knative component of TAP, which is only a subset of TAP's capabilities, and in fact, when all of TAP is utilized the power is more than the sum of its parts. 
+
+What I'm doing with these posts is building up piece by piece the modular components of TAP to expore why they are important and what value they add.
