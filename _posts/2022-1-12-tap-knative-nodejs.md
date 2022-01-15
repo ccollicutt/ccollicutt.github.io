@@ -3,7 +3,7 @@ layout: post
 title:  "Tanzu Application Platform, knative, and a NodeJS App"
 categories:
 header_image: "/img/knative-nodejs.jpg"
-summary: "Let's deploy a NodeJS app into knative"
+summary: "Side quest: what builds the container image?"
 
 ---
 
