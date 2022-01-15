@@ -219,9 +219,9 @@ That said, Tekton Pipelines are also installed and used in the Tanzu Application
 
 ## Conclusion
 
-So there's not much more to this post than the previous one, the one difference being that in this post I build the container image (using docker build) and pushed it to a registry myself, as opposed to using an image that someone, or something, else has built. To build my image I needed to *write/maintain/borrow/steal* a Dockerfile, which is not a small amount of additional work.
+So there's not much more to this post than the previous one, the one difference being that in this post I build the container image (using docker build) and pushed it to a registry myself, as opposed to using an image that someone, or something, else has built. To build my image I needed to *write/maintain/borrow/steal* a Dockerfile, which is not a small amount of additional work. Maybe instead of using a Dockerfile I could somehow use Tekton, or, I can absolutely use the Tanzu Build Service through TAP and have zero Dockerfiles (like none).
 
-Thus, while I'm using knative to help simplify using Kubernetes, which is great, I still have a lot of work to do as a developer to participate in a container deployment workflow...again, for example, having to build and maintain (forever) a container image.
+While I'm using knative to help simplify using Kubernetes, which is great, I still have a lot of work to do as a developer to participate in a container deployment workflow...again, for example, having to build and maintain (forever) a container image.
 
 Another developer concern: how do I test all this? What if I change the code? Now I need to manually build the container image? Well, of course, no one would want to do that every time so there are several different ways to solve that problem, but it's still work.
 
