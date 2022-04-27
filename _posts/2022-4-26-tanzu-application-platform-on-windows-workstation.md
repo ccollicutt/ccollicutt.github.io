@@ -257,7 +257,7 @@ We can start to "drill down" into the running application as well.
 
 ![TAP GUI 2](/img/tap-on-lap-gui2.jpg)
 
-We can also visualizae our secure software flow, the secure supply chains that were created by default.
+We can also visualize our secure software flow, the secure supply chains that were created by default.
 
 ![TAP GUI 3](/img/tap-on-lap-gui3.jpg)
 
