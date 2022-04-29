@@ -168,7 +168,26 @@ Using the Tanzu CLI, which itself is using Kubernetes under the hood (you could 
 
 >NOTE: We are not building or managing the container image. A TAP component called the Tanzu Build Service is doing that for us. So no Dockerfiles to manage.
 
->NOTE: Ensure you "prepare" the dev namespace as per the TAPonLAP document.
+>NOTE: Ensure you prepare the dev namespace as per the TAPonLAP document.
+
+E.g. command. Note that I'm just using the default namespace.
+
+```
+$Env:TAP_DEV_NAMESPACE = "default"
+tanzu apps workload create tanzu-java-web-app `
+  --git-repo https://github.com/sample-accelerators/tanzu-java-web-app `
+  --git-branch main `
+  --type web `
+  --label app.kubernetes.io/part-of=tanzu-java-web-app `
+  --label tanzu.app.live.view=true `
+  --label tanzu.app.live.view.application.name=tanzu-java-web-app `
+  --annotation autoscaling.knative.dev/minScale=1 `
+  --namespace $env:TAP_DEV_NAMESPACE `
+  --dry-run
+```
+
+E.g. output of that command:
+
 
 ```
 PS C:\Windows\system32> tanzu apps workload create tanzu-java-web-app `
@@ -208,7 +227,7 @@ Create workload:
 ←[0m
 ```
 
-Above you can see, the command outputs the YAML that is actually deployed. Note the kind.
+Above you can see that the command displays the YAML that is actually deployed into Kubernetes. Note the kind.
 
 ```
 kind: Workload
@@ -297,7 +316,7 @@ This might not be the right motion, but I prefer to use Linux to work with Kuber
 >NOTE: This assumes your WSL instance is named "Ubuntu" and that your user's name is "curtis" which is unlikely. :)
 
 ```
-PS C:\Users\ccollicutt> kubectl config view --flatten > \\wsl$\Ubuntu\home\curtis\.kube\config
+PS C:\Windows\system32> kubectl config view --flatten > \\wsl$\Ubuntu\home\curtis\.kube\config
 ```
 
 ### Minikube IP
