@@ -28,6 +28,7 @@ Firewall rules:
 
 Hardware, software:
 
+* TKG >= 1.5.3
 * 3 ESXI hosts
 * Running vSphere 7U2
 * Enough resources for TKG
