@@ -48,7 +48,7 @@ This means we need to ensure that TLS certificate, or certificate authority, is 
 
 ## Relocating Container Images
 
-One of the things we have to do is relocate the necessary container images from VMware's Internet available registry to the organizations offline registry. This requires some sort of itermediary system, a jumpbox/bastion host or similar.
+One of the things we have to do is relocate the necessary container images from VMware's Internet available registry to the organizations offline registry. This requires some sort of intermediary system, a jumpbox/bastion host or similar.
 
 Currently our official docs provide a couple of scripts to do perform the actual relocation.
 
