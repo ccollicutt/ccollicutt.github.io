@@ -291,7 +291,7 @@ source-to-url        True    Ready    29m
 
 ## Conclusion
 
-TAP, and it's modular components, are meant to run in many places in many ways, from large clusters, to minikube instances. If TAP is running locally, then the developer can use it to "iterate" on code: to write code, try deploying it, test it out, understand a bit about TAP, and then commit their code at which point TAP can again take over and build the image and run it in production, but of course, not locally, instead on a production Kubernetes cluster (or, more likely, cluster**s**).
+TAP, and its modular components, are meant to run in many places in many ways, from large clusters, to minikube instances. If TAP is running locally, then the developer can use it to "iterate" on code: to write code, try deploying it, test it out, understand a bit about TAP, and then commit their code at which point TAP can again take over and build the image and run it in production, but of course, not locally, instead on a production Kubernetes cluster (or, more likely, cluster**s**).
 
 This post just brings us through a bit of TAP, gives a few hints, and provides a starting point to understand more about the TAP paradigm.
 
