@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Offline / Airgapped Tanzu Kubernetes Grid"
+title:  "Deploy Tanzu Kubernetes Grid in an Offline/Airgapped Environment"
 categories:
 header_image: "/img/tkg-offline.jpg"
 summary: "Deploy TKG without Internet connectivity"
