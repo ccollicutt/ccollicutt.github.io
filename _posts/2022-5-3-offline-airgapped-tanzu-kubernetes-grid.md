@@ -9,7 +9,7 @@ summary: "Deploy TKG without Internet connectivity"
 
 # {{ page.title }}
 
-Tanzu Kubernetes Grid (TKG) is VMware's distribution of Kubernetes that can be deployed into vSphere and public clouds like Azure and AWS. Sometimes customers prefer that the deployment and management of TKG is done "offline" without needing to obtain any artifacts of the deployment from Internet hosted resources, that the deployment is self-contained.
+[Tanzu Kubernetes Grid (TKG)](https://tanzu.vmware.com/kubernetes-grid/) is VMware's distribution of Kubernetes that can be deployed into vSphere and public clouds like Azure and AWS. Sometimes customers prefer that the deployment and management of TKG is done "offline" without needing to obtain any artifacts of the deployment from Internet hosted resources, that the deployment is self-contained.
 
 This is a fairly common requirement, especially in organizations that consider segmentation of resources important, and it's usually done at the network level, i.e. "network segmentation", which has become even more popular as of late, around terms like microsegmentation and zero-trust networking.
 
@@ -26,7 +26,7 @@ This is my homelab environment:
 * Running vSphere 7U2
 * Enough resources for TKG
 * Internet access blocked at the firewall for the tkg-offline-* networks
-* A Linux + Docker instance to download the container images used in deployment, and to run the tanzu CLI from, as well as certain [carvel](https://carvel.dev) CLIs
+* A Linux + Docker instance to download the container images used in deployment, and to run the tanzu CLI from, as well as certain [Carvel](https://carvel.dev) CLIs
 * The Linux + Docker instance has access to the internet and to the internal Harbor instance so it can copy artifacts from VMware to the Harbor instance, vCenter, DNS/NTP, etc
 
 ## A Word on Container Images
