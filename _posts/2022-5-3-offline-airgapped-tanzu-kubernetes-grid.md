@@ -18,16 +18,20 @@ This is a fairly common requirement, especially in organizations that consider s
 * [VMware Tanzu TKG - Internet Restricted Environments](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-mgmt-clusters-airgapped-environments.html)
 * [Downloading TKG 1.5.3 CLIs](https://customerconnect.vmware.com/en/downloads/details?downloadGroup=TKG-153&productId=988&rPId=88185)
 
-## Environment
+## Offline Environment
 
-This is my homelab environment:
+Firewall rules:
+
+* tkg-offline-* networks: no internet access, all packets dropped at the edge firewall
+* Office network can connect to anything, i.e. the host that copies the container images from VMware to the internal Harbor instance
+* Anything on lab switch is available to tkg-offline-*, e.g. vcenter, dns, harbor, no firewalling there, i.e. the TKG management custers can talk to vCenter, etc
+
+Hardware, software:
 
 * 3 ESXI hosts
 * Running vSphere 7U2
 * Enough resources for TKG
-* Internet access blocked at the firewall for the tkg-offline-* networks
 * A Linux + Docker instance to download the container images used in deployment, and to run the tanzu CLI from, as well as certain [Carvel](https://carvel.dev) CLIs
-* The Linux + Docker instance has access to the internet and to the internal Harbor instance so it can copy artifacts from VMware to the Harbor instance, vCenter, DNS/NTP, etc
 
 ## A Word on Container Images
 
