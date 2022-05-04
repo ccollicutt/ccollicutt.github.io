@@ -24,7 +24,7 @@ Firewall rules:
 
 * tkg-offline-* networks: no internet access, all packets dropped at the edge firewall
 * Office network can connect to anything, i.e. the host that copies the container images from VMware to the internal Harbor instance
-* Anything on lab switch is available to tkg-offline-*, e.g. vcenter, dns, harbor, no firewalling there, i.e. the TKG management custers can talk to vCenter, etc
+* Anything on lab switch is available to tkg-offline-*, e.g. vcenter, dns, harbor, no firewalling there, i.e. the TKG management clusters can talk to vCenter, etc
 
 Hardware, software:
 
