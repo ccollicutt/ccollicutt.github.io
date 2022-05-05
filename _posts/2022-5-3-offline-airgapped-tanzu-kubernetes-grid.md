@@ -63,7 +63,7 @@ export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=<base64 certificate>
 I created a project in my Harbor called "tkg-1-5-3".
 
 ```
-export TKG_CUSTOM_IMAGE_REPOSITORY="<harbor-ip>/tkg-1-5-3"
+export TKG_CUSTOM_IMAGE_REPOSITORY="<harbor>/tkg-1-5-3"
 ```
 
 I use mkcert to manage my certificates internally, so for the CA certificate I used that. You might take a different approach, but it's the same idea.
@@ -122,9 +122,9 @@ Now that all the images are copied to the internal container image registry, we 
 First we need to set some configuration variables though. These are the same as we set before for the image copy scripts, but now we're going to set them up for TKG.
 
 ```
-tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY <your harbor>/<tkg project>
+tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY <harbor>/<project>
 tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY_SKIP_TLS_VERIFY false
-tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE <your base64 CA cert>
+tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE <base64 certificate>
 ```
 
 Now validate those are set.
@@ -144,7 +144,7 @@ Validating the pre-requisites...
 Serving kickstart UI at http://[::]:8080
 ```
 
-I connect to this server and fill out the install GUI, and that will generate a randomly named file in "~/.config/tanzu/tkg/clusterconfigs/" and the GUI will give you a command to run from the CLI.
+I connect to this server and fill out the install GUI, and that will generate a randomly named file in "~/.config/tanzu/tkg/clusterconfigs/" and the GUI will give you a command to run from the CLI (or you can launch it from the GUI, but I always stop the GUI process run it from the CLI).
 
 ## Conclusion
 
