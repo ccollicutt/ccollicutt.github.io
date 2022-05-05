@@ -148,7 +148,7 @@ I connect to this server and fill out the install GUI, and that will generate a 
 
 ## Conclusion
 
-There are quite a few images to copy, but after that work has been done, and the CA certificate has been properly setup for use, the deployment is relatively easily done. So, for an offline deployment, it's really two big steps: 
+There are quite a few images to copy, but after that work has been done, and the CA certificate has been properly setup for use, the deployment is straightforward. So, for an offline deployment, it's really two big steps: 
 
 1. Relocate all the images locally, and,
 2. Determine what certificate is used in the Harbor instance and make sure that TKG knows about it.
