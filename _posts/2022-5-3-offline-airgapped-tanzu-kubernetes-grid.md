@@ -72,7 +72,7 @@ I use mkcert to manage my certificates internally, so for the CA certificate I u
 base64 -w 0 < /home/curtis/.local/share/mkcert/rootCA.pem
 ```
 
-The result of that command I put into TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE.
+The result of that command I put into TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE environment variable.
 
 Now I can run the script to generate the list of images to copy to the internal Harbor.
 
@@ -80,7 +80,7 @@ Now I can run the script to generate the list of images to copy to the internal 
 $ ./gen-publish-images.sh > image-copy-list
 ```
 
-That will create this list of images, most of the lines will be an imgpkg command. imgpkg is from the Carvel set of tools.
+That will create this list of images. Most of the lines will be imgpkg commands. imgpkg is a CLI from the Carvel set of tools.
 
 imgpkg is used to:
 
@@ -98,7 +98,7 @@ $ grep imgpkg image-copy-list | sort | uniq | wc -l
 568
 ```
 
-The download image script does filter out the duplicate lines, so don't worry about doing that yourself.
+The download image script does filter out the duplicate lines, so don't worry about doing that yourself. I'm just illustrating what it does.
 
 Then we use that list of images via another script to download each image and copy it to the Harbor instance.
 
@@ -119,7 +119,7 @@ Here's what it looks like in Harbor.
 
 Now that all the images are copied to the internal container image registry, we can deploy TKG.
 
-First we need to set some configuration variables though. These are the same as we set before for the image copy scripts, but now we're going to set them up for TKG.
+First we need to set some configuration variables. These are the same as we set before for the image copy scripts, but now we're going to set them up for TKG.
 
 ```
 tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY <harbor>/<project>
@@ -144,7 +144,7 @@ Validating the pre-requisites...
 Serving kickstart UI at http://[::]:8080
 ```
 
-I connect to this server and fill out the install GUI, and that will generate a randomly named file in "~/.config/tanzu/tkg/clusterconfigs/" and the GUI will give you a command to run from the CLI (or you can launch it from the GUI, but I always stop the GUI process run it from the CLI).
+I connect to this host on port 8080 and fill out the install GUI, and that will generate a randomly named file in "~/.config/tanzu/tkg/clusterconfigs/" and the GUI will give you a command to run from the CLI (or you can launch it from the GUI, but I always stop the GUI process run it from the CLI)
 
 ## Conclusion
 
