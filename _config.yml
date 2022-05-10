@@ -10,3 +10,4 @@ kramdown:
     input: GFM
     syntax_highlighter: rouge
 permalink: /:year/:month/:day/:title.html
+future: true
