@@ -16,7 +16,7 @@ In the [last post](/2022/05/10/creating-secure-software-supply-chains-with-tanzu
 
 TAP is:
 
-> VMware Tanzu Application Platform is a modular, application-aware platform that provides a rich set of developer tooling and a prepaved path to production to build and deploy software quickly and securely on any compliant public cloud or on-premises Kubernetes cluster.
+> VMware Tanzu Application Platform is a modular, application-aware platform that provides a rich set of developer tooling and a prepaved path to production to build and deploy software quickly and securely on any compliant public cloud or on-premises Kubernetes cluster. - [VMware Tanzu](https://tanzu.vmware.com/application-platform)
 
 Here's a key point:
 
