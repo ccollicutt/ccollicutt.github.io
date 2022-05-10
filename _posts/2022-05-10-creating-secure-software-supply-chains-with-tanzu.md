@@ -3,7 +3,7 @@ layout: post
 title:  "Secure Software Supply Chains and the Tanzu Application Platform"
 categories:
 header_image: "/img/tap-gui-post.jpg"
-summary: ""
+summary: "You don't have to build it yourself"
 
 ---
 
