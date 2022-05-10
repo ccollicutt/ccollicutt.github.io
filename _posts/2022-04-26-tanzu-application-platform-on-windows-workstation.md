@@ -85,10 +85,12 @@ buildservice:
   tanzunet_password: ""
   enable_automatic_dependency_updates: true
 
+{% raw %}
 cnrs:
   domain_name: apps.example.com
   domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
   provider: local
+{% endraw %}
 
 supply_chain: basic
 
