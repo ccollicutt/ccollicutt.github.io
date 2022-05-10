@@ -9,11 +9,24 @@ summary: "test"
 
 # {{ page.title }}
 
-In the [last post](/2022/05/10/creating-secure-software-supply-chains-with-tanzu.html) I looked at creating secure software supply chains with the Tanzu Application Platform. In that post I used a default supply chain. But what if we wanted to create our own, custom supply chain?
+In the [last post](/2022/05/10/creating-secure-software-supply-chains-with-tanzu.html) I looked at creating secure software supply chains with the Tanzu Application Platform (TAP). In that post I used a default supply chain. But what if we wanted to create our own, custom supply chain instead of using the "out of the box" examples provided with the platform?
+
+
+## Quickly...What is the Tanzu Application Platform?
+
+TAP is:
+
+> VMware Tanzu Application Platform is a modular, application-aware platform that provides a rich set of developer tooling and a prepaved path to production to build and deploy software quickly and securely on any compliant public cloud or on-premises Kubernetes cluster.
+
+Here's a key point:
+
+* It can run in **any compliant** Kubernetes cluster
+
+But enough about TAP, let's build a custom supply chain.
 
 ## Creating a Custom Supply Chain
 
-Ok, so we have two supply chains by default.
+Ok, so we have two supply chains by default in the TAP install.
 
 ```
 $ k get clustersupplychains.carto.run
@@ -22,19 +35,15 @@ basic-image-to-url   True    Ready    5d2h
 source-to-url        True    Ready    5d2h
 ```
 
-The reason we have these two is that when TAP was installed the TAP values file was configured with the below.
+The reason we have these two is that when TAP was installed the TAP values file was configured with the below option.
 
 ```
 supply_chain: basic
 ```
 
-There are other options to provide "out of the box templates", such as the below, which will provide other OOTB chains. That said, we expect that most organizations will build their own supply chains using our platform and its various building blocks.
+There are other options to provide "out of the box templates". That said, we expect that most organizations will build their own supply chains using our platform and its various building blocks.
 
-```
-supply_chain: testing_scanning
-```
-
-For now, for the purposes of this blog post, I start with the two basic chains, and I'd like to add another *custom* chain, an extension of source-to-url.
+For the purposes of this blog post I start with the two basic chains and I'd like to add another *custom* chain, an extension of source-to-url.
 
 ## Creating a Custom Supply Chain
 
@@ -292,7 +301,6 @@ Which, of course, is different from the non-image scan version. Note how there i
 
 ![cartographer diagram 2](/img/carto2.jpg)
 
-
 Checkout the image scanner template.
 
 ```
@@ -333,7 +341,7 @@ spec:
       scanPolicy: scan-policy
 ```
 
-If we look at the above definition, we see that it's using "private-image-scan-template" of kind "ImageScan".
+If we look at the above definition, we see that it's using "private-image-scan-template" of "kind: ImageScan".
 
 Let's look at those.
 
@@ -346,7 +354,7 @@ public-image-scan-template    5d2h
 public-source-scan-template   5d2h
 ```
 
-Let's look at the private scan template.
+Now the private scan template...
 
 ```
 $ k neat get -- scantemplates.scanning.apps.tanzu.vmware.com private-image-scan-template -oyaml
@@ -396,13 +404,13 @@ spec:
         secretName: registry-credentials
 ```
 
-To use this we'll need a scan policy.
+Ok, great. To do image scanning we'll need a scan policy.
 
 ## Scan Policy
 
 Next we need a scan policy. 
 
->NOTE: We are only looking for "Critical" vulnerabilities. Those will fail, everything else will pass.
+>NOTE: We are only looking for "Critical" vulnerabilities. Those will fail, everything else will pass the scan test.
 
 ```
 apiVersion: scanning.apps.tanzu.vmware.com/v1beta1
