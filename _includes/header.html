@@ -2,14 +2,16 @@
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+
 <head>
 
-
 	<!-- Twitter cards -->
-	<meta name="twitter:site"    content="@{{ site.twitter_username }}">
+	<meta name="twitter:site" content="@{{ site.twitter_username }}">
 	<meta name="twitter:creator" content="@{{ site.twitter_username }}">
-	<meta name="twitter:title"   content="{{ page.title }}">
+	<meta name="twitter:title" content="{{ page.title }}">
 
 	{% if page.summary %}
 	<meta name="twitter:description" content="{{ page.summary }}">
@@ -21,19 +23,16 @@
 	{% endif %}
 
 	{% if page.header_image %}
-	<meta name="twitter:card"  content="summary_large_image">
+	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:image" content="{{ site.url }}{{ page.header_image }}">
 	<!-- linked in -->
 	<meta property="og:image" content="{{ site.url }}{{ page.header_image }}" />
 	<!-- end of linked in -->
 	{% else %}
-	<meta name="twitter:card"  content="summary">
+	<meta name="twitter:card" content="summary">
 	<meta name="twitter:image" content="{{ site.title_image }}">
 	{% endif %}
 	<!-- end of Twitter cards -->
-
-
-
 
 	<!-- Basic Page Needs
   ================================================== -->
@@ -46,9 +45,10 @@
 
 	<!-- CSS
   ================================================== -->
-  	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,800' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,800' rel='stylesheet'
+		type='text/css'>
 
-  	<!--
+	<!--
 	<link rel="stylesheet" href="/css/font-awesome-ie7.css">
 	<link rel="stylesheet" href="/css/font-awesome.css">
 	-->
@@ -77,6 +77,7 @@
 	<link rel="shortcut icon" href="img/favicon.ico">
 
 </head>
+
 <body>
 
 	<!-- Primary Page Layout
@@ -87,13 +88,14 @@
 		<div class="menubutton"><i class="icon-reorder"></i></div>
 		<nav>
 			<ul>
-
-				<li><a href="/atom.xml">RSS</a></li>
+				<li><a title="My less technical blogging" href="https://collicutt.net">COLLICUTT.NET</a></li>
+				<li><a title="RSS feed" href="/atom.xml">RSS</a></li>
 			</ul>
 
 			<div class="search_popup">
 				<form>
-					<input type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}"></input>
+					<input type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}"
+						onblur="if (this.value == '') {this.value = 'Search...';}"></input>
 					<button type="submit">Search</button>
 				</form>
 			</div>
