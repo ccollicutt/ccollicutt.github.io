@@ -9,6 +9,15 @@ summary: "There’s a lot of these"
 
 # {{ page.title }}
 
+## tl;dr
+
+* I recently starting working in security again, at a great company called [Sysdig](https://sysdig.com/)
+* I think the security industry has really been improving as of late...more work to be done, but I see progress
+* I need to learn what a lot of security related acronyms mean
+* [Here's a good podcast on security acronyms](https://cloud.withgoogle.com/cloudsecurity/podcast/ep94-meet-cloud-security-acronyms-with-anna-belak/)
+
+## Background
+
 I started my career in security. That was a long time ago, back when Sun Microsystems was still around and quite popular. You know, before the Dotcom boom. What I remember from that time was 1) I managed a Checkpoint Firewall running on a Sun Microsystems box with 16 interfaces, and when you went to compile the rules often the whole box would crash (not good) and 2) security was just a person that said "NO"...regardless of what the question was, the answer was typically, if not always, no.
 
 (ASIDE: I recently bought a [Sun Microsystems](https://www.redbubble.com/i/t-shirt/Sun-Microsystem-T-Shirt-by-SebastianHapy/109917061.FB110?ref=product-title) shirt off of Redbubble. Well before I wrote this post. Not completely sure why...but I digress.)
