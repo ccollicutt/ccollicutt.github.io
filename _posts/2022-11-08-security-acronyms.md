@@ -68,7 +68,7 @@ IAST - Interactive Application Security Testing
 
 IOC - Indicator of Compromise
 
-TDR - Threat Detection of Response
+TDR - Threat Detection and Response
 
 TI - Threat Intelligence
 
