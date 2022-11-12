@@ -15,7 +15,7 @@ summary: "There’s a lot of these"
 * I think the security industry has really been improving as of late...more work to be done, but I see progress
 * I need to learn what a lot of security related acronyms mean
 * [Here's a good podcast on security acronyms](https://cloud.withgoogle.com/cloudsecurity/podcast/ep94-meet-cloud-security-acronyms-with-anna-belak/)
-* [Categorization and definitions are on going](https://venturebeat.com/security/gartner-research-finds-no-single-tool-protects-app-security/)
+* [Categorization and definitions are ongoing](https://venturebeat.com/security/gartner-research-finds-no-single-tool-protects-app-security/)
 
 ## Background
 
@@ -80,6 +80,8 @@ DART - Detection and Response Team
 CDR - Cloud Detection and Response
 
 VM - Vulnerability Management (not Virtual Machine)
+
+MDR - Managed Detection and Response
 
 ## Cloud Security Podcast with Anna Belak
 
