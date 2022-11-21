@@ -83,6 +83,8 @@ VM - Vulnerability Management (not Virtual Machine)
 
 MDR - Managed Detection and Response
 
+CMDB - Configuration Management Database
+
 ## Cloud Security Podcast with Anna Belak
 
 To get better insight into security acronyms than I can provide, have a listen to this podcast:
