@@ -19,14 +19,14 @@ This is all just running in my homelab, where security isn't as big an issue as 
 
 ## Install the Kubernetes Plugin
 
-Given this Jenkins instance is just in my homelab, I just click buttons. If I want a plugin, I just install it from the GUI. That's just how I roll in my homelab. :)
+Given this Jenkins instance is just in my homelab, I just click buttons. If I want a plugin, I just install it from the GUI. It's fun to just click around for once. :)
 
 ![Jenkins Kubernetes plugin install](/img/jenkins-k8s-plugin1.jpg)
 
 
 ## Set up Kubernetes for use by Jenkins
 
-Here I assume you have a Kubernetes cluster available.
+>NOTE: Here I assume you have a Kubernetes cluster available.
 
 First, create a namespace for Jenkins to use.
 
@@ -34,7 +34,7 @@ First, create a namespace for Jenkins to use.
 $ kubectl create ns jenkins-agent
 ```
 
-Then create a service account in that namespace.
+Then create a service account in that namespace with the proper role and rolebinding.
 
 ```
 apiVersion: v1
@@ -95,14 +95,11 @@ metadata:
     kubernetes.io/service-account.name: "jenkins-admin"
 ```
 
-Get the token that was created and decode it from base64. It will be used to configure the Kubernetes cloud in Jenkins as a "secret text" credential type.
-
-
+Get the token from the secret that was created and decode it from base64. It will be used to configure the Kubernetes cloud in Jenkins as a "secret text" credential type.
 
 ## Add a Kubernetes "cloud"
 
 Go to "Dashboard -> Manage Jenkins -> Configure Clouds" and add a new Kubernetes cloud.
-
 
 ![Jenkins Kubernetes plugin install](/img/jenkins-k8s-plugin2.jpg)
 
@@ -122,7 +119,7 @@ Create a new pipeline of "freestyle" type.
 
 Restrict where it can be run to the name you gave the Kubernetes cloud instance in Jenkins. In this case I called my "c2-kubernetes."
 
-Here's the cloud configuration.
+Here's the cloud configuration where I've configured the name "c2-kubernetes."
 
 ![Jenkins Kubernetes plugin install](/img/jenkins-k8s-plugin5.jpg)
 
@@ -200,9 +197,9 @@ Finished: SUCCESS
 
 ## Conclusion
 
-This took a bit of testing to get right, but not that much work. I kinda like Jenkins in my homelab because I can just poke around at it and not worry too much about how replicable it all is. Jenkins is pretty good from that perspective, just install plugins, configure things manually, update plugins. Sometimes it's nice just to do some ClickOps.
+This took a bit of testing to get right, but not that much work. I kinda like Jenkins in my homelab because I can just poke around at it and not worry too much about how replicable it all is. Jenkins is pretty good from that perspective, just install plugins, configure things manually, update plugins. Sometimes it's nice just to do ClickOps.
 
-I've got a fair bit more to understand about this plugin though. There's a lot more work to be done around Pod Templates...but that's for another day.
+I've got a fair bit more to understand about this plugin though. There's a lot more work to be done around Pod Templates...but that's for another day. At least at this point Jenkins can create jobs in the Kubernetes cluster.
 
 ## ISSUE - tcpSlaveAgentListener
 
