@@ -208,6 +208,10 @@ This took a bit of testing to get right, but not that much work. I kinda like Je
 
 I've got a fair bit more to understand about this plugin though. There's a lot more work to be done around Pod Templates...but that's for another day. At least at this point Jenkins can create jobs in the Kubernetes cluster.
 
+## Resources
+
+* [How to Setup Jenkins Build Agents on Kubernetes Pods](https://devopscube.com/jenkins-build-agents-kubernetes/)
+
 ## ISSUE - tcpSlaveAgentListener
 
 I had one issue with the container not completing properly because it couldn't connect to Jenkins. Note the "tcpSlaveAgentListener" issue.
