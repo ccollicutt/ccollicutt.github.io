@@ -13,6 +13,13 @@ I wanted to try out using Kubernetes from Jenkins, and that is what this post is
 
 I have a Jenkins instance running on a host, specifically it is NOT running in Kubernetes. But I want that instance of Jenkins to talk to a Kubernetes cluster and use it as a "cloud", where I'm using the term "cloud" in Jenkins parlance.
 
+## tl;dr
+
+1. Install the [Jenkins Kubernetes plugin](https://plugins.jenkins.io/kubernetes/)
+2. Set up the Kubernetes namespace, service account, and roles/bindings
+3. Create a long lived token for the service account
+4. Add a "cloud" to Jenkins pointing to the Kubernetes cluster, using the token as authentication
+
 ## Caveat
 
 This is all just running in my homelab, where security isn't as big an issue as it would be in a real world situation. Keep that in mind! There's likely a lot that could be improved here from a security perspective.
