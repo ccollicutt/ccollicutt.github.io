@@ -85,6 +85,8 @@ MDR - Managed Detection and Response
 
 CMDB - Configuration Management Database
 
+DLP - Data Loss Prevention
+
 ## Cloud Security Podcast with Anna Belak
 
 To get better insight into security acronyms than I can provide, have a listen to this podcast:
