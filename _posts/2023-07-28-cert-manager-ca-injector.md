@@ -7,6 +7,8 @@ summary: "Where can I get the CA? Oh, Cert Manager"
 
 ---
 
+*The racoons are injecting the CA bundle, of course.*
+
 # {{ page.title }}
 
 I've been working on a simple validating webhook for Kubernetes. More on that later. However, one of the things that you need to provide when you create the Kubernetes manifest for a validating webhook is the CA bundle that the kube-api can use to validate the webhook. But...where does that come from? How do we get it into the manifest?
