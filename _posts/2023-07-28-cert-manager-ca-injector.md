@@ -126,3 +126,5 @@ $ k get validatingwebhookconfigurations.admissionregistration.k8s.io blockfriday
 ```
 
 This really made my life easier.
+
+PS. If anyone has any other insights into better ways to do this, please let me know.
