@@ -11,7 +11,7 @@ summary: "It's Friday somewhere..."
 
 # {{ page.title }}
 
-Would you create a Kubernetes Admission Controller to block deployments on a Friday and use it in production? No. But you could, creat one, say, as an example admission controller.
+Would you create a Kubernetes Admission Controller to block deployments on a Friday and use it in production? No. But you could, create one, say, as an example admission controller.
 
 So that is precisely what I have done, created a very, very (very) simple admission controller, written in Go, that blocks NEW Kubernetes deployments on a Friday. I call it [blockfriday](https://github.com/ccollicutt/blockfriday).
 
@@ -21,9 +21,9 @@ An admission controller is a piece of software that can intercept requests to th
 
 ## How does it work?
 
-The admission controller is a simple Go program, this one is about 200 lines long, that runs in a pod in the cluster. Once a ValidatingWebhookConfiguration is created which points to this service, the kube-api will send requests to the admission controller for validation. The admission controller will then either allow or deny the request.
+This admission controller is a simple Go program, about 200 lines of code, that runs in a pod in the cluster. Once a ValidatingWebhookConfiguration is created which points to this service, the kube-api will send requests to the admission controller for validation. The admission controller will then either allow or deny the request.
 
-The code:
+This is the main piece of code that does the work:
 
 ```
 if isTodayFriday() {
@@ -32,11 +32,11 @@ if isTodayFriday() {
 }
 ```
 
-Ultimately it's a lot of setup to do the above. (Of course there are likely better ways to do this, presumably using Open Policy Agent, aka OPA, but the point here is to *write* an admission controller.)
+Ultimately, it's a lot of setup to simply do the above. (Of course there are likely better ways to do this, presumably using Open Policy Agent, aka OPA, but the point here is to *write* an admission controller.)
 
-## Certificates
+## But First: Certificates
 
-Honestly the certificate portion of this admission controller was harder than writing the actual code. 
+Honestly, the certificate portion of this admission controller was harder than writing the actual code. 
 
 In the case of blockfriday:
 
@@ -47,7 +47,7 @@ In the case of blockfriday:
 * The admission controller mounts that certificate (which has a cert and a key) in /cert and uses it
 * The ValidatingWebhookConfiguration has a CA bundle that cert-manager injects (magically) for me based on the certificate that cert-manager created (nice), and then the kube-api can talk to the admission controller (though it would already be able to because I'm using the CA that kubeadm deployed, but you get my drift)
 
-## Conclusion
+## Once it's Deployed
 
 Once the admission controller has been setup (certs, deployment, validatingwebhookconfiguration) it will block new deployments on a Friday.
 
