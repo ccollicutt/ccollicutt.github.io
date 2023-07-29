@@ -32,6 +32,8 @@ if isTodayFriday() {
 }
 ```
 
+Ultimately it's a lot of setup to do the above. (Of course there are likely better ways to do this, presumably using Open Policy Agent, aka OPA, but the point here is to *write* an admission controller.)
+
 ## Certificates
 
 Honestly the certificate portion of this admission controller was harder than writing the actual code. 
@@ -57,3 +59,5 @@ Error from server: error when creating "test/deployment.yaml": admission webhook
 ```
 
 Now we're blockin' Fridays!
+
+Checkout the code [here](https://github.com/ccollicutt/blockfriday).
