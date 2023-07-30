@@ -17,7 +17,7 @@ So that is precisely what I have done, created a very, very (very) simple admiss
 
 ## What's an Admission Controller?
 
-An admission controller is a piece of software that can intercept requests to the Kubernetes API server and either allow or deny them. You can use them to enforce policies, like "no deployments on a Friday" or "all deployments must have a label of `app: foo`". Using admission controllers you can basically apply "policy as code" to your Kubernetes cluster. (Note that there are a lot of admission controllers out there. This is just one example.)
+An admission controller is a piece of software that can intercept requests to the Kubernetes API server and either allow or deny them. Or well, more specifically the Kubernetes API will forward requests to the admission controller for validation. You can use them to enforce policies, like "no deployments on a Friday" or "all deployments must have a label of app: foo". Using admission controllers you can apply "policy as code" to your Kubernetes cluster. (Note that there are a lot of admission controllers out there. This is just one example.)
 
 ## How does it work?
 
