@@ -11,9 +11,9 @@ summary: "Demo tracing a set of applications"
 
 ## tl;dr
 
-I build an app called [chain-link](https://github.com/ccollicutt/chain-link) that will create a "chain" of apps in Kubernetes of an arbitrary length. It's written in Python. 
+I built an app called [chain-link](https://github.com/ccollicutt/chain-link) that will create a "chain" of apps in Kubernetes of an arbitrary length. It's written in Python. 
 
-WHile the point of this all is the app, what I learned most about what writing the CLI portion: the `chain-link-cli`. There's actually way more code there (for better or worse) to deploy and manage the app than there is in the app itself.
+While the point of this all is the app, what I learned most about what writing the CLI portion: the `chain-link-cli`. There's actually way more code there (for better or worse) to deploy and manage the app than there is in the app itself.
 
 ## What is it?
 
@@ -46,6 +46,8 @@ chain-link-deployment-5-85655c8d4f-2z2r6   1/1     Running   6 (5d5h ago)    96d
 loadgenerator                              1/1     Running   0               23m
 zipkin-deployment-69c4598df6-js95l         1/1     Running   209 (16m ago)   99d
 ```
+
+Each deployment is a separate "app" that the overall service chain is composed of. (Now that I write "service chain" this reminds me of my telecom days.)
 
 ## What does it look like in Zipkin?
 
@@ -166,11 +168,15 @@ $ wc -l app.py
 169 app.py
 ```
 
+I need to do some research and see if there are some higher level abstractions in Python that can help reduce the number of lines in the CLI.
+
 ## Why a Python CLI and not Helm?
 
-YAML isn't a programming language. I mean, it would make more sense to do this in Helm if I thought other people would actually use it. But I don't expect anyone ever would. This app was really just a learning experience for me, and part of the learning experience I wanted was to create a CLI that could manage the app for me in Kubernetes.
+YAML isn't a programming language. Obviously you can do a lot "more" with Kubernetes using a real programming language. But of course, no one writes a Python CLI for every app they deploy to Kubernetes--that would make no sense.
 
-Ultimately, I might prefer to use Python to manage Kubernetes environments. Then again, Helm's ability to manage upgrades would be required in production. This is something I need to look into--how tools like Helm are looking at the state of a k8s app.
+I mean, it would make more sense to do this in Helm if I thought other people would actually use it. But I don't expect anyone ever would. This app was really just a learning experience for me, and part of the learning experience I wanted was to create a CLI that could manage the app for me in Kubernetes.
+
+Ultimately, I might prefer to use Python to manage Kubernetes environments. Then again, Helm's ability to manage upgrades would be required in production. This is something I need to look into--how tools like Helm are looking at the state of a k8s app. Plus whatever other tooling exists--for example Pulumi (which I have never used).
 
 ## Conclusion
 
