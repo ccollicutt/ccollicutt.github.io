@@ -155,15 +155,15 @@ metadata:
 spec:
   containers:
   - image: nginxinc/nginx-unprivileged
-	name: nginx
-	securityContext:
-  	allowPrivilegeEscalation: false
-  	capabilities:
-    	drop:
-    	- ALL
-  	runAsNonRoot: true
-  	seccompProfile:
-    	type: RuntimeDefault
+    name: nginx
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
 EOF
 ```
 
