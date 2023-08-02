@@ -68,16 +68,17 @@ metadata:
 spec:
   rules:
   - name: add-ns-label
-	match:
-  	resources:
-    	kinds:
-    	- Namespace
-	mutate:
-  	patchStrategicMerge:
-    	metadata:
-      	labels:
-        	pod-security.kubernetes.io/enforce: restricted
+    match:
+      resources:
+        kinds:
+        - Namespace
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            pod-security.kubernetes.io/enforce: restricted
 EOF
+
 ```
 
 Verify:
@@ -232,8 +233,8 @@ Ultimately, the way to secure general purpose CPUs is to limit what the workload
 
 ## References
 
-* https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/
-* https://kubernetes.io/docs/concepts/security/pod-security-standards/
+* [https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/]([https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/)
+* [https://kubernetes.io/docs/concepts/security/pod-security-standards/]([https://kubernetes.io/docs/concepts/security/pod-security-standards/)
 
 
 
