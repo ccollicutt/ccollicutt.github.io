@@ -53,11 +53,13 @@ Done.
 
 ### Make the Restricted Pod Security Standard the Default
 
-Kyverno can mutate a request to create a ns and add a label to it. In this case we're telling it to add the label `pod-security.kubernetes.io/enforce: restricted` so that the pod security admission controller will enforce the Pod Security Standards on the namespace, in this case it will "enforce" the "restricted" profile.
+Kyverno can mutate a request to create a namespace and add a label to it. In this case we're telling it to add the label `pod-security.kubernetes.io/enforce: restricted` so that the pod security admission controller will enforce the Pod Security Standards on the namespace, in this case it will "enforce" the "restricted" profile.
 
 ### Configuring Kyverno to Add the Label to Namespaces
 
-Add the ClusterPolicy to Kyverno:
+* Add the ClusterPolicy to Kyverno
+
+>NOTE: In the "real world" we'd probably want to exclude some namespaces, but, again, only new namespaces will be affected by this policy.
 
 ```
 cat <<EOF | kubectl apply -f -
@@ -78,7 +80,6 @@ spec:
           labels:
             pod-security.kubernetes.io/enforce: restricted
 EOF
-
 ```
 
 Verify:
