@@ -17,7 +17,7 @@ We used to have something called Pod Security Policies that we could use to incr
 
 One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests in, what I think, is a pretty straight forward fashion. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.
 
-Another way to do this would be to set up a mutating admission controller. Or bind to service accounts (discussed briefly later in the post). Probably other methods as well. (Let me know!!!)
+Another way to do this would be to set up a mutating admission controller. Probably other methods as well. (Let me know!!!)
 
 I like "mutating" things because it really means having Kubernetes do the work for us. I like making Kubernetes do work for me instead of the other way around. :)
 
@@ -234,17 +234,8 @@ Using Kyverno to do this is one way, there are others.
 
 Ultimately, the way to secure general purpose CPUs is to limit what the workloads can do with them.
 
-## PS. Service Account Bindings
-
-Another way to set defaults, one of several I'm sure, is:
-
-> If you set the cluster default by binding a Baseline or Restricted policy to the system:serviceaccounts group, and then make a more-permissive policy available as needed in certain Namespaces using ServiceAccount bindings, you will avoid many of the PSP pitfalls and have an easy migration to PSP Replacement Policy. If your needs are much more complex than this, your effort is probably better spent adopting one of the more fully-featured external admission controllers mentioned above. - [PodSecurityPolicy Deprecation: Past, Present, and Future](https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/)
-
-
 ## References
 
 * [https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/]([https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/)
 * [https://kubernetes.io/docs/concepts/security/pod-security-standards/]([https://kubernetes.io/docs/concepts/security/pod-security-standards/)
-
-
-
+* [https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/](https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/)
