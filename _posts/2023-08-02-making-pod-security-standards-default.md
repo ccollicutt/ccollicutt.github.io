@@ -3,21 +3,23 @@ layout: post
 title:  "Making Pod Security Standards the Default in Kubernetes"
 categories:
 header_image: "/img/enforce-psa.png"
-summary: "Security by default"
+summary: "Exploring secure by default"
 
 ---
 
 # {{ page.title }}
 
-Vanilla Kubernetes is pretty insecure. It'll basically allow anything. We used to have something called Pod Security Policies to try to reduce the capability space, like reduce some exposure, but that was deprecated. Now we have Pod Security Standards--these are a set of recommendations for securing pods and are managed by the Pod Security Admission Controller. However, by default, no Pod Security Standards are configured, enforcing, etc...but what if we want them enforcing by default on a newly created namespace?
+In my opinion, the default level of security in Kubernetes is not enough. There's some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.
 
-## Using Kyverno to Accomplish Our Goal
+We used to have something called Pod Security Policies that we could use to increase the level of security, like reduce some exposure, but that model was [deprecated](https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/). Now we have something called Pod Security Standards. These are a set of recommendations for securing pods and are managed by the Pod Security Admission Controller which is part of Kubernetes. However, by default, no Pod Security Standards are configured, enforcing, etc...but what if we want them enforcing by default on a newly created namespace?
 
-One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.
+## One Model: Mutating Requests Using Kyverno
 
-Another way to do this would be to set up a mutating admission controller. There may be other systems that allow us to do something similar. I haven't explored them all yet.
+One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests in, what I think, is a pretty straight forward fashion. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.
 
-(In fact, if anyone knows how to do this by default with just vanilla Kubernetes, please let me know.)
+Another way to do this would be to set up a mutating admission controller. Or bind to service accounts (discussed briefly later in the post). Probably other methods as well. (Let me know!!!)
+
+I like "mutating" things because it really means having Kubernetes do the work for us. I like making Kubernetes do work for me instead of the other way around. :)
 
 ### Install Kyverno
 
@@ -231,6 +233,13 @@ No one should run vanilla, default Kubernetes in production. No one should run r
 Using Kyverno to do this is one way, there are others.
 
 Ultimately, the way to secure general purpose CPUs is to limit what the workloads can do with them.
+
+## PS. Service Account Bindings
+
+Another way to set defaults, one of several I'm sure, is:
+
+> If you set the cluster default by binding a Baseline or Restricted policy to the system:serviceaccounts group, and then make a more-permissive policy available as needed in certain Namespaces using ServiceAccount bindings, you will avoid many of the PSP pitfalls and have an easy migration to PSP Replacement Policy. If your needs are much more complex than this, your effort is probably better spent adopting one of the more fully-featured external admission controllers mentioned above. - [PodSecurityPolicy Deprecation: Past, Present, and Future](https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/)
+
 
 ## References
 
