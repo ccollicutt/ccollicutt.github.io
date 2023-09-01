@@ -92,7 +92,7 @@ spec:
 
 Obviously this can be taken a lot further, especially with a CNI that provides extra capabilities.
 
-## Step 3: Runtime Threat Detection
+## 3: Runtime Threat Detection
 
 The last step is to make sure that we're monitoring our Kubernetes clusters for runtime threats. While we have a good baseline of security, something will always get through, no matter what we do. Any adversary worth their salt will find a way in, or mistakes will be made, etc. So we need to be able to detect them when they do. The only way to do that is to monitor the runtime environment.
 
