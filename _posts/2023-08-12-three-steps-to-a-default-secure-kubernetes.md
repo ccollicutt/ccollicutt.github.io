@@ -37,8 +37,6 @@ Which means:
 
 Here's an example of running the nginx unprivileged container.
 
->NOTE: The user 101 is the nginx user that is created in the nginx unprivileged container image.
-
 ```
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
