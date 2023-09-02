@@ -264,4 +264,4 @@ While runAsNonRoot and runAsUser both provide ways to control the user running a
 
 That said, both runAsUser and runAsNonRoot can co-exist. When they do, runAsUser specifies which UID to use, and runAsNonRoot ensures that UID is not root.
 
-In normal, production systems one would never run a container as root so the image would have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.
+In normal, production systems one would never run a container as root so the image would, based on your organizations policies and image build process, have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.
