@@ -53,7 +53,7 @@ nginx:x:101:101:nginx user:/nonexistent:/bin/false
 
 <br>
 
-## Differences
+## Differences Between runAsNonRoot and runAsUser
 
 |                  | runAsNonRoot  | runAsUser     |
 |------------------|--------------|--------------|
