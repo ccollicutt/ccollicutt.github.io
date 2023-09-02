@@ -13,7 +13,7 @@ You've just deployed your Python Flask app on Kubernetes. You're using Gunicorn 
 
 OK, maybe this isn't "you" it's "me". I was trying to build a demo app that showed crash loop backoff in Kubernetes, and I couldn't get the container to crash. 
 
-Pid 1 is Gunicorn.
+Because pid 1 is Gunicorn, not the app itself.
 
 ```
 $ k exec -it crash-only-backend-0 -- cat /proc/1/status | grep "Name\|Uid"
