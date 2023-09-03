@@ -256,7 +256,7 @@ nginx-plain-runasnonroot-and-runasuser   0/1     CrashLoopBackOff   1 (7s ago)  
 
 * runAsNonRoot: Use this setting when you want a general assurance that none of the containers in the Pod are running as root, without caring which user they run as.
 
-* runAsUser: Use this when you need more control over the exact user that runs the container process, such as for compliance with internal security policies that require specific UIDs for different types of applications.
+* runAsUser: Use this when you need more control over the exact user that runs the container process, such as for compliance with internal security policies that require specific UIDs for different types of applications. As well, some images require a specific UID to run properly.
 
 ## Conclusion
 
