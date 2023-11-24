@@ -81,6 +81,8 @@ spec:
   issuerRef:
     name: kubeadm-ca
     kind: ClusterIssuer
+  duration: 24h  # Validity period of the certificate
+  renewBefore: 12h 
   commonName: foo.foo.svc.cluster.local
   dnsNames:
     - foo.foo.svc.cluster.local
@@ -170,6 +172,52 @@ foo
 
 Boom.
 
+## Certificates
+
+Above we crated a certificate with only 24 hours of validity that should renew after 12 hours. So when it's renewed, there will be a new version of the secret, and reloader will restart the pod. Let's see.
+
+```
+$ k logs -n reloader reloader-reloader-7f4859f649-6cvqt 
+time="2023-11-23T16:03:57Z" level=info msg="Environment: Kubernetes"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Reloader"
+time="2023-11-23T16:03:57Z" level=warning msg="KUBERNETES_NAMESPACE is unset, will detect changes in all namespaces."
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: secrets"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: secrets"
+time="2023-11-23T16:06:18Z" level=info msg="Changes detected in 'foo-secret' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+time="2023-11-24T04:44:56Z" level=info msg="Changes detected in 'foo-certs' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+```
+
+Looking at cert-manager logs we see:
+  
+```
+I1124 04:44:56.006536       1 trigger_controller.go:194] "cert-manager/certificates-trigger: Certificate must be re-issued" key="foo/foo-certs" reason="Renewing" message="Renewing certificate as renewal was scheduled at 2023-11-24 04:44:56 +0000 UTC"
+SNIP!
+I1124 04:44:56.636293       1 conditions.go:263] Setting lastTransitionTime for CertificateRequest "foo-certs-jk5sq" condition "Ready" to 2023-11-24 04:44:56.636261134 +0000 UTC m=+4380108.430326366
+```
+
+Right, so the secret was updated. Let's see if the pod was restarted.
+
+```
+$ k get pods
+NAME                  READY   STATUS    RESTARTS   AGE
+foo-746699dd7-kr99d   1/1     Running   0          6h43m
+$ k describe pod foo-746699dd7-kr99d | grep -i started
+      Started:      Thu, 23 Nov 2023 23:44:59 -0500
+```
+
+That time converts to 04:44:59 UTC, which is when the secret was updated. So it was restarted. This is great, so when a new certificate is issued, the pod will be restarted and mount the new secret and have access to the new certificate and key.
+
+There's a reloader annototioant as well.
+
+```
+$ k get pods -oyaml | grep reloader
+      reloader.stakater.com/last-reloaded-from: '{"type":"SECRET","name":"foo-certs","namespace":"foo","hash":"94af434fda756e922affdd1c43d723b26f196f3e","containerRefs":["my-container"],"observedAt":1700801096}'
+```
+
 ## Conclusion
 
-I'm not showing what happens when cert-manager updates the secret, but it's the same thing. Reloader should restart the pod, and it will have the new certificates, all nice and automatic-like.
+Personally, I would think that this kind of thing would be automatic, but it's not. So this is a good way to make sure that your pods are restarted when there are new secrets.
+
+Kubernetes is a framework, and you have to pull in a lot of "libraries," such as Reloader.
