@@ -9,7 +9,7 @@ summary: "New secrets, who dis?"
 
 # {{ page.title }}
 
-I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn't restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using. Say I wanted to fix that. One way would be with [Reloader](https://github.com/stakater/Reloader).
+I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn't restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with [Reloader](https://github.com/stakater/Reloader).
 
 ## Reloader
 
