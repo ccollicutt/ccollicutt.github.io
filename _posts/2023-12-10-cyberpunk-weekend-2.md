@@ -87,20 +87,28 @@ cuBLAS error 3 at /home/curtis/.llamafile/ggml-cuda.cu:6091
 current device: 1
 ```
 
->NOTE: May still need to figure out this `nvcc fatal   : Value 'native' is not defined for option 'gpu-architecture'` error.
+But it was using the wrong card. I believe the error was due to using the old 660Ti and trying to compile for it using CUDA 11.4.
 
-But it was using the wrong card.
-
-This seemed to work:
+Setting `CUDA_VISIBLE_DEVICES=0` fixed that:
 
 ```bash
-$ export CUDA_VISIBLE_DEVICES=0
+$ env | grep CUDA
+CUDA_VISIBLE_DEVICES=0
 $ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
 NVIDIA cuBLAS GPU support successfully loaded
 ggml_init_cublas: GGML_CUDA_FORCE_MMQ:   no
 ggml_init_cublas: CUDA_USE_TENSOR_CORES: yes
 ggml_init_cublas: found 1 CUDA devices:
   Device 0: NVIDIA GeForce RTX 3090, compute capability 8.6
+{"timestamp":1702258585,"level":"INFO","function":"main","line":2650,"message":"build info","build":1500,"commit":"a30b324"}
+{"timestamp":1702258585,"level":"INFO","function":"main","line":2653,"message":"system info","n_threads":6,"n_threads_batch":-1,"total_threads":12,"system_info":"AVX = 1 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 1 | VSX = 0 | "}
+Multi Modal Mode Enabledclip_model_load: model name:   openai/clip-vit-large-patch14-336
+clip_model_load: description:  image encoder for LLaVA
+clip_model_load: GGUF version: 3
+clip_model_load: alignment:    32
+clip_model_load: n_tensors:    377
+clip_model_load: n_kv:         19
+clip_model_load: ftype:        q4_0
 SNIP!
 ```
 
