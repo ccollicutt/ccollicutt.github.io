@@ -42,12 +42,16 @@ success
 >>> Send a message (/? for help)
 ```
 
+<br />
+
 Checkout memory usage. Not bad. Pretty small.
 
 ```
 $ nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i 0
 5308
 ```
+
+<br />
 
 ## Intersecting Polygons
 
