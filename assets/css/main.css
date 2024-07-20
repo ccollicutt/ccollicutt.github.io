@@ -1609,8 +1609,8 @@ video {
 }
 @media (min-width: 640px) {
 
-  .sm\:h-full {
-    height: 100%;
+  .sm\:h-auto {
+    height: auto;
   }
 
   .sm\:w-1\/3 {
