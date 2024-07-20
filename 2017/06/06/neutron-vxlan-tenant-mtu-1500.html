@@ -4,44 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Setting the Default MTU in Neutron VXLAN Networks to be 1500 | Server As Code Dot Com</title>
-    <meta name="description" content="A blog about technology">
+    <meta name="description" content="A techno-blog for our techno-times">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/css/prism.min.css" rel="stylesheet">
     <link href="/assets/css/extra.css" rel="stylesheet">
 
-    <!-- Twitter cards -->
     <meta name="twitter:site" content="serverascode.com">
     <meta name="twitter:creator" content="Curtis Collicutt">
-    <meta name="twitter:title" content="Setting the Default MTU in Neutron VXLAN Networks to be 1500">
-
     
-    <meta name="twitter:description" content="<p>Dealing with MTU issues is no fun. They are hard to diagnose. One of the issues I have commonly had is when I create a Docker node in a tenant VXLAN based Neutron network in an OpenStack cloud, and the interface in the virtual machine gets a MTU of 1450 (default 1500 - 50 for VXLAN) but Docker sets up an interface with an MTU of 1500. This will fail in all kinds of ugly ways that aren’t obvious, unless you know what MTU issues look like.</p>
-
-">
-    <!-- LinkedIn -->
-    <meta property="og:description" content="<p>Dealing with MTU issues is no fun. They are hard to diagnose. One of the issues I have commonly had is when I create a Docker node in a tenant VXLAN based Neutron network in an OpenStack cloud, and the interface in the virtual machine gets a MTU of 1450 (default 1500 - 50 for VXLAN) but Docker sets up an interface with an MTU of 1500. This will fail in all kinds of ugly ways that aren’t obvious, unless you know what MTU issues look like.</p>
-
-" />
     
-
+        <meta name="twitter:title" content="Setting the Default MTU in Neutron VXLAN Networks to be 1500">
+        
+        <meta name="twitter:description" content="Dealing with MTU issues is no fun. They are hard to diagnose. One of the issues I have commonly had is when I create a Docker node in a tenant VXLAN based Ne...">
+        <meta property="og:description" content="Dealing with MTU issues is no fun. They are hard to diagnose. One of the issues I have commonly had is when I create a Docker node in a tenant VXLAN based Ne..." />
+        
+        <meta property="og:title" content="Setting the Default MTU in Neutron VXLAN Networks to be 1500" />
+        <meta property="og:type" content="article" />
     
-
+    
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://serverascode.com/img/social/posts/neutron-vxlan-tenant-mtu-1500.png">
-    <!-- LinkedIn -->
     <meta property="og:image" content="https://serverascode.com/img/social/posts/neutron-vxlan-tenant-mtu-1500.png" />
     
-    <!-- end of Twitter cards -->
-
-    <!-- Additional Open Graph tags for better LinkedIn sharing -->
-    <meta property="og:title" content="Setting the Default MTU in Neutron VXLAN Networks to be 1500" />
-    <meta property="og:type" content="article" />
+    
     <meta property="og:url" content="https://serverascode.com/2017/06/06/neutron-vxlan-tenant-mtu-1500.html" />
     <meta property="og:site_name" content="Server As Code Dot Com" />
-
 </head>
 <body class="font-sans">
     <div class="magazine-container">

@@ -4,44 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser | Server As Code Dot Com</title>
-    <meta name="description" content="A blog about technology">
+    <meta name="description" content="A techno-blog for our techno-times">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/css/prism.min.css" rel="stylesheet">
     <link href="/assets/css/extra.css" rel="stylesheet">
 
-    <!-- Twitter cards -->
     <meta name="twitter:site" content="serverascode.com">
     <meta name="twitter:creator" content="Curtis Collicutt">
-    <meta name="twitter:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser">
-
     
-    <meta name="twitter:description" content="<p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
-
-">
-    <!-- LinkedIn -->
-    <meta property="og:description" content="<p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
-
-" />
     
-
+        <meta name="twitter:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser">
+        
+        <meta name="twitter:description" content="Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what an...">
+        <meta property="og:description" content="Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what an..." />
+        
+        <meta property="og:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser" />
+        <meta property="og:type" content="article" />
     
-
+    
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://serverascode.com/img/social/posts/runasnonroot-vs-runasuser.png">
-    <!-- LinkedIn -->
     <meta property="og:image" content="https://serverascode.com/img/social/posts/runasnonroot-vs-runasuser.png" />
     
-    <!-- end of Twitter cards -->
-
-    <!-- Additional Open Graph tags for better LinkedIn sharing -->
-    <meta property="og:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser" />
-    <meta property="og:type" content="article" />
+    
     <meta property="og:url" content="https://serverascode.com/2023/09/02/runasnonroot-vs-runasuser.html" />
     <meta property="og:site_name" content="Server As Code Dot Com" />
-
 </head>
 <body class="font-sans">
     <div class="magazine-container">

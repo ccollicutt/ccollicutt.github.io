@@ -4,44 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restarting Kubernetes Pods When There Are New Secrets With Reloader | Server As Code Dot Com</title>
-    <meta name="description" content="A blog about technology">
+    <meta name="description" content="A techno-blog for our techno-times">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/css/prism.min.css" rel="stylesheet">
     <link href="/assets/css/extra.css" rel="stylesheet">
 
-    <!-- Twitter cards -->
     <meta name="twitter:site" content="serverascode.com">
     <meta name="twitter:creator" content="Curtis Collicutt">
-    <meta name="twitter:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader">
-
     
-    <meta name="twitter:description" content="<p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
-
-">
-    <!-- LinkedIn -->
-    <meta property="og:description" content="<p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
-
-" />
     
-
+        <meta name="twitter:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader">
+        
+        <meta name="twitter:description" content="I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certifi...">
+        <meta property="og:description" content="I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certifi..." />
+        
+        <meta property="og:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader" />
+        <meta property="og:type" content="article" />
     
-
+    
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://serverascode.com/img/social/posts/reloader-kubernetes.png">
-    <!-- LinkedIn -->
     <meta property="og:image" content="https://serverascode.com/img/social/posts/reloader-kubernetes.png" />
     
-    <!-- end of Twitter cards -->
-
-    <!-- Additional Open Graph tags for better LinkedIn sharing -->
-    <meta property="og:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader" />
-    <meta property="og:type" content="article" />
+    
     <meta property="og:url" content="https://serverascode.com/2023/11/23/reloader-kubernetes.html" />
     <meta property="og:site_name" content="Server As Code Dot Com" />
-
 </head>
 <body class="font-sans">
     <div class="magazine-container">

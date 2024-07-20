@@ -4,44 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add SSD as cache to ZFS on Linux | Server As Code Dot Com</title>
-    <meta name="description" content="A blog about technology">
+    <meta name="description" content="A techno-blog for our techno-times">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="/assets/css/main.css" rel="stylesheet">
     <link href="/assets/css/prism.min.css" rel="stylesheet">
     <link href="/assets/css/extra.css" rel="stylesheet">
 
-    <!-- Twitter cards -->
     <meta name="twitter:site" content="serverascode.com">
     <meta name="twitter:creator" content="Curtis Collicutt">
-    <meta name="twitter:title" content="Add SSD as cache to ZFS on Linux">
-
     
-    <meta name="twitter:description" content="<p>I just physically added a SSD into my <a href="http://localhost:4000/2014/07/01/ZFS-ubuntu-trusty.html">home backup server</a> and I would like to configure it as a ZFS l2arc cache device. Doing so will mean new files will be written to the SSD first, then the spinning disk later, and that recently used files will be accessed via the SSD drive instead of the slower spinning disks. Depending on your workload, this should make most disk operations faster.</p>
-
-">
-    <!-- LinkedIn -->
-    <meta property="og:description" content="<p>I just physically added a SSD into my <a href="http://localhost:4000/2014/07/01/ZFS-ubuntu-trusty.html">home backup server</a> and I would like to configure it as a ZFS l2arc cache device. Doing so will mean new files will be written to the SSD first, then the spinning disk later, and that recently used files will be accessed via the SSD drive instead of the slower spinning disks. Depending on your workload, this should make most disk operations faster.</p>
-
-" />
     
-
+        <meta name="twitter:title" content="Add SSD as cache to ZFS on Linux">
+        
+        <meta name="twitter:description" content="I just physically added a SSD into my home backup server and I would like to configure it as a ZFS l2arc cache device. Doing so will mean new files will be w...">
+        <meta property="og:description" content="I just physically added a SSD into my home backup server and I would like to configure it as a ZFS l2arc cache device. Doing so will mean new files will be w..." />
+        
+        <meta property="og:title" content="Add SSD as cache to ZFS on Linux" />
+        <meta property="og:type" content="article" />
     
-
+    
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://serverascode.com/img/social/posts/add-ssd-cache-zfs.png">
-    <!-- LinkedIn -->
     <meta property="og:image" content="https://serverascode.com/img/social/posts/add-ssd-cache-zfs.png" />
     
-    <!-- end of Twitter cards -->
-
-    <!-- Additional Open Graph tags for better LinkedIn sharing -->
-    <meta property="og:title" content="Add SSD as cache to ZFS on Linux" />
-    <meta property="og:type" content="article" />
+    
     <meta property="og:url" content="https://serverascode.com/2014/07/03/add-ssd-cache-zfs.html" />
     <meta property="og:site_name" content="Server As Code Dot Com" />
-
 </head>
 <body class="font-sans">
     <div class="magazine-container">
