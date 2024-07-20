@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>/dev/random, OSX and Yarrow | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="/dev/random, OSX and Yarrow">
+
+    
+    <meta name="twitter:description" content="<p>I’ve been doing some research on “hardening” or securing workstations–I prefer to call desktops and laptops workstations–specifically OSX Mavericks.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I’ve been doing some research on “hardening” or securing workstations–I prefer to call desktops and laptops workstations–specifically OSX Mavericks.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/yarrow.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/yarrow.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="/dev/random, OSX and Yarrow" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/03/04/yarrow.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">/dev/random, OSX and Yarrow</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-03-04T00:00:00-05:00">
+                March 04, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’ve been doing some research on “hardening” or securing workstations–I prefer to call desktops and laptops workstations–specifically OSX Mavericks.</p>
+
+<p>When considering information security cryptography is extremely important. If you subscribe to the CIA triad (confidentiality, integrity, and availability), then cryptography can help with both the “C” and the “I.”</p>
+
+<p>Usually the randomness used in cryptography on workstations comes from /dev/random and /dev/urandom. On Linux /dev/random and /dev/urandom are different devices. If the entropy during cryptographic key creation is not high, then the resulting keys will <a href="https://www.schneier.com/blog/archives/2008/05/random_number_b.html">not be as good</a>.</p>
+
+<blockquote>
+  <p>When read, the /dev/random device will only return random bytes within the estimated number of bits of noise in the entropy  pool. /dev/random should be suitable for uses that need very high quality randomness such as one-time pad or key generation. When the entropy pool is empty, reads from /dev/random will block until additional environmental noise is gathered.
+A read from the /dev/urandom device will not block waiting for more entropy. As a result, if there is not sufficient entropy  in  the  entropy pool, the returned values are theoretically vulnerable to a cryptographic attack on the algorithms used by the driver. Knowledge of how to do this is not available in the current unclassified literature, but it is theoretically possible that such an attack may exist. If this is a concern in your application, use /dev/random instead.
+If  you are unsure about whether you should use /dev/random or /dev/urandom, then probably you want to use the latter. As a general rule,/dev/urandom should be used for everything except long-lived GPG/SSL/SSH keys. NOTE: from man 4 random on Ubuntu 12.04 Precise</p>
+</blockquote>
+
+<p>But on OSX they are essentially the same device, and don’t use a hardware random number generator.</p>
+
+<blockquote>
+  <p>/dev/urandom is a compatibility nod to Linux. On Linux, /dev/urandom will produce lower quality output if the entropy pool drains, while /dev/random will prefer to block and wait for additional entropy to be collected.  With Yarrow, this choice and distinction is not necessary, and the two devices behave identically. You may use either. NOTE: from man 4 random on OSX Mavericks</p>
+</blockquote>
+
+<p>In fact, the devices use the <a href="https://www.schneier.com/yarrow.html">Yarrow</a> algorithm invented by Bruce Schneier and friends!</p>
+
+<blockquote>
+  <p>Yarrow is a PRNG; it generates cryptographically secure pseudo-random numbers on a computer. It can also be used as a real random number generator, accepting random inputs from analog random sources. We wrote Yarrow because after analyzing existing PRNGs and breaking our share of them, we wanted to build something secure.</p>
+</blockquote>
+
+<p>So on one hand, it’s slightly disappointing that my workstation doesn’t have a hardware random number generator (despite the potential that hrngs have been polluted by various government agencies), but on the other the prng algorithm was created in part by a personal information security hero of mine, Bruce Schneier.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

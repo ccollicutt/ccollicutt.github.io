@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack - Bridge not replying to ARP Requests | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack - Bridge not replying to ARP Requests">
+
+    
+    <meta name="twitter:description" content="<p><em>(a super simple diagram to give you an idea of the network layout)</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>(a super simple diagram to give you an idea of the network layout)</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/bridge-not-replying-arp.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/bridge-not-replying-arp.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack - Bridge not replying to ARP Requests" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/01/21/bridge-not-replying-arp.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack - Bridge not replying to ARP Requests</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-01-21T00:00:00-05:00">
+                January 21, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>(a super simple diagram to give you an idea of the network layout)</em></p>
+
+<p>I’ve been working on my <a href="https://github.com/ccollicutt/simplestack">SimpleStack</a> OpenStack install lately. This design currently uses a FlatDHCP nova-network.</p>
+
+<p>I have a couple of hardware servers that I’m deploying it on at work, and I was having a ton of trouble with the public and flat interface being able to receive arp requests, but not sending them back.</p>
+
+<p>It turns out the answer was simple: <strong>the vlan coming down the port to the interface was tagged.</strong></p>
+
+<p>This is part of the nova.conf file:</p>
+
+<pre>
+<code>flat_network_bridge = br100
+flat_interface = em2
+public_interface = em2
+</code>
+</pre>
+
+<p>Here’s some ARP traffic off the em2 interface.</p>
+
+<pre>
+<code>curtis@compute1:~$ sudo tcpdump -n -e -ttt -i br100 arp
+00:00:00.888602 5c:5e:ab:d9:e0:f0 &gt; ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100), length 60: vlan 601, p 0, ethertype ARP, Request who-has x.y.z.22 tell x.y.z.18, length 42
+00:00:00.900232 5c:5e:ab:d9:e0:f0 &gt; ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100), length 60: vlan 601, p 0, ethertype ARP, Request who-has x.y.z.22 tell x.y.z.18, length 42
+00:00:00.600620 5c:5e:ab:d9:e0:f0 &gt; ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100), length 60: vlan 601, p 0, ethertype ARP, Request who-has x.y.z.22 tell x.y.z.18, length 42
+00:00:00.703113 5c:5e:ab:d9:e0:f0 &gt; ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100), length 60: vlan 601, p 0, ethertype ARP, Request who-has x.y.z.22 tell x.y.z.18, length 42
+</code>
+</pre>
+
+<p>As you can see, we have “ethertype 802.1Q” and vlan 601. It took me quite a while to notice that, but once I did everything made sense.</p>
+
+<p>The arp requests were getting to em2, but because they were tagged with vlan 601 the server wouldn’t reply because it wasn’t setup to use that vlan.</p>
+
+<p>As soon as I added the 601 vlan and configured nova to use it, everything started working.</p>
+
+<pre>
+<code>curtis@compute1:~$ sudo modprobe 8021q
+curtis@compute1:~$ sudo vconfig add em2 601
+Added VLAN with VID == 601 to IF -:em2:-
+curtis@compute1:~$ sudo ifconfig em2.601 up
+</code>
+</pre>
+<p>The I changed the nova.conf file to look like this:</p>
+
+<pre>
+<code>flat_network_bridge = br100
+flat_interface = em2.601
+public_interface = em2.601
+</code>
+</pre>
+
+<p>Then I restarted nova-network.</p>
+
+<p>Finally I ended up with this bridge config:</p>
+
+<pre>
+<code>curtis@compute1:/etc/nova# sudo brctl show
+bridge name	bridge id		STP enabled	interfaces
+br100		8000.782bcb617008	no		em2.601
+              vnet0
+virbr0		8000.000000000000	yes
+</code>
+</pre>
+
+<p>And I was able to have my flat network, which is all public IPs, working.</p>
+
+<h2 id="tagged-and-untagged-getting-lost-in-details">Tagged and untagged, getting lost in details</h2>
+
+<p>Now, there’s no reason (in this situation) for this port to have the vlan tagged on it, we just need that one network on the physical interface, but it was tagged and in this case it was just easier to go with that then to try to have any changes made on the network operator side.</p>
+
+<p>For a while we were chasing red herrings on this problem, and finally I just took a hard look at the arp packets and realized it was a tagged vlan. Obvious now, but it took a while to figure out just how obvious.</p>
+
+<p>It was a good feeling to realize the problem, fix it, and to get SimpleStack up and running on physical computers with public IPv4 addresses so that I can continue to experiment with small OpenStack installations. I’ve already realized this network design probably wouldn’t work for anyone who doesn’t have a lot of IPv4 addresses or can’t support IPv6. IPv6 would be so great for this. When will we really start using it…ISPs I’m looking at you…</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

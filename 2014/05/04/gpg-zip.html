@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gpg-zip | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="gpg-zip">
+
+    
+    <meta name="twitter:description" content="<p>I have a dedicated server I use to host a few things, like friends wordpress sites, some personal websites, etc. One of the services the hosting company provides is access to a backup server via ftp, ie. they give me some free space to backup files to.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I have a dedicated server I use to host a few things, like friends wordpress sites, some personal websites, etc. One of the services the hosting company provides is access to a backup server via ftp, ie. they give me some free space to backup files to.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/gpg-zip.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/gpg-zip.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="gpg-zip" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/05/04/gpg-zip.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">gpg-zip</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-05-04T00:00:00-04:00">
+                May 04, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I have a dedicated server I use to host a few things, like friends wordpress sites, some personal websites, etc. One of the services the hosting company provides is access to a backup server via ftp, ie. they give me some free space to backup files to.</p>
+
+<p>But I don’t want to just drop backup files there in plaintext–I want them to be encrypted with gpg. Enter gpg-zip!</p>
+
+<p>gpg-zip is handy utility that can tar a directory and then encrypt the resulting file. That file could then be placed anywhere, and, if gpg is working properly, unless someone has access to the private key of the public key that it was encrypted with (or they were set as the recipient), they should not be able to decrypt it. It’s important to note that the encrypted file is only as secure as the private key. Obviously is someone has access to the private key then they can decrypt the file.</p>
+
+<p>First, I have a key that I’m going to use for this example. Creating keys and subkeys securely is a bit beyond the scope of this article. Here’s a good blog post on <a href="http://www.bootc.net/archives/2013/06/07/generating-a-new-gnupg-key/">creating new gpg keys</a>, and another <a href="https://alexcabal.com/creating-the-perfect-gpg-keypair/">here</a>.</p>
+
+<p>Below is the key I will use.</p>
+
+<pre>
+<code># gpg --list-keys
+/root/.gnupg/pubring.gpg
+------------------------
+pub   2048R/4FCDA707 2014-05-04
+uid                  curtis &lt;curtis-backups@serverascode.com&gt;
+sub   2048R/25AEB942 2014-05-04
+</code>
+</pre>
+
+<p>It’s important to note that that key is not itself encrypted–it does not have a passphrase set, so it can be used by anyone who has access to a copy of the key. This is not a good thing to do with an important key, but in this case I am going to want to automate this process, and there is no good way, that I’m aware of, to have an automated process decrypt the key without the passphrase also being stored in cleartext. That being said, encrypting the file does not require the password to unlock the private key, but decrypting in an automated fashion would.</p>
+
+<p>Let’s create a test directory with some files in it to gpg-zip.</p>
+
+<pre>
+<code># cd /tmp; mkdir test
+# for i in $(seq 1 100); do echo "hi $i" &gt; test/$i.txt; done
+# ls test | wc -l
+100
+</code>
+</pre>
+
+<p>Now that we have a directory filled with files to backup it can be encrypted with gpg. I’m essentially encrypting the file with myself as the recipient, ie. a message to myself.</p>
+
+<pre>
+<code># gpg-zip --encrypt --recipient curtis-backup@serverascode.com test &gt; test.tar.gz.gpg
+# file test.tar.gz.gpg 
+test.tar.gz.gpg: data
+</code>
+</pre>
+
+<p>I can also use gpg-zip to list the files (but obviously I can only do that if I can decrypt it):</p>
+
+<pre>
+<code># gpg-zip --list-archive test.tar.gz.gpg | tail
+gpg: encrypted with 2048-bit RSA key, ID 25AEB942, created 2014-05-04
+      "curtis &lt;curtis-backup@serverascode.com&gt;"
+test/57.txt
+test/26.txt
+test/84.txt
+test/6.txt
+test/16.txt
+test/4.txt
+test/18.txt
+test/20.txt
+test/45.txt
+test/76.txt
+</code>
+</pre>
+
+<p>And I can restore the files as well. I’ll do that in a restore directory.</p>
+
+<pre>
+<code># mkdir restore; cd restore
+# gpg-zip --decrypt /tmp/test.tar.gz.gpg 
+gpg: encrypted with 2048-bit RSA key, ID 25AEB942, created 2014-05-04
+      "curtis &lt;curtis-backup@serverascode.com&gt;"
+test/
+test/22.txt
+test/74.txt
+test/47.txt
+test/5.txt
+SNIP!
+</code>
+</pre>
+
+<p>Looks good. Now that I have a feeling for how gpg-zip works I can start automating my backups, encrypting them, and shipping them off to the remote ftp server.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>gpg-zip is an easy way to encrypt directories. The resulting file can then be shipped across the (unencrypted) wire and stored on a remote system, and I should feel reasonably confident that unless someone surreptitiously accesses my server and steals my gpg keys, that the file will remain secure. There are a few caveats of course, but overall I think this workflow is reasonable.</p>
+
+<p>If you see any mistakes or other issues with this post, please let me know in the comments. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

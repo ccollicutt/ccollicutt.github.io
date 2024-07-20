@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker and btrfs | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Docker and btrfs">
+
+    
+    <meta name="twitter:description" content="<p>As I write this the first <a href="https://twitter.com/hashtag/dockercon?src=hash">Docker convention</a> is going on in San Francisco (sounds funny to write it was “docker convention” instead of “dockercon”…a convention sounds like a scene from Fear and Loathing in Las Vegas), and Docker has hit 1.0 and been declared <a href="https://twitter.com/solomonstre/status/476036477973831682">production</a> worthy.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>As I write this the first <a href="https://twitter.com/hashtag/dockercon?src=hash">Docker convention</a> is going on in San Francisco (sounds funny to write it was “docker convention” instead of “dockercon”…a convention sounds like a scene from Fear and Loathing in Las Vegas), and Docker has hit 1.0 and been declared <a href="https://twitter.com/solomonstre/status/476036477973831682">production</a> worthy.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/docker-btrfs.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/docker-btrfs.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Docker and btrfs" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/06/09/docker-btrfs.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Docker and btrfs</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-06-09T00:00:00-04:00">
+                June 09, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>As I write this the first <a href="https://twitter.com/hashtag/dockercon?src=hash">Docker convention</a> is going on in San Francisco (sounds funny to write it was “docker convention” instead of “dockercon”…a convention sounds like a scene from Fear and Loathing in Las Vegas), and Docker has hit 1.0 and been declared <a href="https://twitter.com/solomonstre/status/476036477973831682">production</a> worthy.</p>
+
+<p>Docker has had, for a few versions, the ability to use btrfs as it’s backing driver, instead of aufs.</p>
+
+<h2 id="install-btrfs-on-ubuntu-1404trusty">Install btrfs on Ubuntu 14.04/Trusty</h2>
+
+<p>Before installing docker I’m going to setup btfrs.</p>
+
+<p>In this example I have a disk device called /dev/vdb to use with btrfs. I’ve removed some of the output from the commands.</p>
+
+<pre>
+<code>$ sudo su
+$ apt-get install btrfs-tools
+$ mkfs.btrfs /dev/sdb
+$ mkdir /var/lib/docker
+$ mount /dev/sdb /var/lib/docker
+$ mount | grep btrfs
+/dev/sdb on /var/lib/docker type btrfs (rw)
+</code>
+</pre>
+
+<p>Now that btrfs is installed and a device is formatted and mounted under /var/lib/docker we can install docker.</p>
+
+<h2 id="install-docker">Install docker</h2>
+
+<p>Next we need to install docker. It’s important that we also configure docker to startup with the “-s btrfs” option as well.</p>
+
+<pre>
+<code>$ apt-get install docker.io
+$ vi /etc/default/docker.io
+</code>
+</pre>
+
+<p>We need to change the DOCKER_OPTS entry to look like this:</p>
+
+<pre>
+<code>$ grep DOCKER_OPTS docker.io 
+# Use DOCKER_OPTS to modify the daemon startup options.
+DOCKER_OPTS="-s btrfs"
+</code>
+</pre>
+
+<p>Now restart docker.</p>
+
+<pre>
+<code>$ service docker.io restart
+</code>
+</pre>
+
+<p>We should see that docker is running with “-s btrfs”:</p>
+
+<pre>
+<code>$ ps ax  |grep [d]ocker
+10088 ?        Sl     0:02 /usr/bin/docker.io -d -s btrfs
+</code>
+</pre>
+
+<p>If it’s not running with “-s btrfs” then ensure it’s set to do so in /etc/default/docker.io and has been restarted.</p>
+
+<p>I’ve already created several containers and pulled images, actually just the base busybox image which is quite small, so if I run “btrfs subvolume list /var/lib/docker” I should see some subvolumes have been created.</p>
+
+<pre>
+<code>vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker | head -5
+ID 258 gen 11 top level 5 path btrfs/subvolumes/511136ea3c5a64f264b78b5433614aec563103b4d4702f3ba7d4d2698e22c158
+ID 259 gen 16 top level 5 path btrfs/subvolumes/42eed7f1bf2ac3f1610c5e616d2ab1ee9c7290234240388d6297bc0f32c34229
+ID 260 gen 13 top level 5 path btrfs/subvolumes/c120b7cab0b0509fd4de20a57d0f5c17106f3451200dfbfd8c6ab1ccb9391938
+ID 261 gen 13 top level 5 path btrfs/subvolumes/d200959a3e91d88e6da9a0ce458e3cdefd3a8a19f8f5e6a1e7f10f268aea5594
+ID 262 gen 15 top level 5 path btrfs/subvolumes/120e218dd395ec314e7b6249f39d2853911b3d6def6ea164ae05722649f34b16
+</code>
+</pre>
+
+<p>And we can see the size of the btrfs file system.</p>
+
+<pre>
+<code>$ btrfs filesystem df /var/lib/docker
+Data, single: total=1.01GiB, used=337.56MiB
+System, DUP: total=8.00MiB, used=16.00KiB
+System, single: total=4.00MiB, used=0.00
+Metadata, DUP: total=1.00GiB, used=2.72MiB
+Metadata, single: total=8.00MiB, used=0.00
+$
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        40G  1.2G   37G   4% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+udev            745M   12K  745M   1% /dev
+tmpfs           150M  368K  150M   1% /run
+none            5.0M     0  5.0M   0% /run/lock
+none            750M     0  750M   0% /run/shm
+none            100M     0  100M   0% /run/user
+vagrant         233G  185G   49G  80% /vagrant
+/dev/sdb         20G  344M   18G   2% /var/lib/docker
+$
+$ sudo btrfs filesystem show /var/lib/docker
+Label: none  uuid: c8f11393-9268-475a-82de-cbd697ab3847
+  Total devices 1 FS bytes used 340.30MiB
+  devid    1 size 20.00GiB used 3.04GiB path /dev/sdb
+
+Btrfs v3.12
+</code>
+</pre>
+
+<p>Each image and container has a subvolume.</p>
+
+<p>And, as far as I know at this point, that’s it–we’re now running docker with btrfs.</p>
+
+<h2 id="ansible-playbook">Ansible playbook</h2>
+
+<p>I’ve setup an <a href="https://github.com/ccollicutt/vagrant-docker-btrfs">Ansible playbook</a> with a <a href="http://vagrantup.com">Vagrant</a> file that will setup a virtual machine with docker and btrfs configured in the same way that I describe in this blog post. Vagrant will automatically provision the virtual machine using Ansible.</p>
+
+<pre>
+<code>$ git clone https://github.com/ccollicutt/vagrant-docker-btrfs
+$ cd vagrant-docker-btrfs
+$ vagrant up --provider virtualbox
+Bringing machine 'host1' up with 'virtualbox' provider...
+==&gt; host1: Importing base box 'trusty64'...
+SNIP!
+TASK: [add alias for vagrant user docker = docker.io] ************************* 
+changed: [host1]
+
+NOTIFIED: [restart docker] **************************************************** 
+changed: [host1]
+
+PLAY RECAP ******************************************************************** 
+host1                      : ok=17   changed=16   unreachable=0    failed=0 
+$  
+</code>
+</pre>
+
+<p>Now that that is booted up and configured, we can login and check a couple things.</p>
+
+<pre>
+<code>$ vagrant ssh
+SNIP!
+vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker
+vagrant@host1:~$# none because we have no images or containers 
+vagrant@host1:~$ mount  |grep btrfs
+/dev/sdb on /var/lib/docker type btrfs (rw)
+vagrant@host1:~$ ps ax  |grep [d]ocker
+10041 ?        Sl     0:00 /usr/bin/docker.io -d -s btrfs
+vagrant@host1:~$ docker pull busybox
+Pulling repository busybox
+a9eb17255234: Download complete 
+d200959a3e91: Download complete 
+fd5373b3d938: Download complete 
+37fca75d01ff: Download complete 
+511136ea3c5a: Download complete 
+42eed7f1bf2a: Download complete 
+f06b02872d52: Download complete 
+120e218dd395: Download complete 
+c120b7cab0b0: Download complete 
+1f5049b3536e: Download complete 
+vagrant@host1:~$ docker images
+REPOSITORY          TAG                   IMAGE ID            CREATED             VIRTUAL SIZE
+busybox             buildroot-2013.08.1   d200959a3e91        4 days ago          2.489 MB
+busybox             ubuntu-14.04          37fca75d01ff        4 days ago          5.609 MB
+busybox             ubuntu-12.04          fd5373b3d938        4 days ago          5.455 MB
+busybox             buildroot-2014.02     a9eb17255234        4 days ago          2.433 MB
+busybox             latest                a9eb17255234        4 days ago          2.433 MB
+vagrant@host1:~$# now we should have some subvolumes
+vagrant@host1:~$ sudo btrfs subvolume list /var/lib/docker
+ID 258 gen 12 top level 5 path btrfs/subvolumes/511136ea3c5a64f264b78b5433614aec563103b4d4702f3ba7d4d2698e22c158
+ID 259 gen 17 top level 5 path btrfs/subvolumes/42eed7f1bf2ac3f1610c5e616d2ab1ee9c7290234240388d6297bc0f32c34229
+ID 260 gen 14 top level 5 path btrfs/subvolumes/f06b02872d5253f5123284edcf49749b352400a1c5880b5ebf2864f5afddeb22
+ID 261 gen 14 top level 5 path btrfs/subvolumes/37fca75d01ffc49df7b99aacdbcd4a0ebae39de299787b8f77bb5b6698414308
+ID 262 gen 16 top level 5 path btrfs/subvolumes/120e218dd395ec314e7b6249f39d2853911b3d6def6ea164ae05722649f34b16
+ID 263 gen 16 top level 5 path btrfs/subvolumes/a9eb172552348a9a49180694790b33a1097f546456d041b6e82e4d7716ddb721
+ID 264 gen 19 top level 5 path btrfs/subvolumes/1f5049b3536eb73e7a660a672976ae9c19e8460bf57c2528f9c1e4b2c4bf309f
+ID 265 gen 19 top level 5 path btrfs/subvolumes/c120b7cab0b0509fd4de20a57d0f5c17106f3451200dfbfd8c6ab1ccb9391938
+ID 266 gen 19 top level 5 path btrfs/subvolumes/d200959a3e91d88e6da9a0ce458e3cdefd3a8a19f8f5e6a1e7f10f268aea5594
+ID 267 gen 19 top level 5 path btrfs/subvolumes/fd5373b3d93820744a327e609ee86166e5984d7377987f0fde78daeaa345705d
+</code>
+</pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I haven’t explored much more in terms of using btrfs with docker yet, but this is a good start.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

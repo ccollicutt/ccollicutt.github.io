@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homelab - Hardware and Layout | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Homelab - Hardware and Layout">
+
+    
+    <meta name="twitter:description" content="<p>I’ve got (what I think) is a fairly substantial, though definitely aging, homelab. I thought I’d write a bit of a post on what it consists of.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I’ve got (what I think) is a fairly substantial, though definitely aging, homelab. I thought I’d write a bit of a post on what it consists of.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/homelab.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/homelab.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Homelab - Hardware and Layout" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2022/06/06/homelab.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Homelab - Hardware and Layout</h1>
+        <p class="text-gray-600">
+            <time datetime="2022-06-06T00:00:00-04:00">
+                June 06, 2022
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’ve got (what I think) is a fairly substantial, though definitely aging, homelab. I thought I’d write a bit of a post on what it consists of.</p>
+
+<h2 id="hardware">Hardware</h2>
+
+<p>Current setup:</p>
+
+<ul>
+  <li>3x ESXI hosts - each are a 1U Supermicro server with 192GB memory on a X9DRI-LN4F+ motherboard</li>
+  <li>1x Network storage server - A 2U Supermicro, 64GB of memory, X9DRI-LN4F+ motherboard</li>
+  <li>Intel Xeon CPU E5-2650 2.00GHz CPUs (old!)</li>
+  <li>1x Mikrotik 24 port CRS326-24S+2Q+RM</li>
+  <li>1x Mikrotik 24 port CRS326-24G-2S+RM</li>
+  <li>Battery backup - Cyberpower 1500VA</li>
+  <li>Firewall - Protectli Vault 6 Port running OpenBSD</li>
+</ul>
+
+<p>Extra hardware:</p>
+
+<ul>
+  <li>Juniper EX3300</li>
+  <li>Many server components: disks, motherboards, memory, etc</li>
+</ul>
+
+<h2 id="storage-server">Storage Server</h2>
+
+<p>This is an Ubuntu 18.04 server using ZFS on linux, with four mirrored spinning disks and a zlog disk. Brilliantly and originally I’ve named the zpool tank.</p>
+
+<pre><code>$ zpool status
+  pool: tank
+ state: ONLINE
+  scan: scrub repaired 0B in 23h24m with 0 errors on Sun May  8 23:48:18 2022
+config:
+
+    NAME                        STATE     READ WRITE CKSUM
+    tank                        ONLINE       0     0     0
+      mirror-0                  ONLINE       0     0     0
+        wwn-0x5000cca221c07016  ONLINE       0     0     0
+        wwn-0x5000cca221c8e492  ONLINE       0     0     0
+      mirror-1                  ONLINE       0     0     0
+        wwn-0x5000cca221c8e026  ONLINE       0     0     0
+        wwn-0x5000cca221db40d0  ONLINE       0     0     0
+    logs
+      wwn-0x55cd2e404c0f5d34    ONLINE       0     0     0
+</code></pre>
+
+<p>Also I have a NVMe disk that has 1.8T of storage, which is setup with XFS. I’ve called this one Mammoth. I’m surprised this drive is still working as it’s just a Western Digital Blue disk that I thought would quickly wear out, but it’s still going strong. I put it into a generic PCI adapter and it’s been working well…so far (though again, I expect it to fail at some point).</p>
+
+<pre><code>$ mount | grep xfs
+/dev/nvme0n1 on /mammoth/1 type xfs (rw,relatime,attr2,inode64,noquota)
+</code></pre>
+
+<p>The ZFS and XFS storage is exported via NFS to the ESXI hosts.</p>
+
+<h2 id="esxi-hosts">ESXI Hosts</h2>
+
+<p>Not much special here, just some older 1U nodes. vCenter is running as a VM on these hosts. The E5-2650 CPUs likely won’t work with vSphere 8.</p>
+
+<p>Each node also has a 1TB SSD drive in it, but I don’t use these much. If I’m doing a nested deployment of vSphere, I’ll put the nested, virtualized ESXI hosts on these disks, and manually distribute them across the three hosts, but otherwise I don’t currently use them.</p>
+
+<p>Initially I used inexpensive flash USB drives to run the ESXI OS, but that <a href="https://kb.vmware.com/s/article/82515">stopped working</a> and I had to install ESXI onto local drives, which right now are spinning disks that I had been using when I was testing out VSAN.</p>
+
+<h2 id="networking">Networking</h2>
+
+<h3 id="mikrotik">Mikrotik</h3>
+
+<p>At this time, for the lab, I’m using Mikrotik network switches, mostly because they are extremely low power and incredibly quiet. Two switches is like 1/3 the watts of another vendor’s single switch.</p>
+
+<p>I have several other switches that could be in place, for example a Juniper EX3300 with 24x 1GB ports and 4x 10GB ports, but while it has better performance, it’s louder and adds another amp of power usage.</p>
+
+<blockquote>
+  <p>NOTE: Please take a look at the <a href="https://mikrotik.com/product/CRS326-24G-2SplusRM#fndtn-testresults">performance testing</a> for Mikrotik switches and note the switching performance. They might not work for you. :)</p>
+</blockquote>
+
+<pre><code>[admin@MikroTik] &gt; /system resource print
+                   uptime: 4w2h33m31s
+                  version: 6.42.12 (long-term)
+               build-time: Feb/12/2019 08:23:13
+         factory-software: 6.41
+              free-memory: 480.5MiB
+             total-memory: 512.0MiB
+                      cpu: ARMv7
+                cpu-count: 1
+            cpu-frequency: 800MHz
+                 cpu-load: 0%
+           free-hdd-space: 3896.0KiB
+          total-hdd-space: 16.0MiB
+  write-sect-since-reboot: 53897
+         write-sect-total: 102370
+               bad-blocks: 0%
+        architecture-name: arm
+               board-name: CRS326-24G-2S+
+                 platform: MikroTik
+</code></pre>
+
+<p>The 1GB switch is doing all the routing, the VLAN gateways live here. As well, it does DHCP for the services that need it.</p>
+
+<p>Configuring the Mikrotiks is a bit unusual compared to other major switch vendors, e.g. Juniper. There’s no commit/rollback model.</p>
+
+<pre><code>[admin@MikroTik] &gt; /interface bridge port print
+Flags: X - disabled, I - inactive, D - dynamic, H - hw-offload
+ #     INTER... BRIDGE   HW  PVID PR  PATH-COST INTERNA...    HORIZON
+ 0   H ;;; defconf
+       ether1   bridge   yes    1 0x         10         10       none
+SNIP!
+</code></pre>
+
+<p>The bridge model is a bit unusual as well, note the “HW: yes” column.</p>
+
+<h3 id="juniper-ex3300">Juniper EX3300</h3>
+
+<p><img src="/img/ex3300.jpg" alt="ex3300-24t" /></p>
+
+<p>My EX3300 would likely make more sense as a switch in this environment, as I would just need the single switch as it has the four 10 gig connections (perfect for me with my four nodes), and it’s wire speed, but ultimately I just liked that the Mikrotiks are quieter and lower power, and, so far, I haven’t run into any performance problems (that I’m aware of).</p>
+
+<p>I’ve had both the EX3300 and the Mikrotiks in place in different versions of the lab. If performance was a key, then I would definitely use the EX3300, and accept the additional volume and power use. Honestly, the EX3300 is the perfect lab switch, but I’m not using it right now.</p>
+
+<p>Next time I rebuild the lab, I might use the EX3300. :)</p>
+
+<h2 id="firewall">Firewall</h2>
+
+<p>I run a small fanless OpenBSD based firewalling device that has six interfaces that I used to segregate my various home networks. I’m an OpenBSD fan, so I’m always looking for a spot to put some OpenBSD.</p>
+
+<blockquote>
+  <p>NOTE: This device runs really hot. I’ve read that some people change the thermal paste on these kinds of systems, though I have not done that. I’m expecting this device to fail at some point just due to being so high temperature all the time. Perhaps it was not a wise investment. That remains to be seen.</p>
+</blockquote>
+
+<p>Six interfaces sounds like a lot, but if you’re physically separating networks out, it’s just the right amount.</p>
+
+<pre><code># uname -a
+OpenBSD firewall 6.9 GENERIC.MP#473 amd64
+# ifconfig | grep em
+em0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+em1: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+em2: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+em3: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+em4: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500
+em5: flags=8802&lt;BROADCAST,SIMPLEX,MULTICAST&gt; mtu 1500
+</code></pre>
+
+<p>Only certain networks are allowed to talk to other networks: basic segregation.</p>
+
+<h2 id="battery-backup">Battery Backup</h2>
+
+<p>Power goes off in Toronto fairly regularly, one every three or four months, but usually it’s only a blip…maybe a minute or two of power failure. For a while I just kept restarting everything, but finally I experienced a corruption issue and had to rebuild, so it was time for a battery backup. Better to spend a couple hundred dollars than the time rebuilding and restarting. With this in place my nodes have not gone down once, though it would only last for maybe 10, 15 minutes, so if it’s an extended power loss, then everything will go down.</p>
+
+<h2 id="dns-ntp---laptop">DNS, NTP - Laptop</h2>
+
+<p>I use an old IBM laptop for DNS and NTP. Because, as a laptop, it has a battery in it, this laptop has been up for a long, long time…years in fact:</p>
+
+<pre><code>$ uptime
+ 21:26:05 up 952 days, 23:24,  2 users,  load average: 0.00, 0.00, 0.00
+</code></pre>
+
+<p>That’s right, 952 days. Insecure, yes, but wow, this is some serious uptime. The screen has stopped working, but I can still ssh in. I don’t know how this thing is still working, but at this point I have to leave it just to see how long it will continue to stay up!</p>
+
+<h2 id="environment">Environment</h2>
+
+<p>All these servers and switches are installed into a medium sized enclosed rack that I bought off of Kijiji. I don’t run any air conditioning at all, and these servers live in my cold room, which isn’t that cold, and can easily be 30C or higher in the summer, but the whole system just keeps chugging along. It’s also dusty in the basement, and again, things–surprisingly–just keep working. Maybe once a year I shut most things down and clean everything off.</p>
+
+<h2 id="what-is-this-lab-running">What is this lab running?</h2>
+
+<p><img src="/img/vsphere-homelab.jpg" alt="vsphere GUI" /></p>
+
+<ul>
+  <li>vSphere 7</li>
+  <li>vSphere with Tanzu, using NSX Advanced Loadbalancer (AVI)</li>
+  <li>Tanzu Kubernetes Grid - internet restricted and non-restricted deployments</li>
+  <li>Many Kubernetes clusters (thanks to TKG and vSphere with Tanzu)</li>
+  <li><a href="https://serverascode.com/2020/07/20/vsphere-7-with-kubernetes-nsxt-3.html">Used to run NSX</a>, but it’s currently not deployed in this version of the lab</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This all uses 6 or 7 AMPs of power and has been running for well over three years. The Supermicro’s just keep running, no matter how dusty or hot. One major issue is that if I continue to run a vSphere lab, it’s unlikely the CPUs in these nodes will be supported. So to continue with vSphere 8 would be a major investment.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Providers and Telecoms Must Accept Complexity | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Service Providers and Telecoms Must Accept Complexity">
+
+    
+    <meta name="twitter:description" content="<h2 id="tldr">tl;dr</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="tldr">tl;dr</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/service-providers-accept-complexity-of-nfv.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/service-providers-accept-complexity-of-nfv.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Service Providers and Telecoms Must Accept Complexity" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/05/13/service-providers-accept-complexity-of-nfv.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Service Providers and Telecoms Must Accept Complexity</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-05-13T00:00:00-04:00">
+                May 13, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="tldr">tl;dr</h2>
+
+<p>NFV is complex. But in order to automate we need APIs. Something has to schedule compute, network, and storage. Something has to provide the APIs to orchestrate it all. That something is NFV. Telecoms can’t give up so easily on NFV, because to do so would be at worst a rejection of automation and at best a renaming of NFV.</p>
+
+<h2 id="accepting-nfv-complexity">Accepting NFV Complexity</h2>
+
+<p>I’ve been working with OpenStack and SDN for a long time. As well, for the last 2+ years, I have also been working in the area of Network Function Virutalization (NFV). At this point NFV is a bit of a catch all term for all the new things that have been happening in and around the service provider or telecom industry. Automation. SDN. 5G. All of these things are complex and perhaps complicated.</p>
+
+<p>OpenStack has found a place in telecoms. I think it’s fair to say that every telecom in the world is thinking about OpenStack in some capacity. We are at the point now, I believe, where many telecoms are past the proof of concept phase and are really starting to try to put OpenStack, and more specifically NFV infrastucture (NFVi), into production. However, this is the point where we will also start to see telecoms give up on NFV (and SDN) because it’s too complex.</p>
+
+<p>Telecoms are good at deploying physical boxes and manually deploying required applications on top of them because they heavily rely on the vendors to do it. If a telecom buys a piece of software from a vendor, they then put the vendor through the wringer to get them to deploy it and ensure it works. Unfortunately, this is “set and forget.”</p>
+
+<p>In the case of NFV, however, it’s not just a single vendor that is involved, and what’s more, telecom staff are being asked to understand how NFV works and to be able to deploy network functions into NFV infrastructure via automation (eg. ETSI MANO). Instead of relying on vendor professional services internal telecom staff are being asked to deploy network functions. But doing that is not as easy as beating up on a vendor. It’s at this point we will start to see a rejection of NFV as operationalizing NFVi, SDN, and automation is challenging. Not impossible, just challenging. (Aside: the real issue often in telecoms is the complexity of the organization, not the technology.)</p>
+
+<h2 id="rejection-of-nfv">Rejection of NFV?</h2>
+
+<p>I read Tom Nolle’s CIMI Corp blog quite a bit. I enjoy his take on telecoms and NFV. He has a recent post entitled <a href="http://blog.cimicorp.com/?p=3375">Have Operators Uncovered a New Transformation Path?</a> from which I take the following quote.</p>
+
+<blockquote>
+  <p>The leading technologies in transformation, according to popular wisdom, are SDN and NFV.  Operators have been griping about both in both conversations with me and surveys I’ve done.  SDN, they say, is too transformational in terms of the network technical model.  Central control of forwarding, the classic ONF OpenFlow SDN model, may or may not scale far enough and may or may not handle large-scale faults.  NFV, they say, is simply too complicated to be able to control operations costs, and its capital savings are problematic even without opex complications.</p>
+</blockquote>
+
+<p>I have some issues with the above statement. (Again, I like Tom’s work, I just have an issue with this particular post.)</p>
+
+<p>First, I don’t think anyone really wants a “OpenFlow” model of SDN. I prefer to think of OpenFlow as an academic project that furthered our thinking about SDN, not as something we would actually want to put into production. We need SDN, absolutely, but SDN != OpenFlow.</p>
+
+<p>The second statement I disagree with is that “NFV is too complicated.” We need automation to drive down costs. In order to automate we need APIs. And what APIs? OpenStack has the defacto NFVi API. In order to automatically deploy network functions we need something to schedule compute, storage, and network resources. That something is NFV. The vast majority of NFVi will probably be based on OpenStack.</p>
+
+<p>If we were to reject NFV all that would happen is that the abstraction of compute, storage, and networking would be hidden by another API (example Mesosphere perhaps?) but that does not avoid the complexity, it just gives it another name or is another product. We can create as many abstractions as are necessary to provide the appearance of reduced complexity, but somewhere there is an NFVi, and somewhere there is SDN, and these things must be well understood and operationally perfect, and that is challenging. But not so challenging that we have to give up on NFV, because giving up on NFV means giving up on automation and staying with the status quo of <em>manually</em> deploying applications onto physical boxes and <em>manually</em> wiring them up.</p>
+
+<p>My suggestions to telecoms would be to understand that some complexity is unavoidable and to allow their staff to get up to speed on operationalizing management of NFVi and deployment of NFs with the understanding that it is definitely harder to do than a one-time, static, unrepeatable deployment handled by a vendor. If you want to see complexity try altering one of those deployments a year down the road. ;)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

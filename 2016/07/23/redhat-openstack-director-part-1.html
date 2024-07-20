@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedHat OpenStack Director - Part 1 - Overview | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="RedHat OpenStack Director - Part 1 - Overview">
+
+    
+    <meta name="twitter:description" content="<p>Due to the complexity, number of services, clustered systems, and other components that comprise an OpenStack cloud, some kind of tooling is required to manage its deployment (and hopefully life-cycle over time). There are several systems available to manage an OpenStack cloud, such as Mirantis’ Fuel, <a href="http://docs.openstack.org/developer/openstack-ansible/install-guide/">OpenStack Ansible</a>, upstream <a href="http://docs.openstack.org/developer/tripleo-docs/">Tripleo</a>, to name only a few.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Due to the complexity, number of services, clustered systems, and other components that comprise an OpenStack cloud, some kind of tooling is required to manage its deployment (and hopefully life-cycle over time). There are several systems available to manage an OpenStack cloud, such as Mirantis’ Fuel, <a href="http://docs.openstack.org/developer/openstack-ansible/install-guide/">OpenStack Ansible</a>, upstream <a href="http://docs.openstack.org/developer/tripleo-docs/">Tripleo</a>, to name only a few.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/redhat-openstack-director-part-1.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/redhat-openstack-director-part-1.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="RedHat OpenStack Director - Part 1 - Overview" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/07/23/redhat-openstack-director-part-1.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">RedHat OpenStack Director - Part 1 - Overview</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-07-23T00:00:00-04:00">
+                July 23, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Due to the complexity, number of services, clustered systems, and other components that comprise an OpenStack cloud, some kind of tooling is required to manage its deployment (and hopefully life-cycle over time). There are several systems available to manage an OpenStack cloud, such as Mirantis’ Fuel, <a href="http://docs.openstack.org/developer/openstack-ansible/install-guide/">OpenStack Ansible</a>, upstream <a href="http://docs.openstack.org/developer/tripleo-docs/">Tripleo</a>, to name only a few.</p>
+
+<p>RedHat also offers such a product: <a href="https://access.redhat.com/documentation/en/red-hat-openstack-platform/8/director-installation-and-usage/director-installation-and-usage">Director</a>. At least I think it’s called Director, and I believe is part of the RedHat OpenStack Platform.</p>
+
+<p>In this blog post I’ll do a quick overview of RedHat Director 8 with regards to using it to install an OpenStack cloud. I should note that I am still working to understand some functionality of Director, especially around custom modification and post-deployment changes–though things are not looking well on those two points at this time. However, more investigation and experimentation is required. So there will be a second post on Director in the near future.</p>
+
+<p>I should also note that I usually prefer to deploy OpenStack myself, most commonly using Cobbler and Ansible, though at some point I’d prefer to try to use Ironic over Cobbler. I find that I can deploy a complex OpenStack cloud in a couple thousand lines of Ansible. Whether or not to use an OpenStack deployment tool is a difficult discussion, though I can understand why deployment tools such as Director are chosen. It’s similar to discussions on web frameworks. Some people like them, some people don’t. Occasionally it’s not possible to use a framework, but most of the time it’s a good decision–as long as they are flexible.</p>
+
+<h2 id="features-of-openstack-deployment-tools">Features of OpenStack Deployment Tools</h2>
+
+<p>Most OpenStack deployment systems do at least the following in some manner:</p>
+
+<ul>
+  <li>Baremetal operating system deployment</li>
+  <li>Network design/deployment</li>
+  <li>Configuration management</li>
+  <li>Orchestration of services</li>
+  <li>Vetted OpenStack configuration options</li>
+  <li>OpenStack version upgrades</li>
+  <li>Monolithic or container based deployment</li>
+  <li>Plugin based architecture</li>
+  <li>Engineering decisions made for you</li>
+  <li>Reduction of complexity through abstraction layer</li>
+  <li>Occasionally Day 2 operational tooling</li>
+  <li>HA deployment using clustered/distributed systems</li>
+</ul>
+
+<p>Each of these systems will make different, though similar decisions. For example RedHat Director uses Ironic to manage baremetal operating systems, whereas Mirantis Fuel uses Cobbler. While Director’s configuration management component is mostly based on upstream OpenStack Puppet modules, OpenStack Ansible uses…you guessed it…Ansible. Regarding OpenStack control services, Director currently takes a monolithic approach and deploys all control services onto a single operating system instance (though can have multiple controllers), OpenStack Ansible deploys tens of LXC based containers with each major service running in its own container.</p>
+
+<p>##What I like about Director</p>
+
+<p>There are a few things that I like about RedHat’s Director:</p>
+
+<ol>
+  <li>It’s command line and template based and overall quite sparse</li>
+  <li>It uses Ironic for baremetal OS management</li>
+  <li>It works in terms of a repeatable installation</li>
+  <li>That it’s based on midstream and upstream opensource projects</li>
+  <li>Undercloud/overcloud model</li>
+</ol>
+
+<p><strong>Sparse</strong></p>
+
+<p>Director is quite sparse. There is no fancy web interface, or at least not one that I’m aware of. I don’t mind because I prefer to use the command line, and more specifically, if there is no web GUI, and the deployment is based on templates and the <em>openstack overcloud</em> command, then the deployment definition can be stored in a source code repository. This makes it much easier to have repeatable installations.</p>
+
+<p><strong>Ironic</strong></p>
+
+<p><a href="http://docs.openstack.org/developer/ironic/index.html">OpenStack Ironic</a> is an interesting project used to manage baremetal (ie. physical servers) instead of virtual machines.</p>
+
+<blockquote>
+  <p>Ironic is an OpenStack project which provisions bare metal (as opposed to virtual) machines by leveraging common technologies such as PXE boot and IPMI to cover a wide range of hardware, while supporting pluggable drivers to allow vendor-specific functionality to be added.</p>
+</blockquote>
+
+<p>As mentioned, I typically use Cobbler for this part of an OpenStack deployment, but I’m enjoying using Ironic with Director. That said, Ironic is much more complicated than Cobbler, and things that are easy with Cobbler are not so easy with Ironic. However, they are much different systems and even though they effectively do the same thing, I’m not sure it’s possible to compare them. Given my preference for an undercloud, it would make sense to incorporate Ironic there.</p>
+
+<p><strong>Repeatable</strong></p>
+
+<p>Repeatable deployments are important but perhaps not for the reason you would expect. All of these deployment tools need to be developed using modern continuous integration tools. And in fact all of the examples I provided, Director, Fuel, and OpenStack Ansible, do just that. This improves their quality because every change to their code is checked via CI. Though, I’m not sure how many of them test an HA deployment, as they typically only have the resources for some kind of all-in-one virtual deployment.</p>
+
+<p>During my own investigation I have probably deployed the Overcloud 40 times. Each time make slight changes to the Director templates, gradually improving my deployment. It’s important that a deployment be based in code, not in clicking buttons in a graphical interface.</p>
+
+<p>For example, a new deployment requires these steps:</p>
+
+<pre><code class="language-bash">director$ heat stack-delete overcloud -y #delete the current cloud
+director$ #edit templates if required
+director$ ./bin/overcloud-deploy.sh #this contains the rather long deployment command referencing several templates
+director$ #wait for it to complete
+director$ heat stack-list
++--------------------------------------+------------+-----------------+---------------------+--------------+
+| id                                   | stack_name | stack_status    | creation_time       | updated_time |
++--------------------------------------+------------+-----------------+---------------------+--------------+
+| e24a92a9-dc9f-462b-af16-c8329714f238 | overcloud  | CREATE_COMPLETE | 2016-07-22T19:18:11 | None         |
++--------------------------------------+------------+-----------------+---------------------+--------------+
+director$ #run validation tests, if everything looks good, check in the changes
+</code></pre>
+
+<p>Repeatable deployments are extremely important, and that is one area Director (and Tripleo) shines.</p>
+
+<p>I should note that the Director node itself is quite “pet-like” and unless you do some work to automate its deployment, it is a system of record (<a href="https://www.youtube.com/watch?v=Wbv3gJ76NT8">in the parlance of our times</a>…lol).</p>
+
+<p><strong>Based on Opensource Code</strong></p>
+
+<p>Director is mostly Tripleo. In fact I’m not completely sure where it differs from the upstream code. Specifically, Director consumes the output of the <a href="https://www.rdoproject.org/">RDO</a> project. In turn, RDO consumes upstream Tripleo–thus it’s “midstream”, in between RedHat and Tripleo.</p>
+
+<p>One issue is that the upstream code is considerably farther ahead than Directors. There are features in Tripleo trunk right now that I would love to have, and in fact seem completely necessary, but are not in Director because it’s a few releases behind upstream. If I had my choice I would probably use the RDO output instead of Director, or perhaps even upstream.</p>
+
+<p><strong>Undercloud/Overcloud</strong></p>
+
+<p><a href="http://docs.openstack.org/developer/tripleo-docs/">Tripleo</a> stands for “OpenStack on OpenStack.”</p>
+
+<blockquote>
+  <p>TripleO is a project aimed at installing, upgrading and operating OpenStack clouds using OpenStack’s own cloud facilities as the foundation - building on Nova, Ironic, Neutron and Heat to automate cloud management at datacenter scale.</p>
+</blockquote>
+
+<p>When you use Tripleo you have two clouds:</p>
+
+<ol>
+  <li>Undercloud, ie. Director</li>
+  <li>Overcloud</li>
+</ol>
+
+<p>The Undercloud is an OpenStack instance where Ironic and Heat (as well as all the other required services) run so that you can deploy the Overcloud.</p>
+
+<p>Most people don’t grasp, at the beginning anyways, that an OpenStack cloud requires considerable infrastructure to run. You will probably need three or four potentially highly available or clustered virtual machines to run services such as Jenkins and other operational components, perhaps software defined network controllers (SDN), virtual machine management nodes for other traditional systems (SolidFire I’m looking at you), and more.</p>
+
+<p>You will need an Undercloud whether you give it that name or not. In fact in my lab I have at least three clouds: first, a cloud to run Director(s) in, then Director, then finally the Overcloud. It’s fairly involved, and over and above the hardware you need for the HA plane of the overcloud. This is why container based deployments make a lot of sense, and unfortunately that is not something Tripleo supports at this time.</p>
+
+<p>##Things I don’t like</p>
+
+<ol>
+  <li>The Undercloud instance is a pet</li>
+  <li>Tripleo does not have much in the way of “life-cycle” management</li>
+  <li>Seemingly inflexible</li>
+  <li>Limited documentation</li>
+  <li>Hundreds of thousands of lines of Puppet</li>
+  <li>Orchestration?</li>
+  <li>Scaling controller services</li>
+  <li>Lack of containerization</li>
+</ol>
+
+<p><strong>Undercloud: System of Record</strong></p>
+
+<p>My impression of the Director system itself is that it is not “cloud native” for lack of a better phrase and would take some work to make it highly available in a fashion that would be typical of an application in an OpenStack cloud. Whether you call it a “pet” or a “system of record” or “not cloud native” it is an awkward system to operate.</p>
+
+<p><strong>Lack of Life-cycle</strong></p>
+
+<p>This is the biggest issue I have with Director. At this time I can find little having to do with operating a cloud over time, what some people call Day 2 (where Day 1 is the installation). Certainly there is some mention of upgrades and the like, but I have been working with Director for a few weeks and still really have no idea what it does in this area, despite looking through all the documentation. I have also heard that other organizations, HPe specifically, started out with Tripleo but dropped it because they realized the need to provide a life cycle for OpenStack deployments. Setting and forgetting an OpenStack installation is the easiest way to fail.</p>
+
+<p>Currently I would be concerned at having to run a long-term cloud using Director, and I’m not even sure if you could. That said I have more to learn, and also Director is a young product. But so far it doesn’t look good for Day 2 operations, let alone day 300.</p>
+
+<p><strong>Lots of Puppet</strong></p>
+
+<p>There is a ton of puppet.</p>
+
+<pre><code class="language-bash">[stack@director-01 ~]$ sudo find / -name "*.pp" | xargs wc -l
+SNIP!
+   1952 /home/stack/openstack-tripleo-heat-templates-0.8.14-14/puppet/manifests/overcloud_controller_pacemaker.pp
+     57 /home/stack/openstack-tripleo-heat-templates-0.8.14-14/puppet/manifests/overcloud_object.pp
+     61 /home/stack/openstack-tripleo-heat-templates-0.8.14-14/puppet/manifests/overcloud_volume.pp
+     96 /home/stack/openstack-tripleo-heat-templates-0.8.14-14/puppet/manifests/ringbuilder.pp
+      0 /opt/stack/selinux-policy/ipxe.pp
+ 115712 total
+</code></pre>
+
+<p>Eep. Certainly not all that Puppet is getting executed with every deploy, but even if it’s 50%, that is still a lot of Puppet to understand. I can deploy a production OpenStack cloud with 3-5K lines of Ansible. If you don’t understand it, then it’s an abstraction.</p>
+
+<p><strong>Seemingly Inflexible</strong></p>
+
+<p>I have tried to update an overcloud twice post-deploy. Both have failed and in fact broke the overcloud. This is pretty concerning.</p>
+
+<p>Further, on one deploy I attemped to disable Swift. The default deployment of swift configures a storage device on each of the controllers.</p>
+
+<pre><code class="language-bash">[heat-admin@overcloud-controller-2 swift]$ swift-ring-builder object.builder 
+object.builder, build version 3
+1024 partitions, 3.000000 replicas, 1 regions, 1 zones, 3 devices, 0.00 balance, 0.00 dispersion
+The minimum number of hours before a partition can be reassigned is 1
+The overload factor is 0.00% (0.000000)
+Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
+             0       1     1    172.17.19.12  6000    172.17.19.12              6000        d1 100.00       1024    0.00 
+             1       1     1    172.17.19.13  6000    172.17.19.13              6000        d1 100.00       1024    0.00 
+             2       1     1    172.17.19.11  6000    172.17.19.11              6000        d1 100.00       1024    0.00 
+</code></pre>
+
+<p>In hopes of reducing the complexity of the deployment somewhat, and not relying on a somewhat unusual Swift deployment, I attempted to turn it off by setting <em>ControllerEnableSwiftStorage</em> to false.</p>
+
+<pre><code class="language-bash">director$ grep -A 2 "  ControllerEnableSwift" overcloud.yaml 
+  ControllerEnableSwiftStorage:
+    default: true 
+    description: Whether to enable Swift Storage on the Controller
+</code></pre>
+
+<p>Disabling that still had Swift deployed, it just didn’t work because the storage component was not configured. lol. It seems that in Tripleo trunk there is the ability to <a href="https://github.com/openstack/tripleo-heat-templates/blob/master/overcloud.yaml#L367">select services</a> which I could really use…like right now.</p>
+
+<p>Further, I can’t find a way to disable Ceilometer. By default Ceilometer is deployed with a MongoDB backend, all on the controllers. In a busy OpenStack cloud that will surely fail.</p>
+
+<p><strong>Limited Documentation</strong></p>
+
+<p>The RedHat provided documentation is limited. Further, it seems that the suggestions made in the documentation are not really what is used in production. Also, by default the Director templates implement things like bonding using Open vSwitch, but then in the documentation it suggests not using OVS bonding. The upstream documentation is much better, and you could then ask questions on the RDO or Tripleo mailing lists or IRC channels…not so much for RedHat.</p>
+
+<p>In fact, in order to really understand how Tripleo works, I think you’d have to run upstream in the lab and learn from that. Then perhaps you could drop down to Director.</p>
+
+<p><strong>Orchestration</strong></p>
+
+<p>Orchestration is an overloaded term. In this context I mean the ability to perform complex actions on a cloud once it’s already deployed. For example upgrades. Or a simpler example, restart a clustered service. I am not clear on how to performan these kinds of actions using Director. Fuel performs these kind of actions using MCollective, and OpenStack Ansible can just use Ansible. But for Director? I’m not exactly sure. My guess is that it is done via the various custom os-* commands the project has created. More investigation is required.</p>
+
+<p><strong>Scaling Controller Services</strong></p>
+
+<p>How do I add a controller? Or provide more nova-conductor services? According to the <a href="https://access.redhat.com/documentation/en/red-hat-openstack-platform/8/director-installation-and-usage/chapter-9-scaling-the-overcloud">RedHat docs</a> you cannot scale up, or down, the controller nodes.</p>
+
+<p><strong>Lack of Containerization</strong></p>
+
+<p>Monolithic OpenStack controllers have largely been left behind. Most people are using containers to split out OpenStack services. I would not, if I had the choice, deploy monolithic controllers. I’ve made that mistake before. At the very least LXC should be used. I believe Director/Tripleo is starting to support Docker, but RedHat lists it as a tech preview.</p>
+
+<p>It seems counter-intuitive, but using something like <a href="http://kubernetes.io/">Kubernetes</a> makes a lot of sense for the OpenStack control plane. Or, as mentioned, at least LXC, which I am using in my own undercloud. LXC 2.0 recently came out and while I have issues with it, overall I’m happy.</p>
+
+<p>##Conclusion</p>
+
+<p>I’ve deployed large, production, high SLA OpenStack clouds before, and run them over time. Deploying is easy, operating is bloody difficult. I know what is required…what works and what doesn’t. Today my impression of Director is that it is fairly behind in terms of what successful, modern OpenStack operators are doing to manage their clouds. I have a lot more to learn about Director and Tripleo, but three or four weeks in I feel I have a good idea of what they offer.</p>
+
+<p>Hopefully in the next post I’ll know more about Day 2 capabilities, and perhaps I’ll be more comfortable with it. Certainly there is no denying that behind the scenes Director, based on Tripleo, is quite complicated and has many components to learn and understand. Perhaps those components allow for operational proficiency. Or perhaps not.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

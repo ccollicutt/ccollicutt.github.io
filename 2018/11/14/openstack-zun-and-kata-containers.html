@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Zun and Kata Containers | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack Zun and Kata Containers">
+
+    
+    <meta name="twitter:description" content="<p><em>(diagram of kata containers)</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>(diagram of kata containers)</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-zun-and-kata-containers.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-zun-and-kata-containers.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack Zun and Kata Containers" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/11/14/openstack-zun-and-kata-containers.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack Zun and Kata Containers</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-11-14T00:00:00-05:00">
+                November 14, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>(diagram of kata containers)</em></p>
+
+<p>In this post I’ll explore using DevStack to deploy OpenStack Zun. After that, I’ll setup Zun to use Kata Containers as the container runtime.</p>
+
+<h2 id="openstack-zun">OpenStack Zun</h2>
+
+<p>So what is OpenStack Zun? The <a href="https://wiki.openstack.org/wiki/Zun">wiki page</a> for Zun actually does a pretty good job of explaining it:</p>
+
+<blockquote>
+  <p>Zun is for users who want to create and manage containers as OpenStack-managed resource. Containers managed by Zun are supposed to be integrated well with other OpenStack resources, such as Neutron network and Cinder volume. Users are provided a simplified APIs to manage containers without the need to explore the complexities of different container technologies. Magnum is for users who want a self-service solution to provision and manage a Kubernetes (or other COEs) cluster.</p>
+</blockquote>
+
+<p>To unpack that paragraph, Zun provides an API that lets you manage containers. It is not Kubernetes, or Docker, or LXD, or any other Container Orchestration Engine (COE). The Zun API is its own API. It uses many pieces from OpenStack and other container related systems, but it’s its own API.</p>
+
+<p>I should say here that if one <em>does</em> want a COE, then the <a href="https://docs.openstack.org/magnum/latest/">OpenStack Magnum</a> project can provide that. What Zun and Magnum do are quite different.</p>
+
+<h2 id="kata-containers">Kata Containers</h2>
+
+<blockquote>
+  <p>Kata Containers is an open source project and community working to build a standard implementation of lightweight Virtual Machines (VMs) that feel and perform like containers, but provide the workload isolation and security advantages of VMs. – <a href="https://katacontainers.io/">Kata Containers</a>:</p>
+</blockquote>
+
+<p>Basically, Kata containers are virtual machines which act as much like containers as possible.</p>
+
+<p>(I don’t want to discuss what containers are in this blog post, as it would take up too much room, but it’s worth doing some reading about cgroups, namespaces, etc, and what exactly makes up containers.)</p>
+
+<h2 id="devstack--zun--kata-containers">DevStack + Zun + Kata Containers</h2>
+
+<p>The best way to quickly try out Zun and Kata Containers is to use DevStack to deploy a small OpenStack deployment with the Zun plugin.  I’m mostly following <a href="https://github.com/kata-containers/documentation/blob/master/zun/zun_kata.md">this document</a> with a few small changes (overall the linked document does work).</p>
+
+<p>First, we need a DevStack with Zun.</p>
+
+<p>DevStack + Zun will be deployed onto Ubuntu 16.04. Note that the stable/rocky release of both DevStack and Zun is used, more recent versions should work as well.</p>
+
+<p><em>NOTE: I am disabling Horizon because I kept running into a permissions bug that stops DevStack from completing. By the time you read this perhaps that bug is fixed in DevStack.</em></p>
+
+<pre><code>apt update
+apt install git screen -y
+
+screen -R install 
+sudo useradd -s /bin/bash -d /opt/stack -m stack
+echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
+su - stack
+sudo mkdir -p /opt/stack
+sudo chown $USER /opt/stack
+git clone https://github.com/openstack-dev/devstack /opt/stack/devstack
+cd /opt/stack/devstack 
+git checkout stable/rocky
+
+HOST_IP="$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/')"
+git clone https://github.com/openstack/zun /opt/stack/zun
+cd /opt/stack/zun
+git checkout stable/rocky
+cd /opt/stack/devstack
+cat /opt/stack/zun/devstack/local.conf.sample \
+    | sed "s/HOST_IP=.*/HOST_IP=$HOST_IP/" \
+    &gt; /opt/stack/devstack/local.conf
+sed -i "s/KURYR_CAPABILITY_SCOPE=.*/KURYR_CAPABILITY_SCOPE=local/" /opt/stack/devstack/local.conf
+echo "ENABLE_CLEAR_CONTAINER=true" &gt;&gt; /opt/stack/devstack/local.conf
+# bug in horizon deployment...
+echo "disable_service horizon" &gt;&gt;  /opt/stack/devstack/local.conf
+</code></pre>
+
+<p>Finally, run the stack.sh script to install DevStack.</p>
+
+<pre><code>./stack.sh
+</code></pre>
+
+<p><em>NOTE: stack.sh can take an hour to complete, depending on network connectivity.</em></p>
+
+<p>Once stack.sh completes, we should be able to access OpenStack and Zun.</p>
+
+<pre><code>source /opt/stack/devstack/openrc admin admin
+# Make a couple of aliases for less typing
+alias os=openstack 
+alias ac="openstack appcontainer"
+os token issue
+ac list
+</code></pre>
+
+<p>Hopefully <code>os token issue</code> returns a token, and <code>ac list</code> runs and shows no containers built yet. If not, then DevStack did not deploy properly.</p>
+
+<h2 id="setting-up-zun-and-kata-containers-post-devstack-deploy">Setting up Zun and Kata Containers Post DevStack Deploy</h2>
+
+<p>DevStack has deployed OpenStack and Zun, but we still need to setup Zun to use Kata Containers.</p>
+
+<p>To install Kata Containers:</p>
+
+<pre><code>sudo sh -c "echo 'deb http://download.opensuse.org/repositories/home:/katacontainers:/release/xUbuntu_$(lsb_release -rs)/ /' &gt;&gt; /etc/apt/sources.list.d/kata-containers.list"
+curl -sL  https://download.opensuse.org/repositories/home:/katacontainers:/release/xUbuntu_$(lsb_release -rs)/Release.key | sudo apt-key add -
+sudo -E apt-get update
+sudo -E apt-get -y install kata-runtime kata-proxy kata-shim
+</code></pre>
+
+<p>Next, we configure Docker to use the kata-runtime.</p>
+
+<pre><code>sudo sed -i 's/"cor"/"kata-runtime"/' /etc/docker/daemon.json
+sudo sed -i 's/"\/usr\/bin\/cc-oci-runtime"/"\/usr\/bin\/kata-runtime"/' /etc/docker/daemon.json
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</code></pre>
+
+<p>At this point Zun should be able to use the kata-runtime.</p>
+
+<p><em>NOTE: We could also setup Zun to use kata-runtime as the default. If you’d like to do that, you can add the below line into the default section of <code>/etc/zun/zun.conf</code>.</em></p>
+
+<pre><code>container_runtime = kata-runtime
+</code></pre>
+
+<p>Then restart Zun.</p>
+
+<pre><code>for i in `systemctl list-unit-files | grep devstack@zun | cut -f 1 -d " "`; do sudo systemctl restart $i; done
+</code></pre>
+
+<p>If that line is not added, then the default container runtime is runc, but you can request the kata-runtime with an option, <code>--runtime kata-runtime</code>.</p>
+
+<pre><code>openstack appcontainer run --name kata --runtime kata-runtime nginx:latest
+</code></pre>
+
+<p>With the above command the container will use the kata-runtime. If the default run time is kata-container, then that option is not needed.</p>
+
+<h2 id="using-zun-and-kata-containers">Using Zun and Kata Containers</h2>
+
+<p>Now that OpenStack with Zun has been deployed, and Kata Containers installed and Zun/Docker configured to use the kata-runtime, we can finally boot a Kata Container.</p>
+
+<p>First, lets create a Kata based container.</p>
+
+<pre><code>openstack appcontainer run --name kata nginx:latest
+</code></pre>
+
+<p>After that command completes, a container should boot up.</p>
+
+<pre><code># openstack appcontainer list
++--------------------------------------+------+--------------+---------+------------+--------------------------+-------+
+| uuid                                 | name | image        | status  | task_state | addresses                | ports |
++--------------------------------------+------+--------------+---------+------------+--------------------------+-------+
+| c9f8e734-d616-404d-b3e1-425a0882e45b | kata | nginx:latest | Running | None       | 172.24.4.10, 2001:db8::7 | [80]  |
++--------------------------------------+------+--------------+---------+------------+--------------------------+-------+
+</code></pre>
+
+<p>Let’s introspect the container and see what runtime it is using.</p>
+
+<pre><code># openstack appcontainer show kata | grep runtime
+| runtime           | kata-runtime
+</code></pre>
+
+<p>As can be seen above, it’s using the kata-runtime.</p>
+
+<p>Now lets create a runc based container.</p>
+
+<pre><code># openstack appcontainer run --name runc --runtime runc nginx:latest
+</code></pre>
+
+<p>What runtime is it using?</p>
+
+<pre><code># openstack appcontainer show runc | grep runtime
+| runtime           | runc   
+</code></pre>
+
+<p>So it’s using runc.</p>
+
+<p>Now let’s introspect each containers kernel.</p>
+
+<p>Here’s the physical hosts kernel version.</p>
+
+<pre><code># uname -a
+Linux kata6 4.4.0-134-generic #160-Ubuntu SMP Wed Aug 15 14:58:00 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+
+<p>Now here’s the kernel version of the runc container.</p>
+
+<pre><code># openstack appcontainer exec runc uname -a
+Linux 8697605d373b 4.4.0-134-generic #160-Ubuntu SMP Wed Aug 15 14:58:00 UTC 2018 x86_64 GNU/Linux
+</code></pre>
+
+<p>Note that the host kernel and the runc container kernel are the same.</p>
+
+<p>Let’s see what kernel is in the kata-runtime based container.</p>
+
+<pre><code># openstack appcontainer exec kata uname -a
+Linux a41bb53476f6 4.14.67-139.container #1 SMP Mon Oct 22 22:43:15 UTC 2018 x86_64 GNU/Linux
+</code></pre>
+
+<p>Aha!, that is <code>4.14.67-139.container</code> not <code>4.4.0-134-generic</code>. So that container is actually a virtual machine with its own kernel.</p>
+
+<p>We can also use the kata-runtime command to list the containers it is supporting.</p>
+
+<pre><code># kata-runtime list
+ID                                                                 PID         STATUS      BUNDLE                                                                                                                 CREATED                          OWNER
+a41bb53476f64576bcfd2db999f8245c794ea9fce0784594a2239af1c972aaf3   10543       running     /run/containerd/io.containerd.runtime.v1.linux/moby/a41bb53476f64576bcfd2db999f8245c794ea9fce0784594a2239af1c972aaf3   2018-11-14T14:06:12.414823873Z   #0
+</code></pre>
+
+<p>Also, if we do a <code>ps ax | grep qemu</code> we can see the container is actually running via a custom qemu process.</p>
+
+<pre><code># ps ax | grep qemu
+10526 ?        Sl     0:02 /usr/bin/qemu-lite-system-x86_64 -name sandbox-a41bb53476f64576bcfd2db999f8245c794ea9fce0784594a2239af1c972aaf3 SNIP!
+</code></pre>
+
+<p>Note that it is <code>qemu-lite-system-x86_64</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you like virtual machines, for whatever reason, perhaps security (all though that is tough to quantify), but you want to use them like containers, then Kata Containers is perfect for you. Also, if you are not interested in using COEs like Docker or Kubernetes, then Zun presents another possibility for obtaining a container.</p>
+
+<p>Ultimately deploying OpenStack and Zun and configuring Zun to use Kata Containers will not be the most common way to use containers (Kubernetes has certainly won that battle). However, it is an <em>option</em>, and an option that some might choose to utilize. Diversity is good. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

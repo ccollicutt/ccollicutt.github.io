@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Vancouver Summit 2018 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack Vancouver Summit 2018">
+
+    
+    <meta name="twitter:description" content="<p>Last week I was at the OpenStack Summit in Vancouver. This is the second time I’ve been to a OpenStack summit in this amazing location. It is probably the best place in the world to hold a conference, as the conference center is beautiful and the view is absolutely unbeatable. I am sure that this will not be the last OpenStack conference held in BC.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Last week I was at the OpenStack Summit in Vancouver. This is the second time I’ve been to a OpenStack summit in this amazing location. It is probably the best place in the world to hold a conference, as the conference center is beautiful and the view is absolutely unbeatable. I am sure that this will not be the last OpenStack conference held in BC.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-vancouver-2018-summit.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-vancouver-2018-summit.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack Vancouver Summit 2018" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/05/28/openstack-vancouver-2018-summit.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack Vancouver Summit 2018</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-05-28T00:00:00-04:00">
+                May 28, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Last week I was at the OpenStack Summit in Vancouver. This is the second time I’ve been to a OpenStack summit in this amazing location. It is probably the best place in the world to hold a conference, as the conference center is beautiful and the view is absolutely unbeatable. I am sure that this will not be the last OpenStack conference held in BC.</p>
+
+<h2 id="openstack-slows-down-and-matures">OpenStack Slows Down and Matures</h2>
+
+<p>Having been at the previous Vancouver summit, I believe in 2015, I know that it was much larger. I’m sure that the attendance at the 2015 version was six or seven thousand. This summit I believe was about 2500 people. There is a good reason for the reduction in attendance in that there are not as many developers that go as they now, instead, attend another event called the “PTG” (Project Team Gathering) which usually happens in a less expensive city (such as Denver…but strangely also Dublin). So that drops attendance by about half.</p>
+
+<p>The other factor is that OpenStack is maturing. It’s coming through they hype cycle and settling down. Certainly there is a lot of work that needs to be done to keep OpenStack going, especially with regards to NFV, but overall it’s a bit less “exciting” at this point. For example Telecoms are putting it into production. Think about that. The most conservative organizations in the world and deploying thousands of OpenStack instances.</p>
+
+<p>For another perspective, Redmonk has a <a href="http://redmonk.com/sogrady/2018/05/25/openstack-at-a-crossroads/">balanced blog post</a>.</p>
+
+<blockquote>
+  <p>Many event organizers, OpenStack included, set themselves up for this criticism by using attendance themselves as a sign of health and progress, but that doesn’t change the fact that moving towards smaller events can be a boon for communities as it makes the events more navigable and weeds out less committed third parties. Attendance, in other words, is not a particularly useful metric if you’re trying to assess the OpenStack project’s health, and not just because it forked its developer and user events.</p>
+</blockquote>
+
+<p>Should there be a Linux Foundation, an OpenStack (or Open Infra) foundation, and a CNCF foundation? I think so. OpenStack’s community is really built on collaboration. I give them a hard time occasionally, but compared to other open source projects they really try to keep things civil. I think the triumvirate of these three foundations is a powerful substrate for open source software development. Two might not be enough, and four too many.</p>
+
+<h2 id="open-infrastructure">Open Infrastructure</h2>
+
+<p>As OpenStack focuses on other open source projects under their umbrella (Zuul and Kata Containers) it’s becoming fairly obvious that OpenStack will rebrand in some fashion around “Open Infrastructure.” They are putting out signals that this might happen, and I think it makes sense. I help to run the Toronto OpenStack meetup, and as well I recently started an Open Source Networking meetup. Just from my own view it would make sense to rebrand our meetups as Open Infrastructure and start focusing on a broader topic base.</p>
+
+<p>Vendors like to try to pin OpenStack to just being a set of APIs into which any backend can be plugged into. However I don’t really view it like that as OpenStack is a Linux ecosystem integration platform. It really is open infrastructure. I prefer to consider what gets tested by the OpenStack CI system as being what “OpenStack” is, and add in some key components like Ceph and open networking, as well as automation systems such as ONAP.</p>
+
+<h2 id="network-slicing">Network Slicing</h2>
+
+<p>We presented a couple of talks at the summit. The one that probably resonated most with attendees was our presentation on <a href="https://www.youtube.com/watch?v=x_b4-w4Mrcg">5G Network Slcing and OpenStack</a>. Like a lot of technologies, it’s not that easy to define what Network Slicing is, but I personally find it fascinating, if at the very least academically. Certainly Network Slicing will occur in some fashion, but it is possible we won’t call it that…could just be some form of end to end virtualization. Or we could go all the way and build tools and APIs that meet all requirements for network slicing and create amazingly diverse networks and applications running on top of them, all the while providing secure, safe access for emergency communications.</p>
+
+<h2 id="code-drops---airship-starlingx-akraino">Code Drops - Airship, StarlingX, Akraino…</h2>
+
+<p>There were several code drops from larger companies:</p>
+
+<ul>
+  <li><a href="https://www.akraino.org/">Akraino</a></li>
+  <li><a href="http://www.starlingx.io/">StarlingX</a></li>
+  <li><a href="http://www.airshipit.org/">Airship</a></li>
+</ul>
+
+<h3 id="akraino">Akraino</h3>
+
+<p>AFAIK Akraino is essentially an integration project to create an edge stack. I’m not sure how much code actually exists at this time, , but I think it’s a good idea to do work in this area whether it’s successful or not. Certainly there is a good opportunity to get involved in the project right now as it’s still quite fluid.</p>
+
+<p>I personally still think that innovation occurs in open source, so this kind of project is needed.</p>
+
+<h3 id="starlingx">StarlingX</h3>
+
+<p>Wind River has an OpenStack distribution (Titanium) which is aimed at Network Function Virtualizion (NFV) infrastructure and thus telecoms (and to be fair, industrial use cases as well). They had many proprietary changes to OpenStack in order to improve it and for various reasons have decided to try to upstream that code.</p>
+
+<p>Wind River is a pretty interesting company. I’ve got to give props to any company that writes code that has to work or otherwise lives are in danger.</p>
+
+<blockquote>
+  <p>For over 20 years, Wind River® has provided NASA with the most proven software platform to bring dozens of unmanned systems to space, resulting in some of the most significant space missions in history. - <a href="https://www.windriver.com/inspace/">Wind River: 20 Years in Space</a></p>
+</blockquote>
+
+<h3 id="airship">Airship</h3>
+
+<p>It’s unfortunate that it seems like we need another way to deploy OpenStack, but apparently we do. From my limited introduction to Airship I like the overall tone of the project in terms of how it’s abstracting the layers, and I believe it is also taking care of Kubernetes deployments as well. But don’t quote me on that as I haven’t looked at it closely enough. It also relies heavily on <a href="https://docs.openstack.org/openstack-helm/latest/readme.html">OpenStack-Helm</a>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Overall, it was a nice summit. Times are a changin’. I fully expect the OpenStack Foundation to rebrand in some fashion, that is assuming once doesn’t already consider them as having rebranded with “Open Infra” and emphasis on Zuul and Kata Containers as new, separate projects. I also expect a push back on complexity in NFV, but we need infrastructure that has APIs and schedulers, so the complexity is unavoidable, we just have to get good at it.</p>
+
+<p>The foundation has changed the PTG so that now operators, such as myself, are invited. We used to have a separate operators meetup, but now that will be co-located with the five day PTG. So the next time I go to an OpenStack event will be the upcoming PTG event in Denver.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

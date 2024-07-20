@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install and Boot an Older Kernel in Ubuntu | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install and Boot an Older Kernel in Ubuntu">
+
+    
+    <meta name="twitter:description" content="<p>Stangely it was hard to find good instructions on installing an older kernel and setting it to boot on Ubuntu 16.04. Here are some quick instructions.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Stangely it was hard to find good instructions on installing an older kernel and setting it to boot on Ubuntu 16.04. Here are some quick instructions.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/install-and-boot-older-kernel-ubuntu.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/install-and-boot-older-kernel-ubuntu.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install and Boot an Older Kernel in Ubuntu" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/05/17/install-and-boot-older-kernel-ubuntu.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install and Boot an Older Kernel in Ubuntu</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-05-17T00:00:00-04:00">
+                May 17, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Stangely it was hard to find good instructions on installing an older kernel and setting it to boot on Ubuntu 16.04. Here are some quick instructions.</p>
+
+<p>The instance is Ubuntu 16.04 (in Digital Ocean) with the following kernel:</p>
+
+<pre><code>root@old-kernely:~# uname -a
+Linux old-kernely 4.4.0-148-generic #174-Ubuntu SMP Tue May 7 12:20:14 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+root@old-kernely:~# 
+</code></pre>
+
+<p>Install an older kernel, 4.4.0-22-generic.</p>
+
+<pre><code>root@old-kernely:~# apt install linux-image-4.4.0-22-generic
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following package was automatically installed and is no longer required:
+  grub-pc-bin
+Use 'apt autoremove' to remove it.
+Suggested packages:
+  fdutils linux-doc-4.4.0 | linux-source-4.4.0 linux-tools linux-headers-4.4.0-22-generic
+The following NEW packages will be installed:
+  linux-image-4.4.0-22-generic
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 18.7 MB of archives.
+After this operation, 55.4 MB of additional disk space will be used.
+Get:1 http://mirrors.digitalocean.com/ubuntu xenial-updates/main amd64 linux-image-4.4.0-22-generic amd64 4.4.0-22.40 [18.7 MB]
+Fetched 18.7 MB in 0s (69.0 MB/s)                 
+Selecting previously unselected package linux-image-4.4.0-22-generic.
+(Reading database ... 54537 files and directories currently installed.)
+Preparing to unpack .../linux-image-4.4.0-22-generic_4.4.0-22.40_amd64.deb ...
+Done.
+Unpacking linux-image-4.4.0-22-generic (4.4.0-22.40) ...
+Setting up linux-image-4.4.0-22-generic (4.4.0-22.40) ...
+Running depmod.
+update-initramfs: deferring update (hook will be called later)
+Examining /etc/kernel/postinst.d.
+run-parts: executing /etc/kernel/postinst.d/apt-auto-removal 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+run-parts: executing /etc/kernel/postinst.d/initramfs-tools 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+update-initramfs: Generating /boot/initrd.img-4.4.0-22-generic
+W: mdadm: /etc/mdadm/mdadm.conf defines no arrays.
+run-parts: executing /etc/kernel/postinst.d/unattended-upgrades 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+run-parts: executing /etc/kernel/postinst.d/update-notifier 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+run-parts: executing /etc/kernel/postinst.d/x-grub-legacy-ec2 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+Searching for GRUB installation directory ... found: /boot/grub
+Searching for default file ... found: /boot/grub/default
+Testing for an existing GRUB menu.lst file ... found: /boot/grub/menu.lst
+Searching for splash image ... none found, skipping ...
+Found kernel: /boot/vmlinuz-4.4.0-148-generic
+Found kernel: /boot/vmlinuz-4.4.0-148-generic
+Found kernel: /boot/vmlinuz-4.4.0-22-generic
+Updating /boot/grub/menu.lst ... done
+
+run-parts: executing /etc/kernel/postinst.d/zz-update-grub 4.4.0-22-generic /boot/vmlinuz-4.4.0-22-generic
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-4.4.0-148-generic
+Found initrd image: /boot/initrd.img-4.4.0-148-generic
+Found linux image: /boot/vmlinuz-4.4.0-22-generic
+Found initrd image: /boot/initrd.img-4.4.0-22-generic
+done
+root@old-kernely:~# 
+</code></pre>
+
+<p>OK, now that the new kernel is installed, how can it be made the default? One way would be to reboot and chose that kernel at the grub menu but that is not that easy in a cloud environment, and wouldn’t be a permanent change.</p>
+
+<p>Figuring out what to put in /etc/default/grub isn’t that easy. Let’s look at the submenus and menuentries (<a href="https://unix.stackexchange.com/questions/198003/set-default-kernel-in-grub">hat tip</a>).</p>
+
+<pre><code>root@old-kernely:~# awk '/menuentry/ &amp;&amp; /class/ {count++; print count-1"****"$0 }' /boot/grub/grub.cfg                                            
+0****menuentry 'Ubuntu' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
+1****	menuentry 'Ubuntu, with Linux 4.4.0-148-generic' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-148-generic-advanced-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
+2****	menuentry 'Ubuntu, with Linux 4.4.0-148-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-148-generic-recovery-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
+3****	menuentry 'Ubuntu, with Linux 4.4.0-22-generic' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-22-generic-advanced-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
+4****	menuentry 'Ubuntu, with Linux 4.4.0-22-generic (recovery mode)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-4.4.0-22-generic-recovery-3bfdf15c-91ab-470e-a04a-6d95c9a1fbac' {
+</code></pre>
+
+<p>Under the submenu at entry 3 is the older kernel. However, numbering restarts with the submenu. So to boot the 4.4.0-22 kernel the required entry is submenu 1 and menuentry 2.</p>
+
+<p>We add this to /etc/default/grub. Currently it’s set to 0.</p>
+
+<pre><code>root@old-kernely:~# grep GRUB_DEFAULT /etc/default/grub
+GRUB_DEFAULT=0
+</code></pre>
+
+<p>Set it to “1&gt;2”.</p>
+
+<pre><code>root@old-kernely:~# grep GRUB_DEFAULT /etc/default/grub
+GRUB_DEFAULT="1&gt;2"
+</code></pre>
+
+<p>Update grub.</p>
+
+<pre><code>root@old-kernely:~# update-grub
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-4.4.0-148-generic
+Found initrd image: /boot/initrd.img-4.4.0-148-generic
+Found linux image: /boot/vmlinuz-4.4.0-22-generic
+Found initrd image: /boot/initrd.img-4.4.0-22-generic
+done
+</code></pre>
+
+<p>Reboot.</p>
+
+<pre><code>root@old-kernely:~# reboot
+</code></pre>
+
+<p>When the node reboots it’s using the older kernel specified.</p>
+
+<pre><code>root@old-kernely:~# uname -a
+Linux old-kernely 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+
+<p>Presumably there is a better way to do this. Let me know in the comments!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

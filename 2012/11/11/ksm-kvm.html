@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSM and KVM | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="KSM and KVM">
+
+    
+    <meta name="twitter:description" content="<p><em>UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ksm-kvm.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/ksm-kvm.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="KSM and KVM" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/11/11/ksm-kvm.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">KSM and KVM</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-11-11T00:00:00-05:00">
+                November 11, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>UPDATE: I did some more research and have a better idea of what pages_saved and pages_saving means. So we are saving quite a bit of memory!</em></p>
+
+<p>I recently found out about the <a href="http://www.linux-kvm.org/page/KSM">ksm</a> technology that is in Ubuntu 12.04 + kvm by default. ksm is a memory de-duplication process. As far as I understand it, ksm can allow virtual machines (actually any application, not just virtualization) to share memory pages–it finds all duplicated memory pages and merges them, thereby saving memory in some situations.</p>
+
+<p>One of the projects I am working on is a classroom as a service, or virtual classrooms. Students can login to a web gui and request a reservation to a virtual machine image which they can then access with a RDP client.</p>
+
+<p>In this project all of the images are based on–unfortunately–Windows 7. One would think that if we are running many similar Windows 7 images ksm could do a lot of de-duplication.</p>
+
+<p>I have been doing a few experiments in my spare time to see if ksm can help to over-commit memory. If I can I’d rather be able to run 400 virtual machines than 200. If we can over-commit on memory 1:2 or 1:4 there could be substantial cost savings for the project.</p>
+
+<h2 id="the-test">The Test</h2>
+
+<p>I have a basic Windows 7 image in qcow2 format.</p>
+
+<pre>
+<code>root@ksm_test:/mnt/ksm-test$ file win7-base.qcow2
+win7-base.qcow2: QEMU QCOW Image (v2), 21474836480 bytes
+</code>
+</pre>
+
+<p>I am going to run 30 Windows 7 images with four gigs of ram and two virtual cpus each, based off a qcow2 snapshot from the original backing image.</p>
+
+<p>The server I am running this test on is a <a href="http://www.dell.com/us/enterprise/p/poweredge-c6220/pd">Dell c6220</a> with 32 HT cores and 128 gigs of main memory.</p>
+
+<p><em>ASIDE: /mnt/ksm-test is an xfs file system. I found that this test on a ext4 based filesystem used considerably more IOPs than xfs because the jdb2 process was doing a lot of journaling. There are likely some settings I should be using with ext4 to get better performance, but instead I just hopped over to xfs and haven’t gone back to ext4 yet.</em></p>
+
+<p>This is the little script I use to boot the vms:</p>
+
+<pre>
+<code>root@ksm_test:~$ cat test_ksm.sh 
+#!/bin/bash
+
+# How much memory to boot with
+MEM=4048
+BACKING_DIR=/mnt/ksm-test
+BACKING_FILE=win7-base.qcow2
+SLEEP=60
+
+pushd $BACKING_DIR
+
+for i in {1..30}; do
+	echo "====&gt; Starting a new instance..."
+	# Remove the old backing file
+	rm -f win7-$i.qcow2
+
+	# Create a new backing file that is a qcow2 snapshot of the original file
+	qemu-img create -f qcow2 -b $BACKING_FILE win7-$i.qcow2
+
+	# Actually start the intstance
+	/usr/bin/kvm \
+	-M pc-1.0 \
+	-smp 2,sockets=2,cores=1,threads=1 \
+	-enable-kvm \
+	-m $MEM \
+	-drive file=win7-$i.qcow2,if=virtio \
+	-boot d \
+	-net nic,model=virtio \
+	-net user \
+	-nographic \
+	-vnc :$i \
+	-device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
+	-daemonize
+
+	# Let's just sleep for a few seconds...
+	echo "====&gt; Sleeping for $SLEEP..."
+	sleep $SLEEP 
+done
+
+popd
+
+exit 0
+</code>
+</pre>
+
+<p>After that script runs we have 30 kvm Win7 instances running:</p>
+
+<pre>
+<code>root@ksm_test:/mnt/ksm-test$ ps ax  |grep "bin\/kvm" | wc -l
+30
+</code>
+</pre>
+
+<p>For the first while things are a little crazy on the host because 30 Windows 7 vms just booted in 30 minutes. After a few hours, or rather overnight, the vms settle down quite a bit to just doing a few IOPs each.</p>
+
+<p>As far as what these vms are doing–I login to a couple every once and a while just to make sure they are up, but otherwise they are doing nothing but whatever they do by default.</p>
+
+<h2 id="the-defaults">The Defaults</h2>
+
+<p>ksm is enabled in Ubuntu by default when using kvm. However, the defaults are fairly conservative:</p>
+
+<pre>
+<code>root@ksm_host:~$ cat /sys/kernel/mm/ksm/pages_to_scan 
+100
+root@ksm_host:~$ cat /sys/kernel/mm/ksm/sleep_millisecs 
+200
+</code>
+</pre>
+
+<p>ksm will scan 100 pages, sleep for 200 milliseconds and then scan 100 more, and so on. But with millions of pages it will take a long, long time to scan all of them.</p>
+
+<p>I set the pages_to_scan to 20000 and sleep_millisecs to 20–I’m guessing these are pretty aggressive settings.</p>
+
+<pre>
+<code>root@ksm_host:~$  echo "20000" &gt; /sys/kernel/mm/ksm/pages_to_scan
+root@ksm_host:~$  echo "20" &gt; /sys/kernel/mm/ksm/sleep_millisecs
+</code>
+</pre>
+
+<h2 id="the-results">The Results</h2>
+
+<p>I suppose saying “results” sounds scientific. :)</p>
+
+<p>The reality is that I’m really just cutting and pasting the ksm information that has been recorded after several days of running 30 Windows 7 virtual machines that should all be very close in terms of memory use.</p>
+
+<p>From the <a href="http://www.kernel.org/doc/Documentation/vm/ksm.txt">ksm.txt</a> file:</p>
+
+<pre>
+<code>A high ratio of pages_sharing to pages_shared indicates good sharing,
+but a high ratio of pages_unshared to pages_sharing indicates wasted 
+effort. pages_volatile embraces several different kinds of activity, 
+but a high proportion there would also indicate poor use of madvise 
+MADV_MERGEABLE.
+</code>
+</pre>
+
+<p>And the results of ksm after a few days of running 30 vms…</p>
+
+<p>&lt;/pre&gt;</p>
+
+<pre>
+<code>root@ksm_test:~$ for i in `ls -1 /sys/kernel/mm/ksm`; \
+do echo "===&gt; $i"; cat /sys/kernel/mm/ksm/$i;  done
+===&gt; full_scans
+5417
+===&gt; pages_shared
+443355
+===&gt; pages_sharing
+26704343
+===&gt; pages_to_scan
+20000
+===&gt; pages_unshared
+3164064
+===&gt; pages_volatile
+183552
+===&gt; run
+1
+===&gt; sleep_millisecs
+20
+</code>
+</pre>
+
+<p>So, if I understand these numbers correctly, pages_shared is the amound of memory ksk is actually using. Thus in this example, ksm is using 1.7GB of memory:</p>
+
+<pre>
+<code>root@ksm_test:~$ getconf PAGESIZE
+4096
+</code>
+</pre>
+
+<p>So if we have 443355 pages shared, ksm is using this many bytes:</p>
+
+<pre>
+<code>root@ksm_test:~$ echo "443355 * 4096" | bc
+1815982080
+</code>
+</pre>
+
+<p>which is about 1.7GB.</p>
+
+<p>However, saved memory, ie. pages_sharing, is quite high! So this is good. :)</p>
+
+<pre>
+<code>root@ksm_test:~$ echo $((26704343*`getconf PAGE_SIZE`/1024/1024/1024)) GB
+101 GB
+</code>
+</pre>
+
+<p>I’m not sure how this equates to all the memory being used on the machine, but as far as ksm is concerned it’s saving us about 100 gigs. Nice.</p>
+
+<pre>
+<code>root@ksm_test:~$ free
+             total       used       free     shared    buffers     cached
+Mem:     131997772  131556896     440876          0     108448  108129628
+-/+ buffers/cache:   23318820  108678952
+Swap:     41943032     302836   41640196
+</code>
+</pre>
+
+<p>Update: Now that I have a better understanding of what ksm is doing and what it’s numbers mean, using a modified version of <a href="http://aionica.computerlink.ro/2011/08/ksm-kernel-samepage-merging-status/">this script</a> we can see some interesting results, though in the below example I am running 60 2 gig 1 vcpu instances instead of 30 4 gig 2 vcpu instances like the rest of this post:</p>
+
+<pre>
+<code>root@ksm_test:~$ ./ksm_stat.sh 
+Shared memory is 2071 MB
+Saved memory is 95514 MB
+Unshared memory is 21336 MB
+Volatile memory is 2549 MB
+Shared pages usage ratio is 46.11
+Unshared pages usage ratio is .22
+</code>
+</pre>
+
+<p>So thanks for reading, and if you have any suggestions as to what I might be doing incorrectly, be it settings or my math or my general assumptions about ksm :), please let me know in the comments.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

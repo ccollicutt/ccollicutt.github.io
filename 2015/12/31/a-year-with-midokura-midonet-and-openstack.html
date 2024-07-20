@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Year with Midokura's Midonet and OpenStack | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="A Year with Midokura's Midonet and OpenStack">
+
+    
+    <meta name="twitter:description" content="<p>One of the first things to do when deciding to deploy OpenStack is figure out what the Neutron network is going to look like. For that, one needs the project requirements, what your network administrators are willing to deploy (allow), and what the operators are comfortable using. Maybe those are all the same person, I don’t know. :) There are all the general Neutron deployment options, as well as plugins like <a href="http://www.projectcalico.org/">Project Calico</a>, <a href="http://www.plumgrid.com/">Plumgrid</a>, and <a href="https://wiki.OpenStack.org/wiki/Neutron_Plugins_and_Drivers">many others</a> to choose from. One might say you have a <a href="http://www.imdb.com/title/tt0092086/quotes?item=qt0400510">plethora of choices</a>.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>One of the first things to do when deciding to deploy OpenStack is figure out what the Neutron network is going to look like. For that, one needs the project requirements, what your network administrators are willing to deploy (allow), and what the operators are comfortable using. Maybe those are all the same person, I don’t know. :) There are all the general Neutron deployment options, as well as plugins like <a href="http://www.projectcalico.org/">Project Calico</a>, <a href="http://www.plumgrid.com/">Plumgrid</a>, and <a href="https://wiki.OpenStack.org/wiki/Neutron_Plugins_and_Drivers">many others</a> to choose from. One might say you have a <a href="http://www.imdb.com/title/tt0092086/quotes?item=qt0400510">plethora of choices</a>.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/a-year-with-midokura-midonet-and-openstack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/a-year-with-midokura-midonet-and-openstack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="A Year with Midokura's Midonet and OpenStack" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/12/31/a-year-with-midokura-midonet-and-openstack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">A Year with Midokura's Midonet and OpenStack</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-12-31T00:00:00-05:00">
+                December 31, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>One of the first things to do when deciding to deploy OpenStack is figure out what the Neutron network is going to look like. For that, one needs the project requirements, what your network administrators are willing to deploy (allow), and what the operators are comfortable using. Maybe those are all the same person, I don’t know. :) There are all the general Neutron deployment options, as well as plugins like <a href="http://www.projectcalico.org/">Project Calico</a>, <a href="http://www.plumgrid.com/">Plumgrid</a>, and <a href="https://wiki.OpenStack.org/wiki/Neutron_Plugins_and_Drivers">many others</a> to choose from. One might say you have a <a href="http://www.imdb.com/title/tt0092086/quotes?item=qt0400510">plethora of choices</a>.</p>
+
+<p>Before I get too far, I should note that I don’t have a lot of experience with non-Midonet deployments of Neutron, so I have “strong opinions, lightly held” in terms of how to deploy Neutron.</p>
+
+<p>My feeling when deciding to use Midonet was that the more generic Neutron deployment model, something like <a href="http://docs.openstack.org/networking-guide/scenario_dvr_ovs.html">HA with DVR</a>, sounded complicated and in some cases limited. Tales of debugging sounded awful. OpenStack operators love to anecdotally complain about standard Neutron deployment models, so I thought I’d just skip all that and implement Midonet. I needed a highly available system that also supported a <a href="https://aws.amazon.com/vpc/">VPC</a> style of tenant networking. Also I like software defined networking (whatever that actually means). Midonet seemed like a perfect fit, and after a year in production, I feel it was a good choice. Now if I complain about networking in OpenStack I’d be really be complaining about Midonet as opposed to Neutron (which is essentially just the front-end API).</p>
+
+<p>However, other networking models should be considered. I think it’s safe to say I have experience operating Enterprise Midonet 1.8, but after that things get fuzzy. So complete whatever due-diligence seems necessary for your project.</p>
+
+<h2 id="what-is-midonet">What is Midonet?</h2>
+
+<p>From my perspective as an OpenStack operator, Midonet is a Neutron plugin and software defined networking system. It falls into the category of “overlay” models. It creates a logical network topology over top of the physical one, essentially using VXLAN (or GRE) encapsulation. The network state is distributed and stored mostly in Zookeeper. The Midolman agent runs on API, gateway, and compute nodes. Midonet has good documentation, so I suggest taking at look at that to get a better understanding of how it all works.</p>
+
+<p>Here’s the standard Midonet diagram. It shows how Midonet “overlays” on top of the physical network.</p>
+
+<p><img src="/img/midonet_topology.png" alt="" /></p>
+
+<h2 id="things-i-like-about-midonet">Things I like about Midonet</h2>
+
+<p>There are many things to like about Midonet.</p>
+
+<ul>
+  <li><em>It is open source, though I’m not sure how many non-Midokura developers contribute</em></li>
+</ul>
+
+<p>Note: I have not deployed the open source version, only the commercial 1.8 series</p>
+
+<ul>
+  <li><em>BGP-based HA on the gateway nodes for north/south</em></li>
+</ul>
+
+<p>This means you can drop a gw node and only lose about 10 packets before the IP fails over. I really like this feature. Requires your network admin to do some work setting up BGP sessions. Midonet takes care of them on its side when BGP ports are configured. Also requires stateful port groups to be configured, but that is not hard. I’m not sure why anyone would deploy Midonet gateways without doing that.</p>
+
+<ul>
+  <li><em>Good support from Midokura</em></li>
+</ul>
+
+<p>I don’t recommend many commercial systems, but I do recommend Enterprise Midonet. The support team has been fantastic.</p>
+
+<ul>
+  <li><em>Midokura is a modern, fast moving company with new ideas</em></li>
+</ul>
+
+<p>There are lots of interesting things that could/can be done with a system that enables SDN. Think about anycast with floating IPs across WAN-connected regions, cool stuff like that. An overlay is certainly not less complicated, but the features and capabilities it adds are worth it in my opinion.</p>
+
+<ul>
+  <li><em>Because it is software features can be added without requiring new hardware</em></li>
+  <li><em>Has an API</em></li>
+  <li><em>Gets rid of standard Neutron network nodes, though north/south goes through the gw nodes</em></li>
+</ul>
+
+<p>Some Neutron deployments require dedicated network nodes.</p>
+
+<ul>
+  <li><em>Your network admins can probably ignore it and just provide L3 connectivity</em></li>
+  <li><em>Security groups are not iptables based</em></li>
+  <li><em>Potential for service chaining, NFV, all that hyped up stuff</em></li>
+  <li><em>Does have a web interface, but I have never used it</em></li>
+  <li>_Midokura is working hard on important OpenStack projects like <a href="http://superuser.openStack.org/articles/project-kuryr-brings-container-networking-to-openStack-neutron_">Kuryr</a></li>
+  <li><em>Layer-3 forwarding in the hypervisor</em></li>
+  <li><em>LBaaS driver does work, though has some caveats</em></li>
+</ul>
+
+<h2 id="things-that-arent-as-much-fun">Things that aren’t as much fun</h2>
+
+<ul>
+  <li><em>Configuring ports, BGP sessions, and stateful port groups</em></li>
+</ul>
+
+<p>This is a bit painful for me, only because I didn’t have time to write an Ansible module for it. This process would be easily automated, but if it isn’t, then it is fairly complicated. In the end I wrote a terrible bash script to do it for me, which made me feel bad.</p>
+
+<ul>
+  <li><em>Does have the extra requirements of Zookeeper and Cassandra</em></li>
+</ul>
+
+<p>Many people dislike Zookeeper. I’m not sure why. I’m not a big fan of Java-based systems, but I can tell you that Zookeeper has been running fine for over a year with absolutely no issues. That said it’s recommended to run the network service database (NSDB) nodes, ie. Zookeeper and Cassandra, on baremetal servers that are separate from the rest of the infrastructure. Nodes with 32GB or more is fine. Certainly these clusters require some care and feeding.</p>
+
+<p>Then again, the network state has to go somewhere. Other solutions have to store it as well. Physical routers store network state too, just in config files or other local databases. Every SDN system has to store state, and usually that will be some kind of distributed database (perhaps they rolled their own).</p>
+
+<ul>
+  <li><em>Knowing that Midokura’s exit plan likely involves being bought out</em></li>
+</ul>
+
+<p>I would imagine they will eventually be bought by a large conglomerate like Cisco. One of my other favorite tools, Ansible, was recently purchased by RedHat. Sometimes the exit turns out well, sometimes not.</p>
+
+<h2 id="issues-i-encountered">Issues I encountered</h2>
+
+<ul>
+  <li><em>Memory resource sizing for midolman</em></li>
+</ul>
+
+<p>The Midolman agent can use a fair amount of memory. The package comes with some example sizing configurations. It is definitely a good idea to use the correct configuration file for the particular service and size of server that is being deployed, then make sure Nova knows to hold back that memory on compute nodes. This is for the deployer to do.</p>
+
+<ul>
+  <li><em>Clean up Cassandra</em></li>
+</ul>
+
+<p>Eventually the Cassandra database can become large and needs to be cleaned up.</p>
+
+<ul>
+  <li><em>Not being able to keep up with releases</em></li>
+</ul>
+
+<p>I believe Enterprise Midonet is in a 1.9 release now. It’s not easy to keep up, and doing so would be something to take into consideration. Like OpenStack itself, you will want to upgrade as frequently as you can, which in the end…is never enough. Again, this is a deployer issue not a Midonet issue. New code is a good thing and we need to get it deployed.</p>
+
+<h2 id="related-things-i-have-not-yet-worked-with">Related things I have not (yet) worked with</h2>
+
+<ul>
+  <li>VXLAN off-loading</li>
+  <li>VTEP integration</li>
+  <li>vhost-net driver (should increase performance)</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I chose to deploy Midonet based on several assumptions and project requirements. In the end, Midonet works as advertised, and, I feel, makes my life as an OpenStack operator easier. I definitely recommend Midonet for OpenStack deployments, or anyone who is interested in software defined networking.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

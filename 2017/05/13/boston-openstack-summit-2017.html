@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Boston Summit 2017 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack Boston Summit 2017">
+
+    
+    <meta name="twitter:description" content="<p><em>(A picture I took at the Boston Museum of Fine Arts)</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>(A picture I took at the Boston Museum of Fine Arts)</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/boston-openstack-summit-2017.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/boston-openstack-summit-2017.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack Boston Summit 2017" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/05/13/boston-openstack-summit-2017.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack Boston Summit 2017</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-05-13T00:00:00-04:00">
+                May 13, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>(A picture I took at the Boston Museum of Fine Arts)</em></p>
+
+<p>I’m not sure how many OpenStack summits I’ve been to, the first one I attended was the San Diego summit. I felt like this was one of the better summits I’ve been to, mostly because I had some colleagues to hang out with. Unfortunately, while other people from my current employer were supposed to attend, due to business reasons they had to cancel. But I was able to have some good discussions with some fellow Canadians (we have <a href="https://openstack-canada-slack-invite.herokuapp.com/">slack channel</a> now) as well as my co-presenters for the multi-cloud/mult-site/what-have-you session.</p>
+
+<h2 id="nfv">NFV</h2>
+
+<p>I mostly work in the area surrounding “Network Function Virualization” (NFV). If you haven’t been to a summit in a while, I think I can sum up telecommunications companies participation in OpenStack by saying Verizon sent 100 people to the summit. As another example, AT&amp;T is leading the <a href="https://git.openstack.org/cgit/openstack/openstack-helm/">OpenStack Helm</a> project. Yes, AT&amp;T, and according to their presentation on the helm project, they will be replacing all of their current OpenStack control planes with it (presumably moving away from Mirantis Fuel, which itself has been replaced by Mirantis MCP, but I digress).</p>
+
+<h2 id="openstack-helm---deploying-the-openstack-control-plane-on-kubernetes">OpenStack Helm - Deploying the OpenStack Control Plane on Kubernetes</h2>
+
+<p>Previously I wasn’t sure if the OpenStack control plane really needed a full <em>Container Orchestration Engine</em> (COE) like Kubernetes, because it’s hard enough to run OpenStack let alone an underlying (and complex) COE. Personally I usually use LXC based containers. But after seeing some of the work AT&amp;T on the helm project, I think my mind has changed. That said, I am not sure how they are provisioning the actual underlying Kubernetes infrastructure, which I presume is outside of the scope of the Helm project (ie. probably something like kubadm.</p>
+
+<p>I wanted to attend the hands on session, but it was at the same time as the telecom/NFV working group session. From this <a href="https://www.projectcalico.org/3-takeaways-on-the-future-of-openstack-networking-from-the-boston-summit/">Calico blog post</a> it sounds like they were using Calico in the workshop. I wonder if that is what they are using in production…that would be surprising:</p>
+
+<blockquote>
+  <p>Even more impressively, the AT&amp;T Integrated Cloud team hosted a hands-on workshop with over 100 participants in a packed room also performing the same task of deploying, and upgrading OpenStack on Kubernetes leveraging Helm, and Calico for networking, and completing this lab in mere minutes.</p>
+</blockquote>
+
+<p>Can/should Telecoms act like Facebook? Not everything hyperscalers like Facebook is doing is applicable, but if you are using containers then I don’t think everything should be dealt with on layer 2. We should be using IPv6 with containers. But Calico with IPv4 and treating everything as layer 3 is a good start.</p>
+
+<p>Treating infrastructure as software is difficult. It’s not the same as running a web application. There is a lot of hidden state in the underlying infrastructure. However, we cannot continue to treat infrastructure, such as private cloud, as hand-rolled bespoke, manually installed one-off systems. We have to find the right balance between running highly available infrastructure, and treating it like software, with continuous integration, and multiple deployments per day, as well as reconciling the fact that infrastructure will fail and applications have to be “cloud native.” Too far one way, and infrastructure is unstable, too far the other and we end up with set-and-forget.</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">@ Most pop workshop <a href="https://twitter.com/OpenStack">@OpenStack</a> Summit on OpenStack-helm with <a href="https://twitter.com/v1k0d3n">@v1k0d3n</a> <a href="https://twitter.com/portdirect">@portdirect</a>. thanks to <a href="https://twitter.com/kubernetesio">@kubernetesio</a>  to move OpenStack to next level! <a href="https://t.co/cRhoQFZYNO">pic.twitter.com/cRhoQFZYNO</a></p>&mdash; Archy (@archyufa) <a href="https://twitter.com/archyufa/status/862802663779577857">May 11, 2017</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h3 id="att-zones-and-regions">AT&amp;T: Zones and Regions</h3>
+
+<p>First, this is something I need to do more research into, because I only heard a tiny snippet of a conversation around this, but, it sounded to me like AT&amp;T was deploying clouds with a region and zone concept, where every region had two (availability?) zones. This would be very similar to what AWS, and any intelligent cloud provider, would do. Presumably the concept is that if one zone fails (which is probably an entire cloud) then the other (geographically close) zone is still running, and whatever application you deploy would exist over both zones.</p>
+
+<p>My point is not that this is a new concept, but the fact that a large telecom grasps, and has implemented, zones is impressive because it shows some “cloud building” (sorry) maturity.</p>
+
+<h2 id="nfv-nirvana-stack">NFV: Nirvana Stack</h2>
+
+<p>Naming is hard. I don’t know if I like the name of this project, but I can understand where they are coming from. :)</p>
+
+<p>Telecoms and groups like OPNFV are coming together to establish some kind of reference stack with OpenStack and other open source systems, mostly around “Sofware Defined Networking” (SDN) plus OpenStack. I could not watch all the presentations, as they had an entire day dedicated to this in the OpenDayLight track, but my impression is that while using OpenStack has become fairly standard to do NFV, implementing an SDN solution is not part of the OpenStack project itself, and typically telecoms want the extra features and capabilities that an SDN solution can provide, but they are often difficult to integrate. So they want to perform some integration work on OpenStack + “Open Source SDN”, like Open Daylight, and this work is under the umbrella of the <em>Nirvana Stack</em>.</p>
+
+<p>It makes sense to me as while I have done a fair amount of work with ODL, installing it with OpenStack is not that straight forward. Also, part of the integration would be to identify and help to fix any issues upstream.</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">ATT Lisa Fung gave introduction to Nirvana stack and objectives <a href="https://twitter.com/OpenDaylightSDN">@OpenDaylightSDN</a> day <a href="https://twitter.com/hashtag/OpenStackSummit?src=hash">#OpenStackSummit</a> <a href="https://t.co/dW6AmumjzU">pic.twitter.com/dW6AmumjzU</a></p>&mdash; George Zhao (@georgeyzhao) <a href="https://twitter.com/georgeyzhao/status/862658180681265153">May 11, 2017</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="nfv-onap">NFV: ONAP</h2>
+
+<p>If you work in the NFV area, you have probably heard about AT&amp;Ts <a href="http://about.att.com/content/dam/snrdocs/ecomp.pdf">ECOMP</a> project. Basically it’s a massive layer of software (MANO+) that sits above OpenStack performing all kinds of automation. However, ECOMP has now transitioned into being a project named ONAP, and it’s in the process of <a href="https://www.sdxcentral.com/articles/news/logical-happens-open-o-merges-ecomp/2017/02/">merging</a> another open source MANO system, Open-O. This transition is ongoing and will take some time, but at this point there is <a href="https://git.onap.org/">actual working ONAP code</a>!</p>
+
+<p>AT&amp;T demoed ONAP (ECOMP) at the summit, and also provide Heat templates which will deploy the ONAP application itself into an OpenStack cloud. (However, I believe at this time the templates are only tested with Rackspace, though any OpenStack cloud (with Heat) would presumably work, perhaps with a little tweaking.)</p>
+
+<p>I’m really impressed with AT&amp;Ts willingness to release this code. Combined with their work on projects like OpenStack Helm, they are doing some really great things. Very impressive for such a huge telecom.</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Telco grade Orchestration ONAP for Openstack Orchestration <a href="https://t.co/sBLsB7TeU7">pic.twitter.com/sBLsB7TeU7</a></p>&mdash; Sudeep Batra (@sudeepbatra) <a href="https://twitter.com/sudeepbatra/status/862324663510335488">May 10, 2017</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="open-contrail">Open Contrail</h2>
+
+<p>Contrail is a SDN system from Juniper. They have an open source version called <a href="http://www.opencontrail.org/">Open Contrail</a>. On Wednesday night they had a Contrail user group meeting at Fenway park.</p>
+
+<p><a href="https://twitter.com/randybias">Randy Bias</a> recently joined Juniper to spearhead the Contrail product. For those of you not familiar with Randy, he is usually considered the progenitor of the “Pets vs Cattle” meme (which I don’t like, but sometimes it’s the easiest way to get the point across). So, you know, he like gets cloud and stuff and has for quite some time.</p>
+
+<p>He started off the Open Contrail night by saying they (Juniper) were going to totally reboot the community. Everything he said sounded great, and are things that need to happen with Open Contrail, with one exception…he mentioned the term “open core.” I personally don’t think open core really works…but then again I am not much of a business person. That said, I’m not actually clear on what he meant by open core, so we will just have to wait and see. Overall, the changes he mentioned during the talk were all things that need to happen. I’m not sure Juniper corp. will like it much, but he was certainly saying the right things.</p>
+
+<p>One of the major items Bias mentioned was that he wants to grow the number of Contrail deployments by an order of magnitude or two. I think that this is something that needs to happen if Contrail is going to be successful. They just don’t have enough deployments right now to get good community contributions and feedback…it’s a single vendor open source project and those rarely work out. It’s not so much that they need to make more money (ie. get more commercial deployments), which of course they do, it’s that they aren’t getting enough feedback and external contributions to improve the product, not enough critical mass.</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Another great <a href="https://twitter.com/hashtag/opencontrail?src=hash">#opencontrail</a> meetup at the <a href="https://twitter.com/hashtag/OpenStackSummit?src=hash">#OpenStackSummit</a> by <a href="https://twitter.com/emaganap">@emaganap</a> good lineup of speakers and their stories at <a href="https://twitter.com/hashtag/fenwaypark?src=hash">#fenwaypark</a> <a href="https://t.co/2xg8yowWUe">pic.twitter.com/2xg8yowWUe</a></p>&mdash; Amit Tank (@amitTank) <a href="https://twitter.com/amitTank/status/862769221398351872">May 11, 2017</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="massively-distributed-clouds">Massively Distributed Clouds</h2>
+
+<p>Part of the presentation I worked on for the summit regarded “massively distributed clouds” (MD). As usual there are many issues around this in terms of naming and use-cases definition. I was in several sessions during the week regarding the phrase “massively distributed” and most of the sessions became quickly confusing to all in attendance. Often telecoms (somehow) know they need massively distributed clouds but they don’t actually know what it means, what is possible with OpenStack now, what isn’t, and what would require new architecture and designs…and most importantly new code.</p>
+
+<p>I heard three or four things in these meetings over and over again which are not related to what I would consider <em>massively distributed clouds</em>:</p>
+
+<ol>
+  <li>Some people just want massive single data center systems. This is possible now and is not massively distributed. It’s just a large cloud; a buncha compute nodes. If you have 5000 servers in a single data center I don’t think it matters if you have to dedicate 0.5% of them to the control plane. It’s massive, but not massively distributed.</li>
+  <li>Some organizations want a massive number of distinct, <em>separate clouds</em>. This is possible now. There are not many good options for managing a large number of clouds, and would likely involve some kind of Management and Orchestration (MANO) system and other software to manage and sync them, but I don’t really consider it a massively distributed use case. Large number yes, distributed no.</li>
+  <li>Another desire is for “zero touch provisioning” in which you have many small clouds or devices and you want a “zero touch” method install and update them. To me this is an important requirement, but it can be solved many ways outside of OpenStack, and would probably be a project of its own (or maybe using Ironic…I don’t know). Hopefully something is happening around this in the IoT area or we are in big trouble security-wise. The point is that we can provide this functionality outside of OpenStack if required.</li>
+  <li>I also encountered some people, more than one person, OK, two, that was quite sure that if you use Kubernetes or containerize the OpenStack control plane then it somehow gets smaller. I suppose it’s possible, but in general that is not the case. No matter if you run all the of the required control plane services in containers or not they are still taking up resources, need to be managed, etc.</li>
+</ol>
+
+<p>Finally we have what some people call “the retail use-case” in which an organization, say, for example, Walmart, has 10,000 stores with a few hypervisors in each. They don’t want to put a full, highly available OpenStack control plane in each and every store, ie. the cloud is made up of remote (or distributed) hypervisors. I believe that if we solve this use case we would solve most related problems, ie. reducing the size of the OpenStack control plane, dealing with latency, etc. To accomplish this OpenStack would have to change considerably. In my mind, this is what <em>massively distributed</em> really means. Sure, you have some other problems to solve (like “zero touch”) but overall if we could solve this problem then many other issues and use-cases fall into place.</p>
+
+<p>There’s an <a href="https://etherpad.openstack.org/p/BOS-Fog-Edge-MassivelyDistributed-BoF">etherpad</a> page (essentially online collaborative notes) from one of the sessions, the Birds of a Feather meeting, if you are interested in perusing some of the thoughts around MD.</p>
+
+<p>I should also mention that several people from the OpenStack foundation were in the room, including Sparky Collier, Jonathan Bryce, and Lauren Sell. It’s pretty clear to me that the foundation believes MD (or edge, fog, what have you) is important to the future of OpenStack.</p>
+
+<h2 id="the-forum">The Forum</h2>
+
+<p>A major change to this summit was the creation of <em>The Forum</em>. Previously summits were also well attended by developers and there was an entire section of the summit dedicated to getting developers together discussing their projects. However that work has now been moved to a separate meeting, called the “Project Team Gathering” (PTG), which is not held at the same time and location as the summit. The first one was held in Atlanta in February, and I believe the next one is in Denver. What this means is that there are fewer developers at this summit. Three people mentioned to me that the summit felt more business like, and they didn’t know about the forum component how it had changed the makeup of the attendees.</p>
+
+<p>I attended many forum sessions, and they mostly turned out well. Certainly all positive discussions.</p>
+
+<h2 id="openstack-operators-telecomnfv-working-group-session">OpenStack Operators Telecom/NFV Working Group Session</h2>
+
+<p>I have been involved with, and currently chair, and OpenStack working group called the <strong>OpenStack Operators Telecom/NFV Working Group</strong>. I won’t go into too much detail on what this group is about–it’s for people who build and operate NFV related clouds on a day to day basis, and the OpenStack foundation was kind enough to provide us some time and space to meet face to face.</p>
+
+<p>There is an <a href="https://etherpad.openstack.org/p/BOS-ops-telecom-nfv">etherpad</a> page that was created for this session and it has some notes about what we discussed during the session. Have a look. :)</p>
+
+<p>Overall, I made a request to everyone in the room to go back to their respective organizations and seek out people who might fit well into this group and to let them know about it. Hopfully at the next <a href="http://eavesdrop.openstack.org/#OpenStack_Operators_Telco_and_NFV_Working_Group">meeting</a> we have some new members!</p>
+
+<p>I should also mention another working group in the OpenStack community that has ties to Telecom and NFV: the <a href="https://wiki.openstack.org/wiki/LCOO">Large Contributing OpenStack Operators</a> group (otherwise known as the LCOO). I think they missed an opportunity to name themselves the <em>Contributing OpenStack Operators who are Large</em>, ie. COOL, but no one asked me. :)</p>
+
+<p>I’ve been working pretty closely with this group for a while, and they have been welcoming and accommodating, as they try to work with various large, usually telecom, companies who want to participate in the OpenStack community but maybe don’t quite know how…yet.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>For me, the summit was good. I missed hearing about what the developers are doing and working on by being able to sit in on their sessions, but I can understand why the OpenStack Foundation moved to creating the PTG concept. Only time will tell if it can improve the development of OpenStack, but I have a feeling it will. The worst part was that there wasn’t as many free drinks and candy around…only devs get that perk. ;) Devs, devs, devs.</p>
+
+<p>Because I work in the NFV area, I was extremely attuned to what is happening around it at the summit, and there is a lot. AT&amp;T, and soon Verizon (among others?) are really trying to participate in the open source community and putting resources into writing open source code. In contrast, other, usually smaller, telecoms are in over their head and will continue to rely on beating up vendors as their main technical strategy. My recommendation to all telecoms would be to invest in people and everything needed to make them successful.</p>
+
+<p>It’s going to take telecoms time to figure it all out, but if they do, then they will make a considerable impact on OpenStack over the next few years, and in fact it would not surprise me if NFV became the dominant use case for OpenStack…as telecoms around the world will be deploying thousands of clouds, which honestly I believe is thousands more than what has been deployed in the enterprise.</p>
+
+<p>Now I’m looking forward to the OpenStack Operators meetup in August in Mexico City, and the next summit which is in Sydney Australia. It’s a long way to go, but it should be fun.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

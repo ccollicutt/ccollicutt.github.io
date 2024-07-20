@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install a Linux Rootkit to Test Security Systems With | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install a Linux Rootkit to Test Security Systems With">
+
+    
+    <meta name="twitter:description" content="<p>Let’s say you wnat to install a rootkit to test with. There could be various reasons, maybe you are testing some kind of specialized security system. Regardless of the reason, you need a rootkit to test out.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Let’s say you wnat to install a rootkit to test with. There could be various reasons, maybe you are testing some kind of specialized security system. Regardless of the reason, you need a rootkit to test out.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/install-a-rootkit-for-testing.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/install-a-rootkit-for-testing.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install a Linux Rootkit to Test Security Systems With" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/05/17/install-a-rootkit-for-testing.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install a Linux Rootkit to Test Security Systems With</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-05-17T00:00:00-04:00">
+                May 17, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Let’s say you wnat to install a rootkit to test with. There could be various reasons, maybe you are testing some kind of specialized security system. Regardless of the reason, you need a rootkit to test out.</p>
+
+<p>The first place I ended up at is <a href="https://github.com/milabs/awesome-linux-rootkits">Awesome Rootkits</a>, a big list of rootkits.</p>
+
+<p>The one that I picked from that list, somewhat randomly, was <a href="https://github.com/En14c/LilyOfTheValley">LilyOfTheValley</a>. I have no good reason as to why I picked this particular one, other than it seemed to suggest it would work on several kernel versions, and was a small amount of code.</p>
+
+<h2 id="warning">WARNING</h2>
+
+<p>Obviously this is a rootkit. Don’t install it on your local machine. Get a temporary, disposable virtual machine. Also, please review the code in the rootkit files. You’ve been warned!</p>
+
+<h2 id="install">Install</h2>
+
+<p>The kernel version in this example is 4.4.0-22 on Ubuntu 16.04.</p>
+
+<pre><code># uname -a
+Linux old-kernely 4.4.0-22-generic #40-Ubuntu SMP Thu May 12 22:03:46 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+
+<p>Clone the rootkit repo.</p>
+
+<pre><code># git clone https://github.com/En14c/LilyOfTheValley
+# cd LilyOfTheValley
+</code></pre>
+
+<p>Install build-essential.</p>
+
+<pre><code># apt install build-essential -y
+</code></pre>
+
+<p>Get headers too.</p>
+
+<pre><code># apt install linux-headers-4.4.0-22-generic
+</code></pre>
+
+<p>Make.</p>
+
+<pre><code># make
+make -C /lib/modules/4.4.0-22-generic/build M=/root/LilyOfTheValley modules
+make[1]: Entering directory '/usr/src/linux-headers-4.4.0-22-generic'
+  CC [M]  /root/LilyOfTheValley/lilyofthevalley.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /root/LilyOfTheValley/lilyofthevalley.mod.o
+  LD [M]  /root/LilyOfTheValley/lilyofthevalley.ko
+make[1]: Leaving directory '/usr/src/linux-headers-4.4.0-22-generic'
+</code></pre>
+
+<p>Now there is a kernel module, lilyofthevalley.ko.</p>
+
+<pre><code># ls -1
+client.c
+lilyofthevalley.c
+lilyofthevalley.ko
+lilyofthevalley.mod.c
+lilyofthevalley.mod.o
+lilyofthevalley.o
+Makefile
+modules.order
+Module.symvers
+README.md
+</code></pre>
+
+<p>Install that module.</p>
+
+<pre><code># insmod lilyofthevalley.ko 
+</code></pre>
+
+<p>Once it’s loaded /proc can be used to find commands that can be sent to the module.</p>
+
+<pre><code># cat /proc/lilyofthevalleyr00tkit 
+###########################
+LilyOfTheValley Commands
+###########################
+
+	* [givemerootprivileges] --&gt;&gt; to gain root access
+	* [hidepidPID] --&gt;&gt; to hide a given pid. replace (PID) with target pid
+	* [unhidepidPID] --&gt;&gt; to unhide a given pid. replace (PID) with target pid
+	* [hidingfiles] --&gt;&gt; just prepend lilyofthevalley to the file or dir name that u want to hide
+</code></pre>
+
+<p>Also, note how any files in the directory that started with the string “lilyofthevalley” now no longer appear in ls.</p>
+
+<pre><code># ls -1
+client.c
+Makefile
+modules.order
+Module.symvers
+README.md
+</code></pre>
+
+<p>This is because the rootkit makes those files “invisble.”</p>
+
+<p>See line 409 of lilyofthevalley.c.</p>
+
+<pre><code>	/*
+	hide any file in  the root filesystem, 
+	if first chars of it's name == r00tkit_name
+	*/
+	if (strncmp(name,R00TKIT_NAME,R00TKIT_NAMELEN) == 0)
+		return 0;
+</code></pre>
+
+<p>Create a file that starts with that particular string. Note how it’s not visible in ls.</p>
+
+<pre><code># touch lilyofthevalley.txt
+# ls
+client.c  Makefile  modules.order  Module.symvers  README.md
+</code></pre>
+
+<p>After rebooting the node the kernel module is no longer loaded and the missing files are again visible..</p>
+
+<pre><code># ls -1
+client.c
+lilyofthevalley.c
+lilyofthevalley.ko
+lilyofthevalley.mod.c
+lilyofthevalley.mod.o
+lilyofthevalley.o
+lilyofthevalley.txt
+Makefile
+modules.order
+Module.symvers
+README.md
+</code></pre>
+
+<p>With the module in place security systems can be tested to see if they can find it.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

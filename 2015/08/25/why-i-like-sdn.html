@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why I like SDN | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Why I like SDN">
+
+    
+    <meta name="twitter:description" content="<p>Recently, I helped give a presentation on SDN to the <a href="https://edmontongo.org/">Edmonton Go</a> meetup. Basically my part of the presentation was to talk about what SDN is and how it relates to containers and Go. That is actually easy because SDN, containers, and Go are the parts of a “so hot right now” trifecta. There’s a lot of money in those three things, perhaps more when together. I did joke that I hoped we’d come out of the presentation with a fully funded startup. Alas that did not happpen, as we are in Edmonton, not Palo Alto.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently, I helped give a presentation on SDN to the <a href="https://edmontongo.org/">Edmonton Go</a> meetup. Basically my part of the presentation was to talk about what SDN is and how it relates to containers and Go. That is actually easy because SDN, containers, and Go are the parts of a “so hot right now” trifecta. There’s a lot of money in those three things, perhaps more when together. I did joke that I hoped we’d come out of the presentation with a fully funded startup. Alas that did not happpen, as we are in Edmonton, not Palo Alto.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/why-i-like-sdn.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/why-i-like-sdn.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Why I like SDN" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/08/25/why-i-like-sdn.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Why I like SDN</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-08-25T00:00:00-04:00">
+                August 25, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently, I helped give a presentation on SDN to the <a href="https://edmontongo.org/">Edmonton Go</a> meetup. Basically my part of the presentation was to talk about what SDN is and how it relates to containers and Go. That is actually easy because SDN, containers, and Go are the parts of a “so hot right now” trifecta. There’s a lot of money in those three things, perhaps more when together. I did joke that I hoped we’d come out of the presentation with a fully funded startup. Alas that did not happpen, as we are in Edmonton, not Palo Alto.</p>
+
+<p>The only startup I’m aware of that did all three, Socketplane, was bought by Docker before they even put out a real product. I’m surprised there aren’t more Go-based SDN startups. Maybe there are and I’m just not aware of them. Maybe they all get bought before they get a twitter account. [1]</p>
+
+<h2 id="i-use-sdn-every-day">I use SDN every day</h2>
+
+<p>As a systems administrator, I tend to concern myself with applying technologies in production, which is to say that theory is not enough. I use Midokura’s Midonet (which is open source[2]) to provide multi-tenant virtual private networks for openstack users. It’s in production and has been for months. Midonet acts as a plugin to Neutron and centralizes state in a Zookeeper cluster. Everything’s been working great. My point is that I am using a software defined network every day to meet customers needs, and I think it would be difficult to do it without some kind of SDN system.</p>
+
+<p>There are quite a few “plugins” (or perhaps “network models” would be a better term) for OpenStack that could be considered SDN. If you don’t like overlay or encapsulation models and prefer a large layer 3 design, perhaps <a href="http://www.projectcalico.org/">Project Calico</a> would be of interest. Also the neutron team and some large OpenStack deployers are working on a large layer 3 design.</p>
+
+<h2 id="some-thoughts-on-sdn">Some thoughts on SDN</h2>
+
+<p>First off, SDN is “an abstract concept which can mean many things.” The term of overloaded.</p>
+
+<p>For a while OpenFlow defined SDN, but that’s no longer the case as it seems the market has outrun OpenFlow. I would think that at the very least an SDN system would have to provide an API. After that it gets harder to define.</p>
+
+<h3 id="whats-great-about-sdn">What’s great about SDN?</h3>
+
+<ul>
+  <li>Making the network programmable</li>
+  <li>Reducing capex and opex</li>
+  <li>Enabling multi-tenancy and massive networks</li>
+  <li>Avoid some limitations (eg. &gt; 4096 VLANs, which, honestly, is still a lot of VLANs)</li>
+  <li>Providing a bit of a shakeup to networking (yes, the Internet works amazingly well in terms of layer 3 routing, but is it the ultimate networking model?[3])</li>
+</ul>
+
+<h3 id="whats-great-about-containers-and-sdn">What’s great about containers and SDN?</h3>
+
+<p>Docker has been around for a couple years now, but the container “space” is still on fire. Every day there are new announcements. Even if you don’t like containers, you have to admit there is a lot of work being done, a lot of innovation happening and that innovation is “trickling down” to other areas, such as networking. Maybe all the “new” ideas existed before. At any rate I think Linux namespaces and cgroups have been a catalyst for change, perhaps under the guise of Docker (and now the <a href="https://www.opencontainers.org/">Open Container Initiative</a>). These systems need network information, and screen-scraping or grepping dhcp.leases isn’t going to do it.</p>
+
+<p>The canonical example of containers and SDN is how easy it is to setup one Docker host, and how much tricker it is to setup two docker hosts with networking between containers.</p>
+
+<p>Another example I like is if you have many container hosts with a large proxy layer on top, and you are recreating containers like crazy, how does that proxy layer know the network address of all the containers and what they do? Through an API provided by SDN.</p>
+
+<p>I believe the model used by most container schedulers is one IP per container. Given that containers don’t contain, multi-tenant container systems aren’t used in production (yet) which means a flat layer 3 model works well. But at some point I think multi-tenant containers will be commonplace and then it will make more sense to apply other networking models, just like we do with vms.</p>
+
+<h3 id="network-ops-pushback">Network ops pushback</h3>
+
+<p>I get a lot of pushback on SDN. Other than being interested in SDN, enough knowledge to get servers up and running, and messing around with BGP and OSPF for high availability, I’m not a networking expert. No one has ever let me login to a switch at work (they defend those things with their lives). And yet here I am, managing a rather large (virtual, software defined) network inside an OpenStack cloud. I’m looking at change in a few areas, 1) SDN on the WAN 2) Using whitebox switches and Cumulus Linux and 3) getting rid of virtual IPs by using BPG and OSPF. The first two are tough battles, only #3 seems doable in my current environment.</p>
+
+<h3 id="centralized-control-plane">Centralized control plane?</h3>
+
+<blockquote>
+  <p>We’ve had centralized architectures for decades, from SNA to various WAN technologies (SDH/SONET, Frame Relay and ATM). They all share a common problem: when the network partitions, the nodes cut off from the central intelligence stop functioning (in SNA case) or remain in a frozen state (WAN technologies). [4]</p>
+</blockquote>
+
+<p>I’m still slightly confused on the centralized control plane. The above quote makes it fairly clear that a centralized control plane is counter-productive when thinking about scale-out systems.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So, while there are many popular new technologies (some would say “over-hyped,” though I would not) I think over time SDN will prove invaluable, and the ability to program a network will slowly seep into almost every vendors system, and will dominate open source networking solutions. Eventually SDN will just be the way networks are done. Certainly that could take years, even decades (as IPv6 hasn’t even been accepted yet, and we really need it), but I would feel safe making a long-term bet on SDN and related technologies.</p>
+
+<hr />
+
+<p>1: It’s not like it really matters whether it’s Java, C, Go, or some other language. I just happen to like Go.</p>
+
+<p>2: Midokura has open sourced their application. But it is definitely more like open core. There aren’t a lot of non-Midokura contributors. But again, networking gear isn’t free either.</p>
+
+<p>3: I’m really asking. Is it?</p>
+
+<p>4: <a href="http://blog.ipspace.net/2014/05/does-centralized-control-plane-make.html">Does Centralized Control Plane Make Sense?</a></p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

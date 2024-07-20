@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Configuration of a Cisco 1000V CSR | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Basic Configuration of a Cisco 1000V CSR">
+
+    
+    <meta name="twitter:description" content="<p><img src="/img/virtnet.png" alt="" /></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><img src="/img/virtnet.png" alt="" /></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/basic-configuration-cisco-1000v-csr.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/basic-configuration-cisco-1000v-csr.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Basic Configuration of a Cisco 1000V CSR" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/07/17/basic-configuration-cisco-1000v-csr.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Basic Configuration of a Cisco 1000V CSR</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-07-17T00:00:00-04:00">
+                July 17, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><img src="/img/virtnet.png" alt="" /></p>
+
+<p>In a “previous post”:/2014/07/14/cisco-1000v-csr-libvirt-kvm.html I looked at installing the Cisco 1000V Cloud Services Router into a KVM environment. Now let’s do some basic configuration. Again I have to note that I’m not a professional Cisco network administrator by any stretch, and in fact it would be great if readers noticed mistakes or better ways of doing things and let me know in the comments. :)</p>
+
+<h2 id="colorredissue">%{color:red}Issue%</h2>
+
+<p>At this time TCP seems busted with CSR + KVM. I’m not sure why at this time. ICMP seems to work but not TCP.</p>
+
+<p>Troubleshooting steps so far:</p>
+
+<ol>
+  <li>Insert a simple Linux router: This worked fine, ~20 gbps with iperf</li>
+  <li>Try out this process in virtual box on a Windows computer: Also worked as expected</li>
+  <li>Try out on a Ubuntu 12.04.4 system–still no dice. I would have expected this to work as it is a supported environment for the CSR. Perhaps some configuration issue with KVM…</li>
+  <li>Also tried the qcow2 image instead of installing from the ISO, no joy</li>
+</ol>
+
+<p>So I’m not sure at this time what the issue is. Something to do with the CSR in this particular environment, be it misconfiguration on my part, or something else. I’ll update when I figure out what is going on. If you do try it and get the expected performance (such as 50000 kbps when the premium license is enabled) please let me know.</p>
+
+<p>Even though the KVM environments aren’t yet working, all the configuration information below should be Ok (I think). I did run this exact same process in Windows with Virtualbox and that worked fine. Also, like I said above, a simple Linux router works as well. However, when using the CSR and KVM, everything runs Ok, it’s just that TCP isn’t working. Very weird.</p>
+
+<p>My plan is to pass this post around a bit and see if anyone has any ideas.</p>
+
+<h2 id="the-environment">The environment</h2>
+
+<p>I’m working in an Ubuntu Trusty 14.04 KVM single host environment. I’m also using he default Openvswitch that comes with Trusty, and of course I’m using libvirt.</p>
+
+<p>For now I’ll connect the CSR to three virtual networks within the KVM host, two of which are managed by openvswitch and one by libvirt.</p>
+
+<pre>
+<code># ovs-vsctl list-br
+corebr0
+distbr0
+# brctl show  |grep virbr0
+virbr0		8000.fe540021831d	yes		vnet0
+</code>
+</pre>
+
+<p>So the router will have three interfaces:</p>
+
+<ol>
+  <li>“virbr0” - Default libvirt network, Linux bridge</li>
+  <li>“corebr0” - Openvswitch</li>
+  <li>“distbr0” - Openvswitch</li>
+</ol>
+
+<p>I altered the libvirt default network to start providing DHCP addresses at 192.168.122.3 instead of the default 192.168.122.2 so that the router can have 192.168.122.2 as it’s IP on the default virbr0 bridge.</p>
+
+<h2 id="basic-configuration">Basic configuration</h2>
+
+<p>First, turn off domain lookups, otherwise the route will think mistyped commands are potential domains and spend time looking them up.</p>
+
+<pre>
+<code>Router&gt;enable
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#no ip domain-lookup
+</code>
+</pre>
+
+<p>Here we can see all the interfaces and their mapping. (Note that the MAC addresses might be different from other examples in this post–that’s Ok, I’ve done this same process several times.)</p>
+
+<pre>
+<code>Router#show platform software vnic-if interface-mapping
+-------------------------------------------------------------
+ Interface Name        Driver Name         Mac Addr
+-------------------------------------------------------------
+ GigabitEthernet3       virtio             5254.0064.67e2 
+ GigabitEthernet2       virtio             5254.0039.2c47 
+ GigabitEthernet1       virtio             5254.0006.685d 
+-------------------------------------------------------------
+</code>
+</pre>
+
+<p>Configure the first interface.</p>
+
+<pre>
+<code>Router(config)#int gigabit 1
+Router(config-if)#ip address 192.168.122.2 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+</code>
+</pre>
+
+<p>Try pinging 192.168.122.2.</p>
+
+<pre>
+<code>Router#ping 192.168.122.2
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.122.2, timeout is 2 seconds:
+![](!!!)
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/3 ms
+</code>
+</pre>
+
+<p>Configure the second interface.</p>
+
+<pre>
+<code>Router(config)#int gigabit 2
+Router(config-if)#ip address 10.100.0.1 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+</code>
+</pre>
+
+<p>Configure the third interface.</p>
+
+<pre>
+<code>Router(config)#int gigabit 3
+Router(config-if)#ip address 10.100.1.1 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+</code>
+</pre>
+
+<p>Show the routes.</p>
+
+<pre>
+<code>Router#sh ip route   
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C        10.100.0.0/24 is directly connected, GigabitEthernet2
+L        10.100.0.1/32 is directly connected, GigabitEthernet2
+C        10.100.1.0/24 is directly connected, GigabitEthernet3
+L        10.100.1.1/32 is directly connected, GigabitEthernet3
+      192.168.122.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.122.0/24 is directly connected, GigabitEthernet1
+L        192.168.122.2/32 is directly connected, GigabitEthernet1
+</code>
+</pre>
+
+<h2 id="configure-dhcp-servers">Configure DHCP servers</h2>
+
+<p>I’m going to put DHCP servers on gigabit 2 and gigabit 3, core and dist networks respectfully.</p>
+
+<pre>
+<code>Router(config)#ip dhcp pool core
+Router(dhcp-config)#network 10.100.0.0 /24
+Router(dhcp-config)#default-router 10.100.0.1
+Router(dhcp-config)#exit
+Router(config)#ip dhcp excluded-address 10.100.0.1 10.100.0.100
+</code>
+</pre>
+
+<p>Check the pool.</p>
+
+<pre>
+<code>Router#sh ip dhcp pool
+
+Pool core :
+ Utilization mark (high/low)    : 100 / 0
+ Subnet size (first/next)       : 0 / 0 
+ Total addresses                : 254
+ Leased addresses               : 0
+ Excluded addresses             : 100
+ Pending event                  : none
+ 1 subnet is currently in the pool :
+ Current index        IP address range                    Leased/Excluded/Total
+ 10.100.0.1           10.100.0.1       - 10.100.0.254      0     / 100   / 254  
+</code>
+</pre>
+
+<p>Do the same on gigabit 3 with network 10.100.1.0/24.</p>
+
+<h2 id="add-virtual-machines-to-the-networks">Add virtual machines to the networks</h2>
+
+<p>I want to add a server onto the core network, expecting that the CSR will hand it a DHCP address.</p>
+
+<pre>
+<code># virsh list  |grep core
+ 4     core-srv1                      running
+</code>
+</pre>
+
+<p>Now that that’s up, let’s see if it gets an IP from the router.</p>
+
+<pre>
+<code>Router#sh ip dhcp pool   
+
+Pool core :
+ Utilization mark (high/low)    : 100 / 0
+ Subnet size (first/next)       : 0 / 0 
+ Total addresses                : 254
+ Leased addresses               : 1
+ Excluded addresses             : 100
+ Pending event                  : none
+ 1 subnet is currently in the pool :
+ Current index        IP address range                    Leased/Excluded/Total
+ 10.100.0.102         10.100.0.1       - 10.100.0.254      1     / 100   / 254 
+Router#sh arp
+Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+Internet  10.100.0.1              -   5254.0013.bd53  ARPA   GigabitEthernet2
+Internet  10.100.0.2              1   b60d.1368.3044  ARPA   GigabitEthernet2
+Internet  10.100.0.101            1   5254.00db.4454  ARPA   GigabitEthernet2
+Internet  10.100.1.1              -   5254.001e.fceb  ARPA   GigabitEthernet3
+Internet  192.168.122.2           -   5254.0021.831d  ARPA   GigabitEthernet1
+</code>
+</pre>
+
+<p>As can be seen the KVM virtual machine received IP 10.100.0.101, and we can ping that from the router.</p>
+
+<pre>
+<code>Router#ping 10.100.0.101
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.100.0.101, timeout is 2 seconds:
+![](!!!)
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+</code>
+</pre>
+
+<p>I can access the console of the vm using “virsh console”.</p>
+
+<pre>
+<code># virsh console core-srv1
+</code>
+</pre>
+
+<p>I’ve also started a second virtual machine on the dist network.</p>
+
+<pre>
+<code># virsh list | grep dist
+ 13    dist-srv1                      running
+</code>
+</pre>
+
+<p>From core-srv1 I can ping dist-srv1, and we are using the router to manage the traffic. Notice I am using -I due to the TCP issue I mention at the start of the post.</p>
+
+<pre>
+<code>ubuntu@core-srv1:~$ traceroute -I 10.100.1.101
+traceroute to 10.100.1.101 (10.100.1.101), 64 hops max
+  1   10.100.0.1  0.736ms  0.601ms  0.494ms 
+  2   10.100.1.101  0.896ms  0.663ms  0.646ms 
+ubuntu@core-srv1:~$ ip route show
+default via 10.100.0.1 dev eth0 
+10.100.0.0/24 dev eth0  proto kernel  scope link  src 10.100.0.101 
+</code>
+</pre>
+
+<p>We can see the mac addresses of the virtual machines in the routers arp table, including dist-srv1 and core-srv1.</p>
+
+<pre>
+<code>Router#sh arp
+Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+Internet  10.100.0.1              -   5254.0013.bd53  ARPA   GigabitEthernet2
+Internet  10.100.0.101          172   5254.00db.4454  ARPA   GigabitEthernet2
+Internet  10.100.1.1              -   5254.001e.fceb  ARPA   GigabitEthernet3
+Internet  10.100.1.2             52   7e65.7502.9f41  ARPA   GigabitEthernet3
+Internet  10.100.1.101            4   5254.00ec.b81e  ARPA   GigabitEthernet3
+Internet  192.168.122.1          91   5254.0073.6d2e  ARPA   GigabitEthernet1
+Internet  192.168.122.2           -   5254.0021.831d  ARPA   GigabitEthernet1
+</code>
+</pre>
+
+<h2 id="license">License</h2>
+
+<p>By default the unlicensed CSR is pretty limited bandwidth-wise.</p>
+
+<pre>
+<code>Router#show platform hardware throughput level
+The current throughput level is 2500 kb/s
+</code>
+</pre>
+
+<p>Use the standard level evaluation license. (I think.)</p>
+
+<pre>
+<code>Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#license boot level standard
+	 Feature Name:prem_eval
+
+SNIP!
+
+ACCEPT? (yes/[no]): yes
+
+*Jul 18 19:08:12.085: %LICENSE-6-EULA_ACCEPTED: EULA for feature prem_eval 1.0 has been accepted. UDI=CSR1000V:9L7UG7XECKE; StoreIndex=0:Built-In License Storage% use 'write' command to make license boot config take effect on next boot
+</code>
+</pre>
+
+<p>Reload.</p>
+
+<pre>
+<code>Router#reload
+</code>
+</pre>
+
+<p>As can be seen, the license level has been changed, throughput is now 50000 kbps.</p>
+
+<pre>
+<code>SNIP!
+*Jul 18 19:10:51.476: %SMART_LIC-6-AGENT_READY: Smart Agent for Licensing is initialized
+*Jul 18 19:10:51.481: %VUDI-6-EVENT: [serial number: 9L7UG7XECKE], [vUDI: ], vUDI is successfully retrieved from license file
+*Jul 18 19:10:51.684: %IOS_LICENSE_IMAGE_APPLICATION-6-LICENSE_LEVEL: Module name = csr1000v Next reboot level = standard and License = prem_eval
+*Jul 18 19:10:52.557: %VXE_THROUGHPUT-6-LEVEL: Throughput level has been set to 50000 kbps
+SNIP!
+Router#sh platform hardware throughput level
+The current throughput level is 50000 kb/s
+</code>
+</pre>
+
+<h2 id="shutdown">Shutdown</h2>
+
+<p>I just wanted to know that “virsh shutdown” will halt this router just fine, and this message will appear on the router console.</p>
+
+<pre>
+<code>*Jul 19 16:36:44.836: %IOSXE-5-PLATFORM: F0: shutdown: shutting down for system halt
+</code>
+</pre>
+
+<h2 id="iperf">Iperf</h2>
+
+<p>I would like to run iperf between the hosts, but given the weird issue I’m seeing on KVM hosts, I can’t.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So here we have a super basic virtual network setup that is routed by a Cisco 1000V CSR router. What I’ve done here could easily be accomplished with a simple firewall or other basic router, but I think it’s a good step towards getting a test environment setup with a Cisco router.</p>
+
+<p>Again, it must be noted that this is not working yet in a KVM environment (Ubuntu 12.04 or 14.04) but does work with Windows + Virtualbox.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

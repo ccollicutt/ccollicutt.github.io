@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Pillars of Modern Networking | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Three Pillars of Modern Networking">
+
+    
+    <meta name="twitter:description" content="<p>Computer networking is at an interesting state. We have many new interesting technologies and methodologies for building and managing networks, but ultimately those new technologies have not made much of a dent in how the vast majority of computer networking is architectured and operated.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Computer networking is at an interesting state. We have many new interesting technologies and methodologies for building and managing networks, but ultimately those new technologies have not made much of a dent in how the vast majority of computer networking is architectured and operated.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/three-pillars-of-modern-networking.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/three-pillars-of-modern-networking.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Three Pillars of Modern Networking" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/11/05/three-pillars-of-modern-networking.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Three Pillars of Modern Networking</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-11-05T00:00:00-04:00">
+                November 05, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Computer networking is at an interesting state. We have many new interesting technologies and methodologies for building and managing networks, but ultimately those new technologies have not made much of a dent in how the vast majority of computer networking is architectured and operated.</p>
+
+<p>I don’t have a classical networking background, no CCIE or anything like that, but I am very interested in new networking technologies and I believe in some cases my lack of traditional training (dare I say “baggage”) allows me a bit more room to operate in terms of adopting new technologies.</p>
+
+<p>Ultimately we still do networks with things like ARP, STP, VLANs, LACP and BGP. We connect relatively large broadcast domains together with layer 3 routes managed by BGP. That’s really about it. It does work, but we aren’t really moving ahead, even something like Ipv6 is just not seeing adoption. (There may be valid reasons for that, but I mention it anyways.)</p>
+
+<p>In this post I want to talk about three major technologies that can help to improve modern networking:</p>
+
+<ul>
+  <li>Network Automation</li>
+  <li>Software Defined Networking</li>
+  <li>Intent Based Networking</li>
+</ul>
+
+<h2 id="network-automation">Network Automation</h2>
+
+<p>At its base, Network Automation is the application of the same configuration management tooling and methodologies as have been applied to server infrastructure, but instead of servers we simply apply them to network switches and routers. That’s about it. Useful? Yes. Revolutionary? No.</p>
+
+<p>Ansible, the configuration management tool I usually reach for (which has as many shortcomings as it does valuable features) has probably taken the lead in having the most easily accessible network automation tooling as well as scope of devices it is able to manage. Ansible’s module based approach makes it pretty simple for even novice developers (like myself) to create new modules and thus there are many core modules related to networking in Ansible.</p>
+
+<p>Python is a go to language for many people who need to write code but being a developer isn’t necessarily in their job title, people such as network engineers. Python also has a substantial network library called Napalm that can help to abstract many network devices into code.</p>
+
+<p>Ultimately, configuration management is probably a stop-gap measure between current methodologies and something better, something that has not necessarily arrived in networking yet. In the area of “server administration” overall configuration management is still valuable, but containers have moved the cutting edge to immutable style deployments based on one-time images as opposed to continuous usually agent based configuration management.</p>
+
+<p>Will this happen to networking…unknown. Technically many switches and routers are already configured to utilize an image model of updates and monolithic configuration files, but convergence time could be an issue in devices that are expected never to slow a packet let alone stop accepting a flow, nevermind the absolute fear in the minds of network admins around changes. Some switches, like Arista, can run containers and I expect to see more of that. Further, many large organizations are realizing the millions and millions of lines of unused code on switches and routers are a liability and are requesting modularity from vendors or rolling their own simpler networking operating systems (though companies doing that are the likes of LinkedIn and Google). But I digress.</p>
+
+<h2 id="software-defined-networking">Software Defined Networking</h2>
+
+<p>Software Defined Networking (SDN), like many new technologies, was, for a while, considered a potential panacea. Unsurprisingly that did not turn out the way many expected or hoped. However, what is surprising is how little overall traction SDN was able to achieve, and how few SDN startups, if any, succeeded. The joke that SDN means “still don’t know” managed to become reality. Sure we have some successful deployments, but their functionality is limited in terms of the massive scope that SDN originally had.</p>
+
+<p>I have been working with SDN for quite some time at about the time when everyone was just starting to realize OpenFlow was not going to win out. Well over 3 years ago now, I designed and deployed one of the first production SDN deployments in Canada when I built a public cloud based on OpenStack which used Midokura’s Midonet product. Midonet is a good example of where the SDN ecosystem has gone as they never quite achieved the success they were looking for and have pivoted into another business model and, I’m afraid, ultimately might not exist.</p>
+
+<p>What I like about SDN is that is presented the possibility to create networks that can do anything. Unfortunately, what we ended up with SDN is a bunch of overly complex control planes that are essentially wrappers around VXLAN, BGP, and some kind of distributed state stored in a system like ZooKeeper et al (see OpenContrail, Nuage, Midonet, etc, etc). Because they rely on an underlying physical network (the “underlay”) and universally speak BGP at the edge, all the legacy networking deployments we are used to are still required and instead we just pile on SDN as another layer. (“So now you have two problems/networks.”) I do think overlays are valuable, but the complexity required to get them in this exact context are considerable.</p>
+
+<p>Further,  AFAIK, most SDNs are deployed in concert with either OpenStack or VMWare, though VMWare is essentially (practically speaking) enforcing only using their SDN product NSX. I am quite biased in terms of my experience mostly being related to OpenStack, but I have not met anyone doing SDN outside of the context of a virtualization system and usually SDNs are “boxed inside” of the virtualization platform, though they may interact with larger networks at the BGP level for North/South traffic.</p>
+
+<p>Frankly I think that we didn’t push hard enough on really rethinking networking as a whole. As well the traditional, dare I say “heritage”, networking is too embedded and difficult to remove, and thus we ended up just piling more layers on top of if. On one hand if it ain’t broke don’t fix it, but on the other we can’t stagnate at the network level, because the network really is a major component of  “the computer.” Are we losing value as a species with our inability to move past IPv4?</p>
+
+<p>I look at technologies like Service Function Chaining, which, while still based on the reliability of standard networks, make packets appear on ports as though transported through a wormhole, as a direction that SDN should have gone in. Networks don’t have to look like they do.</p>
+
+<p>I still have hope for SDN. :)</p>
+
+<h2 id="intent-based-networking">Intent Based Networking</h2>
+
+<p>Intent Based Networking (IBN) is where SDN was three to five years ago.  IBN is a lot of things, but I believe that first and foremost the idea is that some kind of consumer asks for something, such as transport from A to B, and IBN determines how that is done. This is pretty well described in the paper <a href="https://www.opennetworking.org/images/stories/downloads/sdn-resources/technical-reports/TR-523_Intent_Definition_Principles.pdf">Intent NBI – Definition and Principles</a> presented by the Open Networking Foundation.</p>
+
+<p>Practically speaking it’s an admission that organizations are unwilling to alter or replace their existing legacy infrastructure, or legacy vendor relationships, with SDN. IBN is a higher layer of abstraction working above network automation and seeks to utilize a methodology where the intent of the network (say, to run applications) is described in some kind of language or configuration, and the actual deployment and operations of the network is created from that “intent” but that the actual underlying physical and virtual devices are not relevant.</p>
+
+<p>In some situations this simply looks like a piece of software that can abstract the configuration of multiple brownfield systems (all your Juniper and Cisco and Arista routers and switches, different versions and variations thereof) and then (re-?)configure them in such a way as that the network will fulfil the obligations “suggested” by the intent or consumer requests. (See Apstra Networks.) Instead of human beings interpreting business and technical requirements and writing, often by hand, over long periods of time, thousands of configuration files for network devices, and what’s more/worse keeping the connections in their head, the IBN system automates that, in effect forcing us to forget about the how and just focus on the what and why. At least in theory anyways.</p>
+
+<p>Machine learning may also be applicable to IBN, so expect to see considerable fanfare around that. Maybe IBNs can the “hallucinate” the network design (ala <a href="http://letsenhance.io">letsenhance.io</a> product that upscales any JPG to 4K by hallucinating detalis).  Or maybe we can have AI invent new network protocols like AlphaGo created new Go moves.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So there you have it. Three technologies that I believe are the current pillars of modern networking. They all have issues, but promise as well. Maybe IBN and Machine Learning will take us to some kind of network nirvana, or maybe it will stagnate like SDN seems to have. Only time will tell.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

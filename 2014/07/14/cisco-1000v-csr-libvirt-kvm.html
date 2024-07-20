@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using the Cisco 1000v CSR with Libvirt and KVM | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using the Cisco 1000v CSR with Libvirt and KVM">
+
+    
+    <meta name="twitter:description" content="<p>This blog post is going to cover installing and booting the <a href="http://www.cisco.com/c/en/us/products/routers/cloud-services-router-1000v-series/index.html">Cisco 1000v Cloud Services Router</a> with KVM on Ubuntu Trusty 14.04.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>This blog post is going to cover installing and booting the <a href="http://www.cisco.com/c/en/us/products/routers/cloud-services-router-1000v-series/index.html">Cisco 1000v Cloud Services Router</a> with KVM on Ubuntu Trusty 14.04.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/cisco-1000v-csr-libvirt-kvm.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/cisco-1000v-csr-libvirt-kvm.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using the Cisco 1000v CSR with Libvirt and KVM" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/07/14/cisco-1000v-csr-libvirt-kvm.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using the Cisco 1000v CSR with Libvirt and KVM</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-07-14T00:00:00-04:00">
+                July 14, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>This blog post is going to cover installing and booting the <a href="http://www.cisco.com/c/en/us/products/routers/cloud-services-router-1000v-series/index.html">Cisco 1000v Cloud Services Router</a> with KVM on Ubuntu Trusty 14.04.</p>
+
+<p>It’s important to note that I haven’t touched a Cisco device in over a decade. At least until the blog post that is. I’ve been an open source based systems administrator for all of my career, and now I would like to learn a bit more about networking, which is considerably more closed source than I am used to. Thankfully, however, Cisco offers a free download of their cloud router.</p>
+
+<h2 id="getting-the-cisco-1000v-csr-images-and-isos">Getting the Cisco 1000v CSR images and ISOs</h2>
+
+<p>First, if you don’t have an account with <a href="http://cisco.com">Cisco</a>, then create one and login.</p>
+
+<p>To find the download page, this <a href="http://software.cisco.com/download/release.html?mdfid=284364978&amp;softwareid=282046477&amp;release=3.12.0S&amp;flowid=39582">link</a> might work. If if doesn’t work:</p>
+
+<ol>
+  <li><a href="http://www.cisco.com/c/en/us/products/routers/cloud-services-router-1000v-series/index.html">CSR Index page</a></li>
+  <li>Right menu, “Download Software for this Product”</li>
+  <li>Right panel, “Cisco Cloud Services outer 1000V”</li>
+  <li>Select “IOS XE Software”</li>
+  <li>Pick your download, ISO, OVA, qcow2, etc.</li>
+</ol>
+
+<p>In this post I’m going to work from the ISO.</p>
+
+<h2 id="install-from-iso-into-qcow2-image">Install from ISO into qcow2 image</h2>
+
+<p>Using the ISO process, we boot the ISO using KVM, which will automatically install the router software onto the disk image specified. Once that’s done you can boot the qcow2 image like any regular virtual machine.</p>
+
+<p>I’ve downloaded the ISO file.</p>
+
+<pre>
+<code># ls *.iso
+csr1000v-universalk9.03.12.00.S.154-2.S-std.iso
+</code>
+</pre>
+
+<p>Next, create a backing image to install the software onto. It has to be at least 8 gigs.</p>
+
+<pre>
+<code># qemu-img create -f qcow2 csr.img 8G
+Formatting 'csr.img', fmt=qcow2 size=8589934592 encryption=off cluster_size=65536 lazy_refcounts=off 
+</code>
+</pre>
+
+<p>Now we can boot the ISO with KVM and set the backing image on which the ISO will install the 1000v router. Note that you need to hit a key pretty quickly to get to the GRUB boot menu.</p>
+
+<pre>
+<code># kvm -boot d csr.img -enable-kvm -m 4096M -cpu Nehalem -smp 4,sockets=4,cores=1,threads=1 -cdrom csr1000v-universalk9.03.12.00.S.154-2.S-std.iso -nographic
+</code>
+</pre>
+
+<p>After hitting the “any” key, you should see the below. Select “Serial Console” and hit enter.</p>
+
+<pre>
+<code>   GNU GRUB  version 0.97  (639K lower / 3144696K upper memory)
+
+ +-------------------------------------------------------------------------+
+ | CSR 1000V Virtual Console -- Wed-26-Mar-14-15:35                        |  
+ | CSR 1000V Serial Console -- Wed-26-Mar-14-15:35                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |
+ |                                                                         |  
+ +-------------------------------------------------------------------------+
+      Use the ^ and v keys to select which entry is highlighted.
+      Press enter to boot the selected OS, or 'c' for a command-line.
+</code>
+</pre>
+
+<p>At this point the ISO should install the 1000v CSR router into the csr.img qcow2 file, and some text should fly by, such as the below. It should only take a minute or two to install the CSR onto the hd image.</p>
+
+<pre>
+<code>Booting 'CSR 1000V Serial Console -- Wed-26-Mar-14-15:35'
+
+root (cd)
+ Filesystem type is iso9660, using whole disk
+kernel /boot/csr1000v-universalk9.03.12.00.S.154-2.S-std.SPA.bin rw root=/dev/r
+am quiet console= max_loop=64 HARDWARE=virtual SR_BOOT=cdrom:csr1000v-universal
+k9.03.12.00.S.154-2.S-std.iso
+package header rev 1 structure detected
+Calculating SHA-1 hash...done
+SHA-1 hash:
+        calculated   f51efee9:bfc569d7:9a732dee:4af42ccc:7003719d
+        expected     f51efee9:bfc569d7:9a732dee:4af42ccc:7003719d
+Package type:0x7530, flags:0x0
+   [Linux-bzImage, setup=0x2e00, size=0x11706720]
+   [isord @ 0x6fe6c000, 0x10183000 bytes]
+SNIP!
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Installing GRUB
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Copying super package csr1000v-universalk9.03.12.00.S.154-2.S-std.SPA.bin
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Expanding super package on /bootflash
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Creating /boot/grub/menu.lst
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): CD-ROM Installation finished
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Ejecting CD-ROM tray
+%IOSXEBOOT-4-BOOT_CDROM: (rp/0): Rebooting from HD
+SNIP!
+Press any key to continue.
+Press any key to continue.
+Press any key to continue.
+</code>
+</pre>
+
+<p>Again you have to be quick on hitting a key when the “Press any key to continue” message comes up. (Must be a better way to do this.) The vm is now booting off of the hd image instead of the ISO image.</p>
+
+<p>Select virtual console once more and the router should boot up and ask if we want to configure from a dialog.</p>
+
+<pre>
+<code>SNIP!
+cisco CSR1000V (VXE) processor with 2170596K/6147K bytes of memory.
+Processor board ID 9W17YZL34P2
+1 Gigabit Ethernet interface
+32768K bytes of non-volatile configuration memory.
+4194304K bytes of physical memory.
+7774207K bytes of virtual hard disk at bootflash:.
+
+
+         --- System Configuration Dialog ---
+
+Would you like to enter the initial configuration dialog? [yes/no]:
+</code>
+</pre>
+
+<p>I enter no, though you may want to enter yes. The router continues booting, eventually stops and we can just hit enter to get the “Router&gt;” prompt.</p>
+
+<pre>
+<code>SNIP!
+*Jul 15 01:40:39.304: %VMAN-5-PACKAGE_SIGNING_LEVEL_ON_INSTALL: F0: vman:  Package 'csrmgmt.1_3_1.20140213_121708.ova
+Building configuration...
+' for service container 'csr_mgmt' is 'Cisco signed', signing level cached on original install is 'Cisco signed'
+*Jul 15 01:40:39.745: Not MO, application name is csr_mgmt
+*Jul 15 01:40:39.745: %VIRT_SERVICE-5-INSTALL_STATE: Successfully installed virtual service csr_mgmt
+*Jul 15 01:40:39.748: IOS-FIREWALL-POLICY-SHIM-REGISTER[OK]
+*Jul 15 01:40:42.273: %CONFIG_CSRLXC-5-CONFIG_DONE: Configuration was applied and saved to NVRAM. See bootflash:/csrlxc-cfg.log for more details.
+# hit enter!
+Router&gt; #here we are at the router prompt!
+</code>
+</pre>
+
+<p>Now we have a full fledged Cisco router!</p>
+
+<p>At this point I usually kill the KVM process from another terminal, and the installation is complete. (Killing from another terminal is a little awkward, so let me know if you find a better way, which probably involves not using “-serial stdio”, but I like that it just streams in the terminal. Lots of ways to do this.)</p>
+
+<h2 id="using-the-image-file">Using the image file</h2>
+
+<p>Now that the ISO has finished installing the software, we have an image file to work with.</p>
+
+<pre>
+<code># du -hs csr.img
+1.6G	csr.img
+# file csr.img
+csr.img: QEMU QCOW Image (unknown version)
+</code>
+</pre>
+
+<p>Copy that image to /var/lib/libvirt/images.</p>
+
+<pre>
+<code># cp csr.img /var/lib/libvirt/images/
+</code>
+</pre>
+
+<p>In /var/lib/libvirt/images, create a qcow2 snapshot.</p>
+
+<pre>
+<code># qemu-img create -f qcow2 -b csr.img csr-01.img
+Formatting 'csr-01.img', fmt=qcow2 size=8589934592 backing_file='csr.img' encryption=off cluster_size=65536 lazy_refcounts=off 
+</code>
+</pre>
+
+<p>Now we can use that image with libvirt.</p>
+
+<h2 id="libvirt-xml-file">Libvirt XML file</h2>
+
+<p>Create an XML file like the below, ensuring to replace the image file location if necessary. I believe the CSR requires 4GB of memory and 4 VCPUS.</p>
+
+<p>Note that if you want the CSR to have more than one interface, you’ll have to add it to the XML file, and perhaps add networks to libvirt.</p>
+
+<pre>
+<code># cat csr-01.xml 
+<domain type="kvm">
+  <name>csr-01/name&gt;
+  <memory unit="KiB">4194304</memory>
+  <currentMemory unit="KiB">4194304</currentMemory>
+  <vcpu placement="static">4</vcpu>
+  <os>
+    <type arch="x86_64" machine="pc-0.14">hvm</type>
+    <boot dev="hd" />
+  </os>
+  <cpu>
+    <model>Nehalem</model>
+  </cpu>
+  <features>
+    <acpi />
+    <apic />
+    <pae />
+  </features>
+  <clock offset="utc" />
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+    <emulator>/usr/bin/kvm</emulator>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" />
+      <source file="/var/lib/libvirt/images/csr-01.img" />
+      <target dev="vda" bus="virtio" />
+    </disk>
+    <controller type="usb" index="0">
+    </controller>
+  <interface type="network">
+     <source network="default" />
+            <model type="virtio" />
+  </interface>
+    <serial type="pty">
+      <target port="0" />
+    </serial>
+    <console type="pty">
+      <target type="serial" port="0" />
+    </console>
+    <input type="tablet" bus="usb" />
+    <input type="mouse" bus="ps2" />
+    <graphics type="vnc" port="-1" autoport="yes" />
+    <sound model="ich6">
+    </sound>
+    <video>
+      <model type="cirrus" vram="9216" heads="1" />
+    </video>
+    <memballoon model="virtio">
+    </memballoon>
+  </devices>
+&lt;/domain&gt;
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Define the vm and start it.
+
+<pre>
+<code># virsh define csr-01.xml
+Domain csr-01 defined from csr-01.xml
+
+# virsh start csr-01
+Domain csr-01 started
+</code>
+</pre>
+
+You can use "virsh console csr-01" to access the console. To exit (at least when using OSX's terminal) hit "CTRL-5."
+
+<pre>
+<code># virsh console csr-01
+  Booting 'CSR1000v - packages.conf'
+
+root (hd0,0)
+ Filesystem type is ext2fs, partition type 0x83
+kernel /packages.conf rw quiet root=/dev/ram console= max_loop=64 HARDWARE=virt
+ual SR_BOOT=bootflash:packages.conf
+Calculating SHA-1 hash...done
+SHA-1 hash:
+        calculated   514e2831:94ee1441:2404193c:f37dac1e:4c196e19
+        expected     514e2831:94ee1441:2404193c:f37dac1e:4c196e19
+package header rev 1 structure detected
+Calculating SHA-1 hash...done
+SHA-1 hash:
+        calculated   134e1e2e:319d85c6:34a4d2b3:965dcb75:dc20afef
+        expected     134e1e2e:319d85c6:34a4d2b3:965dcb75:dc20afef
+Package type:0x7531, flags:0x0
+   [Linux-bzImage, setup=0x2e00, size=0xd1c0720]
+   [isord @ 0x743b2000, 0xbc3d000 bytes]
+   SNIP!
+</code>
+</pre>
+
+Check the interfaces and show version.
+
+<pre>
+<code>SNIP!
+*Jul 15 02:46:04.712: %CONFIG_CSRLXC-5-CONFIG_DONE: Configuration was applied and saved to NVRAM. See bootflash:/csrlxc-cfg.log for more details.
+Router&gt;enable
+Router#show int desc
+Interface                      Status         Protocol Description
+Gi1                            admin down     down     
+Gi2                            admin down     down     
+Gi3                            admin down     down     
+Router#show version
+Cisco IOS XE Software, Version 03.12.00.S - Standard Support Release
+Cisco IOS Software, CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 15.4(2)S, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Wed 26-Mar-14 21:09 by mcpre
+SNIP!
+</code>
+</pre>
+
+Again, you can hit "CTRL-5" to exit "virsh console."
+
+## Conclusion
+
+Now that we have a base image and a working libvirt XML file, we can create all kinds of interesting network configurations and learn how to use a Cisco router without actually having any Cisco hardware. Nothing is stopping you from booting several CSR virtual machines and configuring them to work together.
+
+
+</name></domain></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

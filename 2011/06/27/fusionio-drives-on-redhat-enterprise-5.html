@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using fusion-io drives on Redhat Enterprise 5 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using fusion-io drives on Redhat Enterprise 5">
+
+    
+    <meta name="twitter:description" content="<p>%{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I’ll be posting about that and a few other PCIe-SSD subjects in the next short while. - 24 Apr 2012</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>%{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I’ll be posting about that and a few other PCIe-SSD subjects in the next short while. - 24 Apr 2012</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/fusionio-drives-on-redhat-enterprise-5.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/fusionio-drives-on-redhat-enterprise-5.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using fusion-io drives on Redhat Enterprise 5" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2011/06/27/fusionio-drives-on-redhat-enterprise-5.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using fusion-io drives on Redhat Enterprise 5</h1>
+        <p class="text-gray-600">
+            <time datetime="2011-06-27T00:00:00-04:00">
+                June 27, 2011
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>%{color:red}Update:% Please note that this post is getting a bit old. Currently I am running these IBM FusionIO drives on RHEL 6. I’ll be posting about that and a few other PCIe-SSD subjects in the next short while. - 24 Apr 2012</p>
+
+<h2 id="fusionio-iodrive-overview">FusionIO IODrive Overview</h2>
+
+<p>So at work we have a rather large <a href="http://www-03.ibm.com/systems/x/hardware/enterprise/x3850x5/">IBM x3850 x5</a> server. It has 4 sockets each with six cores and hyperthreading (not that I’m necessarily a fan of hyperthreading–really I haven’t done enough research to make up my mind) which ends up with RHEL5 seeing 48 CPUS.</p>
+
+<pre>
+<code>$ cat /proc/cpuinfo | grep proc | wc -l
+48
+</code>
+</pre>
+
+<p>Fun.</p>
+
+<p>But the important part of this post is that this server also has three 640GB <a href="http://www.fusionio.com/products/iodrive-duo/">fusion-io drives</a> which I have installed and configured as a volume group called <code>fio</code></p>
+
+<pre>
+<code>$ ls /dev/fio
+fio/  fioa  fiob  fioc  fiod  fioe  fiof  
+$ vgs fio
+  VG   #PV #LV #SN Attr   VSize VFree
+  fio    6   4   0 wz--n- 1.76T 1.08T
+</code>
+</pre>
+
+<p>and where the <code>fio[a,b,c,d,e,f]</code> are the drives, with each 640 gig card actually appearing as 2 320 gig disks.</p>
+
+<pre>
+<code>$ dmesg  |grep -i "found device"
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:89:00.0: Found device 0000:89:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:8a:00.0: Found device 0000:8a:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:93:00.0: Found device 0000:93:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:94:00.0: Found device 0000:94:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:98:00.0: Found device 0000:98:00.0
+fioinf IBM 640GB High IOPS MD Class PCIe Adapter 0000:99:00.0: Found device 0000:99:00.0
+</code>
+</pre>
+
+<h2 id="resources">Resources</h2>
+
+<p>The most important resource for using these FusionIO drives is the <a href="http://kb.fusionio.com/KB/c4/linux-specific.aspx">official knowledge base</a> which has several articles specifically for linux. I would suggest reading all of them. :)</p>
+
+<h2 id="install">Install</h2>
+
+<p>Once the cards were put into the server, which is somewhat harrowing given their individual cost, and the server was booted, the software drivers that were downloaded from the IBM website were installed. This server runs RHEL5</p>
+
+<pre>
+<code>$ cat /etc/redhat-release 
+Red Hat Enterprise Linux Server release 5.6 (Tikanga)
+</code>
+</pre>
+
+<p>as that RHEL version that is what IBM supports for drivers.</p>
+
+<pre>
+<code>$ rpm -i iodrive-driver-1.2.7.5-1.0_2.6.18_164.el5.x86_64.rpm \
+iodrive-firmware-1.2.7.6.43246-1.0.noarch.rpm \
+iodrive-jni-1.2.7.5-1.0.x86_64.rpm \
+iodrive-snmp-1.2.7.5-1.0.x86_64.rpm \
+iodrive-util-1.2.7.5-1.0.x86_64.rpm \
+</code>
+</pre>
+
+<p>Currently I am using the drivers as they were downloaded, which means using a specific matching kernel to match. The drivers do come with a source RPM so that you can rebuild them for your latest kernel, but I have opted not to do that yet. So install the matching kernel</p>
+
+<pre>
+<code>$ yum install kernel-2.6.18-164.el5
+</code>
+</pre>
+
+<p>and reboot.</p>
+
+<p>However, I am also using the amazing <a href="http://ksplice.com">ksplice</a> service to ensure that depsite the fact that I am using a rather old kernel to match the FusionIO drivers that the kernel is still up to date in terms of security issues:</p>
+
+<pre>
+<code>$ uptrack-uname -r
+2.6.18-238.12.1.el5
+$ uname -r
+2.6.18-164.el5
+</code>
+</pre>
+
+<p>The @uptrack-uname -r@ command asks uptrack what security equivalent version of the kernel is. Great stuff that kslplice.</p>
+
+<p>Once the drivers are installed we can load the modules</p>
+
+<pre>
+<code>$ modprobe fio-driver
+</code>
+</pre>
+
+<p>and now we can see the drives</p>
+
+<pre>
+<code>$ ls /dev/fio*
+fioa  fiob  fioc  fiod  fioe  fiof 
+</code>
+</pre>
+
+<p>and at this point we can configure the drives.</p>
+
+<h2 id="worker-processes">Worker processes</h2>
+
+<p>Once the drivers are installed there is a <code>/etc/init.d/iodrive</code> startup script. One of the things this script does is startup some <code>worker</code> processes which I believe are used to move data around the FusionIO drives to ensure their performance and longevity.</p>
+
+<pre>
+<code>$ chkconfig --list iodrive
+iodrive 0:off	1:on	2:on	3:on	4:on	5:on	6:off
+</code>
+</pre>
+
+<pre>
+<code>$ ps ax | grep worker
+ 5271 ?        S&lt;   1169:51 [fct0-worker]
+ 5588 ?        S&lt;   1168:07 [fct1-worker]
+ 5593 ?        S&lt;   359:01 [fct2-worker]
+ 5598 ?        R&lt;   206:02 [fct3-worker]
+ 5603 ?        S&lt;   203:15 [fct4-worker]
+ 5608 ?        S&lt;   203:12 [fct5-worker]
+20921 pts/2    S+     0:00 grep worker
+</code>
+</pre>
+
+<p>These processes will take up some CPU time. Frankly, because there are 48 CPUs in this server, using up one to run these workers is OK. But it was a little confusing at first seeing all this activity–one worker process for each card.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Given that we are going to manage the FusionIO drives via LVM, we will need to configure LVM to allow it. See this <a href="http://kb.fusionio.com/KB/a36/enabling-the-iodrive-for-lvm-use.aspx">knowledge base article</a>.</p>
+
+<pre>
+<code>$ grep fio /etc/lvm/lvm.conf
+    types = [ "fio", 16 ]
+</code>
+</pre>
+
+<p>Then add each <code>/dev/fio*</code> drive as a phyical volume and then add them to a volume group.</p>
+
+<pre>
+<code>$ pvs | grep fio
+  /dev/fioa  fio    lvm2 a-   300.31G 320.00M
+  /dev/fiob  fio    lvm2 a-   300.31G 100.31G
+  /dev/fioc  fio    lvm2 a-   300.31G 100.31G
+  /dev/fiod  fio    lvm2 a-   300.31G 300.31G
+  /dev/fioe  fio    lvm2 a-   300.31G 300.31G
+  /dev/fiof  fio    lvm2 a-   300.31G 300.31G
+$ vgs fio
+  VG   #PV #LV #SN Attr   VSize VFree
+  fio    6   4   0 wz--n- 1.76T 1.08T
+</code>
+</pre>
+
+<h2 id="fio-status">fio-status</h2>
+
+<p>Useful way to check the status of the FusionIO drives.</p>
+
+<pre>
+<code>$ fio-status
+
+Found 6 ioDrives in this system with 3 ioDrive Duos
+Fusion-io driver version: 1.2.7.5
+
+Adapter: ioDrive Duo
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:59518
+	PCIE Power limit threshold: 24.75W
+	Connected ioDimm modules:
+	  fct0:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77479
+	  fct1:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77478
+
+fct0	Attached as 'fioa' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77479
+	Alt PN:68Y7382
+	Located in 0 Upper slot of ioDrive Duo SN:59518
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 56.6 degC, max 59.6 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+fct1	Attached as 'fiob' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77478
+	Alt PN:68Y7382
+	Located in 1 Lower slot of ioDrive Duo SN:59518
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 61.0 degC, max 63.0 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+
+Adapter: ioDrive Duo
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:59507
+	PCIE Power limit threshold: 24.75W
+	Connected ioDimm modules:
+	  fct2:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77143
+	  fct3:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77144
+
+fct2	Attached as 'fioc' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77143
+	Alt PN:68Y7382
+	Located in 0 Upper slot of ioDrive Duo SN:59507
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 62.0 degC, max 65.5 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+fct3	Attached as 'fiod' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77144
+	Alt PN:68Y7382
+	Located in 1 Lower slot of ioDrive Duo SN:59507
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 64.0 degC, max 66.4 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+
+Adapter: ioDrive Duo
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:100366
+	PCIE Power limit threshold: 24.75W
+	Connected ioDimm modules:
+	  fct4:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77344
+	  fct5:	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77345
+
+fct4	Attached as 'fioe' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77344
+	Alt PN:68Y7382
+	Located in 0 Upper slot of ioDrive Duo SN:100366
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 68.9 degC, max 71.9 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+fct5	Attached as 'fiof' (block device)
+	IBM 640GB High IOPS MD Class PCIe Adapter, Product Number:68Y7381 SN:77345
+	Alt PN:68Y7382
+	Located in 1 Lower slot of ioDrive Duo SN:100366
+	Firmware v43246
+	322.46 GBytes block device size, 396 GBytes physical device size
+	Internal temperature: avg 63.0 degC, max 66.0 degC
+	Media status: Healthy; Reserves: 100.00%, warn at 10%
+
+
+</code>
+</pre>
+
+<h2 id="xfs">XFS</h2>
+
+<p>Prior to finding out about the official knowledge base, I had decided to purchase a subscription from Redhat for the XFS file system. Then, upon reading this <a href="http://kb.fusionio.com/KB/a43/filesystem-tuning.aspx">kb article</a>, I found that they heavily recommend XFS as the file system to run on top of a FusionIO drive</p>
+
+<pre>
+<code>XFS is currently the recommended filesystem. It can achieve up to 3x 
+the performance of a tuned ext2/ext3 solution. At this time, there is 
+no know additional tuning for running XFS in a single- or multi-ioDrive 
+configuration 
+</code>
+</pre>
+
+<p>so that is the file system we use.</p>
+
+<pre>
+<code>$ mount | grep fio
+/dev/mapper/fio-vault1 on /var/lib/vault1 type xfs (rw)
+</code>
+</pre>
+
+<h2 id="mounting-drives-after-a-reboot">Mounting drives after a reboot</h2>
+
+<p>I’ll admit I hadn’t thought of this during the initial installation. After a few days we moved the server to a new location which thus required a power down and restart.</p>
+
+<p>While the server was restarting, and I was standing in the cold, loud server room because the new room didn’t have any networking for IPMI (which is not good), I noticed it took a very long time to get past the udev portion of the boot, and in fact the FusionIO drives failed to mount from fstab. Of course there is a logical reason for that–read about it <a href="http://kb.fusionio.com/KB/a64/loading-the-driver-via-udev-or-init-script-for-md-and-lvm.aspx">here</a>.</p>
+
+<p>Because we are using the 1.2 driver, I followed the straight forward instructions <a href="http://kb.fusionio.com/KB/a64/loading-the-driver-via-udev-or-init-script-for-md-and-lvm.aspx#Using_Init_Scripts_to_Load_the_1.2.x">here</a>.</p>
+
+<h2 id="performance-testing">Performance testing</h2>
+
+<p>Performance testing is hard. Maybe it’s just me. But testing superdisk like these FusionIO drives on a server with 48 CPUS and 64 gigs of main memory is not easy. Again I will admit I took a shot at benchmarking the FusionIO disk having not read the kb. I messed around with Bonnie++, io-whatever, but nothing quite came out right, partially because I didn’t put a lot of time into it, and because the server has so much memory that it makes it hard to beat the cache (I did try to reduce the memory the OS could see via kernel configuration, but didn’t have a lot of luck with that).</p>
+
+<p>Finally I read this kb article which suggested using the <a href="http://freshmeat.net/projects/fio">fio utility</a> (which I don’t believe is a utility put out by FusionIO, rather just aptly named).</p>
+
+<p>The fio tool is not in the RHEL repositories but it is in rpmforge/repoforge.</p>
+
+<pre>
+<code>$ cd /var/tmp
+$ wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
+$ rpm -Uvh rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
+$ yum repolist | grep forge
+rpmforge                           RHEL 5Server - RPMforge.net - enabled: 10,636
+$ yum search fio | grep -i benchmark
+fio.x86_64 : I/O benchmark and stress/hardware verification tool
+
+</code>
+</pre>
+
+<p>Here are a couple of example runs. Please note that at this point I do not know much about fio. Benchmarking disk is a highly technical thing to do, and getting tests right would take a lot of research and consideration, which I have not done.</p>
+
+<p>It seems that the <code>fio</code> benchmark utility suports <code>direct=1</code> which means use non-buffered-io, thereby skipping memory cacheing and going straight to the disk.</p>
+
+<pre>
+<code>$ cat fio-randwrite.fio 
+[randwrite[
+
+direct=1
+rw=randwrite 
+bs=1m 
+size=5G 
+numjobs=4 
+runtime=10 
+group_reporting 
+directory=/mnt/fio-test-xfs
+$ fio fio-randwrite.fio 
+randwrite: (g=0): rw=randwrite, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
+...
+randwrite: (g=0): rw=randwrite, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
+fio 1.55
+Starting 4 processes
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+Jobs: 4 (f=4): [wwww] [100.0% done] [0K/522.8M /s] [0 /510  iops] [eta 00m:00s]
+randwrite: (groupid=0, jobs=4): err= 0: pid=28487
+  write: io=4556.0MB, bw=466161KB/s, iops=455 , runt= 10008msec
+    clat (msec): min=1 , max=1692 , avg= 9.83, stdev=22.04
+     lat (msec): min=1 , max=1692 , avg= 9.84, stdev=22.04
+    bw (KB/s) : min=  559, max=264126, per=24.79%, avg=115540.55, stdev=20377.90
+  cpu          : usr=0.10%, sys=14.85%, ctx=59071, majf=0, minf=92
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     issued r/w/d: total=0/4556/0, short=0/0/0
+
+     lat (msec): 2=0.53%, 4=1.27%, 10=97.17%, 20=0.59%, 50=0.09%
+     lat (msec): 100=0.18%, 250=0.15%, 2000=0.02%
+
+Run status group 0 (all jobs):
+  WRITE: io=4556.0MB, aggrb=466161KB/s, minb=477349KB/s, maxb=477349KB/s,
+  mint=10008msec, maxt=10008msec
+
+Disk stats (read/write):
+  dm-11: ios=0/158802, merge=0/0, ticks=0/55956241, in_queue=55915327, 
+  util=66.05%, aggrios=0/159667, aggrmerge=0/0, aggrticks=0/55932489,
+  aggrin_queue=55785218, aggrutil=65.96%
+    fioc: ios=0/159667, merge=0/0, ticks=0/55932489, in_queue=55785218, 
+    util=65.96%
+</code>
+</pre>
+
+<p>And then a similar test using RAID10 SAS disk formated ext3.</p>
+
+<pre>
+<code>$ cat fio-randwrite.fio 
+[randwrite[
+
+direct=1
+rw=randwrite 
+bs=1m 
+size=5G 
+numjobs=4 
+runtime=10 
+group_reporting 
+directory=/mnt/sas-test
+$ fio fio-randwrite.fio 
+randwrite: (g=0): rw=randwrite, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
+...
+randwrite: (g=0): rw=randwrite, bs=1M-1M/1M-1M, ioengine=sync, iodepth=1
+fio 1.55
+Starting 4 processes
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+randwrite: Laying out IO file(s) (1 file(s) / 5120MB)
+Jobs: 4 (f=4): [wwww] [1200.0% done] [0K/0K /s] [0 /0  iops] [eta
+ 1158050441d:07h:00m:05sJobs: 4 (f=4): [wwww] [inf% done] [0K/0K /s] 
+[0 /0  iops] [eta 1158050441d:07h:00m:04s]  Jobs: 4 (f=4): [wwww] 
+[1300.0% done] [0K/0K /s] [0 /0  iops] [eta 1158050441d:07h:00m:04sJobs: 
+4 (f=4): [wwww] [inf% done] [0K/0K /s] [0 /0  iops] 
+[eta 1158050441d:07h:00m:03s]  Jobs: 1 (f=1): [___w] [66.1% done] 
+[0K/0K /s] [0 /0  iops] [eta 00m:19s]               
+randwrite: (groupid=0, jobs=4): err= 0: pid=28586
+  write: io=4096.0KB, bw=112369 B/s, iops=0 , runt= 37326msec
+    clat (usec): min=12140K, max=37183K, avg=32696578.04, stdev= 0.00
+     lat (usec): min=12140K, max=37183K, avg=32696579.88, stdev= 0.00
+    bw (KB/s) : min=   27, max=   83, per=31.61%, avg=34.46, stdev= 0.00
+  cpu          : usr=0.00%, sys=51.90%, ctx=9598, majf=0, minf=102
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     issued r/w/d: total=0/4/0, short=0/0/0
+
+     lat (msec): &gt;=2000=100.00%
+
+Run status group 0 (all jobs):
+  WRITE: io=4096KB, aggrb=109KB/s, minb=112KB/s, maxb=112KB/s, 
+  mint=37326msec, maxt=37326msec
+
+Disk stats (read/write):
+  dm-12: ios=128/4721384, merge=0/0, ticks=5582/602531980, in_queue=602926524,
+  util=97.85%, aggrios=129/87424, aggrmerge=0/4634618, aggrticks=5631/10828734,
+  aggrin_queue=10826088, aggrutil=98.01%
+    sdb: ios=129/87424, merge=0/4634618, ticks=5631/10828734, in_queue=10826088,
+    util=98.01%
+</code>
+</pre>
+
+<p>That’s a pretty big difference: <code>io=4556.0MB</code> for the FusionIO drives versus <code>io=4096.0KB</code> for the SAS RAID10. I’m going to have to look into this more! :)</p>
+
+<p>PS. I found this <a href="https://secure.wikimedia.org/wikipedia/en/wiki/List_of_device_bandwidths">list</a> of device bandwidths interesting.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

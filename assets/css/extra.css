@@ -1,0 +1,231 @@
+/* General styles */
+html {
+    overflow-y: scroll;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: calc(100vw - 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Magazine container */
+.magazine-container {
+    background-color: white;
+    max-width: 9.5in;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* Magazine header */
+.magazine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+.issue-number-top {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.magazine-info {
+    text-align: right;
+    font-size: 0.8rem;
+}
+
+.magazine-info .underline {
+    text-decoration: underline;
+}
+
+.logo-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.logo-image {
+    width: 80%;
+    max-width: 48rem;
+}
+
+.magazine-subtitle {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Content wrapper */
+.content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Issue number large */
+.issue-number-large {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 72px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Fruit emoji */
+.fruit {
+    font-size: 1.2em;
+}
+
+.large-fruit {
+    font-size: 2em;
+}
+
+/* Author section */
+.author-section {
+    background-color: #f3f4f6;
+    position: relative;
+}
+
+.author-section::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #f3f4f6;
+}
+
+/* Social buttons */
+.btn-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    color: #ffffff;
+    background-color: #4a5568;
+    transition: background-color 0.2s;
+}
+
+.btn-social:hover {
+    background-color: #2d3748;
+}
+
+/* Bubbly font */
+.bubbly-font {
+    font-family: 'Fredoka One', cursive;
+}
+
+/* Media queries */
+@media (min-width: 768px) {
+    .logo-image {
+        width: 75%;
+    }
+
+    .skew-x-12 {
+        --tw-skew-x: 12deg;
+    }
+}
+
+/* dropdown menu */
+
+.issue-number-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.arrow-down {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    border-top: 5px solid;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 200px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-section {
+    margin-bottom: 15px;
+}
+
+.dropdown-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.dropdown-menu a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+    font-size: 0.9rem;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+@media (min-width: 768px) {
+    .dropdown-menu {
+        min-width: 400px;
+    }
+    
+    .dropdown-section {
+        padding: 0 10px;
+    }
+}

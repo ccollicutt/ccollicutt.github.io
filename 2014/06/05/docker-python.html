@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Docker with Python and iPython | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using Docker with Python and iPython">
+
+    
+    <meta name="twitter:description" content="<p>Right now <a href="http://docker.io">Docker</a> is one of the hottest projects on the planet, so that means some people aren’t going to like it simply based on that fact alone.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Right now <a href="http://docker.io">Docker</a> is one of the hottest projects on the planet, so that means some people aren’t going to like it simply based on that fact alone.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/docker-python.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/docker-python.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using Docker with Python and iPython" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/06/05/docker-python.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using Docker with Python and iPython</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-06-05T00:00:00-04:00">
+                June 05, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Right now <a href="http://docker.io">Docker</a> is one of the hottest projects on the planet, so that means some people aren’t going to like it simply based on that fact alone.</p>
+
+<p>Having said that, I really enjoy the paradigm shift in terms of working with containers, service discovery, and all the interesting new ideas and areas being created. (If you feel like having your mind warped, just read <a href="https://twitter.com/progrium">Jeff Linday’s</a> twitter feed.)</p>
+
+<p>In this post I thought I would take a quick look at using the <a href="https://github.com/dotcloud/docker-py">docker-py</a> module to use Docker containers via Python and, one of my favorite programming applications, <a href="http://ipython.org/">iPython</a>.</p>
+
+<h2 id="install-docker-py">Install docker-py</h2>
+
+<p>First, you need docker-py. Note that in the examples show here I am using Ubuntu Trusty/14.04.</p>
+
+<pre>
+<code>$ pip install docker-py
+</code>
+</pre>
+
+<h2 id="ipython">ipython</h2>
+
+<p>I really like <a href="http://ipython.org/">iPython</a> for exploring Python. It’s kind of an advanced Python shell, but also does much more.</p>
+
+<pre>
+<code>$ sudo apt-get install ipython
+SNIP!
+$ ipython
+Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 1.2.1 -- An enhanced Interactive Python.
+?         -&gt; Introduction and overview of IPython's features.
+%quickref -&gt; Quick reference.
+help      -&gt; Python's own help system.
+object?   -&gt; Details about 'object', use 'object??' for extra details.
+
+In [1]:
+</code>
+</pre>
+
+<h2 id="install-docker">Install docker</h2>
+
+<p>If docker isn’t already installed, then go ahead and install it.</p>
+
+<pre>
+<code>$ sudo apt-get install docker.io
+</code>
+</pre>
+
+<p>I also alias docker.io to docker.</p>
+
+<pre>
+<code>$ alias docker='docker.io'
+$ docker version
+Client version: 0.9.1
+Go version (client): go1.2.1
+Git commit (client): 3600720
+Server version: 0.9.1
+Git commit (server): 3600720
+Go version (server): go1.2.1
+Last stable version: 0.11.1, please update docker
+</code>
+</pre>
+
+<p>Docker should now have a socket open that we can connect to.</p>
+
+<pre>
+<code>$ ls /var/run/docker.sock 
+/var/run/docker.sock
+</code>
+</pre>
+
+<h2 id="pull-an-image">Pull an image</h2>
+
+<p>Let’s download the busybox image.</p>
+
+<pre>
+<code>$ docker pull busybox
+Pulling repository busybox
+71e18d715071: Download complete 
+98b9fdab1cb6: Download complete 
+1277aa3f93b3: Download complete 
+6e0a2595b580: Download complete 
+511136ea3c5a: Download complete 
+b6c0d171b362: Download complete 
+8464f9ac64e8: Download complete 
+9798716626f6: Download complete 
+fc1343e2fca0: Download complete 
+f3c823ac7aa6: Download complete 
+</code>
+</pre>
+
+<p>Now we are ready to use docker-py.</p>
+
+<h2 id="working-with-docker-py">Working with docker-py</h2>
+
+<p>Now that we have docker-py, iPython, Docker, and the busybox image, we can start some containers!</p>
+
+<p>If you’re not familiar with iPython, have a look at the <a href="http://ipython.org/ipython-doc/stable/interactive/tutorial.html">tutorial</a>. iPython is quite powerful.</p>
+
+<p>First, fire up ipython and import docker.</p>
+
+<pre>
+<code>$ ipython
+Python 2.7.6 (default, Mar 22 2014, 22:59:56) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 1.2.1 -- An enhanced Interactive Python.
+?         -&gt; Introduction and overview of IPython's features.
+%quickref -&gt; Quick reference.
+help      -&gt; Python's own help system.
+object?   -&gt; Details about 'object', use 'object??' for extra details.
+
+In [1]: import docker
+</code>
+</pre>
+
+<p>Next we make a connection to Docker.</p>
+
+<pre>
+<code>In [2]: c = docker.Client(base_url='unix://var/run/docker.sock',
+   ...:                   version='1.9',
+   ...:                   timeout=10)
+</code>
+</pre>
+
+<p>Now we have a connection to Docker.</p>
+
+<p>iPython offers tab completion. If I type “c.” and then hit the TAB key, ipython will show me what the Docker connection object has to offer.</p>
+
+<pre>
+<code>In [3]: c.
+c.adapters                      c.headers                       c.pull
+c.attach                        c.history                       c.push
+c.attach_socket                 c.hooks                         c.put
+c.auth                          c.images                        c.remove_container
+c.base_url                      c.import_image                  c.remove_image
+c.build                         c.info                          c.request
+c.cert                          c.insert                        c.resolve_redirects
+c.close                         c.inspect_container             c.restart
+c.commit                        c.inspect_image                 c.search
+c.containers                    c.kill                          c.send
+c.cookies                       c.login                         c.start
+c.copy                          c.logs                          c.stop
+c.create_container              c.max_redirects                 c.stream
+c.create_container_from_config  c.mount                         c.tag
+c.delete                        c.options                       c.top
+c.diff                          c.params                        c.trust_env
+c.events                        c.patch                         c.verify
+c.export                        c.port                          c.version
+c.get                           c.post                          c.wait
+c.get_adapter                   c.prepare_request               
+c.head                          c.proxies   
+</code>
+</pre>
+
+<p>Let’s look at c.images. I I put a “?” after the object, ipython will provide details about the object.</p>
+
+<pre>
+<code>In [5]: c.images?
+Type:       instancemethod
+String Form:&lt;bound method Client.images of &lt;docker.client.Client object at 0x7f3acc731790&gt;&gt;
+File:       /usr/local/lib/python2.7/dist-packages/docker/client.py
+Definition: c.images(self, name=None, quiet=False, all=False, viz=False)
+Docstring:  <no docstring="">
+&lt;/code&gt;
+&lt;/pre&gt;
+
+And grab the busybox image.
+
+<pre>
+<code>In [6]: c.images(name="busybox")
+Out[6]: 
+[{u'Created': 1401402591,
+  u'Id': u'71e18d715071d6ba89a041d1e696b3d201e82a7525fbd35e2763b8e066a3e4de',
+  u'ParentId': u'8464f9ac64e87252a91be3fbb99cee20cda3188de5365bec7975881f389be343',
+  u'RepoTags': [u'busybox:buildroot-2013.08.1'],
+  u'Size': 0,
+  u'VirtualSize': 2489301},
+ {u'Created': 1401402590,
+  u'Id': u'1277aa3f93b3da774690bc4f0d8bf257ff372e23310b4a5d3803c180c0d64cd5',
+  u'ParentId': u'f3c823ac7aa6ef78d83f19167d5e2592d2c7f208058bc70bf5629d4bb4ab996c',
+  u'RepoTags': [u'busybox:ubuntu-14.04'],
+  u'Size': 0,
+  u'VirtualSize': 5609404},
+ {u'Created': 1401402589,
+  u'Id': u'6e0a2595b5807b4f8c109f3c6c5c3d59c9873a5650b51a4480b61428427ab5d8',
+  u'ParentId': u'fc1343e2fca04a455f803ba66d1865739e0243aca6c9d5fd55f4f73f1e28456e',
+  u'RepoTags': [u'busybox:ubuntu-12.04'],
+  u'Size': 0,
+  u'VirtualSize': 5454693},
+ {u'Created': 1401402587,
+  u'Id': u'98b9fdab1cb6e25411eea5c44241561326c336d3e0efae86e0239a1fe56fbfd4',
+  u'ParentId': u'9798716626f6ae4e6b7f28451c0a1a603dc534fe5d9dd3900150114f89386216',
+  u'RepoTags': [u'busybox:buildroot-2014.02', u'busybox:latest'],
+  u'Size': 0,
+  u'VirtualSize': 2433303}]
+</code>
+</pre>
+
+Create a container. Note that I'm adding a command to be run, in this example the "env" command.
+
+<pre>
+<code>In [8]: c.create_container(image="busybox", command="env")
+Out[8]: 
+{u'Id': u'584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87',
+ u'Warnings': None}
+</code>
+</pre>
+
+Start the container using the Id.
+
+<pre>
+<code>In [9]: c.start(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
+</code>
+</pre>
+
+And we can check the logs, should see the output of the command "env" that we configured when the container was created.
+
+<pre>
+<code>In [11]: c.logs(container="584459a09e6d4180757cb5c10ac354ca46a32bf8e122fa3fb71566108f330c87")
+Out[11]: 'HOME=/\nPATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nHOSTNAME=584459a09e6d\n'
+</code>
+</pre>
+
+If I run a container with the same options using the dokcer command line, I should see something similar.
+
+<pre>
+<code>$ docker run busybox env
+HOME=/
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=ce3ad38a52bf
+</code>
+</pre>
+
+As far as I can tell, docker-py does not have a run option, instead we have to create a container and then start it.
+
+Here's another example:
+
+<pre>
+<code>In [17]: busybox = c.create_container(image="busybox", command="echo hi")
+
+In [18]: busybox?
+Type:       dict
+String Form:{u'Id': u'34ede853ee0e95887ea333523d559efae7dcbe6ae7147aa971c544133a72e254', u'Warnings': None}
+Length:     2
+Docstring:
+dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+    (key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+    d = {}
+    for k, v in iterable:
+        d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+    in the keyword argument list.  For example:  dict(one=1, two=2)
+
+In [19]: c.start(busybox.get("Id"))
+
+In [20]: c.logs(busybox.get("Id"))
+Out[20]: 'hi\n'
+</code>
+</pre>
+
+If you haven't used busybox images with docker yet, I definitely suggest it. I also suggest the debian:jessie image which is only 120MB, quite a bit smaller than, say, the Ubuntu images.
+
+## Conclusion
+
+Docker is a fascinating new system and it's going to be used to build interesting new technologies, especially around cloud services. Using iPython we've explored how to programmatically create docker containers using the docker-py module. Now using python we can create those next generation ideas using docker and containers. 
+
+
+
+
+
+
+</no></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

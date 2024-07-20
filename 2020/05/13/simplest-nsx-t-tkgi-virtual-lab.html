@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual NSX-t and TKGI Lab | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Virtual NSX-t and TKGI Lab">
+
+    
+    <meta name="twitter:description" content="<p>I used to do a lot of work in the telecom field, especially around Network Function Virtualization (NFV) and I’ve deployed several Software Defined Networks (SDN) into production. I’ve even seen a few <a href="https://midonet.org/">good ones</a> come into existence, and then sometimes disappear.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I used to do a lot of work in the telecom field, especially around Network Function Virtualization (NFV) and I’ve deployed several Software Defined Networks (SDN) into production. I’ve even seen a few <a href="https://midonet.org/">good ones</a> come into existence, and then sometimes disappear.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/simplest-nsx-t-tkgi-virtual-lab.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/simplest-nsx-t-tkgi-virtual-lab.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Virtual NSX-t and TKGI Lab" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/05/13/simplest-nsx-t-tkgi-virtual-lab.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Virtual NSX-t and TKGI Lab</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-05-13T00:00:00-04:00">
+                May 13, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I used to do a lot of work in the telecom field, especially around Network Function Virtualization (NFV) and I’ve deployed several Software Defined Networks (SDN) into production. I’ve even seen a few <a href="https://midonet.org/">good ones</a> come into existence, and then sometimes disappear.</p>
+
+<p>Now that I work at VMware in the <a href="https://tanzu.vmware.com/">Tanzu group</a>, I work with VMware’s SDN system <a href="https://docs.vmware.com/en/VMware-NSX-T-Data-Center/index.html">NSX-t</a> and, of course, Kubernetes. One way that VMware can provide customers with k8s is via <a href="https://cloud.vmware.com/vmware-enterprise-pks">Tanzu Kubernetes Grid Integrated Edition</a> (TKGI) which was previously called the Pivotal Container Service, or PKS. IMHO, TKGI works best with NSX-t. Networking is key to running k8s effectively.</p>
+
+<p>NSX-t, TKGI, k8s…these are all complicated technologies. There is just no way around it. The best way to learn how it all works is to deploy it. Currently I have what I consider to be a simpler virtual lab setup of NSX-t and TKGI deployed as virtual infrastructure, meaning that the ESXI hosts are virtual machines.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<p>This isn’t really a prescriptive document, it’s more like a bunch of notes on some things I did to build this lab. On one hand it seems complex due to the use of a virtual vcenter and esxi nodes, but ultimately this is the simplest deployment of NSX-t and TKGI on vSphere that is possible. It’s really not that challenging and I actually ran into ZERO issues. I didn’t have one single problem getting this working (unless I’ve just missed something, lol). That said, I’ve been running NSX-t and TKGI in my lab for quite a while. For this deployment I was looking at NSX-t 2.5 and EPMC, neither of which I’ve deployed previously.</p>
+
+<p>PS. <a href="https://blogs.vmware.com/networkvirtualization/2020/04/nsx-t-3-0.html/">NSX-t 3.0 is out!</a></p>
+
+<h2 id="lab-design">Lab Design</h2>
+
+<p>The point of this particular lab is to create similar environment as to what would be deployed in a TKGI + NSX-t + vSphere proof of concept. This means that:</p>
+
+<ul>
+  <li>Only <a href="https://docs.vmware.com/en/VMware-NSX-T-Data-Center/2.4/installation/GUID-3770AA1C-DA79-4E95-960A-96DAC376242F.html">2 nics</a> are used on the ESXI hosts</li>
+  <li>There is no high availability at all, especially with regards to network traffic</li>
+  <li>Trying to deploy the least amount of resources</li>
+  <li>The <a href="https://docs.pivotal.io/pks/1-7/console/console-index.html">EPMC</a> system is used to abstract away the deployment of ops manager and bosh, and the initial setup of TKGI -&gt; NSX-t connectivity</li>
+</ul>
+
+<p><img src="/img/tkgi-nsx/nics.png" alt="nics" /></p>
+
+<h2 id="virtual-esxi">Virtual ESXI</h2>
+
+<p>Thank goodness for the fact that you can run ESXI hosts as virtual machines. This makes it a lot easier to build up lab infrastructure for learning how it all works and deploying it in many different ways. William Lam’s virtual ESXI <a href="https://www.virtuallyghetto.com/2018/04/nested-esxi-6-7-virtual-appliance-updates.html">content library</a> is a godsend and allows me to build all kinds of fun infrastructure. having only recently been introduced to vSphere it’s taken me a while to get to the point where I’m building virtual clusters.</p>
+
+<p>I’ve got three virtual, nested, esxi nodes in a vSphere cluster.</p>
+
+<pre><code>$ govc find . -type h
+/Datacenter/host/Cluster/10.0.1.237
+/Datacenter/host/Cluster/10.0.1.238
+/Datacenter/host/Cluster/10.0.1.239
+</code></pre>
+
+<p>These are the resources they have:</p>
+
+<pre><code>$ govc host.info /Datacenter/host/Cluster/10.0.1.237
+Name:              10.0.1.237
+  Path:            /Datacenter/host/Cluster/10.0.1.237
+  Manufacturer:    VMware, Inc.
+  Logical CPUs:    16 CPUs @ 2000MHz
+  Processor type:  Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz
+  CPU usage:       7694 MHz (24.0%)
+  Memory:          65534MB
+  Memory usage:    39759 MB (60.7%)
+  Boot time:       2020-05-10 01:32:26.217102 +0000 UTC
+  State:           connected
+</code></pre>
+
+<p>And these are all the vms that have been created for a full TKGI deployment, with one cluster deployed.</p>
+
+<pre><code>$ govc find . -type m
+/Datacenter/vm/pks_vms/vm-6dbd0bf0-9b12-40fd-bd06-05898d3f6a18
+/Datacenter/vm/pks_vms/vm-05632c06-2abd-4997-a7db-d5366f798281
+/Datacenter/vm/pks_templates/sc-a0414145-7c72-4991-9c87-1539fe36efe6
+/Datacenter/vm/pks_vms/vm-d341f649-fe5b-4487-9702-18ea60c265c9
+/Datacenter/vm/pks_vms/vm-422cbe25-f60d-4ae4-a2bb-2254f9dcf1eb
+/Datacenter/vm/pks_vms/vm-1456f8d2-24c3-4790-a622-9e9c6ef579e0
+/Datacenter/vm/opsman-WnmxrhR3zg
+/Datacenter/vm/pks-management-console-1.7.0-rev.1-978372
+/Datacenter/vm/pks_vms/vm-3b5fbbc7-bc27-43b7-a40b-4c2984419b3b
+/Datacenter/vm/pks_templates/sc-6f5a71cb-5949-4697-9245-418ece3d0182
+/Datacenter/vm/nsx-unified-appliance-2.5.1.0.0.15314292
+/Datacenter/vm/pks_vms/vm-7fd9e63c-3276-439e-a358-e074d0f4d453
+/Datacenter/vm/pks_vms/vm-fbc5e464-56cf-4eca-aad6-0e46f1bb3144
+/Datacenter/vm/pks_templates/sc-8caf221d-a04c-4f48-8747-f7cead82e788
+/Datacenter/vm/nsx-edge1
+</code></pre>
+
+<p>As you can see, there is an ops manager instance, a nsx manager, and an nsx edge instance. As well, there is a bosh director as well, and finally a TGKI management console (here called “pks-management-console”).</p>
+
+<p>There is a lot of abstraction going on here, e.g. EPMC deploys Ops Manager, which deploys the Bosh Director, which deploys the TKGI API, which deploys the TGKI clusters.</p>
+
+<p><img src="/img/tkgi-nsx/drawing-epmc1.jpg" alt="overview" /></p>
+
+<p>One of the most important features of TKGI is that it is a k8s cluster life cycle manager, it can deploy and manage N k8s clusters.</p>
+
+<h2 id="enabling-nested-networking">Enabling Nested Networking</h2>
+
+<p>There are a lot of ways to approach this setup. I took this approach</p>
+
+<pre><code>for h in $(govc find . -type h | grep -v nested); do \
+    govc host.portgroup.add -vswitch vSwitch0 -vlan 4095 -host=$h NestedVLANTrunk; \
+done
+</code></pre>
+
+<p>to add a VLAN trunk that the nested esxi hosts would have access to to get trunk VLAN traffic, i.e. see more than one VLAN on a virtual nic.</p>
+
+<p>In the image below the nested esxi vm has two nics, one on the NestedVLANTrunk and one on “nested-pks-poc-nsx-tep” which is a physical VLAN in the underlying physical network, but one specifically setup for the nsx tep traffic. So this design only has 2 nics, which is nice, and what would typically be done in a physical proof of concept.</p>
+
+<p><img src="/img/tkgi-nsx/nested-esxi-nics1.jpg" alt="nested esxi nics" /></p>
+
+<p>Then in the nested vcenter there are more networks defined, which are VLANS available on the NestedVLANTrunk interface. The initial VSS based networks were migrated onto VDS. So there is the “VM Network” (also VLAN101), and a network for “vmotion”  as well. And, of course, the “nsx-uplink” and “nsx-tep” networks. Again, these are all physical VLANs in this lab, and are presented to the virtual vsphere system, in this case via the VLAN trunk and the distributed port group.</p>
+
+<p><img src="/img/tkgi-nsx/nested-vcenter-networks1.jpg" alt="nested vcsa networks" /></p>
+
+<p>I suppose it’s a bit confusing that I’m using VSS in the physical hosts and VDS in the virtual ones, but that’s what I did.</p>
+
+<p>Also, and this is important, promiscuous networking must be enabled in the er…physical virtual switch in the physical esxi nodes. As well note that the MTU is set to 1600.</p>
+
+<p><img src="/img/tkgi-nsx/physical-vss-security1.jpg" alt="physical vss security" /></p>
+
+<p>Also the DVS in the nested VCSA has a 1600 MTU.</p>
+
+<p><img src="/img/tkgi-nsx/virtual-dswitch-mtu1.jpg" alt="nested vcsa dvs mtu" /></p>
+
+<h2 id="nsx-t-configuration">NSX-t Configuration</h2>
+
+<p>The configuration for this lab is bog standard, 2 NIC setup. The <a href="https://docs.pivotal.io/pks/1-7/nsxt-topologies.html">topology</a> is the standard, most commonly used NAT model.</p>
+
+<p>Everything is NATed. The T0 router has several DNAT and SNAT configurations.</p>
+
+<p><img src="/img/tkgi-nsx/nsx-nat.jpg" alt="nat configs" /></p>
+
+<p>With TKGI 1.7, each k8s cluster gets its own T1 router. Right now there are 2 k8s clusters.</p>
+
+<p><img src="/img/tkgi-nsx/nsx-routers.jpg" alt="nsx routers" /></p>
+
+<p>I created 3 VLANs in the physical network for this lab. There is also the “VM Network” which is 10.1.0.0/24 and has most management interfaces. Note that I just use /24s because it’s my lab.</p>
+
+<pre><code>name                    vlan range
+nested-pks-poc-vmotion  119 10.0.19.0/24
+nested-pks-nsx-tep      120 10.0.20.0/24
+nested-pks-nsx-uplink	121 10.0.21.0/24
+</code></pre>
+
+<p>My habit, though it is a ridiculously sized network, is to set a static route for my NSX T0 routers and give them a /16. Within that /16 I’ve designated a couple /24s for use by NSX, most importantly the 10.2.1.0/24 range which is floating IPs for load balancers, etc. Because I’m using a simple static route there’s no need for BGP setup.</p>
+
+<pre><code>10.2.0.0/16	static route pointed to T0 router at 10.0.21.100	
+10.2.0.0/24	deployment range
+10.2.1.0/24	floating ips
+</code></pre>
+
+<p>10.2.0.0/24 is the deployment range, and that is where things like ops manager and bosh director end up.</p>
+
+<h2 id="epmc">EPMC</h2>
+
+<p>EPMC is a great tool that helps to abstract away the complexity of the underlying TKGI deployment, especially around ops manager, bosh, and NSX-t networking configuration. And what’s more, it allows operators to download the configuration as a set of files. EPMC has a familiar, wizard like interface to take operators through configuration all the TKGI components. Though note that NSX-t has to be in place already, but not configured for TKGI.</p>
+
+<p>Below is a screenshot of the network configuration as set up in EPMC.</p>
+
+<p><img src="/img/tkgi-nsx/epmc-network-config.png" alt="epmc network config" /></p>
+
+<p>As mentioned, you can download the configuration file which is powerful, as you can reuse it.</p>
+
+<p><img src="/img/tkgi-nsx/epmc-download-config.png" alt="epmc download config" /></p>
+
+<h2 id="nsx-edges">NSX Edges</h2>
+
+<p>When NSX-t is deployed it needs at least one edge node.</p>
+
+<p>One of the more challenging things to understand about deploying NSX is that the ESXI nodes are (usually) physical, and the edge nodes virtual, but, in this design, they all need to be able to access TEP interface IPs…they need that reachability. Layer 2 is not required for this reachability, but in the case of this particular design, the edge nodes have an interface on the TEP VLAN and vnic1 on the ESXI nodes is also connected to that same VLAN as an access port, i.e. it looks like VLAN 0 to them. Please note that NSX-t is extremely flexible, and this design is the most basic.</p>
+
+<p>This <a href="https://blogs.vmware.com/networkvirtualization/2018/10/flexible-deployment-options-for-nsx-t-edge-vm.html/">blog post</a> describes a couple of different ways to deploy nsx edges. Typically 4 nics are expected. This particular deployment is the one they have a not so subtle warning about:</p>
+
+<blockquote>
+  <p>In a Collapsed Compute and Edge Cluster topology, compute host is prepared for NSX-T which implies that this host has N-VDS installed and is also configured with a Tunnel End point. <strong>This deployment option is NOT recommended on a host with two pNICs. The simple reason being, this host has two virtual switches now, a VSS/VDS and a N-VDS, each consuming one pNIC. So, there is no redundancy for either of the virtual switches.</strong> A host with 4 pNICs or more is recommended in this deployment option. NSX-T Edge VM deployment or configuration doesn’t change from option 1 as the Edge VM still leverages the VSS/VDS portgroups.</p>
+</blockquote>
+
+<p>But that’s fine for this lab because it’s not meant for production.</p>
+
+<p>So the nsx edge, a virtual machine, has 3 nics in use:</p>
+
+<ol>
+  <li>Access to the TEP network</li>
+  <li>Access to the uplink network</li>
+  <li>A management interface</li>
+</ol>
+
+<p><img src="/img/tkgi-nsx/nsx-edge-nics1.jpg" alt="nsx edge nics" /></p>
+
+<h2 id="pings">Pings</h2>
+
+<p>Can’t network without pings. :)</p>
+
+<p><img src="/img/tkgi-nsx/pings.jpg" alt="pings" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So there you have it, a somewhat haphazard tour of a virtual, 2 nic TKGI + NSX-t deployment. You could do this on a single ESXI host.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

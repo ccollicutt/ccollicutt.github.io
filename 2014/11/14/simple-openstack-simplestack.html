@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleStack | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="SimpleStack">
+
+    
+    <meta name="twitter:description" content="<p><small><em>(simple diagram of…simplestack network setup)</em></small></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><small><em>(simple diagram of…simplestack network setup)</em></small></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/simple-openstack-simplestack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/simple-openstack-simplestack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="SimpleStack" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/11/14/simple-openstack-simplestack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">SimpleStack</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-11-14T00:00:00-05:00">
+                November 14, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><small><em>(simple diagram of…simplestack network setup)</em></small></p>
+
+<p>For some reason I’m fascinated by the thought of simplifying an OpenStack installation. As a Linux/Unix systems administrator, I actually think OpenStack is great–it’s like this huge ball of every Linuxy system and service packed together to provide useful infrastructure via an API. It’s got everything: storage backends, database, queues, web servers, hypervisors, firewalls, image files, file systems, load balancers, plus all the networking components . You name it you can probably use it in OpenStack. Thus, as a systems administrator, you have to be able to use pretty much everything, and then automate it and operate it. From PXE boot to haproxy. It’s a challenge that’s for sure.</p>
+
+<p>Because OpenStack can be so varied and pluggable it means a large number of choices. However, generally speaking, people don’t want choices.</p>
+
+<h2 id="choices">Choices</h2>
+
+<p>I read about this paper once a few years ago: <a href="http://www.wjh.harvard.edu/~dtg/Gilber%20t&amp;%20Ebert%20%28DECISIONS%20&amp;%20REVISIONS%29.pdf">Decisions and Revisions: The Affective Forecasting of Changeable Outcomes</a>. In the study, students were asked to pick a photograph. One group had to pick it right away, and the other group could wait for up to four days to decide which print they wanted.</p>
+
+<blockquote>
+...students believed that having the opportunity to change their minds about which prints to keep would not influence their liking of the prints. However, those who had the opportunity to change their minds liked their prints less than those who did not.
+</blockquote>
+
+<p>I’m not a scientist of any sort, but that paper has always stuck in my mind as being an example of how having too many choices makes things hard for people, and in fact can lead to regret. This is part of why IT workers are always searching for the mythical “best practice,” as in:</p>
+
+<blockquote>
+How do I reduce the possibility of regretting what I did by narrowing my choices, and reducing the time it takes to make those choices?
+</blockquote>
+
+<h2 id="linux-distributions">Linux distributions</h2>
+
+<p>I’m typing this post on Ubuntu 14.10. I didn’t build my own Linux Kernel or the entire system using <a href="http://www.linuxfromscratch.org/">Linux From Scratch</a> (though maybe everyone should try that at least once). Most systems administrators and developers I’ve worked with haven’t even heard of the <a href="http://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">Linux File System Hierarchy</a>.</p>
+
+<p>Linux distos are a way of reducing complexity; of making things simple. Linux distributions make all kinds of choices for us, especially with regards to packaging. When we use the OpenStack packages from Ubuntu 14.04 Canonical has made many decisions regarding OpenStack already. For most of us that is a good thing. (Though certainly many OpenStack operators build their own packages of OpenStack.) Choices are reduced, and for most, that’s good.</p>
+
+<h2 id="too-many-features">Too many features?</h2>
+
+<p>As I write this Amazon re:invent is going on. The size of AWS is difficult to grasp. It’s so huge. It has hundreds of features and services. Even billing is extremely complex. Some people and organizations need these features. Some are intimidated by them.</p>
+
+<p>With AWS complexity in mind, I can see how an infrastructure as a service (IaaS) provider such as <a href="http://digitalocean.com">Digital Ocean</a> can be successful in a niche. They provide a vastly simplified system with few extra features:</p>
+
+<ul>
+  <li>Simple virtual machine sizes and pricing</li>
+  <li>Multiple regions across the world</li>
+  <li>One shared internal network per region</li>
+  <li>Snapshotting, copying snapshots to all regions</li>
+  <li>DNS</li>
+  <li>No volumes</li>
+</ul>
+
+<p>That’s it. I think over time they will add additional features in order to try to grow, but I hope they don’t. I hope they stay in their niche and keep it as simple as possible. Nothing wrong with a successful company that doesn’t grow by 20% year after year (except in the stock market).</p>
+
+<h2 id="simplestack">SimpleStack</h2>
+
+<p>I put together <a href="https://github.com/ccollicutt/simplestack">SimpleStack</a> to use as an example of a “simple” OpenStack installation. I’ve got more work to do on it, so it’s just an example, but a fun place to start, if you’re into that kind of thing. :)</p>
+
+<p>SimpleStack will setup and install one controller and two compute nodes using <a href="http://vagrantup.com">Vagrant</a> and <a href="http://ansible.com">Ansible</a>.</p>
+
+<p>I did recently use it to provide a company with a test installation of OpenStack on two hardware servers, a sort of Proof-of-Concept, so I know it can work in a Virtualbox/Vagrant as well as a hardware environment, though the playbooks would need a couple of changes to work in a non-vagrant environment (something I’ll fix soon).</p>
+
+<p>Notable features, or lack thereof:</p>
+
+<ul>
+  <li>Automated, idempotent install using Ansible</li>
+  <li>One controller, multiple compute nodes</li>
+  <li>Front facing APIs using self-signed SSL</li>
+  <li>Multihost FlatDHCP networking</li>
+  <li>No private network (or private networks)</li>
+  <li>No Horizon (so no web gui)</li>
+  <li>No Cinder (so no volumes)</li>
+  <li>Not using Neutron, instead nova-network</li>
+</ul>
+
+<p>And that’s it.</p>
+
+<h2 id="try-it-out">Try it out</h2>
+
+<p>If you want to give it a test drive, just checkout the latest README file in the <a href="https://github.com/ccollicutt/simplestack">Github repo</a>. As I mentioned, there is more work to do so it’s not perfect.</p>
+
+<p>I like that I can see exactly how many actions it takes to setup a simple OpenStack system, 55 for the controller and 18 for the compute nodes. Though I’m using templates so that reduces a lot of the tasks.</p>
+
+<pre>
+<code>curtis$ ansible-playbook site.yml
+SNIP!
+PLAY RECAP ********************************************************************
+compute01                  : ok=18   changed=0    unreachable=0    failed=0
+compute02                  : ok=18   changed=0    unreachable=0    failed=0
+controller01               : ok=55   changed=0    unreachable=0    failed=0
+</code>
+</pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This is a fun little experiment to see how much OpenStack can be simplified, and, in effect try to make it look something like Digital Ocean, though even SimpleStack is missing some features comparitively.</p>
+
+<p>A few things I want to try out in the next “version”:</p>
+
+<ul>
+  <li>Separate the networks in the Vagrant config (all vms are on all networks at this point)</li>
+  <li>Add a shared private network ala DO, <a href="http://www.sebastien-han.fr/blog/2012/08/03/openstack-auto-assign-floating-ip/">automatic floating IPs</a> on the public interface for all instances</li>
+  <li>Find a way to figure out the interface’s purpose without using names like em2, eth0, ect, so that SimpleStack can work in any environment, not just Vagrant (that is, without changing the playbooks–there are a couple spots where “ansible_eth2” and the like is used, this is an Ansible variable issue I need to figure out)</li>
+  <li>IPv6?</li>
+  <li>A second region? Share glance images?</li>
+  <li>A simplified API with a command line tool?</li>
+  <li>Firewalling and routing with OpenBSD?</li>
+</ul>
+
+<p>Let me know if you have any ideas or see a mistake. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

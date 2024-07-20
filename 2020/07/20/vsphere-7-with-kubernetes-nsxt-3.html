@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vSphere 7 with Kubernetes and NSXT 3.0 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="vSphere 7 with Kubernetes and NSXT 3.0">
+
+    
+    <meta name="twitter:description" content="<p>Kuberenetes is a commodity. There I said it. Sure, I work in the <a href="https://tanzu.vmware.com/">Tanzu business unit of VMware</a>, and we heavily value Kubernetes, as does VMware overall. VMware is a massive contributor to upstream Kubernetes–see <a href="https://github.com/kubernetes-sigs/cluster-api">Cluster API</a> for example, and, well, there’s the whole Kubernetes-built-into-vsphere thing. But we are also very interested in what happens AFTER you have Kubernetes.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Kuberenetes is a commodity. There I said it. Sure, I work in the <a href="https://tanzu.vmware.com/">Tanzu business unit of VMware</a>, and we heavily value Kubernetes, as does VMware overall. VMware is a massive contributor to upstream Kubernetes–see <a href="https://github.com/kubernetes-sigs/cluster-api">Cluster API</a> for example, and, well, there’s the whole Kubernetes-built-into-vsphere thing. But we are also very interested in what happens AFTER you have Kubernetes.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/vsphere-7-with-kubernetes-nsxt-3.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/vsphere-7-with-kubernetes-nsxt-3.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="vSphere 7 with Kubernetes and NSXT 3.0" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/07/20/vsphere-7-with-kubernetes-nsxt-3.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">vSphere 7 with Kubernetes and NSXT 3.0</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-07-20T00:00:00-04:00">
+                July 20, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Kuberenetes is a commodity. There I said it. Sure, I work in the <a href="https://tanzu.vmware.com/">Tanzu business unit of VMware</a>, and we heavily value Kubernetes, as does VMware overall. VMware is a massive contributor to upstream Kubernetes–see <a href="https://github.com/kubernetes-sigs/cluster-api">Cluster API</a> for example, and, well, there’s the whole Kubernetes-built-into-vsphere thing. But we are also very interested in what happens AFTER you have Kubernetes.</p>
+
+<p>At VMware we make it easy to get Kubernetes dial tone so that you can get to the good stuff, the important stuff: deploying applications. Dial tone is the easy part, writing new apps quickly and getting them running in production…that’s hard. With that said, the majority of Tanzu’s focus is on what you do <em>after</em> you have Kubernetes, and of course getting apps in production.</p>
+
+<p>But, let’s talk about the dial tone here, and especially NSXT 3.0.</p>
+
+<h2 id="getting-kubernetes-up-and-running-in-vsphere-7">Getting Kubernetes up and running in vSphere 7</h2>
+
+<p>There are many great blog posts on the matter:</p>
+
+<ul>
+  <li><a href="https://blog.acepod.com/tanzu-vsphere-7-with-kubernetes-on-nsx-t-3-0-vds-install-part-1-overview/">Tanzu vSphere 7 with Kubernetes on NSX-T 3.0 VDS Install Part 1: Overview</a></li>
+  <li><a href="https://www.viktorious.nl/2020/06/30/deploy-a-tanzu-kubernetes-cluster-on-vsphere-7/">Deploy a Tanzu Kubernetes cluster on vSphere 7</a></li>
+  <li><a href="https://www.viktorious.nl/2020/06/30/deploy-a-tanzu-kubernetes-cluster-on-vsphere-7/">Automated vSphere 7 and vSphere with Kubernetes Lab Deployment Script</a></li>
+  <li><a href="http://www.boche.net/blog/2020/05/17/vsphere-with-kubernetes/">vSphere with Kubernetes</a></li>
+</ul>
+
+<p>Any one of those will get you up and running. This post is my version of the above. That said, likely there is not quite enough here to get you completley up and running, but it will certainly provide you some direction.</p>
+
+<ul>
+  <li>This is also a great post on <a href="https://beyondelastic.com/2020/07/17/verify-and-troubleshoot-vsphere-7-with-kubernetes/">troubleshooting</a></li>
+</ul>
+
+<h2 id="networking">Networking</h2>
+
+<p>To enable “Workload Management” in vSphere 7 (aka Kubernetes) NSXT is required. Designing networks is not easy, and there are many paths that can be taken, but I’ll describe my overly simplified lab/PoC style path and you can diverge from it where ever you feel necessary.</p>
+
+<p>I still have two nics in these ESXi hosts, I’ve left the various management interfaces, vmotion, storage, ect, on one nic and everything else, i.e. NSXT, on the other, though it’s not strictly necessary, and the advantages of NSXT would probably be better displayed with a single interface…but I’m too lazy to change it! Suffice it to say you can use a single nic now, which is great for PoC and lab work.</p>
+
+<h3 id="virtual-switches">Virtual Switches</h3>
+
+<p>One of the biggest changes to networking with NSXT 3.0 and vSphere 7 is that VDS can be used by NSXT, instead of having to hand over a physical nic completely to NSX. This makes deployment a lot simpler!</p>
+
+<blockquote>
+  <p>With the release of vSphere 7 comes the vSphere Distributed Switch 7.0. This latest version comes with support for NSX-T Distributed Port Groups. Now, for the first time ever it is possible to use a single vSphere Distributed Switch for both NSX-T 3.0 and vSphere 7 networking! - <a href="https://rutgerblom.com/2020/04/08/nsx-t-3-0-meets-vsphere-7-vds-7-0/">Rutger Blom</a></p>
+</blockquote>
+
+<p>In a <a href="https://serverascode.com/2020/07/03/nsxt-design-1.html">previous post</a> I diagrammed a simple NSXT VDS and NVDS layout, shown below. This design has separate VDS and NVDS switches as well as a full nic provided to NSXT. (Right click and view image if you want to see it larger.)</p>
+
+<p><img src="/img/nsx-design-1.jpg" alt="dual nvds layout with vds" /></p>
+
+<p>For vSphere 7 and NSXT 3.0, it looks like the below. Note that in this setup we’ve got separate VLANs for the “Edge TEP” and the “Host TEP” but they have to be able to connect to one another at layer 3. So, now we need to have a MTU &gt;=1600 on the VLANs, but also the router needs to be able to route packets &gt;=1600 (but only between the Edge and Hosts TEP). Very important.</p>
+
+<p><img src="/img/v7wk8s-subnets-and-routing.jpg" alt="nsx 3 subnet and routing" /></p>
+
+<p>Wondering why we have two TEP networks? Here’s why:</p>
+
+<blockquote>
+  <p>You probably thinking why is there a need for a 2nd network specifically for Edge VMs. The reason is because we are using only 1 Physical NIC and therefore in order to “force” the Geneve TEP traffic egressing from the Edge VM to pass through the Physical NIC as the traffic would require routing when communicating with the ESXi hosts Geneve TEP interfaces. - <a href="https://blog.acepod.com/tanzu-vsphere-7-with-kubernetes-on-nsx-t-3-0-vds-install-part-1-overview/">Acepod blog</a></p>
+</blockquote>
+
+<p>Here’s a list of NSX switches, er, well, “switch”.</p>
+
+<pre><code>[root@nested-esxi7-2:~] nsxdp-cli vswitch instance list
+DvsPortset-1 (DNSX)              50 0e 6d 8d 5b b6 35 9c-b5 af c9 18 f5 76 b4 a9
+Total Ports:4096 Available:4080
+  Client                         PortID          DVPortID                             MAC                  Uplink         
+  Management                     100663301                                            00:00:00:00:00:00    n/a            
+  vmnic0                         2248146952      8                                    00:00:00:00:00:00                   
+  Shadow of vmnic0               100663305                                            00:50:56:52:bd:fe    n/a            
+  vmk10                          100663307       739a47e2-3c93-483f-ac4d-df039cfd559d 00:50:56:6a:06:11    vmnic0         
+  vmk50                          100663308       40335d75-be5f-41f8-a5d5-5e4be4f9e996 00:50:56:66:71:7d    void           
+  vdr-vdrPort                    100663309       vdrPort                              02:50:56:56:44:52    vmnic0         
+  nsx-edge-1.eth2                100663310       19                                   00:50:56:8e:b5:2a    vmnic0         
+  nsx-edge-1.eth1                100663311       36                                   00:50:56:8e:9a:7d    vmnic0         
+  SupervisorControlPlaneVM       100663314       69576165-6ade-491f-a429-999655c87028 00:50:56:8e:b9:69    vmnic0         
+  (2).eth0                                                                                                                
+  SupervisorControlPlaneVM       100663315       f6fba7ac-e04b-4d7e-9f71-0aa07886c83f 04:50:56:00:c8:01    vmnic0         
+  (2).eth1                                                                                                                
+</code></pre>
+
+<p>Note just the one VDS, which I’ve called “DNSX” in my deployment.</p>
+
+<h2 id="subnetting-and-layer-3-routing">Subnetting and Layer 3 Routing</h2>
+
+<p>I am not the worlds greatest authority on networking. But one thing I think that I do that helps me to understand networking is separate broadcast domains from subnetting. A VLAN or a “segment” or a “logical switch”…these things are all about broadcast domains. What IPs are put onto those broadcast domains are completely separate items. Often people get quite confused and conflate the two.</p>
+
+<blockquote>
+  <p>A broadcast domain is a logical division of a computer network, in which all nodes can reach each other by broadcast at the data link layer. - <a href="https://www.cbtnuggets.com/blog/technology/networking/networking-basics-what-are-broadcast-domains">CBTNuggets</a></p>
+</blockquote>
+
+<p>So, as far as I’m concerned, in the NVDS/VDS layout diagram we’re really assigning network interfaces and applying broadcast domains to them. After we do that THEN we can decide what subnets will be assigned where, and, as well, think about layer 3 routing for t0, though that is relatively easy when using a simple static route to forward the networks handled by NSXT (in my lab, I give it a huge /16, haha).</p>
+
+<p>Here’s the nice topology visualization NSXT provides, and this topology occurs AFTER the Workload Control Plane (WCP) is deployed, as well as a Tanzu Kubernetes Grid cluster.</p>
+
+<p><img src="/img/v7wk8s-nsx-topology.png" alt="nsx topology" /></p>
+
+<p>Here’s the subnets configured for WCP, which are entered initially during the “WCP Enable” wizard. The routable ingress and egress networks will be created by the enablement process, and, if using static routing, should be forwarded from the central network to the t0 router.</p>
+
+<p><img src="/img/v7wk8s-wcp-networking.png" alt="wcp configuration of subnets" /></p>
+
+<p>Not routable:</p>
+
+<ul>
+  <li>Pod CIDRs = 10.244.0.0/21</li>
+  <li>Services CIDR = 10.96.0.0/24</li>
+</ul>
+
+<p>Routable:</p>
+
+<ul>
+  <li>Ingress CIDRs (load balancing) = 10.4.3.0/24</li>
+  <li>Egress CIDRs (NAT) = 10.4.4.0/24</li>
+</ul>
+
+<h2 id="nsxt-configuration">NSXT Configuration</h2>
+
+<p>Ultimately, NSXT configuration is about setting up some profiles and applying them to edge VMs and ESXI hosts.</p>
+
+<h3 id="host-transport-node-profile">Host Transport Node Profile</h3>
+
+<p>Note how the switch in use is VDS, not NVDS.</p>
+
+<p><img src="/img/v7wk8s-tn-profile.png" alt="img" /></p>
+
+<h3 id="uplink-profiles">Uplink Profiles</h3>
+
+<p>Host uplink:</p>
+
+<p><img src="/img/v7wk8s-tn-profile-2.png" alt="img" /></p>
+
+<p>Edge uplink:</p>
+
+<p><img src="/img/v7wk8s-edge-profile.png" alt="img" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’ve left out quite a bit about the actual clicking to install NSXT and vSphere 7 with Kubernetes. But at the end, what I’m most interested in is how the networking is laid out. The rest o the work to enable Kubernetes in vSphere 7 is quite straight forward, such as setting up the Kubernetes content library, creating a storage policy, etc. Once the network is up and running, it’s very, very easy to get WCP enabled and get access to the ability to deploy your own Tanzu Kubernetes Grid clusters.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

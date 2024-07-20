@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build your own platform as a service with Docker | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Build your own platform as a service with Docker">
+
+    
+    <meta name="twitter:description" content="<p>First off, let me be clear–<a href="http://www.docker.com/">Docker</a> is not a “platform as a service” (PaaS) by itself. However, I do think it’s an important component, one that makes deploying a PaaS much simpler.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>First off, let me be clear–<a href="http://www.docker.com/">Docker</a> is not a “platform as a service” (PaaS) by itself. However, I do think it’s an important component, one that makes deploying a PaaS much simpler.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/build-your-own-paas-docker.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/build-your-own-paas-docker.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Build your own platform as a service with Docker" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/06/16/build-your-own-paas-docker.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Build your own platform as a service with Docker</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-06-16T00:00:00-04:00">
+                June 16, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>First off, let me be clear–<a href="http://www.docker.com/">Docker</a> is not a “platform as a service” (PaaS) by itself. However, I do think it’s an important component, one that makes deploying a PaaS much simpler.</p>
+
+<p>Second, for the most part I’m discussing the concept of building “your own PaaS” from my personal perspective, which is that I have a few blogs and Wordpress sites that I run for friends (ie. not a business venture or anything) and I have a single hardware server out there on the Internet that I use to do this. I thought it would be fun to use that server to think about how I one could provide a Wordpress PaaS that could potentially scale out to multiple hosts, even though I could never afford to or need to do that.</p>
+
+<p>In a way, what I’m doing is creating a proof of concept (PoC) wordpress as a service, mostly for a single host which once in place could provide almost any application, and could potentially scale out to multiple container hosts.</p>
+
+<h2 id="why-not-just-use-dokku">Why not just use Dokku?</h2>
+
+<p><a href="https://github.com/progrium/dokku">Dokku</a> is a piece of software created by <a href="https://twitter.com/progrium">Jeff Lindsay</a> that essentially creates a single-host PaaS.</p>
+
+<blockquote>
+  <p>Docker powered mini-Heroku. The smallest PaaS implementation you’ve ever seen.</p>
+</blockquote>
+
+<p>But I’m not going to use Dokku, even though that is probably the best way to go about this. Instead I’m going to mostly layout the minimum systems and components needed to create a low-fi PaaS. Also <a href="http://deis.io/">Deis</a>, Flynn and <a href="http://stackoverflow.com/questions/18285212/how-to-scale-docker-containers-in-production">other</a> container management systems, in various states with differing features, exist.</p>
+
+<h2 id="components">Components</h2>
+
+<p>These are the minimum components I think you would need to create your own PaaS.</p>
+
+<ol>
+  <li>Wildcard DNS entry</li>
+  <li>“Web router” (such as <a href="https://github.com/dotcloud/hipache">Hipache</a>)</li>
+  <li>Docker - Application server/container provisioning and image creation</li>
+  <li>Application source code</li>
+  <li>Environment variables</li>
+  <li>Datastores, such as MySQL, NoSQL, object storage, etc</li>
+  <li>Something to tie them all together</li>
+</ol>
+
+<h2 id="wildcard-dns-entry">Wildcard DNS entry</h2>
+
+<p>The first thing you need is a wildcard DNS entry for a domain name. This <a href="https://gist.github.com/ngoldman/7287753">gist</a> describes how to configure one using Namecheap, which happens to also be my registrar of choice (like a few other registrars, but not all, they support two factor authentication). So I bought a domain name like “somedomainapp.com” to run my “apps” and then configured a wildcard entry using Namecheap’s DNS service.</p>
+
+<p>Obviously in a larger production environment you’d either manage your own nameservers or perhaps use something like <a href="https://gist.github.com/ngoldman/7287753">Google’s DNS as a service</a>, which I would love to try out, and some loadbalancers or similar.</p>
+
+<p>At this point, at minimum, you have a wildcard DNS entry pointing to an IP on your server which apps will be able to use, such as *.yourdomainapp.com.</p>
+
+<h2 id="web-router">Web router</h2>
+
+<p><img src="https://raw.githubusercontent.com/ccollicutt/ccollicutt.github.com/master/img/somedomain.png" alt="" />
+(<em>Above: hipache non-existent domain page</em>)</p>
+
+<p>I’m not sure what to call this layer. Heroku calls this <a href="https://devcenter.heroku.com/articles/http-routing">HTTP routing</a>. Web routing works for me.</p>
+
+<p>Essentially what his does is route incoming requests for apps to the right webserver, which in our case will be a docker container, or several docker containers. A request for someapp.somedomainapp.com would go to 127.0.0.1:49899 or 172.17.0.3:80 and such, which are docker containers.</p>
+
+<p>In my situation I am using <a href="https://github.com/dotcloud/hipache">hipache</a> which is backed by redis. This means you can add routes to hipache by entering them into redis, and hipache isn’t required to restart because it will query redis for domain configuration. By default hipache allows the use of wildcard domains, so it’ll route any configured entry, or send a default page if it doesn’t exist.</p>
+
+<p>My PoC python script, which is called “wpd” (more on that later), can dump the keys setup in redis for hipache. The below output means hipache will randomly balance requests for someapp.yourdomainapp.com to the two containers listed in redis.</p>
+
+<pre>
+<code>$ wpd listkeys
+someapp.yourdomainapp.com
+===&gt; http://127.0.0.1:49156
+===&gt; http://127.0.0.1:49157
+$ redis-cli lrange someapp.yourdomainapp.com 0 -1
+1) "someapp.yourdomainapp.com"
+2) "http://127.0.0.1:49156"
+3) "http://127.0.0.1:49157"
+</code>
+</pre>
+
+<p>There are many other ways to do “web routing.” Dokku uses nginx. There is also <a href="https://github.com/mailgun/vulcand">vulcand</a> which is backed by <a href="https://github.com/coreos/etcd">etcd</a> and though it’s new it sounds exciting. Hipache does support SSL, but as of a few weeks ago Vulcand did not, though I think it’s on the roadmap (but I am a golang fanboy, so am biased).</p>
+
+<h2 id="docker">Docker!</h2>
+
+<p>Again comparing Heroku to what we are doing here, I think that Docker would fill the roles of <a href="https://devcenter.heroku.com/articles/buildpacks">buildpack</a> and <a href="https://devcenter.heroku.com/articles/dynos">dyno</a> though perhaps in terms of the buildpack part not containing a “slug” of the application code, rather only the environment the application would run in. Perhaps it’s better to consider a Dockerfile a type of buildpack.</p>
+
+<p>Using my wordpress example, the Dockerfile would create the image which docker then runs to create a wordpress application container, for example using apache2 + php.</p>
+
+<p>Docker manages the container and provides networking and network address translation to expose the apache2’s port to the web router.</p>
+
+<p>So Docker is doing quite a bit of the work for us. Without Docker, we would probably need a way to create virtual machines images programmatically, and a way to start up and instance and get it networked, which could be as simple as something like <a href="http://www.packer.io/">packer</a> and libvirtd (perhaps with kvm or lxc) or other combinations such as packer and openstack. Certainly that would require a few more resources. (Interestingly packer can build docker images as well.)</p>
+
+<h2 id="application-source-code">Application source code</h2>
+
+<p>In Dokku code is pushed to a git repository which kicks off other processes. This is also how Heroku works. Those processes somehow get the code into the application container.</p>
+
+<p>However, in my wordpress example, the wordpress code is downloaded in the startup script. Once the container is started from the wordpress image, the startup script runs something like:</p>
+
+<pre>
+<code>if [ ! -e /app/wp-settings.php ]; then
+        cd /app
+        curl -O http://wordpress.org/latest.tar.gz
+        tar zxvf latest.tar.gz
+        mv wordpress/* /app
+        rm -f /app/wordpress
+        chown -R www-data:www-data /app
+        rm -f latest.tar.gz
+fi
+</code>
+</pre>
+
+<p>to grab the code. The url used to download could be taken from an environment variable instead of just being static as in the example.</p>
+
+<p>The git push/recieve style probably makes more sense in a PaaS, but I haven’t looked into what it takes to do that. Again Jeff Lindsay has <a href="https://github.com/progrium/gitreceive">gitrecieve</a> and Flynn (a Jeff Lindsay project) has <a href="https://github.com/flynn/gitreceived">gitrecieved</a>. Also he has <a href="https://github.com/progrium/execd">execd</a> and more. Busy guy!</p>
+
+<p>Obviously there are a lot of ways to get code into the container to run it. If there is any one important thing a PaaS does, it’s run your code.</p>
+
+<h2 id="environment-variables">Environment variables</h2>
+
+<p>I think Docker images should be fairly generic. Also you don’t want to commit configuration information to the image, such as passwords, so they should come from environment variables, and those variables need to get injected into the containers environment somehow.</p>
+
+<p>For my wordpress example, I set environment variables with Docker. The Docker run command has the “-e” option which allows setting environment variables which will be exposed in the container. Below is an example.</p>
+
+<pre>
+<code>$ docker run -e FOO=bar -e BAR=foo busybox env
+HOME=/
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=6cf2d6e8acb3
+FOO=bar
+BAR=foo
+</code>
+</pre>
+
+<p>My wordpress startup script checks for a few environment variables</p>
+
+<pre>
+<code>DB_NAME=${DB_NAME:-"wordpress"}
+DB_USER=${DB_USER:-"wordpress"}
+DB_PASSWORD=${DB_PASSWORD:-"wordpress"}
+DB_HOST=${DB_HOST:-$1}
+</code>
+</pre>
+
+<p>and uses them to create the wordpress configuration file with the right database settings.</p>
+
+<p>Later on I’ll talk about “tying the whole room together” which I do with a python script, and in it I set the environment variables for the container.</p>
+
+<p>Below is a snippet of python code used to start a container with environment variables.</p>
+
+<pre>
+<code>env = {
+  'DB_HOST': MYSQL_HOST,
+  'DB_NAME': dbname,
+  'DB_USER': dbname,
+  'DB_PASSWORD': dbpass,
+}
+container = dockerConn.create_container(image, detach=True, environment=env)
+</code>
+</pre>
+
+<p>Docker and python go well together using <a href="https://github.com/dotcloud/docker-py">docker-py</a>.</p>
+
+<p>Another method is using a shared configuration system. Previously I mentioned etcd.</p>
+
+<blockquote>
+  <p>[etcd is] a highly-available key value store for shared configuration and service discovery.</p>
+</blockquote>
+
+<p>etcd can store configuration information and <a href="https://github.com/kelseyhightower/confd">confd</a> is a configuration management agent which can query etcd for information and generate configuration files that applications can use, and also restart the services that use those configuration files.</p>
+
+<p>Given that I’m suggesting environment/configuration variables are a key part to PaaS, things like etcd, confd, and <a href="https://github.com/hashicorp/consul">consul</a> are going to be important projects. But again, with my limited wordpress PaaS I’m just working on a very simplified PoC, where environment variables come at container runtime. However, I would imagine most larger PaaS or PaaS-like systems will use something like consul or etcd.</p>
+
+<h2 id="datastores">Datastores</h2>
+
+<p>If your application needs to persist data, then it’s got to put that data somewhere and the application container itself is not a good place. In general, I think there are two approaches:</p>
+
+<ol>
+  <li>Another container</li>
+  <li>A separate service</li>
+</ol>
+
+<p>In terms of “a separate service” I’m talking about something like <a href="http://aws.amazon.com/rds/">Amazon RDS</a> or <a href="https://wiki.openstack.org/wiki/Trove">OpenStack Trove</a> (both of those being Database as a service) or object storage like <a href="http://docs.openstack.org/developer/swift/">OpenStack Swift</a>. In short I mean a service that is managed by someone else, perhaps the same provider that either runs Docker or the server that Docker is running on.</p>
+
+<p>The other option is another container. Again using the wordpress example, instead of running one application container, perhaps I would run a second container that has a MySQL server running (or both services could even be in a single container). Maybe that MySQL service is a container, maybe it’s a hardware server configured with Ansible. Who knows. Docker also recommends the <a href="https://docs.docker.com/userguide/dockervolumes/">volumes from</a> approach, which works great when the data doesn’t have to be distributed across multiple containers, which would be the case in a MySQL or <a href="http://serverascode.com/2014/06/12/run-swift-in-docker.html">OpenStack Swift</a> container.</p>
+
+<p>My feeling is that either is Ok, but I prefer to run a separate service. So in my wordpress example there is a single MySQL server that all wordpress apps will connect to, each having their own database. Perhaps that separate service is using Docker too.</p>
+
+<h2 id="something-to-tie-them-all-together">Something to tie them all together</h2>
+
+<p>I’m working on a python script called “wpd” that ties all of this together, and what it does is:</p>
+
+<ol>
+  <li>Creates a site entry in the wpd MySQL database</li>
+  <li>Creates a database datastore that the site can use for wordpress</li>
+  <li>Creates couple of wordpress containers</li>
+  <li>Provides those containers with environment variables regarding how to connect to a worpress database</li>
+  <li>Adds that site to redis so that hipache can route/loadbalance requests to those containers</li>
+</ol>
+
+<pre>
+<code>$ wpd -h
+usage: wpd [-h] {listkeys,addsite,listsites,addimage,deploysite,dumpsite} ...
+
+positional arguments:
+  {listkeys,addsite,listsites,addimage,deploysite,dumpsite}
+    listkeys            list all the keys in redis
+    addsite             add a site to the database
+    listsites           list all the sites in the database
+    addimage            add a docker image to the database
+    deploysite          startup a sites containers
+    dumpsite            show all information about a site
+
+optional arguments:
+  -h, --help            show this help message and exit
+</code>
+</pre>
+
+<p>As you can see it has a few options, such as “addsite” and “deploysite”. It’s not complete yet. Adding a site just enters it into the wpd database, and deploying it means starting up containers and adding the information to redis so that hipache can route http requests to them.</p>
+
+<p>What this would look like in a larger system…I’m not sure. It seems like a user management system more than anything else–users have sites, sites have names, containers, images and datastores.</p>
+
+<h2 id="issues">Issues</h2>
+
+<p>There are a few issues that I’d like to mention (though I’m probably not covering them all).</p>
+
+<p><em>Logging</em> - Getting logs out of docker is still a bit of an problem. At this point likely you’ll need to configure syslog in the container to ship logs to a centralized system. I expect that eventually docker will have more advanced ways of dealing with logs, if they don’t already.</p>
+
+<p><em>File systems</em> - Wordpress is a good example of a web application that is difficult to scale because it relies a lot on the file system for data persistence, such as media uploaded by users. In order to scale out a file system across multiple docker hosts you’ll need a distributed file system, which is a huge pain and can also increase the size of your failure domain dramatically. I suggest not using file systems to store files and instead use object storage such as OpenStack Swift, which isn’t as hard to deploy as some might think. What’s more Swift doesn’t think it can do <a href="http://en.wikipedia.org/wiki/CAP_theorem">consistency and availability</a> at the same time.</p>
+
+<p><em>Datastore credentials</em> - I’m not sure what the best way to securely store these is. Credentials and other important configuration information will need to be injected into the container somehow, and thus will need to be stored in a database or etcd or similar. Something to look into.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In the end, I think that docker is a great system to use as a component in PaaS and that, to me, it simplifies rolling your own small platform as a service host. All you need is a web router, a Dockerfile and a docker host, a way to get the app into the container, and <em>pow</em> now you’re cookin’ with PaaS. Just remember to make your containers fairly generic, pipe in environment variables for configuration (or get them from somewhere else), and avoid file systems if possible.</p>
+
+<h2 id="the-future">The Future!</h2>
+
+<p>Obviously I’m leaving a lot out. There’s a huge difference between toying around with a PoC like this and running a production PaaS. I haven’t even mentioned the terms “service discovery” or “container scheduling”, which theoretically things like etcd and <a href="https://github.com/docker/libswarm">libswarm</a> could take care of respectively, though I’m not sure libswarm will turn into a container scheduler. Recently Google released <a href="https://news.ycombinator.com/item?id=7873897">Kubernetes</a> which is as docker cluster manager of some kind, though it currently only runs on GCE. Mesosphere is also working on its <a href="https://github.com/mesosphere/deimos">Deimos</a> project. Further, CoreOS has <a href="https://github.com/coreos/fleet">fleet</a> and Spotify <a href="https://github.com/spotify/helios">helios</a>. <a href="http://serverascode.com/2014/05/25/docker-shipyard-multihost.html">Shipyard</a> can also control multiple docker hosts. Also there is <a href="https://github.com/ehazlett/havok">Havok</a> which is a way to monitor docker containers and add them to vulcand via etcd. Neither have I discussed limiting resources, such as container memory and CPU and a about a billion other things, but I look forward to learning more.</p>
+
+<h2 id="updates">Updates</h2>
+
+<ul>
+  <li>Changed Apache Mesos to Mesosphere with regards to Deimos</li>
+  <li>Added Shipyard and Havok</li>
+</ul>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

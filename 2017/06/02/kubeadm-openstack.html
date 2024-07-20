@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installing Kubernetes with Kubeadm | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Installing Kubernetes with Kubeadm">
+
+    
+    <meta name="twitter:description" content="<p>I have done a good amount of work with Kubernetes in the last year or so. I created a fairly substantial set of Ansible playbooks and workflows, called <a href="https://github.com/sk8ts">Sk8ts</a>, which would deploy Kubernetes to AWS. It would create networks, gateways, instances, setup clusters, etc. But to be honest I only went about 85% as far as I should have and ran out of time to spend on it. Further, perhaps creating my own distribution is not a great idea, though I certainly learned a lot about Ansible, AWS, and k8s.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I have done a good amount of work with Kubernetes in the last year or so. I created a fairly substantial set of Ansible playbooks and workflows, called <a href="https://github.com/sk8ts">Sk8ts</a>, which would deploy Kubernetes to AWS. It would create networks, gateways, instances, setup clusters, etc. But to be honest I only went about 85% as far as I should have and ran out of time to spend on it. Further, perhaps creating my own distribution is not a great idea, though I certainly learned a lot about Ansible, AWS, and k8s.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/kubeadm-openstack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/kubeadm-openstack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Installing Kubernetes with Kubeadm" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/06/02/kubeadm-openstack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Installing Kubernetes with Kubeadm</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-06-02T00:00:00-04:00">
+                June 02, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I have done a good amount of work with Kubernetes in the last year or so. I created a fairly substantial set of Ansible playbooks and workflows, called <a href="https://github.com/sk8ts">Sk8ts</a>, which would deploy Kubernetes to AWS. It would create networks, gateways, instances, setup clusters, etc. But to be honest I only went about 85% as far as I should have and ran out of time to spend on it. Further, perhaps creating my own distribution is not a great idea, though I certainly learned a lot about Ansible, AWS, and k8s.</p>
+
+<p>I mention my work in Sk8ts because it was essentially a 3rd party installer or distribution. I also need to add to the context of this post the fact that I have spent years working on OpenStack, which does not have a specific, project led installer, and some people consider this to be a problem. Whether or not large, complicated infrastructure systems like OpenStack and Kubernetes have official installers is a bit of a conundrum.</p>
+
+<p>While OpenStack does not have an official installer, Kubernetes does: <a href="https://kubernetes.io/docs/admin/kubeadm/">Kubedadm</a>. So in this post I will look at deploying Kubernetes 1.6 with Kubeadm. Please note that Kubeadm is not production ready yet. But someday…</p>
+
+<h2 id="create-hosts">Create hosts</h2>
+
+<p>K8s needs somewhere to run. I have an OpenStack cloud that I can create networks and instances in.</p>
+
+<p>I’ve created four nodes to deploy k8s to. I’ve done this a few times so I kept the command around. For reference it’s below. I’ll use the first node as the master and the other three as the workers. The <code>m1.medium</code> flavor just has 4GB of memory, so they are not that large resource-wise.</p>
+
+<pre><code>#!/bin/bash
+
+NET=cee24724-e062-4370-ba9f-57bed80f32cd
+
+openstack server create \
+--image xenial \
+--key-name curtis \
+--flavor m1.medium \
+--min 4 \
+--max 4 \
+--nic net-id=$NET \
+k8s
+</code></pre>
+
+<p>Just note that that will boot four instances. :)</p>
+
+<h2 id="setup-docker">Setup Docker</h2>
+
+<p>Once the instances have been created, we can install the k8s and docker packages.</p>
+
+<pre><code>$ os server list
++--------------------------------------+-------+--------+---------------------------------------------------+------------+
+| ID                                   | Name  | Status | Networks                                          | Image Name |
++--------------------------------------+-------+--------+---------------------------------------------------+------------+
+| 5da0a8b9-9635-47ba-b381-f3f10b569523 | k8s-4 | ACTIVE | k8s-vxlan=10.50.0.16                             | xenial     |
+| b033b2f6-b7b1-4f62-81c6-cc486320880a | k8s-3 | ACTIVE | k8s-vxlan=10.50.0.13                             | xenial     |
+| 9a4f75d9-20ba-4be0-8daf-7b9a5b6ae289 | k8s-2 | ACTIVE | k8s-vxlan=10.50.0.17                             | xenial     |
+| edfccc19-98da-463a-b0d4-a779ff19e12a | k8s-1 | ACTIVE | k8s-vxlan=10.50.0.11                             | xenial     |
++--------------------------------------+-------+--------+---------------------------------------------------+------------+
+</code></pre>
+
+<p>Above are the four k8s-x instances. Now I’ll ssh into k8s-1 and install the k8s and docker packages. To do the install I’ll just a script.</p>
+
+<pre><code>ubuntu@k8s-1:~$ cat kube-install.sh
+#!/bin/bash
+apt-get update
+apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+apt-add-repository \
+   "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+apt-get update
+apt-get install docker-ce -y --allow-unauthenticated
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni --allow-unauthenticated
+</code></pre>
+
+<p>That will <em>insecurely</em> install various packages. I’m not getting any GPG keys, etc.</p>
+
+<pre><code>ubuntu@k8s-1:~$ sudo bash kube-install.sh
+sudo: unable to resolve host k8s-1
+Get:1 http://security.ubuntu.com/ubuntu xenial-security InRelease [102 kB]
+SNIP!
+Setting up docker-ce (17.03.1~ce-0~ubuntu-xenial) ...
+Processing triggers for libc-bin (2.23-0ubuntu7) ...
+Processing triggers for systemd (229-4ubuntu17) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  ebtables socat
+The following NEW packages will be installed:
+  ebtables kubeadm kubectl kubelet kubernetes-cni socat
+0 upgraded, 6 newly installed, 0 to remove and 10 not upgraded.
+Need to get 43.2 MB of archives.
+After this operation, 323 MB of additional disk space will be used.
+WARNING: The following packages cannot be authenticated!
+  kubernetes-cni kubelet kubectl kubeadm
+Authentication warning overridden.
+Get:5 http://nova.clouds.archive.ubuntu.com/ubuntu xenial/main amd64 ebtables amd64 2.0.10.4-3.4ubuntu1 [79.6 kB]
+Get:6 http://nova.clouds.archive.ubuntu.com/ubuntu xenial/universe amd64 socat amd64 1.7.3.1-1 [321 kB]
+Get:1 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubernetes-cni amd64 0.5.1-00 [5,560 kB]
+Get:2 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubelet amd64 1.6.4-00 [18.3 MB]
+Get:3 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubectl amd64 1.6.4-00 [9,659 kB]
+Get:4 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubeadm amd64 1.6.4-00 [9,234 kB]
+Fetched 43.2 MB in 4s (10.4 MB/s)    
+Selecting previously unselected package ebtables.
+(Reading database ... 54160 files and directories currently installed.)
+Preparing to unpack .../ebtables_2.0.10.4-3.4ubuntu1_amd64.deb ...
+Unpacking ebtables (2.0.10.4-3.4ubuntu1) ...
+Selecting previously unselected package kubernetes-cni.
+Preparing to unpack .../kubernetes-cni_0.5.1-00_amd64.deb ...
+Unpacking kubernetes-cni (0.5.1-00) ...
+Selecting previously unselected package socat.
+Preparing to unpack .../socat_1.7.3.1-1_amd64.deb ...
+Unpacking socat (1.7.3.1-1) ...
+Selecting previously unselected package kubelet.
+Preparing to unpack .../kubelet_1.6.4-00_amd64.deb ...
+Unpacking kubelet (1.6.4-00) ...
+Selecting previously unselected package kubectl.
+Preparing to unpack .../kubectl_1.6.4-00_amd64.deb ...
+Unpacking kubectl (1.6.4-00) ...
+Selecting previously unselected package kubeadm.
+Preparing to unpack .../kubeadm_1.6.4-00_amd64.deb ...
+Unpacking kubeadm (1.6.4-00) ...
+Processing triggers for systemd (229-4ubuntu17) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up ebtables (2.0.10.4-3.4ubuntu1) ...
+update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
+Setting up kubernetes-cni (0.5.1-00) ...
+Setting up socat (1.7.3.1-1) ...
+Setting up kubelet (1.6.4-00) ...
+Setting up kubectl (1.6.4-00) ...
+Setting up kubeadm (1.6.4-00) ...
+Processing triggers for systemd (229-4ubuntu17) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+</code></pre>
+
+<p>Nice. Now we have all the k8s packages and Docker installed. I should note that the Docker version we are getting is perhaps not supported by k8s. I believe k8s is only validated on Docker 1.11 or 1.12. Frankly I’m not sure how to get that version any more, as Docker has split out into a community and enterprise versions. The k8s install does seem to work with this version though.</p>
+
+<pre><code>ubuntu@k8s-1:~$ dpkg --list docker-ce
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                                  Version                 Architecture            Description
++++-=====================================-=======================-=======================-===============================================================================
+ii  docker-ce                             17.03.1~ce-0~ubuntu-xen amd64                   Docker: the open-source application container engine
+</code></pre>
+
+<p>So I’m getting 17.02-1-ce…??? Honestly, I don’t know what that version means.</p>
+
+<h2 id="installing-the-k8s-master">Installing the k8s master</h2>
+
+<p>Now I can use kubeadm.</p>
+
+<pre><code>ubuntu@k8s-1:~$ sudo kubeadm init
+sudo: unable to resolve host k8s-1
+[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[init] Using Kubernetes version: v1.6.4
+[init] Using Authorization mode: RBAC
+[preflight] Running pre-flight checks
+[preflight] WARNING: docker version is greater than the most recently validated version. Docker version: 17.03.1-ce. Max validated version: 1.12
+[preflight] WARNING: hostname "k8s-1" could not be reached
+[preflight] WARNING: hostname "k8s-1" lookup k8s-1 on 10.50.0.1:53: no such host
+[certificates] Generated CA certificate and key.
+[certificates] Generated API server certificate and key.
+[certificates] API Server serving cert is signed for DNS names [k8s-1 kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 10.50.0.11]
+[certificates] Generated API server kubelet client certificate and key.
+[certificates] Generated service account token signing key and public key.
+[certificates] Generated front-proxy CA certificate and key.
+[certificates] Generated front-proxy client certificate and key.
+[certificates] Valid certificates and keys now exist in "/etc/kubernetes/pki"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/admin.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/controller-manager.conf"
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/scheduler.conf"
+[apiclient] Created API client, waiting for the control plane to become ready
+[apiclient] All control plane components are healthy after 23.025086 seconds
+[apiclient] Waiting for at least one node to register
+[apiclient] First node has registered after 4.505916 seconds
+[token] Using token: bdc910.dac015f93ad5a064
+[apiconfig] Created RBAC rules
+[addons] Created essential addon: kube-proxy
+[addons] Created essential addon: kube-dns
+
+Your Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run (as a regular user):
+
+  sudo cp /etc/kubernetes/admin.conf $HOME/
+  sudo chown $(id -u):$(id -g) $HOME/admin.conf
+  export KUBECONFIG=$HOME/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  http://kubernetes.io/docs/admin/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join --token bdc910.dac015f93ad5a064 10.50.0.11:6443
+</code></pre>
+
+<p>There are a bunch of containers running.</p>
+
+<pre><code>ubuntu@k8s-1:~$ sudo docker ps
+sudo: unable to resolve host k8s-1
+CONTAINER ID        IMAGE                                                                                                                            COMMAND                  CREATED             STATUS              PORTS               NAMES
+bf36a19d1d61        gcr.io/google_containers/kube-proxy-amd64@sha256:44cc08e7e8a2089eb8dfad6b692e9ece5994d6e6cff07fc9e9b1273cab0f6c6a                "/usr/local/bin/ku..."   2 minutes ago       Up 2 minutes                            k8s_kube-proxy_kube-proxy-jvdkl_kube-system_fbc037b7-4864-11e7-acb2-fa163ef42293_0
+9bda7bb1a3f2        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 2 minutes ago       Up 2 minutes                            k8s_POD_kube-proxy-jvdkl_kube-system_fbc037b7-4864-11e7-acb2-fa163ef42293_0
+d5a926f598ef        gcr.io/google_containers/kube-scheduler-amd64@sha256:57661c79890b01ef2ff183ed4b467ca470efc4fb8d0517cd29abe49e72f6d904            "kube-scheduler --..."   2 minutes ago       Up 2 minutes                            k8s_kube-scheduler_kube-scheduler-k8s-1_kube-system_3145edd89dab0492bdacc0dd589d0e90_0
+95faeb5d116b        gcr.io/google_containers/kube-controller-manager-amd64@sha256:a93d4c26d71de94861f78cf5ea62600e4952685d580e2774c630ea206b7c18ee   "kube-controller-m..."   2 minutes ago       Up 2 minutes                            k8s_kube-controller-manager_kube-controller-manager-k8s-1_kube-system_8d185204c4cf91dd9e76230d0642391b_0
+fc4c977e5061        gcr.io/google_containers/etcd-amd64@sha256:d83d3545e06fb035db8512e33bd44afb55dea007a3abd7b17742d3ac6d235940                      "etcd --listen-cli..."   2 minutes ago       Up 2 minutes                            k8s_etcd_etcd-k8s-1_kube-system_7075157cfd4524dbe0951e00a8e3129e_0
+c3d248897b53        gcr.io/google_containers/kube-apiserver-amd64@sha256:6d5aa429c2b0806e4b6d1d179054d6deee46eec0aabe7bd7bd6abff97be36ae7            "kube-apiserver --..."   2 minutes ago       Up 2 minutes                            k8s_kube-apiserver_kube-apiserver-k8s-1_kube-system_76f5cdc7dab34e6c8b32d96a42cc51e8_0
+8482b6284833        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 2 minutes ago       Up 2 minutes                            k8s_POD_kube-scheduler-k8s-1_kube-system_3145edd89dab0492bdacc0dd589d0e90_0
+4016d11d968d        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 2 minutes ago       Up 2 minutes                            k8s_POD_kube-controller-manager-k8s-1_kube-system_8d185204c4cf91dd9e76230d0642391b_0
+ebc0ef82e638        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 2 minutes ago       Up 2 minutes                            k8s_POD_kube-apiserver-k8s-1_kube-system_76f5cdc7dab34e6c8b32d96a42cc51e8_0
+045d7c8d75ba        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 2 minutes ago       Up 2 minutes                            k8s_POD_etcd-k8s-1_kube-system_7075157cfd4524dbe0951e00a8e3129e_0
+</code></pre>
+
+<h2 id="install-networking-plugin">Install Networking Plugin</h2>
+
+<p>Now we need a networking plugin. By default kubeadm is ready to use weave. This is amazingly simple.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf apply -f https://git.io/weave-kube-1.6
+clusterrole "weave-net" created
+serviceaccount "weave-net" created
+clusterrolebinding "weave-net" created
+daemonset "weave-net" created
+</code></pre>
+
+<p>This will modify the networking on the host.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# ip ad sh
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1450 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether fa:16:3e:f4:22:93 brd ff:ff:ff:ff:ff:ff
+    inet 10.50.0.11/24 brd 10.50.0.255 scope global ens3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f816:3eff:fef4:2293/64 scope link
+       valid_lft forever preferred_lft forever
+3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default
+    link/ether 02:42:59:52:32:1d brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.1/16 scope global docker0
+       valid_lft forever preferred_lft forever
+4: datapath: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1376 qdisc noqueue state UNKNOWN group default qlen 1
+    link/ether a2:29:39:a0:df:49 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::a029:39ff:fea0:df49/64 scope link
+       valid_lft forever preferred_lft forever
+6: weave: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1376 qdisc noqueue state UP group default qlen 1000
+    link/ether 9a:80:36:0d:7c:64 brd ff:ff:ff:ff:ff:ff
+    inet 10.32.0.1/12 scope global weave
+       valid_lft forever preferred_lft forever
+    inet6 fe80::9880:36ff:fe0d:7c64/64 scope link
+       valid_lft forever preferred_lft forever
+7: dummy0: &lt;BROADCAST,NOARP&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether ee:ec:e0:cc:a1:9e brd ff:ff:ff:ff:ff:ff
+9: vethwe-datapath@vethwe-bridge: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1376 qdisc noqueue master datapath state UP group default qlen 1000
+    link/ether 2e:9b:d3:2f:66:21 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::2c9b:d3ff:fe2f:6621/64 scope link
+       valid_lft forever preferred_lft forever
+10: vethwe-bridge@vethwe-datapath: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1376 qdisc noqueue master weave state UP group default qlen 1000
+    link/ether 9e:1d:61:4f:c1:71 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::9c1d:61ff:fe4f:c171/64 scope link
+       valid_lft forever preferred_lft forever
+11: vxlan-6784: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 65485 qdisc noqueue master datapath state UNKNOWN group default qlen 1000
+    link/ether 8e:12:6f:d6:0c:1d brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::8c12:6fff:fed6:c1d/64 scope link
+       valid_lft forever preferred_lft forever
+13: vethweplc205ec0@if12: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1376 qdisc noqueue master weave state UP group default
+    link/ether 62:6f:d0:66:4a:2b brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet6 fe80::606f:d0ff:fe66:4a2b/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre>
+
+<p>Note the weave components.</p>
+
+<p>There are also weave containers created.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# docker ps | grep weave
+fa0eaddf9b6e        weaveworks/weave-npc@sha256:d4b37edd345b42fdc4cd4fdc9398233db035916c7ad04f2a99fb8230b1d2f6e9                                     "/usr/bin/weave-npc"     About a minute ago   Up About a minute                       k8s_weave-npc_weave-net-8n654_kube-system_889073fd-4865-11e7-acb2-fa163ef42293_0
+f3e22468fc86        weaveworks/weave-kube@sha256:0445da5b752a50133133e2d4d6383e622f4a06a3c744268740238c23ae05c594                                    "/home/weave/launc..."   About a minute ago   Up About a minute                       k8s_weave_weave-net-8n654_kube-system_889073fd-4865-11e7-acb2-fa163ef42293_0
+3953f0b070dd        gcr.io/google_containers/pause-amd64:3.0                                                                                         "/pause"                 About a minute ago   Up About a minute                       k8s_POD_weave-net-8n654_kube-system_889073fd-4865-11e7-acb2-fa163ef42293_0
+</code></pre>
+
+<h2 id="add-k8s-workers">Add K8s workers</h2>
+
+<p>I’ll ssh into the other nodes and install the k8s and docker packages.</p>
+
+<pre><code>ubuntu@k8s-2:~$ sudo bash kube-install.sh
+SNIP!
+</code></pre>
+
+<p>Now they can join via kubeadm.</p>
+
+<pre><code>ubuntu@k8s-2:~$ sudo   kubeadm join --token bdc910.dac015f93ad5a064 10.50.0.11:6443
+sudo: unable to resolve host k8s-2
+[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.
+[preflight] Running pre-flight checks
+[preflight] WARNING: docker version is greater than the most recently validated version. Docker version: 17.03.1-ce. Max validated version: 1.12
+[preflight] WARNING: hostname "k8s-2" could not be reached
+[preflight] WARNING: hostname "k8s-2" lookup k8s-2 on 10.50.0.1:53: no such host
+[discovery] Trying to connect to API Server "10.50.0.11:6443"
+[discovery] Created cluster-info discovery client, requesting info from "https://10.50.0.11:6443"
+[discovery] Cluster info signature and contents are valid, will use API Server "https://10.50.0.11:6443"
+[discovery] Successfully established connection with API Server "10.50.0.11:6443"
+[bootstrap] Detected server version: v1.6.4
+[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)
+[csr] Created API client to obtain unique certificate for this node, generating keys and certificate signing request
+[csr] Received signed certificate from the API server, generating KubeConfig...
+[kubeconfig] Wrote KubeConfig file to disk: "/etc/kubernetes/kubelet.conf"
+
+Node join complete:
+* Certificate signing request sent to master and response
+  received.
+* Kubelet informed of new secure connection details.
+
+Run 'kubectl get nodes' on the master to see this machine join.
+</code></pre>
+
+<p>We can see there are two nodes now.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf get nodes
+NAME      STATUS    AGE       VERSION
+k8s-1     Ready     16m       v1.6.4
+k8s-2     Ready     5m        v1.6.4
+</code></pre>
+
+<p>Now I’ll add the other nodes.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf get nodes
+NAME      STATUS     AGE       VERSION
+k8s-1     Ready      21m       v1.6.4
+k8s-2     Ready      10m       v1.6.4
+k8s-3     Ready      1m        v1.6.4
+k8s-4     NotReady   7s        v1.6.4
+</code></pre>
+
+<p>Great, now we have a k8s cluster of four nodes that was deployed by kubeadm.</p>
+
+<h2 id="deploy-sock-shop">Deploy sock-shop</h2>
+
+<p>So how do we know this is even working? Lets deploy the socks shop app.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf create namespace sock-shop
+namespace "sock-shop" created
+root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf apply -n sock-shop -f "https://github.com/microservices-demo/microservices-demo/blob/master/deploy/kubernetes/complete-demo.yaml?raw=true"
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+namespace "sock-shop" configured
+namespace "zipkin" created
+deployment "carts-db" created
+service "carts-db" created
+deployment "carts" created
+service "carts" created
+deployment "catalogue-db" created
+service "catalogue-db" created
+deployment "catalogue" created
+service "catalogue" created
+deployment "front-end" created
+service "front-end" created
+deployment "orders-db" created
+service "orders-db" created
+deployment "orders" created
+service "orders" created
+deployment "payment" created
+service "payment" created
+deployment "queue-master" created
+service "queue-master" created
+deployment "rabbitmq" created
+service "rabbitmq" created
+deployment "shipping" created
+service "shipping" created
+deployment "user-db" created
+service "user-db" created
+deployment "user" created
+service "user" created
+the namespace from the provided object "zipkin" does not match the namespace "sock-shop". You must pass '--namespace=zipkin' to perform this operation.
+the namespace from the provided object "zipkin" does not match the namespace "sock-shop". You must pass '--namespace=zipkin' to perform this operation.
+the namespace from the provided object "zipkin" does not match the namespace "sock-shop". You must pass '--namespace=zipkin' to perform this operation.
+the namespace from the provided object "zipkin" does not match the namespace "sock-shop". You must pass '--namespace=zipkin' to perform this operation.
+the namespace from the provided object "zipkin" does not match the namespace "sock-shop". You must pass '--namespace=zipkin' to perform this operation.
+</code></pre>
+
+<p>This might take a while to complete in terms of downloading docker images and such.</p>
+
+<p>We can ask for the port information.</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# kubectl --kubeconfig ./admin.conf -n sock-shop get svc front-end
+NAME        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+front-end   10.96.97.28   &lt;nodes&gt;       80:30001/TCP   55s
+</code></pre>
+
+<p>We can access the socks shop page…</p>
+
+<pre><code>root@k8s-1:/etc/kubernetes# curl localhost:30001 | head
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="robots" content="all,follow"&gt;
+    &lt;meta name="googlebot" content="index,follow,snippet,archive"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;meta name="description" content="WeaveSocks Demo App"&gt;
+100  8688  100  8688    0     0   314k      0 --:--:-- --:--:-- --:--:--  326k
+curl: (23) Failed writing body (248 != 744)
+</code></pre>
+
+<h2 id="issues">Issues</h2>
+
+<ul>
+  <li>Initially I tried installing using kubeadm from behind an http proxy, but that brought all kinds of issues, so I gave up.</li>
+  <li>As mentioned, perhaps should be installing docker 1.12.</li>
+  <li>Not clear on the zipkin issue with socks-shop</li>
+  <li>I am confused with regards to how to setup access to deployed applications. With AWS it was straightfoward, configured K8s to create AWS loadbalancers. But in this situation, I’m not sure…yet. :)</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>k8s has changed a lot since I was using it in version 1.4. I’m quite behind. :)</p>
+
+<p>I’m curious to see if kubeadm will catch on and actually be the best way to deploy and manage k8s. There are many other (competing?) projects.</p>
+
+<p>I was inspired to try kubeadm by <a href="https://blog.heptio.com/why-heptio-is-a-kubernetes-company-not-a-kubernetes-distribution-df35bb0a559f">this heptio blog post</a> in which they discuss how they don’t want to be k8s distribution.</p>
+
+<blockquote>
+  <p>…we need to be careful: distributions can be a dangerous path for a community. Each distributor has strong incentives to deliver differentiated experiences, and differentiated capabilities. As they develop a customer following their customers clamor for features. The community cannot move as fast as they could and so they deliver a patch. And somewhere a fairy dies. The community gets fragmented one really great customer request at a time. You end up with semantic divergence, and a community ‘dark ages’ period happens until a conquering empire emerges to pull it all together.</p>
+</blockquote>
+
+<p>I don’t know if kubeadm can deploy k8s in a way that every single organization will be happy with. But we shall see.</p>
+
+<p>At the very least, it’s an easy way to get a test/dev k8s install.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

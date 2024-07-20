@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installing chef on Centos 5 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Installing chef on Centos 5">
+
+    
+    <meta name="twitter:description" content="<h2 id="mirroring-the-frameos-rpm-repository">Mirroring the FrameOS RPM repository</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="mirroring-the-frameos-rpm-repository">Mirroring the FrameOS RPM repository</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/Installing-chef-on-centos-5.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/Installing-chef-on-centos-5.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Installing chef on Centos 5" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2011/05/11/Installing-chef-on-centos-5.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Installing chef on Centos 5</h1>
+        <p class="text-gray-600">
+            <time datetime="2011-05-11T00:00:00-04:00">
+                May 11, 2011
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="mirroring-the-frameos-rpm-repository">Mirroring the FrameOS RPM repository</h2>
+
+<p>Installing Chef is pretty easy given that FrameOS has created all of the RPMs for us. See this <a href="http://blog.frameos.org/2011/04/14/announcing-rbel-frameos-org/">blog post</a> for more information.</p>
+
+<p>I mirror their repository on a local, centralized server using mrepo. Below is an example of my configuration.</p>
+
+<pre>
+<code>[root@repos etc]# cd /etc/mrepo.conf.d/
+[root@repos mrepo.conf.d]# cat chef.conf 
+[chef]
+# FRAMEOS builds RPMS for chefhere: 
+# http://blog.frameos.org/2011/04/14/announcing-rbel-frameos-org/
+#
+# This might also be a good repo to use:
+# - http://download.elff.bravenet.com/5/x86_64/
+name = FrameOS rbel Chef RPMs $release ($arch)
+release = 5
+#arch = x86_64 i386
+arch = x86_64
+metadata = repomd repoview yum
+
+### Additional repositories
+chef = http://rbel.frameos.org/stable/el$release/$arch/
+</code>
+</pre>
+
+<p>This repo is then available to my servers at <code>http://repos/mrepo/chef-x86_64/RPMS.chef/</code>.</p>
+
+<h2 id="installing-chef-server">Installing chef-server</h2>
+
+<p>Then I created a CentOS 5 virtual machine called <code>chef-server</code>. I enabled the repo I mention above on that server, and then ran:</p>
+
+<pre><code class="language-bash">[root@chef-server yum.repos.d]# yum install rubygem-chef-server
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * extras: ftp.telus.net
+ * updates: repos
+Setting up Install Process
+Resolving Dependencies
+--&gt; Running transaction check
+SNIP!
+</code></pre>
+
+<p>I added these iptables rules to /etc/sysconfig/iptables.</p>
+
+<pre><code># Chef
+# -- web interface
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 4040 -j ACCEPT
+# -- chef-server
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 4000 -j ACCEPT
+# -- amqp server
+-A RH-Firewall-1-INPUT -m state --state NEW -m multiport -p tcp --dport 5672,4369,50229 -j ACCEPT
+# -- search indexes (solr)
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 8983 -j ACCEPT
+# data store (couchdb)
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 5984 -j ACCEPT
+</code></pre>
+
+<p>And then ran the setup script (after taking a look at what it does :) ).</p>
+
+<pre>
+<code>[root@chef-server sbin]# setup-chef-server.sh
+Checking RabbitMQ...
+RabbitMQ not running. Starting...
+Starting rabbitmq-server: SUCCESS
+rabbitmq-server.
+Configuring RabbitMQ default Chef user...
+
+Starting CouchDB...
+
+Starting couchdb:                                          [  OK  ]
+Enabling Chef Services...
+
+Starting Chef Services...
+
+Starting chef-server:                                      [  OK  ]
+Starting chef-server-webui:                                [  OK  ]
+Starting chef-solr:                                        [  OK  ]
+Starting chef-expander:                                    [  OK  ]
+</code>
+</pre>
+
+<p>At which point I had a chef-server running, to which I can add clients and nodes.</p>
+
+<h2 id="installing-chef-client">Installing chef-client</h2>
+
+<p>Installing chef-client is also easily done with the provided rpms. I created another CentOS 5 virtual machine, called chef-client. (Actually I created many of them. It’s fun once you get it automated. :) )</p>
+
+<pre>
+<code>[root@chef-client ~]# yum install chef-client
+</code>
+</pre>
+
+<p>(Note that this may not be the preferred way to bootstrap a chef-client, but it has been working for me.)</p>
+
+<p>Then create a <code>client.rb</code> file in <code>/etc/chef</code>, where chef-server.example.com is the fqdn of your chef-server and is accessible on port 4000 from your chef-client.</p>
+
+<pre>
+<code>[root@chef-client2 chef]# cat client.rb 
+log_level        :info
+    log_location     STDOUT
+    chef_server_url  'http://chef-server.example.com:4000'
+</code>
+</pre>
+
+<p>Next, copy the <code>validation.pem</code> file from the chef-server to <code>/etc/chef</code> on the chef-client, likely using scp (or, do it when the server is built in a kickstart file :) ).</p>
+
+<pre>
+<code>[root@chef-client2 chef]# ls
+client.rb  validation.pem
+</code>
+</pre>
+
+<p>Then start <code>chef-client</code>.</p>
+
+<pre>
+<code>[root@chef-client2 chef]# service chef-client start
+</code>
+</pre>
+
+<p><em>But</em> in the /var/log/chef/client.log you will see an error that says client.pem is not present. This is good–chef-client will create the client.pem file.</p>
+
+<pre>
+<code># Logfile created on [Date] 1 by logger.rb/22285
+ INFO: Daemonizing..
+ INFO: Forked, in 1762. Priveleges: 0 0
+ INFO: *** Chef 0.10.0 ***
+ INFO: Client key /etc/chef/client.pem is not present - registering
+ WARN: Failed to read the private key /etc/chef/validation.pem: #&lt;Errno::ENOENT: No such file or directory - /etc/chef/validation.pem&gt;
+ ERROR: Chef::Exceptions::PrivateKeyMissing: I cannot read /etc/chef/validation.pem, which you told me to use to sign requests!
+ FATAL: Stacktrace dumped to /var/chef/cache/chef-stacktrace.out
+ ERROR: Sleeping for 1800 seconds before trying again
+ FATAL: SIGTERM received, stopping
+</code>
+</pre>
+
+<p>Now, restart chef-client so that new client.pem file can be used in conjuncation with the validation.pem file to register the node/client with the chef-server.</p>
+
+<pre>
+<code>[root@chef-client2 chef]# service chef-client restart
+</code>
+</pre>
+
+<p>As long as the client.pem is there, the validation.pem is there, and the networking is OK, you should connect:</p>
+
+<pre>
+<code> INFO: *** Chef 0.10.0 ***
+ INFO: Run List is []
+ INFO: Run List expands to []
+ INFO: Starting Chef Run for chef-client2.example.com
+ INFO: Loading cookbooks []
+ WARN: Node chef-client2.example.com has an empty run list.
+ INFO: Chef Run complete in 6.815418 seconds
+ INFO: Running report handlers
+ INFO: Report handlers complete
+ FATAL: SIGTERM received, stopping
+ INFO: Daemonizing..
+ INFO: Forked, in 2032. Priveleges: 0 0
+</code>
+</pre>
+
+<p>And now the client should appear in the node and client lists. (Note that I have not detailed how to add a user/client to the chef system, you’ll have to do that to use knife.)</p>
+
+<pre>
+<code>[someuser@chef-server ~]$ knife node list
+  chef-client2.example.com
+SNIP!
+[someuser@chef-server ~]$ knife client list
+  chef-client2.example.com
+SNIP!
+</code>
+</pre>
+
+<p>(The SNIP!s mean I’ve removed some items for brevity.)</p>
+
+<p>Finally, run @chkconfig chef-client on@ on the chef-client to ensure the service starts at boot.</p>
+
+<h2 id="installing-chef-client-from-a-kickstart-file">Installing chef-client from a kickstart file</h2>
+
+<p>When building new vms I install chef-client from a kickstart file. This is also easily done!</p>
+
+<p>The first important option in the kickstart file is the <code>repo</code> option.</p>
+
+<pre>
+<code>repo --name=chef --baseurl=http://your_repo_server/mrepo/chef-x86_64/RPMS.chef/
+</code>
+</pre>
+
+<p>and then, in the <code>%packages</code> section simply add:</p>
+
+<pre>
+<code>rubygem-chef
+</code>
+</pre>
+
+<p>which will be installed from the chef repo configured in the repo option.</p>
+
+<p>Also, enable the service:</p>
+
+<pre>
+<code>services --enabled chef-client
+</code>
+</pre>
+
+<p>Finally, in the <code>%post</code> section I add the below. Note the [PASTE THE CONTENTS OF YOUR VALIDATION.PEM HERE!!!] portion–that means put the results of @cat /etc/chef/validation.pem@ there, not that actual phrase. :)</p>
+
+<pre>
+<code>%post
+# chef-client
+
+if [ ! -e /etc/chef ]; then
+        mkdir /etc/chef
+fi
+
+cat &gt; /etc/chef/client.rb &lt;&lt; EOCLRB
+log_level        :info
+    log_location     STDOUT
+    chef_server_url  'http://chef-server.example.com:4000'
+EOCLRB
+chmod 600 /etc/chef/client.rb
+
+cat &gt; /etc/chef/validation.pem &lt;&lt; EOVALPEM
+[PASTE THE CONTENTS OF YOUR VALIDATION.PEM HERE!!!]
+EOVALPEM
+chmod 600 /etc/chef/validation.pem
+</code>
+</pre>
+
+<p>When the server built from this kickstart boots chef-client will startup. However, it will fail the first time it starts up because the client.pem had to be generated. But, the next time it starts up it will connect to the chef-server and register. If you want it to register right away, then ssh into the server and run @service chef-client restart@ and it should register.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

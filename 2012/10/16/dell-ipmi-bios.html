@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ipmitool and BIOS Access | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="ipmitool and BIOS Access">
+
+    
+    <meta name="twitter:description" content="<p>When I put my systems administrator hat on one of the things that bothers me is getting remote access to the BIOS. I love to use the command line, and any time I have to fire up a GUI of some kind to do work I get an icky feeling.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>When I put my systems administrator hat on one of the things that bothers me is getting remote access to the BIOS. I love to use the command line, and any time I have to fire up a GUI of some kind to do work I get an icky feeling.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/dell-ipmi-bios.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/dell-ipmi-bios.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="ipmitool and BIOS Access" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/10/16/dell-ipmi-bios.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">ipmitool and BIOS Access</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-10-16T00:00:00-04:00">
+                October 16, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>When I put my systems administrator hat on one of the things that bothers me is getting remote access to the BIOS. I love to use the command line, and any time I have to fire up a GUI of some kind to do work I get an icky feeling.</p>
+
+<p>So when I had to remotely access some Dell C6220s to turn on virtualization, which is off by default in these Dell servers, I didn’t want to have to go through the rigamarole of getting the right OS configuration that would allow me to remotely access the console via a web-based Java GUI run out of Firefox. Even writing that sentence takes too long. So I thought I would try out serial over lan (SOL) access.</p>
+
+<p>And it works!</p>
+
+<pre>
+<code>server2 $ ipmitool -I lanplus -H server1-ipmi -U root -P password sol activate
+[SOL Session operational.  Use ~? for help]
+
+Ubuntu 12.04.1 LTS server1 ttyS1
+
+server1 login: 
+</code>
+</pre>
+
+<p>If we reboot the server we can see all the usual boot screens and can access them all without having to fire up the Java based console, instead I can just ssh into a second server that has access to the ipmi network and connect with ipmitool.</p>
+
+<p>Here are some of the key mappings that will help to use ipmitool. The main thing to note is how to exit from the SOL session, and to do that you basically hit ENTER the a tilde, then a period. (For some reason this will usually log me not only out of the SOL session, but also the ssh session. Something to look into.)</p>
+
+<pre>
+<code>server2 $ ipmitool -I lanplus -H 10.10.10.10 -U username -P password sol activate
+[SOL Session operational.  Use ~? for help]
+Here are some useful commands:
+        KEY MAPPING FOR CONSOLE REDIRECTION:
+         Use the <ESC>&lt;0&gt; key sequence for <F10>
+    	Use the <ESC>&lt;!&gt; key sequence for <F11>
+    	Use the <ESC>&lt;@&gt; key sequence for <F12>
+        Use the <ESC><Ctrl><M> key sequence for <Ctrl><M>
+    	Use the <ESC><Ctrl><H> key sequence for <Ctrl><H>
+    	Use the <ESC><Ctrl><i> key sequence for <Ctrl><i>
+    	Use the <ESC><Ctrl><J> key sequence for <Ctrl><J>
+        Use the <ESC><X><X> key sequence for <Alt><x>, where x is any letter
+    	key, and X is the upper case of that key
+        Use the <ESC><R><ESC><r><ESC><R> key sequence for <Ctrl><Alt><del>
+Help commands from ~?:
+Supported escape sequences:
+    	~.  - terminate connection
+    	~^Z - suspend ipmitool
+    	~^X - suspend ipmitool, but don't restore tty on restart
+    	~B  - send break
+    	~?  - this message
+    	~~  - send the escape character by typing it twice
+    	(Note that escapes are only recognized immediately after newline.)
+&lt;/code&gt;
+&lt;/pre&gt;
+
+There are all kinds of things one can do with ipmitool other than terminal based BIOS access, and I won't list all of them here, but one nice thing is the ability to set the boot device, for example setting the boot device to disk and doing so for all future reboots.
+
+<pre>
+<code>server2 $ ipmitool -H 10.10.10.10 -U root -P password chassis bootdev disk \
+options=persistent
+</code>
+</pre>
+
+Here are the kernel configs I used to tell Ubuntu to use serial. Note that I added the "\" in the text below, so you can't just cut and paste it; needs to be all on one line.
+
+<pre>
+<code>pxeboot-server:/tftp/pxelinux.cfg# cat default 
+# D-I config version 2.0
+DEFAULT server
+prompt 0
+timeout 1
+# serial console
+console 0
+serial 0 115200 0
+
+LABEL server
+kernel ubuntu-installer/amd64/linux
+append ramdisk_size=14984 locale=en_US keyboard-configuration/layoutcode=us \
+console-keymaps-at/keymap=us locale=en_US console-setup/layoutcode=en_US \
+netcfg/wireless_wep= netcfg/choose_interface=eth0 netcfg/get_hostname=c01-07 \
+url=http://10.10.10.10/node.preseed vga=normal \
+initrd=ubuntu-installer/amd64/initrd.gz -- \
+console=ttyS1,115200 earlyprint=serial,ttyS1,115200
+</code>
+</pre>
+
+Finally I'll show a screenshot of a text install happening, and I am watching that via text-based SOL access.
+
+![](https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/sol_install.png)
+
+So give SOL a shot, and let me know if I've made any mistakes in this post, or if there are other interesting things that can be done with ipmitool. :)
+</del></Alt></Ctrl></R></ESC></r></ESC></R></ESC></x></Alt></X></X></ESC></J></Ctrl></J></Ctrl></ESC></i></Ctrl></i></Ctrl></ESC></H></Ctrl></H></Ctrl></ESC></M></Ctrl></M></Ctrl></ESC></F12></ESC></F11></ESC></F10></ESC></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

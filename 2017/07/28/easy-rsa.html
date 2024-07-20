@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install easy-rsa on Ubuntu | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install easy-rsa on Ubuntu">
+
+    
+    <meta name="twitter:description" content="<p>At some point, usually multiple points, a sysadmin/operator/devops/whatever needs a certificate authority (CA). At first this seems easy, then it seems hard, then you think you know what you are doing but you don’t, and I’m not sure you ever do. But you still need that CA. Even if you are using some sort of fancy certificate managment system (such as <a href="https://www.vaultproject.io/">Hashicorp Vault</a>) you still probably need to manage your top level CA.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>At some point, usually multiple points, a sysadmin/operator/devops/whatever needs a certificate authority (CA). At first this seems easy, then it seems hard, then you think you know what you are doing but you don’t, and I’m not sure you ever do. But you still need that CA. Even if you are using some sort of fancy certificate managment system (such as <a href="https://www.vaultproject.io/">Hashicorp Vault</a>) you still probably need to manage your top level CA.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/easy-rsa.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/easy-rsa.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install easy-rsa on Ubuntu" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/07/28/easy-rsa.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install easy-rsa on Ubuntu</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-07-28T00:00:00-04:00">
+                July 28, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>At some point, usually multiple points, a sysadmin/operator/devops/whatever needs a certificate authority (CA). At first this seems easy, then it seems hard, then you think you know what you are doing but you don’t, and I’m not sure you ever do. But you still need that CA. Even if you are using some sort of fancy certificate managment system (such as <a href="https://www.vaultproject.io/">Hashicorp Vault</a>) you still probably need to manage your top level CA.</p>
+
+<p>Perhaps <a href="https://github.com/OpenVPN/easy-rsa">easy-rsa</a> is the answer? Certainly it is “an answer.” :)</p>
+
+<h2 id="install">Install</h2>
+
+<p>As usual I am using Ubuntu 16.04/Xenial and there does seem to be a package for <code>easy-rsa</code></p>
+
+<pre><code>easyrsa$ sudo apt install easy-rsa
+easyrsa$ dpkg --list easy-rsa
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                                  Version                 Architecture            Description
++++-=====================================-=======================-=======================-===============================================================================
+ii  easy-rsa                              2.2.2-2                 all                     Simple shell based CA utility
+</code></pre>
+
+<p>So we have version 2.2.2-2.</p>
+
+<p>Presumably we have an <code>easyrsa</code> command?</p>
+
+<pre><code>easyrsa:~/vurt$ which easy-rsa
+easyrsa:~/vurt$ which easyrsa
+</code></pre>
+
+<p>oops no.</p>
+
+<p>Maybe there are some docs somewhere.</p>
+
+<pre><code>easyrsa:~/vurt$ locate easy-rsa | grep README
+/usr/share/doc/easy-rsa/README-2.0.gz
+/usr/share/doc/easy-rsa/README.Debian
+</code></pre>
+
+<p>Aha!</p>
+
+<pre><code>easyrsa:~/vurt$ cat /usr/share/doc/easy-rsa/README.Debian
+easy-rsa for Debian
+-------------------
+
+easy-rsa is a set of scripts to easy the administration of a Certificate
+Authority. For example to manage openvpn scripts.
+
+The effortless way to use it is calling "make-cadir DIRECTORY", which will
+create a new directory with symlinks to the scripts and a copy of the
+configuration files so you can edit them to suit your needs.
+
+i.e.
+
+~$ make-cadir my_ca
+~$ cd my_ca
+~/my_ca$ vi vars
+
+ -- Alberto Gonzalez Iniesta &lt;agi@inittab.org&gt;  Mon, 12 Nov 2012 18:18:57 +0100
+
+Improving security of created certificates
+------------------------------------------
+
+easy-rsa defaults use 2048 bits for keylength and 10 years (3650 days) as
+certificate lifetime.
+
+bettercrypto.org suggests increasing the keylength to 4096 bits and decreasing
+the certificate lifetime. You can change those values in the 'vars' file of your
+CA directory.
+
+ -- Alberto Gonzalez Iniesta &lt;agi@inittab.org&gt;  Tue, 07 Jan 2014 12:36:35 +0100
+
+</code></pre>
+
+<h2 id="make-cadir">make-cadir</h2>
+
+<p>Seems like <code>make-cadir</code> is the way to go.</p>
+
+<pre><code>easyrsa:~$ make-cadir my_ca
+easyrsa:~$ cd my_ca/
+easyrsa:~/my_ca$ ls
+build-ca  build-inter  build-key-pass    build-key-server  build-req-pass  inherit-inter  openssl-0.9.6.cnf  openssl-1.0.0.cnf  revoke-full  vars
+build-dh  build-key    build-key-pkcs12  build-req      
+</code></pre>
+
+<p>What’s in vars?</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ grep -v "^#\|^$" vars
+export EASY_RSA="`pwd`"
+export OPENSSL="openssl"
+export PKCS11TOOL="pkcs11-tool"
+export GREP="grep"
+export KEY_CONFIG=`$EASY_RSA/whichopensslcnf $EASY_RSA`
+export KEY_DIR="$EASY_RSA/keys"
+echo NOTE: If you run ./clean-all, I will be doing a rm -rf on $KEY_DIR
+export PKCS11_MODULE_PATH="dummy"
+export PKCS11_PIN="dummy"
+export KEY_SIZE=2048
+export CA_EXPIRE=3650
+export KEY_EXPIRE=3650
+export KEY_COUNTRY="US"
+export KEY_PROVINCE="CA"
+export KEY_CITY="SanFrancisco"
+export KEY_ORG="Fort-Funston"
+export KEY_EMAIL="me@myhost.mydomain"
+export KEY_OU="MyOrganizationalUnit"
+export KEY_NAME="EasyRSA"
+</code></pre>
+
+<p>Let’s change those.</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ diff vars vars.orig
+64,69c64,69
+&lt; export KEY_COUNTRY="CA"
+&lt; export KEY_PROVINCE="AB"
+&lt; export KEY_CITY="Edmonton"
+&lt; export KEY_ORG="Serverascode"
+&lt; export KEY_EMAIL="curtis@serverascode.com"
+&lt; export KEY_OU="OpenStack"
+---
+&gt; export KEY_COUNTRY="US"
+&gt; export KEY_PROVINCE="CA"
+&gt; export KEY_CITY="SanFrancisco"
+&gt; export KEY_ORG="Fort-Funston"
+&gt; export KEY_EMAIL="me@myhost.mydomain"
+&gt; export KEY_OU="MyOrganizationalUnit"
+</code></pre>
+
+<p>After a bit of googling <a href="https://openvpn.net/index.php/open-source/documentation/miscellaneous/77-rsa-key-management.html">this</a> seems to be a good set of docs for using this version of <code>easy-rsa</code>.</p>
+
+<p>Source vars and clean all.</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ . vars
+NOTE: If you run ./clean-all, I will be doing a rm -rf on /home/ubuntu/my_ca/keys
+ubuntu@vc-tor1-2-easyrsa:~/my_ca$ ./clean-all
+</code></pre>
+
+<p>Build the CA.</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ ./build-ca
+Generating a 2048 bit RSA private key
+........................................+++
+............+++
+writing new private key to 'ca.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [CA]:
+State or Province Name (full name) [AB]:
+Locality Name (eg, city) [Edmonton]:
+Organization Name (eg, company) [Serverascode]:
+Organizational Unit Name (eg, section) [OpenStack]:Certifcate Authority
+Common Name (eg, your name or your server's hostname) [Serverascode CA]:
+Name [EasyRSA]:
+Email Address [curtis@serverascode.com]:
+</code></pre>
+
+<p>That creates this directory and the files in it:</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ ls keys/
+ca.crt  ca.key  index.txt  serial
+</code></pre>
+
+<p>Build an intermediate key.</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ ./build-inter inter
+Generating a 2048 bit RSA private key
+.............................................+++
+........+++
+writing new private key to 'inter.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [CA]:
+State or Province Name (full name) [AB]:
+Locality Name (eg, city) [Edmonton]:
+Organization Name (eg, company) [Serverascode]:
+Organizational Unit Name (eg, section) [OpenStack]:Intermediate CA
+Common Name (eg, your name or your server's hostname) [inter]:
+Name [EasyRSA]:
+Email Address [curtis@serverascode.com]:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+Using configuration from /home/ubuntu/my_ca/openssl-1.0.0.cnf
+Check that the request matches the signature
+Signature ok
+The Subject's Distinguished Name is as follows
+countryName           :PRINTABLE:'CA'
+stateOrProvinceName   :PRINTABLE:'AB'
+localityName          :PRINTABLE:'Edmonton'
+organizationName      :PRINTABLE:'Serverascode'
+organizationalUnitName:PRINTABLE:'Intermediate CA'
+commonName            :PRINTABLE:'inter'
+name                  :PRINTABLE:'EasyRSA'
+emailAddress          :IA5STRING:'curtis@serverascode.com'
+Certificate is to be certified until Jul 26 18:32:25 2027 GMT (3650 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+</code></pre>
+
+<p>Build a certificate request and sign it.</p>
+
+<pre><code>ubuntu@vc-tor1-2-easyrsa:~/my_ca$ ./build-key mycert
+Generating a 2048 bit RSA private key
+..+++
+.............................................+++
+writing new private key to 'mycert.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [CA]:
+State or Province Name (full name) [AB]:
+Locality Name (eg, city) [Edmonton]:
+Organization Name (eg, company) [Serverascode]:
+Organizational Unit Name (eg, section) [OpenStack]:
+Common Name (eg, your name or your server's hostname) [mycert]:
+Name [EasyRSA]:
+Email Address [curtis@serverascode.com]:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+Using configuration from /home/ubuntu/my_ca/openssl-1.0.0.cnf
+Check that the request matches the signature
+Signature ok
+The Subject's Distinguished Name is as follows
+countryName           :PRINTABLE:'CA'
+stateOrProvinceName   :PRINTABLE:'AB'
+localityName          :PRINTABLE:'Edmonton'
+organizationName      :PRINTABLE:'Serverascode'
+organizationalUnitName:PRINTABLE:'OpenStack'
+commonName            :PRINTABLE:'mycert'
+name                  :PRINTABLE:'EasyRSA'
+emailAddress          :IA5STRING:'curtis@serverascode.com'
+Certificate is to be certified until Jul 26 16:34:19 2027 GMT (3650 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This was just a quick exploration of easy-rsa. I should note that the version available by default on Ubuntu 16.04 is a bit older. In another post I’ll explore a more recent version of <code>easy-rsa</code>.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

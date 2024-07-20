@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vagrant and vmware | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Vagrant and vmware">
+
+    
+    <meta name="twitter:description" content="<p>After IRC, <a href="http://vagrantup.com">vagrant</a> is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>After IRC, <a href="http://vagrantup.com">vagrant</a> is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/vagrant-and-vmware.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/vagrant-and-vmware.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Vagrant and vmware" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/04/11/vagrant-and-vmware.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Vagrant and vmware</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-04-11T00:00:00-04:00">
+                April 11, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>After IRC, <a href="http://vagrantup.com">vagrant</a> is probably my most important development tool, mostly because I like to use and investigate openstack, which means using a lot of virtual machines.</p>
+
+<p>Recently Hashicorp released <a href="http://www.hashicorp.com/blog">Vagrant 1.1</a> which introduces the idea of <a href="http://docs.vagrantup.com/v2/providers/index.html">providers</a>. Previously vagrant only supported virtualbox, but now, with 1.1, plugins can be written to support almost any virtualization system that has a command line or API interface of some sort.</p>
+
+<p>For example:</p>
+
+<ul>
+  <li><a href="http://docs.vagrantup.com/v2/vmware-fusion/index.html">VMWare Fusion</a> (note that this is a paid plugin)</li>
+  <li><a href="http://gigaom.com/2013/02/13/developers-rejoice-vagrant-finds-a-home-in-the-amazon-cloud/">AWS</a> (<a href="https://github.com/mitchellh/vagrant-aws">github repo</a>)</li>
+  <li><a href="https://github.com/mitchellh/vagrant-rackspace">RackSpace</a></li>
+  <li><a href="https://github.com/cloudbau/vagrant-openstack">OpenStack</a> (based on the rackspace plugin)</li>
+</ul>
+
+<p>The provider I’m going to focus on here is vmware fusion.</p>
+
+<h2 id="vmware_fusion">vmware_fusion</h2>
+
+<p>One of the things I’ve learned about using brand new technologies is that they often don’t work and/or don’t have any documentation, which frankly are about the same thing to me. That sounds like a kind of grumpy thing to say, but I’m kind of grumpy today. :)</p>
+
+<p>Regardless, I went ahead and bought vmware fusion (which is cheap, BTW, at $49) and also the <a href="http://www.vagrantup.com/vmware">vagrant vmware_fusion plugin</a> (which is $79).</p>
+
+<p>I think this is the first time that I’ve encountered a plugin that was more expensive than the actual application it was plugging into, but I can understand the pricing because Fusion is probably under-valued, or at least under-priced. Plus the $79 goes towards the development of vagrant, which I use <em>a lot</em>.</p>
+
+<p>Recently I deployed <a href="http://serverascode.com/2013/03/13/first-look-packstack.html">packstack</a> via vagrant and <em>virtualbox</em>, and I wanted to do the same with vmware_fusion, but I ran into a few problems, which I’m going to spend the rest of the post detailing.</p>
+
+<p><em>NOTE: I should say that nothing here is the vmware_fusion plugins fault. I’m not blaming the plugin at all. Rather just detailing some of the pain points I’ve encountered, which will no doubt disappear as more people use vmware fusion and vagrant together, and as I get my act together. I’ll try to update this post as I find out new information. :)</em></p>
+
+<h2 id="routes-collide">Routes collide!</h2>
+
+<p>I have both vmware fusion and virtualbox installed on my macbook retina. Unfortunately, virtualbox has an iron grip on its networks.</p>
+
+<blockquote>
+  <p>VirtualBox hangs on to its network devices (“vboxnet”) for dear life. I haven’t figured out yet how to actually get rid of them except restarting your computer. – <a href="https://groups.google.com/d/msg/vagrant-up/DKxnHU4_aOg/68JzFjJ-14sJ">Mitchell Hashimoto</a></p>
+</blockquote>
+
+<p>If you encounter the below error, either change subnets (perhaps in virtualbox, perhaps in the vagrantfile, not sure) or reboot.</p>
+
+<pre>
+<code>$ vagrant up apis --provider=vmware_fusion
+Bringing machine 'apis' up with 'vmware_fusion' provider...
+
+[apis] Verifying vmnet devices are healthy...
+The VMware network device 'vmnet2' can't be started because
+its routes collide with another device: 'vboxnet'. Please
+
+either fix the settings of the VMware network device or stop the
+colliding device. Your machine can't be started while VMware
+networking is broken.
+</code>
+</pre>
+
+<p>Again, not vmware_fusion’s fault, but still a pain. I can’t simply un-install virtualbox…yet.</p>
+
+<h2 id="vmx-settings">vmx settings</h2>
+
+<p>Often we want to change the settings in the virtual machine, settings such as memory, number of cpus, etc.</p>
+
+<p>Unfortunately vmx is an undocumented format.</p>
+
+<blockquote>
+  <p>VMX is an undocumented format. You’ll have to google, unfortunately. :) – <a href="https://groups.google.com/d/msg/vagrant-up/DKxnHU4_aOg/68JzFjJ-14sJ">Mitchell Hashimoto</a></p>
+</blockquote>
+
+<p>But at the very least here is how to set memory:</p>
+
+<pre>
+<code>config.vm.provider :vmware_fusion do |p|
+  p.vmx['memsize'] = '2048'
+end
+</code>
+</pre>
+
+<p>As more people use vmware_fusion there will be better documentation on vmx settings.</p>
+
+<h2 id="centos6-box">Centos6 box</h2>
+
+<p>While Hashicorp has conveniently provided a <a href="http://files.vagrantup.com/precise64.box">base precise64</a> box for vagrant, there isn’t an official centos box. I have previously tried to create a centos6 box for vagrant, but haven’t had much luck, and that was with vagrant &lt; 1.1 and there is even less documentation on the process now.</p>
+
+<p>Then I noticed that <a href="http://www.vagrantbox.es/">vagrantbox.es</a> (which is a very handy site!) has a centos6 box for vmware_fusion, so I grabbed that:</p>
+
+<ul>
+  <li><a href="https://dl.dropbox.com/u/5721940/vagrant-boxes/vagrant-centos-6.4-x86_64-vmware_fusion.box">CentOS 6.4 x86_64 Minimal VMware Fusion (VMware Tools, Chef 11.4.0, Puppet 3.1.1)</a></li>
+</ul>
+
+<p>Unfortunately it doesn’t seem to work when multiple interfaces are specified in the vagrantfile, so that doesn’t help me much on my quest to run packstack in vmware_fusion. If anyone knows of a good centos6 box, or notices that I’m doing something wrong, please let me know!</p>
+
+<p>Here’s the networking part of the config:</p>
+
+<pre>
+<code>config.vm.network :private_network, ip: "172.10.0.200", :netmask =&gt; "255.255.0.0"
+config.vm.network :private_network, ip: "10.10.0.200", :netmask =&gt; "255.255.0.0" 
+</code>
+</pre>
+
+<p>Let’s boot it:</p>
+
+<pre>
+<code>$ vagrant up --provider=vmware_fusion
+Bringing machine 'default' up with 'vmware_fusion' provider...
+[default] Cloning Fusion VM: 'centos65fusion'. This can take some time...
+[default] Verifying vmnet devices are healthy...
+[default] Preparing network adapters...
+[default] Starting the VMware VM...
+[default] Waiting for the VM to finish booting...
+[default] The machine is booted and ready!
+[default] Forwarding ports...
+[default] -- 22 =&gt; 2222
+[default] Configuring network adapters within the VM...
+The following SSH command responded with a non-zero exit status.
+Vagrant assumes that this means the command failed!
+
+/sbin/ifup eth1 2&gt; /dev/null
+</code>
+</pre>
+
+<p>Ooops, shouldn’t be seeing the failed command.</p>
+
+<p>What’s the networking like?</p>
+
+<pre>
+<code>$ vagrant ssh
+[vagrant@vagrant-centos-6 ~]$ ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:0C:29:24:6A:AD  
+          inet addr:192.168.134.146  Bcast:192.168.134.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe24:6aad/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:432 errors:426 dropped:0 overruns:0 frame:0
+          TX packets:293 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:48690 (47.5 KiB)  TX bytes:38046 (37.1 KiB)
+          Interrupt:19 Base address:0x2024 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+
+</code>
+</pre>
+
+<p>Nope that’s not what I wanted at all.</p>
+
+<p>Ok, now let’s use the exact same vagrantfile but with the offical vmware_fusion ubuntu box.</p>
+
+<pre>
+<code>config.vm.box = "precise64"
+</code>
+</pre>
+
+<p>Vagrant up!</p>
+
+<pre>
+<code>#
+# Destroy the old one
+# 
+
+$ vagrant destroy
+[default] Stopping the VMware VM...
+[default] Deleting the VM...
+
+#
+# Edit the vagrantfile to use precise64 basebox
+#
+
+$ vi Vagrantfile
+
+#
+# Boot it
+# 
+
+$ vagrant up --provider=vmware_fusion
+Bringing machine 'default' up with 'vmware_fusion' provider...
+[default] Cloning Fusion VM: 'precise64'. This can take some time...
+[default] Verifying vmnet devices are healthy...
+[default] Preparing network adapters...
+[default] Starting the VMware VM...
+[default] Waiting for the VM to finish booting...
+[default] The machine is booted and ready!
+[default] Forwarding ports...
+[default] -- 22 =&gt; 2222
+[default] Configuring network adapters within the VM...
+[default] Enabling and configuring shared folders...
+[default] -- vagrant-root: /Users/curtis/working/vagrant/grizzly
+
+#
+# SSH into the box...
+# 
+
+$ vagrant ssh
+Welcome to Ubuntu 12.04.1 LTS (GNU/Linux 3.2.0-29-virtual x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+Last login: Thu Jan 31 13:48:53 2013
+vagrant@precise64:~$ ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:0c:29:29:dc:aa  
+          inet addr:192.168.134.139  Bcast:192.168.134.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe29:dcaa/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:375 errors:367 dropped:0 overruns:0 frame:0
+          TX packets:241 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:41473 (41.4 KB)  TX bytes:33220 (33.2 KB)
+          Interrupt:18 Base address:0x2024 
+
+eth1      Link encap:Ethernet  HWaddr 00:0c:29:29:dc:b4  
+          inet addr:172.10.0.200  Bcast:172.10.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::20c:29ff:fe29:dcb4/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1 errors:1 dropped:0 overruns:0 frame:0
+          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:209 (209.0 B)  TX bytes:468 (468.0 B)
+          Interrupt:16 Base address:0x20a4 
+
+eth2      Link encap:Ethernet  HWaddr 00:0c:29:29:dc:be  
+          inet addr:10.10.0.200  Bcast:10.10.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::20c:29ff:fe29:dcbe/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1 errors:1 dropped:0 overruns:0 frame:0
+          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:209 (209.0 B)  TX bytes:468 (468.0 B)
+          Interrupt:17 Base address:0x2424 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+</code>
+</pre>
+
+<p>That’s what I expect to see.</p>
+
+<h2 id="example-vagrantfiles">Example vagrantfiles</h2>
+
+<p><em>UPDATE (April 18th, 2013): This Vagrantfile now doesn’t seem to work with Vagrant 1.2</em></p>
+
+<p>I have been searching for good examples of vagrantfiles that use vmware_fusion.</p>
+
+<p>So far I’ve just found this one:</p>
+
+<ul>
+  <li><a href="https://github.com/uksysadmin/OpenStackCookBook-1/blob/master/Vagrantfile">https://github.com/uksysadmin/OpenStackCookBook-1/blob/master/Vagrantfile</a></li>
+</ul>
+
+<p>But I will keep an eye out for other examples.</p>
+
+<h2 id="update-april-18th-2013-new-network-problem">UPDATE (April 18th, 2013): New network problem</h2>
+
+<p>This is a new one…now this can’t be virtualbox’s fault.</p>
+
+<pre>
+<code>$ vagrant up --provider=vmware_fusion
+Bringing machine 'percona0' up with 'vmware_fusion' provider...
+Bringing machine 'percona1' up with 'vmware_fusion' provider...
+Bringing machine 'percona2' up with 'vmware_fusion' provider...
+Bringing machine 'haproxy0' up with 'vmware_fusion' provider...
+Bringing machine 'haproxy1' up with 'vmware_fusion' provider...
+[percona0] Cloning Fusion VM: 'precise64'. This can take some time...
+[percona0] Verifying vmnet devices are healthy...
+The VMware network device 'vmnet1' can't be started because
+its routes collide with another device: 'vmnet13'. Please
+either fix the settings of the VMware network device or stop the
+colliding device. Your machine can't be started while VMware
+networking is broken.
+</code>
+</pre>
+
+<p>Instructions from Mitchell, edit <em>/Library/Preferences/VMware\ Fusion/networking</em> and:</p>
+
+<p>bq.. Get rid of all the lines in that file <em>except</em> the ones that start with “answer VNET_1<em>” or “answer VNET_8</em>”. We want to keep those, as they’re the default networks that ship with Fusion. After that, open VMware Fusion.app, then run these commands in a separate terminal:</p>
+
+<p>sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli –stop
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli –configure
+sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli –start</p>
+
+<p>Then run</p>
+
+<p>sudo /Applications/VMware\ Fusion.app/Contents/Library/vmnet-cli –status</p>
+
+<p>And tell me the output. Should only have the vmnet1/vmnet8 devices. After
+THAT you shoudl be good to go again.</p>
+
+<p>VMware networking is an absolute nightmare. - <a href="https://mail.google.com/mail/u/2/?ui=2&amp;ik=7b53664106&amp;view=om&amp;th=13e1f0d872dd857b">Mitchell</a></p>
+
+<p>It sucks that it’s an edge case, but I still hope that there is some code added to help in situations like this. Thanks to Mitchell for responding on the mailing list, as now I can continue on with other problems. :)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I love vagrant, but am having a heck of a time with vmware_fusion and centos6. Having said that, I <em>KNOW</em> that things are going to get better as I learn and as more people start using vagrant and vmware_fusion.</p>
+
+<p>Hats off to Mitchell for creating a great development tool, one that I use every day!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

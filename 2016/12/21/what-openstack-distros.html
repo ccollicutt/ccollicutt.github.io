@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What OpenStack Distros? | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="What OpenStack Distros?">
+
+    
+    <meta name="twitter:description" content="<p><em>Oops that’s Destro not Distro. Note the OpenStack logo though :)</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>Oops that’s Destro not Distro. Note the OpenStack logo though :)</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/what-openstack-distros.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/what-openstack-distros.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="What OpenStack Distros?" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/12/21/what-openstack-distros.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">What OpenStack Distros?</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-12-21T00:00:00-05:00">
+                December 21, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>Oops that’s Destro not Distro. Note the OpenStack logo though :)</em></p>
+
+<p>On the surface it seems like there are many ways to install an OpenStack cloud; many <a href="https://www.openstack.org/marketplace/distros/">OpenStack distributions</a>.</p>
+
+<p>OpenStack requires services and infrastructure and the only way to get those all co-oridinated is to use some kind of automated tooling, which is typically what these “distros” provide.</p>
+
+<p>However, my definition of “distro” may not line up with most. Essentially I would consider a “distro” a OpenStack installer, and, more importantly something that helps manage OpenStack <em>after</em> the initial installation. Often the installation process is called “Day 1” and managing OpenStack after the installation “Day 2.” It’s not enough just to install OpenStack, distros need to provide Day 2 help as well.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<p>There are way fewer OpenStack distros than one would think. Also, even if you have an OpenStack distro you will <em>still</em> need internal staff and/or professional services from the distro vendor. I’m aware that is not that helpful a conclusion. :)</p>
+
+<p>To quote <a href="https://www.mirantis.com/blog/infrastructure-software-is-dead/">Boris Renski of Mirantis</a>:</p>
+
+<blockquote>
+  <p>Everybody’s OpenStack software is equally bad</p>
+</blockquote>
+
+<p>But let’s go through this process anyways… :)</p>
+
+<h2 id="official-distro-list">Official Distro List</h2>
+
+<p>OpenStack provides a <a href="https://www.openstack.org/marketplace/distros/">list of most of the distros</a>. Here’s what is listed on there as of today:</p>
+
+<ul>
+  <li>Stratosphere</li>
+  <li>Appformix</li>
+  <li>Dell EMC RedHat Solution</li>
+  <li>StackBuffet</li>
+  <li>Cisco Metacloud</li>
+  <li>HPE Helion OpenStack</li>
+  <li>T2 Cloud OS</li>
+  <li>Hyper-C</li>
+  <li>Enovance Service Provider Cloud</li>
+  <li>Suse OpenStack Cloud</li>
+  <li>H3 Cloud OS</li>
+  <li>Dell EMC VXRack with Neutrino</li>
+  <li>Aqorn Thunder</li>
+  <li>Redhat OpenStack Platform</li>
+  <li>Platform9</li>
+  <li>Ubuntu OpenStack</li>
+  <li>Bright Computing</li>
+  <li>Mirantis OpenStack</li>
+  <li>Oracle OpenStack</li>
+  <li>TransCirrus Cloud Appliance</li>
+  <li>Mirantis</li>
+  <li>IBM Spectrum Scale for Object Storage</li>
+  <li>AWCloud OpenStack Distribution</li>
+  <li>Oracle OpenStack for Oracle Linux</li>
+  <li>RackSpace Private Cloud</li>
+  <li>Vmware VIO</li>
+  <li>EasyStack ESCloud</li>
+  <li>Animbus CloudOS</li>
+  <li>Huawei Fusionsphere OpenStack</li>
+  <li>Ultimum Cloud Platform</li>
+  <li>IBM Cloud Manager with OpenStack</li>
+  <li>ZTE TECS OpenStack</li>
+  <li>Debian</li>
+  <li>SwiftStack</li>
+  <li>Breqwatr Cloud Appliance</li>
+</ul>
+
+<p>That seems like a long list with 35 entries; let’s go through it, examine the entries and see what can, and should, be removed.</p>
+
+<p><strong>Not Distros</strong></p>
+
+<p>A few are not OpenStack distros: Appformix (which was just bought by Juniper and is really a metrics system), IBM Spectrum (just object storage), SwiftStack (also just object storage), as well as Debian (which provides invaluable packaging, but not actually an installation and/or management system). I’m a big fan of Swift and thus SwiftStack, but it is not a full fledged OpenStack distro (ie. does not provide compute, networking).</p>
+
+<p><strong>Defunct</strong></p>
+
+<p>Then there are a few that are essentially defunct: eNovance was bought by RedHat some time ago, and Suse just bought HPE Helion. Oracle just cancelled Solaris. I think IBM Cloud Manager is dead too.</p>
+
+<p><strong>Biased Removals</strong></p>
+
+<p>A few I am going to remove just because I don’t see them as real entries, such as Oracle and VMware VIO, also the VXRack entry. Add them back in if you prefer, best of luck. :)</p>
+
+<p><strong>APAC</strong></p>
+
+<p>Some of these companies I just can’t find much information about, mostly because I am not familiar with APAC companies or languages. I wish I knew more. T2 Cloud. H3Cloud OS. AWCloud. Animbus Cloud. EasyStack. If your company is an APAC or works with APAC customers, then perhaps one of these entries would be a great choice. I would certainly be interested to know how these companies OpenStack distro works.</p>
+
+<p><strong>Small Companies</strong></p>
+
+<p>Next up are small companies. I think it would be very difficult to recommend a small company for an OpenStack distro as who knows if they will be around in a couple years. I suppose the same can be said for larger companies, given HPEs sad retreat. Bright Computing (Amsterdam). Aqorn (US). Ultimum (Prague).</p>
+
+<p>Further, many companies, large and small, actually use someone elses distro, eg. RedHat or Mirantis.</p>
+
+<p><strong>Appliances</strong></p>
+
+<p>Personally, I would toss any appliance vendor. What is an appliance in 2016? It’s an x86 box with Linux on it. Which is what you would deploy the OpenStack control plane on anyways. So out go Breqwatr and Transcirrus (both of which I’m guessing are quite small companies). Mirantis Unlocked Appliances isn’t even a distro, it’s just certified hardware for the Mirantis plaform, not sure why it’s on the list at all.</p>
+
+<p><strong>Solutions</strong></p>
+
+<p>Some options are “solutions” as opposed to distros. Example Dell + EMC + RedHat.  Presumably I could put my own solution up, say Mirantis + SolidFire + OpenDaylight or any combination of OpenStack, Storage, and SDN. Not a distro.</p>
+
+<p><strong>Unclear</strong></p>
+
+<p>I’m not sure what Aptira StackBuffet is, but based on a quick look it seems to be a system to generate OpenStack packages for the operating system layer. I would not consider that a distro. I’m sure Aptira provides OpenStack clouds, but I’m not sure how.</p>
+
+<p><strong>Overspecialized</strong></p>
+
+<p>I’d put Hyper-C into this category as it seems to be directed at Windows only shops. Presumably you can run any workload on their distro, but it does seem to have a specific marketing orientation. I would put Stratoscale here as well as they are a hyperconverged entry, apparently with their own hypervisor.</p>
+
+<h2 id="so-what-are-we-left-with">So what are we left with?</h2>
+
+<ul>
+  <li>SUSE/HPE Helion</li>
+  <li>Cisco Metacloud</li>
+  <li>RedHat OpenStack Platform</li>
+  <li>Platform9</li>
+  <li>Ubuntu OpenStack (does this mean BootStack?)</li>
+  <li>Mirantis</li>
+  <li>RackSpace Private Cloud</li>
+  <li>Huawei FusionSphere</li>
+  <li>ZTE TECS OpenStack</li>
+</ul>
+
+<p>Before going further with that list, lets checkout some open source “distros.”</p>
+
+<h2 id="opensource-distros">OpenSource Distros</h2>
+
+<p>The OpenStack project hosts several distros, or libraries:</p>
+
+<ul>
+  <li><a href="http://docs.openstack.org/developer/puppet-openstack-guide/">Puppet OpenStack</a></li>
+  <li><a href="http://docs.openstack.org/developer/openstack-ansible/">OpenStack Ansible</a></li>
+  <li><a href="http://docs.openstack.org/developer/kolla/">OpenStack Kolla</a></li>
+  <li><a href="http://docs.openstack.org/developer/tripleo-docs/">Tripleo</a></li>
+</ul>
+
+<p>Puppet OpenStack is probably the most commonly used of the three I mention above, but it is more like a libary of Puppet manifests that can be used to deploy OpenStack. However, you need to create your own “composition layer” that will actually utilize those manifests. Thus I would not consider it a distro, though again, it is commonly used and well tested, it just requires some additional work.</p>
+
+<p>OpenStack Ansible and Kolla are distros though. OpenStack Ansible is quite mature and stable, and is also, I believe, the basis for the RackSpace Private Cloud. Koll, on the other hand, is relatively new. It is getting a lot of press, so to speak, because it uses Docker images as a deployment mechanism, and, of course, it is also embroiled in the k8s hype.</p>
+
+<p>I am quite familiar with Tripleo. It is the basis for RedHat’s Director installer. I am not it’s biggest fan, but it does work. It uses the aforementioned OpenStack Puppet as well as Ironic and Heat to deploy OpenStack. I personally have a concern with Day 2 and Tripleo, however.</p>
+
+<p>Also, and this might be lesser known, the Open Platform for Network Function Virutalization (OPNFV) project has a <a href="https://wiki.opnfv.org/display/bgs/Installers">few installers</a>. Some are based on existing systems like Tripleo. I don’t know if you could use any of these in production, as they are mostly meant to be part of OPNFV’s continuous integration system, but they do exist.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Whether you agree or disagree with my inclusions and removals, I think it’s safe to say that there is not a massive number of OpenStack distributions, and the ones that do exist are quite different in what they support and how they work after Day 1.</p>
+
+<p>But…what distros do we have left?</p>
+
+<ul>
+  <li>SUSE/HPE Helion</li>
+  <li>Cisco Metacloud</li>
+  <li>RedHat OpenStack Platform</li>
+  <li>Platform9</li>
+  <li>Ubuntu OpenStack (does this mean <a href="https://www.ubuntu.com/cloud/openstack/managed-cloud">BootStack</a>?)</li>
+  <li>Mirantis</li>
+  <li>RackSpace Private Cloud</li>
+  <li>Huawei FusionSphere</li>
+  <li>ZTE TECS OpenStack</li>
+  <li>OpenStack Ansible</li>
+  <li>OpenStack Kolla</li>
+  <li>OpenStack Tripleo</li>
+</ul>
+
+<p>I don’t know anything about Huawei Fusionsphere or ZTE TECS OpenStack. They may very well be based on an existing distro. Can’t comment.</p>
+
+<p>Platform9 is a unique entry due to its SaaS design, which may not be suitable for all deployments, but I do think it is quite innovative.</p>
+
+<p>RackSpace Private Cloud is based on OpenStack Ansible.</p>
+
+<p>RedHat OpenStack Platform is based on Tripleo.</p>
+
+<p>Mirantis is/was a “pure-play” distro which is now <a href="https://www.mirantis.com/company/press-center/company-news/openstack-kubernetes-mirantis-collaborates-intel-google/">moving quickly</a> to use Kubernetes to manage the OpenStack control plane. (1)</p>
+
+<p>As far as Cisco Metacloud, I don’t know much about it, so can’t really comment, though it does seem t o be a valid option, assuming you like dealing with mega-sales-companies.</p>
+
+<p>Next up, the Ubuntu/Canonical entry. I have not used it, but it seems to be a valid choice. I am hesitant regarding the Juju configuration management tool, but I have not used it so that is unfair. The visualization of components is interesting.</p>
+
+<p>The sale of the HPE Helion intellectual property to SUSE is weird. There would have to be some period of instability here. I can’t see it being a viable option right now. Basically HPE has completely removed its involvment in OpenStack.</p>
+
+<p>So, in my extremely biased opinion, what are we left with? Not much.</p>
+
+<h2 id="whats-left-recommendations">What’s left? Recommendations…</h2>
+
+<p>The Ubuntu/Juju distro seems like it would be Ok, but I have not used it.</p>
+
+<p>RedHat OpenStack and Tripleo are good too. I have concerns about Tripleo on Day 2.</p>
+
+<p>Rackspace Private Could is probably a great option given it is based on OpenStack-Ansible. Or OpenStack-Ansible by itself is great, if you want to use the open source version and support it yourself with help from the community.</p>
+
+<p>Mirantis is still viable, but their k8s direction is concerning. Also, they are themselves questioning the value of a distro:</p>
+
+<blockquote>
+  <p>…very few companies can manage a complex, distributed and fast moving piece of software such as OpenStack…Therefore, most customers end up utilizing extensive professional services from the distribution vendor. - <a href="https://www.mirantis.com/blog/how-does-the-world-consume-private-clouds/">Mirantis Blog</a></p>
+</blockquote>
+
+<p>So even <em>with a distro</em> you are still using professional services. That said, their recent focus on Day 2 is powerful, though to be honest I have not used Fuel.</p>
+
+<p>If you are a company that wants to use OpenStack and is hoping to make it simpler by using a distro, then I think you are in for a surprise. OpenStack is not cheap as it usually requires a team of fairly sophisticated infrastructure engineers to deploy and maintain, whether you are using a distro or not. Now, those engineers may be employees of your company, or they may be employees of a professional services firm. Either way, OpenStack requires people to manage it. Frankly distros may get in the way.</p>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<ol>
+  <li>Kubernetes (k8s) has really thrown a wrench into distros because everyone is scrambling to keep up with the hype. Kubernetes is great, but I think using k8s simply to manage the OpenStack control plane is overkill, and the additional complexity is not needed.</li>
+</ol>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

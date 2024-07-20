@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms of Service Functioning Chaining and a BigSwitch Example | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Forms of Service Functioning Chaining and a BigSwitch Example">
+
+    
+    <meta name="twitter:description" content="<p>Service Function Chaining is an important concept in Network Function Virtualization (NFV). But it is also a powerful tool in more generic Software Defined Networking (SDN) as well.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Service Function Chaining is an important concept in Network Function Virtualization (NFV). But it is also a powerful tool in more generic Software Defined Networking (SDN) as well.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/service-function-chaining-and-bigswitch.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/service-function-chaining-and-bigswitch.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Forms of Service Functioning Chaining and a BigSwitch Example" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/09/25/service-function-chaining-and-bigswitch.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Forms of Service Functioning Chaining and a BigSwitch Example</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-09-25T00:00:00-04:00">
+                September 25, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Service Function Chaining is an important concept in Network Function Virtualization (NFV). But it is also a powerful tool in more generic Software Defined Networking (SDN) as well.</p>
+
+<p>I quite like the definition the <a href="https://wiki.openstack.org/wiki/Neutron/ServiceInsertionAndChaining">OpenStack Networking SFC</a> project has/had:</p>
+
+<blockquote>
+  <p>Service Function Chaining is a mechanism for overriding the basic destination based forwarding that is typical of IP networks. It is conceptually related to Policy Based Routing in physical networks but it is typically thought of as a Software Defined Networking technology. It is often used in conjunction with security functions although it may be used for a broader range of features. Fundamentally SFC is the ability to cause network packet flows to route through a network via a path other than the one that would be chosen by routing table lookups on the packet’s destination IP address. It is most commonly used in conjunction with Network Function Virtualization when recreating in a virtual environment a series of network functions that would have traditionally been implemented as a collection of physical network devices connected in series by cables.</p>
+</blockquote>
+
+<p>Essentially, at a high level, what we want to do is replicate several physical network devices connected together in a chain, except do it virtually. A simple example would be a network gateway, firewall, and intrusion detection system, all physical and all connected to one another through direct connections, potentially without even a switch involved, except, and this is important, it’s not done at layer 3, it’s done at layer 1 as a port to port setup.</p>
+
+<p>I have been working with SFC for a while and have found that there are three major types:</p>
+
+<ol>
+  <li>Layer 3 SFC - Which isn’t what I would actually consider SFC, but often it is done this way, because it is easier</li>
+  <li>Single Switch Layer 1 SFC - This is what this blog post will discuss in terms of BigSwitch</li>
+  <li>Multi-switch Layer 1 SFC - This is the Holy Grail of SFC, so to speak</li>
+</ol>
+
+<h2 id="bigswitch">BigSwitch</h2>
+
+<p>BigSwitch is an SDN vendor with an interesting set of features. They provide an operating system that runs on baremetal whitebox switches (Switch Light OS) and a centralized controller. Their focus seems to be around security. I won’t get into the details here, but they have a couple of different product options and what we are using is <a href="http://www.bigswitch.com/sdn-products/sdn-products/big-monitoring-fabric/overview">Big Monitoring Fabric</a>.</p>
+
+<p>SDN is an interesting area to work in mostly because there are so many different ways one can implement networking when it is done (almost) completely in software. Certainly most of SDN systems rely on the now nearly standard ASICs in a physical switch, but the network logic is all in software. As I like to say, if we want to do SDN that is Apple Talk over USB we probably could. ;)</p>
+
+<p>BigSwitch has an interesting layer 1 style SFC mode, which they call “big chains” or “inline security” or something to that effect. Using their technology one can dynamically insert devices into a chain of physical ports on a physical switch. This is not all that useful from an NFV perspective, as it is limited to a single physical switch and its physical ports, but in terms of a security chain, say one based on the connection of an insecure network (eg. Internet) to a secure one (a DMZ or other internal network), it is useful, certainly more useful than physically plugging and unplugging network cables. At least using BigSwitch we can do these things dynamically through a REST API.</p>
+
+<p>Below we can see a “big chain” service chain. To start with there is no service inserted into the chain.</p>
+
+<p><img src="/img/chain1.jpg" alt="initial chain" /></p>
+
+<p>After inserting the service, we can see that some kind of device, in this case a firewall, has been dynamically inserted into the layer 1 port to port service chain.</p>
+
+<p><img src="/img/chain2.jpg" alt="after insertion chain" /></p>
+
+<p>It’s important to note that this can be done manually from the web interface, or it can be done via the BigSwitch API. The ability to insert services directly into a layer 1 chain via a REST API is extremely powerful…it’s hard to indicate with text and some pictures exactly how powerful that is. So take my word for it!</p>
+
+<h2 id="switchy">Switchy</h2>
+
+<p>To accomplish the service insertion, I wrote a quick command line based tool that can access some of the BigSwitch features via the BigSwitch controller’s REST API.</p>
+
+<p>It’s written in Python and uses the fun <a href="http://click.pocoo.org/5/">Click</a> library to accomplish most of the structure for the actual commands. BigSwitch has some <a href="https://github.com/bigswitch/sample-scripts">Python examples</a> which I used to create a little library for some of their Big Chain features. Click is also useful because it is smart enough to be able to use environment variables, so things like usernames and passwords don’t have to be set on each run of the command, but can still be made required by the CLI.</p>
+
+<pre><code>$ switchy
+Usage: switchy [OPTIONS] COMMAND [ARGS]...
+
+  bigswitch command line interface
+
+Options:
+  --version          Show the version and exit.
+  --controller TEXT  Controller IP or URL  [required]
+  --switch TEXT      Switch ID  [required]
+  --username TEXT    Controller username  [required]
+  --password TEXT    Controller password  [required]
+  --help             Show this message and exit.
+
+Commands:
+  insert-service  insert a service into a chain
+  list-chains     list all bigswitch chains
+  list-instances  list all bigswitch instances
+  list-services   list all bigswitch services
+  remove-service  remove a service from a chain
+  show-chain      show a chain and services
+</code></pre>
+
+<p>For example we can list current chains, which show the chain name and which physical ports make up the ingress/egress points:</p>
+
+<pre><code>$ switchy list-chains
+TEST-CHAIN-03, ethernet1, ethernet2
+TEST-CHAIN-02, ethernet11, ethernet12
+TEST-CHAIN-01, ethernet5, ethernet6
+</code></pre>
+
+<p>And list services:</p>
+
+<pre><code>$ switchy list-services
+TEST-SERVICE-02
+TEST-SERVICE-01
+</code></pre>
+
+<p>Or insert a service into a chain:</p>
+
+<pre><code>$ switchy insert-service --chain TEST-CHAIN-01 --service TEST-SERVICE-01 --instance 1
+Inserted service into chain
+</code></pre>
+
+<p>Obviously anything one can do with the REST API can be done with Switchy, and of course we could add any logic that we would like into the command line application (which is the fun part of programming).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Layer 1 port to port SFC is extremely powerful. It’s important to note, however, that the BigSwtich example given here is not really one meant for NFV, as in NFV we have some kind of underlying infrastructure (termed the NFVi by ETSI), such as OpenStack, which manages many, many hypervisors, each with their own virtual switch. SFC that works in a multi-hypervisor/multi-switch environment looks much different than what is shown here, but this <strong>IS</strong> a stepping stone towards full blown SFC.</p>
+
+<h2 id="ps">PS.</h2>
+
+<p>In this post I’ve taken a very narrow view of what BigSwitch can do. The point of this post was not to review BigSwitch but rather to use it as an example of various ways people implement different kinds of SFC. BigSwitch is a great product and if it sounds interesting to you I highly suggest <a href="http://labs.bigswitch.com/users/login">trying it out</a>. Further to that I have not completely explored everything BigSwitch does nor how it does it.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

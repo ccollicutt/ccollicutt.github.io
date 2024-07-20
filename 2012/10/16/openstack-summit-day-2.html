@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack 2012 Summit Day &#35;2 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack 2012 Summit Day &#35;2">
+
+    
+    <meta name="twitter:description" content="<h2 id="keynotes">Keynotes</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="keynotes">Keynotes</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-summit-day-2.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-summit-day-2.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack 2012 Summit Day &#35;2" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/10/16/openstack-summit-day-2.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack 2012 Summit Day &#35;2</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-10-16T00:00:00-04:00">
+                October 16, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="keynotes">Keynotes</h2>
+
+<p>The keynotes mostly focused on the increased sized of the OpenStack community and the creation of the foundation that now runs OpenStack. Except Shuttleworth’s in which he used Juju to live upgrade from Essex to Folsom which turned some heads. It’s the first time I’ve heard him speak, and he seemed exactly like the kind of person that can sit in-between business and open source. Chris Kemp was good, and took a couple of shots at VMWare which I always think is fun. ;)</p>
+
+<h2 id="high-availability">High Availability</h2>
+
+<p>Florian Haas of <a href="http://www.hastexo.com/">Hastexo</a> presented an update on high-availability with OpenStack. The company I currently work for has, in the past, contracted Florian/Hastexo to consult on OpenStack deployments and I like the things that he says. He’s the go to person for HA + OpenStack.</p>
+
+<p>He talked at length about <a href="http://clusterlabs.org/wiki/Pacemaker">Pacemaker</a> which is a cluster resource manager. Interestingly he notes that it runs air traffic control systems. Also he mentions that it is extremely friendly to 3rd party functionality via plugins/resource agents,</p>
+
+<p>He also went through the OpenStack High Availability Guide which he was largely responsible for creating, and mentioned that it is in <a href="https://github.com/openstack/openstack-manuals/tree/master/doc/src/docbkx/openstack-ha">source control</a> and thus people can contribute patches.</p>
+
+<p>The slides for this talk are <a href="http://www.hastexo.com//resources/presentations/high-availability-update">online</a>.</p>
+
+<h2 id="frameworks-and-apis-for-advanced-service-insertion">Frameworks and APIs for Advanced Service Insertion</h2>
+
+<p>This was a developer session on the future methodologies of inserting things like firewalls, load balancers and such into Quantum. It was interesting to hear some of the thoughts on the topologies of Quantum and how OpenStack is trying not just to replicate existing networking technologies, but create something new. It was nice to hear the word router with an Italian accent. OpenStack is a global project.</p>
+
+<h2 id="lunch">Lunch</h2>
+
+<p>Not much to say, on this. There was tortilla soup though. :)</p>
+
+<h2 id="the-future-of-infrastructure-automation">The Future of Infrastructure Automation</h2>
+
+<p>This session was not what I thought it was going to be. I didn’t realize it was part of the strategy track until I was sitting down listening, and so before knowing that I figured it would be about what comes after puppet/chef/etc…which it was not.</p>
+
+<p>I don’t have a lot to say about this session, other than the speaker liked <a href="http://www.webhooks.org/">webhooks</a> and push notifications, that it would be nice to for a guest in OpenStack to be able to write metadata instead of just reading, and that some organizations are working on this functionality. I definitely would like to be able to write metadata from guests so that was good to hear.</p>
+
+<h2 id="surviving-your-first-check-in-an-engineers-guide-to-contributing-to-openstack">Surviving your first check-in: An engineers guide to contributing to OpenStack</h2>
+
+<p>This was a great session on lessons learned by an engineer (specifically not a developer), <a href="http://www.colinmcnamara.com/">Collin McNamera</a>, who wanted to contribute code to OpenStack. To get his code into OpenStack he had a ratio of 100:1 in terms of time spent figuring out how to contribute and waiting for answers vs actually coding. That was for his first contribution so the ratio is better now, but it was a tough slog at first.</p>
+
+<p>Lessons learned:</p>
+<ul>
+  <li>Join, or start, a local meetup group</li>
+  <li>Make sure that according to your employer you can contribute code to OpenSource projects</li>
+  <li>Execute your OpenStack CLA (contributor license agreement)</li>
+  <li>Setup your dev environment, probably using virtual machines</li>
+  <li><a href="http://devstack.org/">Devstack</a></li>
+  <li>With devstack you can point it to a different OpenStack git repo if you want</li>
+  <li>Use vm snapshotting to help you keep using your dev environment</li>
+  <li>Configure git with your name, email, etc and this will save time in the future. Do it right first!</li>
+  <li>Install git-review</li>
+  <li>Clone a project, or use the directories that came with Devstack</li>
+  <li>Add your ssh key to OpenStack Code Review</li>
+  <li>Create a topic branch</li>
+  <li>Change code</li>
+  <li>Test code: run_tests.sh</li>
+  <li>Commit changes - make sure to put a bug id or blueprint # in the first line</li>
+  <li>Then give back to the community by teaching others! :)</li>
+</ul>
+
+<p>While it’s disappointing to hear how hard it is to contribute code, Collin was a great speaker is obviously passionate about doing good open source work and contributing back to the community.</p>
+
+<h2 id="swift-project-update">Swift Project Update</h2>
+
+<p>As I mentioned in my <a href="http://serverascode.com/2012/10/15/openstack-summit-day-1.html">previous post</a> I am a big fan of object storage, so Swift is an important project to me. :)</p>
+
+<ul>
+  <li>New features in the last six months</li>
+  <li>Folsom version of Swift is 1.7.4</li>
+  <li>Unique-as-possible - Allows more flexible growth, and more harddrives as hand-off nodes</li>
+  <li>Deep statsd integration - Enables notifications that things like graphite can graph</li>
+  <li>SSD optimization - It turns out that in large clusters the account and container servers can become limited by IOPs.</li>
+  <li>Versioned writes - This feature is “almost” there</li>
+  <li>Moved swift client into it’s own project</li>
+</ul>
+
+<p></p>
+
+<ul>
+  <li>Code golf for the last six months</li>
+  <li>37 people have contributed</li>
+  <li>20 have provided their first patch</li>
+  <li>Three new core developers</li>
+  <li>170 total commits</li>
+  <li>17 is the most files touched by a single commit (statsd integration)</li>
+  <li>3466 is the most lines removed in a single patch (moving swift-client out to a new project)</li>
+</ul>
+
+<p></p>
+
+<ul>
+  <li>What’s next?</li>
+  <li>Global clusters - ie. Geographic replication, will hopefully be in Grizzly</li>
+  <li>CORS Support - Better integrate with the browser security model</li>
+  <li>Optimize concurrent reads</li>
+</ul>
+
+<p><img src="https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/nebula_pool.jpg" alt="" />
+<em>(Nebula logo projected on the pool at the club)</em></p>
+
+<h2 id="parties">Parties</h2>
+
+<p>This night I went to both the Rackspace and Nebula parties, though I came back to the hotel pretty early. At the Rackspace party I learned that Miramar, the location of the flight school in Top Gun, is only a few minutes away and actually watched some military jets maneuvering out over the ocean. Surprised no one sang <em>You’ve Lost That Loving Feeling</em>. ;)</p>
+
+<p><img src="https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/topgun.jpg" alt="" /></p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

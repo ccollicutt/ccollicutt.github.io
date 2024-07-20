@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 Months with So You Start (OVH) - A review | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="8 Months with So You Start (OVH) - A review">
+
+    
+    <meta name="twitter:description" content="<p>For the last eight months I’ve had a server at <a href="http://www.soyoustart.com/ca/en/">So You Start</a> (SYS) which is a division of <a href="http://ovh.com">OVH</a>, and is meant to be an entry level service. This harware server (not virtual, hardware) costs me about $60 a month, has a eight cores (hyperthreading), 32GB of ECC ram, a 250MB Internet connection, and 2x2TB disks. Also it’s in Canada, which, as a Canadian, suits me great.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>For the last eight months I’ve had a server at <a href="http://www.soyoustart.com/ca/en/">So You Start</a> (SYS) which is a division of <a href="http://ovh.com">OVH</a>, and is meant to be an entry level service. This harware server (not virtual, hardware) costs me about $60 a month, has a eight cores (hyperthreading), 32GB of ECC ram, a 250MB Internet connection, and 2x2TB disks. Also it’s in Canada, which, as a Canadian, suits me great.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/review-of-soyoustart-ovh.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/review-of-soyoustart-ovh.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="8 Months with So You Start (OVH) - A review" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/11/04/review-of-soyoustart-ovh.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">8 Months with So You Start (OVH) - A review</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-11-04T00:00:00-05:00">
+                November 04, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>For the last eight months I’ve had a server at <a href="http://www.soyoustart.com/ca/en/">So You Start</a> (SYS) which is a division of <a href="http://ovh.com">OVH</a>, and is meant to be an entry level service. This harware server (not virtual, hardware) costs me about $60 a month, has a eight cores (hyperthreading), 32GB of ECC ram, a 250MB Internet connection, and 2x2TB disks. Also it’s in Canada, which, as a Canadian, suits me great.</p>
+
+<h2 id="but-had-to-give-it-up">But had to give it up</h2>
+
+<p>I have recently given up this server, but only because I wasn’t using it, not because it didn’t work for me. In fact quite the opposite–it was working great. It was a great deal, real hardware (albeit a bit old), and it was up pretty much the whole darn time. I wish I could have kept it because it was a good deal, especially considering it’s probably 2/3 of the price most people (at least in Canada) pay for their cell phone.</p>
+
+<h2 id="lack-of-complaints">Lack of complaints</h2>
+
+<p>I really don’t have any complaints. Most of the below notes are minor issues or positives.</p>
+
+<ul>
+  <li>
+    <p>Always seem to be sold out of all the different models of hardware they have (I think this is because they are very popular). You’d almost have to write a script to check the site. This is the opposite of the OVH “business” site on which most of the servers are available within 120 seconds.</p>
+  </li>
+  <li>
+    <p>There is no KVM attached. This is pretty hair-raising if when updating the server. It seems they have a KVM service, which is $30 for 24 hours, and they say they will attach it within two hours. This would make it pretty hard to run a “real” production service off So You Start, but I don’t think that’s the point.</p>
+  </li>
+  <li>
+    <p>If you need any help from So You Start, you probably won’t get it in any timely fashion. But, I’m just guessing based on forum posts and reputation–I never asked for help from them so can’t say from experience.</p>
+  </li>
+  <li>
+    <p>This is my own fault, but I should have got an SSD based server. Spinning disks are so slow.</p>
+  </li>
+  <li>
+    <p>Billing: They could not do recurring credit card payments. You could pay for one or several months in a row, but not recurring. I always felt like if I forgot to pay, just once, my server would be deleted and given to someone else. I’d have preferred to have recurring CC payments, but you could do multi-months.</p>
+  </li>
+  <li>
+    <p>FTP backup: They do provide 100GB of FTP backup which I used. I gpg-zipped my backup files and uploaded them to the FTP server. If I was running a production service I’d find a way to go off-site with those backups, but it’s great that So You Start provides 100Gb of backup.</p>
+  </li>
+  <li>
+    <p>No 2-factor authentication to the admin panel, so if your login was compromised then your server is owned. I’m not even sure if the higher end OVH service provides this, not that they should differentiate on that feature. Every service should 2-factor their logins.</p>
+  </li>
+  <li>
+    <p>ECC memory: my server was ECC, but many of the So You Start models are not. On the range page they do incidate which servers are ECC and the rest are not. This is something to pay attention to if you want to avoid memory errors cropping up. As of this writing it seems like none of the models with SSDs are ECC.</p>
+  </li>
+</ul>
+
+<pre>
+<code>root# dmidecode --type 16
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x0028, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Single-bit ECC
+	Maximum Capacity: 32 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 4
+</code>
+</pre>
+
+<pre>
+<code>root# dmidecode --type 17
+# dmidecode 2.12
+SMBIOS 2.7 present.
+
+Handle 0x002B, DMI type 17, 34 bytes
+Memory Device
+	Array Handle: 0x0028
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 8192 MB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM_A2
+	Bank Locator: BANK 0
+	Type: DDR3
+	Type Detail: Synchronous
+	Speed: 1600 MHz
+	Manufacturer: Samsung
+	Serial Number: 378CA173
+	Asset Tag: 9876543210
+	Part Number: M391B1G73QH0-YK0
+	Rank: 2
+	Configured Clock Speed: 1600 MHz
+SNIP!
+</code>
+</pre>
+
+<h2 id="uptime">Uptime</h2>
+
+<p>I had this server for 8 months. It had ~18 minutes of downtime, about 15 of which were my own fault. Otherwise, I had pingdom monitoring it for the last four months, and it had 7 small outages, most less than a few seconds, and none that I recieved an email notice from Pingdom about.</p>
+
+<h2 id="hardware-infomation">Hardware infomation</h2>
+
+<p>I believe this system is the <a href="http://www.soyoustart.com/ca/en/offers/e3-sat-3.xml">E3-SAT-3</a> model, though it wasn’t called that when I first purchased the service. Also I believe mine is actually ECC memory, though the E3-SAT-3 model isn’t supposed to be.</p>
+
+<p>For CPUs it has eight cores: four physical, four hyperthreading. I’m just showing one core below.</p>
+
+<pre>
+<code>processor	: 7
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 58
+model name	: Intel(R) Xeon(R) CPU E3-1245 V2 @ 3.40GHz
+stepping	: 9
+microcode	: 0x15
+cpu MHz		: 3401.000
+cache size	: 8192 KB
+physical id	: 0
+siblings	: 8
+core id		: 3
+cpu cores	: 4
+apicid		: 7
+initial apicid	: 7
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase smep erms
+bogomips	: 6784.57
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+</code>
+</pre>
+
+<p>For memory:</p>
+
+<pre>
+<code>MemTotal:       32902800 kB
+MemFree:          474852 kB
+Buffers:          179312 kB
+Cached:         29534464 kB
+SwapCached:        37392 kB
+Active:         18247988 kB
+Inactive:       12369164 kB
+Active(anon):     551720 kB
+Inactive(anon):   499556 kB
+Active(file):   17696268 kB
+Inactive(file): 11869608 kB
+Unevictable:       65104 kB
+Mlocked:           65104 kB
+SwapTotal:       5118972 kB
+SwapFree:        4963700 kB
+Dirty:               200 kB
+Writeback:             0 kB
+AnonPages:        931436 kB
+Mapped:           125728 kB
+Shmem:            141504 kB
+Slab:            1149056 kB
+SReclaimable:     985140 kB
+SUnreclaim:       163916 kB
+KernelStack:        4608 kB
+PageTables:        32776 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:    21570372 kB
+Committed_AS:    7632684 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      522704 kB
+VmallocChunk:   34358922952 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:    397312 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      166884 kB
+DirectMap2M:    33341440 kB
+&lt;/pre&gt;
+</code>
+
+## Disk IO
+
+Pretty much looks like a 2x2TB SATA mirror. Bleh. But again, expected. I usually take disk IO testing pretty seriously, but I just chucked this test together in a couple minutes, so take it as you will.
+
+<pre>
+<code>
+# cat *.fio
+[random-read]
+rw=randread
+size=128m
+directory=/tmp/fio-testing/data
+[random-write1mb]
+rw=randwrite
+size=128m
+directory=/tmp/fio-testing/data
+direct=1
+bs=1m
+[random-write]
+rw=randwrite
+size=128m
+directory=/tmp/fio-testing/data
+direct=1
+<pre>
+
+Random read:
+
+<pre>
+<code># fio randread.fio
+random-read: (g=0): rw=randread, bs=4K-4K/4K-4K/4K-4K, ioengine=sync, iodepth=1
+fio-2.1.3
+Starting 1 process
+random-read: Laying out IO file(s) (1 file(s) / 128MB)
+SNIP!
+random-read: (groupid=0, jobs=1): err= 0: pid=10023: Mon Nov  3 21:22:14 2014
+  read : io=131072KB, bw=1009.3KB/s, iops=252, runt=129874msec
+    clat (usec): min=52, max=236152, avg=3955.39, stdev=4034.99
+     lat (usec): min=52, max=236152, avg=3955.79, stdev=4035.00
+    clat percentiles (usec):
+     |  1.00th=[   55],  5.00th=[   77], 10.00th=[  114], 20.00th=[  119],
+     | 30.00th=[  126], 40.00th=[ 2416], 50.00th=[ 3696], 60.00th=[ 4960],
+     | 70.00th=[ 6240], 80.00th=[ 7520], 90.00th=[ 8768], 95.00th=[ 9408],
+     | 99.00th=[10176], 99.50th=[10304], 99.90th=[18560], 99.95th=[31616],
+     | 99.99th=[96768]
+    bw (KB  /s): min=  506, max= 4221, per=98.48%, avg=993.71, stdev=325.57
+    lat (usec) : 100=6.09%, 250=27.71%, 500=0.05%, 750=0.04%, 1000=0.11%
+    lat (msec) : 2=2.93%, 4=15.37%, 10=45.83%, 20=1.77%, 50=0.06%
+    lat (msec) : 100=0.02%, 250=0.01%
+  cpu          : usr=0.28%, sys=0.98%, ctx=33070, majf=0, minf=28
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     issued    : total=r=32768/w=0/d=0, short=r=0/w=0/d=0
+
+Run status group 0 (all jobs):
+   READ: io=131072KB, aggrb=1009KB/s, minb=1009KB/s, maxb=1009KB/s, mint=129874msec, maxt=129874msec
+
+Disk stats (read/write):
+  sda: ios=32491/327, merge=0/601, ticks=128180/16464, in_queue=144612, util=98.77%
+</code>
+</pre>
+
+Random writes 4k blocksize.
+
+<pre>
+<code># fio randwrite.fio
+random-write: (g=0): rw=randwrite, bs=4K-4K/4K-4K/4K-4K, ioengine=sync, iodepth=1
+fio-2.1.3
+Starting 1 process
+random-write: Laying out IO file(s) (1 file(s) / 128MB)
+Jobs: 1 (f=1): [w] [100.0% done] [0KB/472KB/0KB /s] [0/118/0 iops] [eta 00m:00s]
+random-write: (groupid=0, jobs=1): err= 0: pid=11028: Mon Nov  3 21:45:39 2014
+  write: io=131072KB, bw=484491B/s, iops=118, runt=277028msec
+    clat (msec): min=1, max=227, avg= 8.45, stdev= 6.98
+     lat (msec): min=1, max=227, avg= 8.45, stdev= 6.98
+    clat percentiles (msec):
+     |  1.00th=[    3],  5.00th=[    4], 10.00th=[    5], 20.00th=[    6],
+     | 30.00th=[    7], 40.00th=[    8], 50.00th=[    8], 60.00th=[    9],
+     | 70.00th=[    9], 80.00th=[   10], 90.00th=[   10], 95.00th=[   11],
+     | 99.00th=[   40], 99.50th=[   43], 99.90th=[   74], 99.95th=[   95],
+     | 99.99th=[  147]
+    bw (KB  /s): min=  184, max=  591, per=100.00%, avg=473.57, stdev=48.38
+    lat (msec) : 2=0.28%, 4=7.89%, 10=85.24%, 20=2.71%, 50=3.70%
+    lat (msec) : 100=0.15%, 250=0.03%
+  cpu          : usr=0.15%, sys=0.73%, ctx=33273, majf=0, minf=27
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     issued    : total=r=0/w=32768/d=0, short=r=0/w=0/d=0
+
+Run status group 0 (all jobs):
+  WRITE: io=131072KB, aggrb=473KB/s, minb=473KB/s, maxb=473KB/s, mint=277028msec, maxt=277028msec
+
+Disk stats (read/write):
+  sda: ios=0/33913, merge=0/5241, ticks=0/329844, in_queue=329792, util=99.17%
+</code>
+</pre>
+
+Rand writes 1mb blocksize:
+
+<pre>
+<code># fio randwrite1mb.fio
+random-write1mb: (g=0): rw=randwrite, bs=1M-1M/1M-1M/1M-1M, ioengine=sync, iodepth=1
+fio-2.1.3
+Starting 1 process
+random-write1mb: Laying out IO file(s) (1 file(s) / 128MB)
+Jobs: 1 (f=1)
+random-write1mb: (groupid=0, jobs=1): err= 0: pid=11513: Mon Nov  3 21:50:09 2014
+  write: io=131072KB, bw=75199KB/s, iops=73, runt=  1743msec
+    clat (msec): min=8, max=26, avg=13.56, stdev= 2.34
+     lat (msec): min=8, max=26, avg=13.61, stdev= 2.33
+    clat percentiles (usec):
+     |  1.00th=[ 8256],  5.00th=[ 9792], 10.00th=[10688], 20.00th=[11712],
+     | 30.00th=[12352], 40.00th=[13120], 50.00th=[13760], 60.00th=[14400],
+     | 70.00th=[14784], 80.00th=[15040], 90.00th=[15808], 95.00th=[16192],
+     | 99.00th=[19840], 99.50th=[26240], 99.90th=[26240], 99.95th=[26240],
+     | 99.99th=[26240]
+    bw (KB  /s): min=73142, max=76749, per=99.63%, avg=74922.67, stdev=1803.93
+    lat (msec) : 10=6.25%, 20=92.97%, 50=0.78%
+  cpu          : usr=0.40%, sys=0.69%, ctx=135, majf=0, minf=27
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     issued    : total=r=0/w=128/d=0, short=r=0/w=0/d=0
+
+Run status group 0 (all jobs):
+  WRITE: io=131072KB, aggrb=75199KB/s, minb=75199KB/s, maxb=75199KB/s, mint=1743msec, maxt=1743msec
+
+Disk stats (read/write):
+  sda: ios=0/241, merge=0/0, ticks=0/2876, in_queue=2900, util=92.62%
+</code>
+</pre>
+
+## Bandwidth
+
+Using the speedtest-cli, which is very handy. Only found out about it today.
+
+Closest speedtest server:
+
+<pre>
+<code># speedtest
+Retrieving speedtest.net configuration...
+Retrieving speedtest.net server list...
+Testing from OVH Hosting (<redacted>)...
+Selecting best server based on latency...
+Hosted by 3Men@Work (Montreal, QC) [2.38 km]: 39.06 ms
+Testing download speed........................................
+Download: 358.12 Mbits/s
+Testing upload speed..................................................
+Upload: 58.36 Mbits/s
+&lt;/code&gt;
+&lt;/pre&gt;
+
+New York City!
+
+<pre>
+<code># speedtest --server 5029
+Retrieving speedtest.net configuration...
+Retrieving speedtest.net server list...
+Testing from OVH Hosting (<redacted>)...
+Hosted by AT&amp;T (New York City, NY) [533.43 km]: 45.257 ms
+Testing download speed........................................
+Download: 384.99 Mbits/s
+Testing upload speed..................................................
+Upload: 18.05 Mbits/s
+&lt;/code&gt;
+&lt;/pre&gt;
+
+My hometown ISP, Shaw. Good old monopolies.
+
+<pre>
+<code># speedtest --list | grep -i "edmonton"
+4242) Shaw Communications (Edmonton, AB, Canada) [2972.64 km]
+3050) Telus (Edmonton, AB, Canada) [2972.64 km]
+1051) Tera-byte Dot Com Inc (Edmonton, AB, Canada) [2972.64 km]
+root@vurt01:~# speedtest --server 4242
+Retrieving speedtest.net configuration...
+Retrieving speedtest.net server list...
+Testing from OVH Hosting (<redacted>)...
+Hosted by Shaw Communications (Edmonton, AB) [2972.64 km]: 126.014 ms
+Testing download speed........................................
+Download: 118.54 Mbits/s
+Testing upload speed..................................................
+Upload: 38.73 Mbits/s
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Toronto:
+
+<pre>
+<code># speedtest --server 3575
+Retrieving speedtest.net configuration...
+Retrieving speedtest.net server list...
+Testing from OVH Hosting (<redacted>)...
+Hosted by TELUS (Toronto, ON) [504.80 km]: 65.678 ms
+Testing download speed........................................
+Download: 126.21 Mbits/s
+Testing upload speed..................................................
+Upload: 45.24 Mbits/s
+&lt;/code&gt;
+&lt;/pre&gt;
+
+
+## Conclusion
+
+This server worked great for me. I had no problems. However, if I was thinking of hosting a production server, I would probably go with the OVH "business" servers which are more money, but have additional features like full-time KVM and a virtual network that can be setup between servers. Also I would like SSDs and ECC memory, a combination So You Start doesn't seem to provide. But, given my positive experience at So You Start, I would certainly give it a try at OVH, especially because they are in Quebec!
+</redacted></code></pre></redacted></code></pre></redacted></code></pre></redacted></code></pre></pre></code></pre></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

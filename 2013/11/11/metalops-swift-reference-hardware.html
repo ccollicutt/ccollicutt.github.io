@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetalOps - OpenStack Swift reference hardware | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="MetalOps - OpenStack Swift reference hardware">
+
+    
+    <meta name="twitter:description" content="<p>I can’t remember where I first heard the phrase metalops but I think it’s an interesting term, much like devops and all the other ops (opops?). Technology rapidly changes, and so must definitions and labels and job titles, etc, etc. Whether these labels are correct or not, they are often useful. (As an aside, I really like the <a href="http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp">Gartner Hype Cycle</a>.)</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I can’t remember where I first heard the phrase metalops but I think it’s an interesting term, much like devops and all the other ops (opops?). Technology rapidly changes, and so must definitions and labels and job titles, etc, etc. Whether these labels are correct or not, they are often useful. (As an aside, I really like the <a href="http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp">Gartner Hype Cycle</a>.)</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/metalops-swift-reference-hardware.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/metalops-swift-reference-hardware.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="MetalOps - OpenStack Swift reference hardware" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/11/11/metalops-swift-reference-hardware.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">MetalOps - OpenStack Swift reference hardware</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-11-11T00:00:00-05:00">
+                November 11, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I can’t remember where I first heard the phrase metalops but I think it’s an interesting term, much like devops and all the other ops (opops?). Technology rapidly changes, and so must definitions and labels and job titles, etc, etc. Whether these labels are correct or not, they are often useful. (As an aside, I really like the <a href="http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp">Gartner Hype Cycle</a>.)</p>
+
+<p>I think metalops is interesting because it defines an important role in “the cloud” which is that there is always hardware running beneath it, and someone needs to take care of it. Certainly one of the major features of “the cloud” is that the users don’t have to worry about the underlying hardware. But cloud providers do.</p>
+
+<p>My current employer has an interesting role in that while it’s an advocate for the use of “the cloud” (ie. in most cases users <em>not</em> running the physical servers) we also provide several small cloud systems based on OpenStack. This means that we also have to maintain and administer the underlying hardware. Thus, while with one hand I am  using devops tools and methodologies, with the other I am trying to figure out where to get smaller hard-drive screws and whether or not serial-over-lan is going to work on the new hardware so that I don’t have to load up a virtual machine and run a GUI java interface. While I can delete a semi-colon I can’t remove 1.5mm of metal from 80 too long hdd screws.</p>
+
+<p>But enough about that, let’s talk OpenStack Swift hardware.</p>
+
+<h2 id="swift-hardware">Swift hardware</h2>
+
+<p>First let me note that we are not yet in production with this hardware. I’ll come back and update this post once we are.</p>
+
+<p>We bought two types of servers:</p>
+
+<h1 id="4x-proxy-nodes">4x proxy nodes</h1>
+<h1 id="6x-storage-nodes">6x storage nodes</h1>
+
+<p>We will be deploying the small cluster in two separate geographical areas. We purchased the hardware from <a href="http://www.siliconmechanics.com/">Silicon Mechanics</a> who have been extremely helpful throughout the process, especially with regards to getting us parts (the parts we forgot) fast, usually in a couple of days. Their servers are based on Supermicro gear.</p>
+
+<h3 id="proxy-nodes">Proxy Nodes</h3>
+
+<p>The proxy nodes are simple 1U servers that will act at the front-ends to the Swift system. Each region will have two proxy nodes, and while we haven’t exactly determined how they will be used, each region will likely end up with the pairs being highly available in an active/passive setup, though it’s possible we may change our mind and have them active/active by being load balanced by a third system.</p>
+
+<p>Proxy node hardware:</p>
+
+<ul>
+  <li>Silicon Mechanics Rackform iServ R335.v3 “Proxy Nodes”</li>
+  <li>CPU:  1x Intel Xeon E5-2630L, 2.0GHz (6-Core, HT, 15MB Cache, 60W) 32nm</li>
+  <li>RAM:  64GB (4 x 16GB DDR3-1600 ECC Registered 2R DIMMs) Operating at 1600 MT/s Max</li>
+  <li>8x 2.5” hot swap drive slots</li>
+  <li>2x GB on-board NICS and 1x IPMI/BMC shared LAN port</li>
+  <li>PCIe 3.0 x16 - 2:  Intel X520-DA2 10GbE Dual-Port Server Adapter (82599ES) 10GBASE-CR - SFP+ Direct Attach</li>
+</ul>
+
+<p>To start we only put one CPU and 64GB of RAM in the proxy nodes, but if we find out they are underpowered we can add a CPU and double the RAM quite easily. We also decided to use a chassis with eight drive slots in case we decide to re-use these servers in the future for a completely different purpose. With eight slots they could easily become OpenStack compute nodes. If they only had four drive slots they might not be as useful.</p>
+
+<h3 id="storage-nodes">Storage nodes</h3>
+
+<p>The storage nodes are interesting beasts. Each 4U box has 36x 3.5” drive slots. There are 24x slots on the front of the server and 12x in the back. This is dense storage.</p>
+
+<p>To start we only loaded each storage node with 10x 3TB drives, so we can add 26x more drives as we require more storage.</p>
+
+<ul>
+  <li>Silicon Mechanics Swift Storage Node</li>
+  <li>CPU: 2 x Intel Xeon E5-2630L, 2.0GHz (6-Core, HT, 15MB Cache, 60W) 32nm</li>
+  <li>RAM: 128GB (8 x 16GB DDR3-1600 ECC Registered 2R DIMMs)</li>
+  <li>2x GB on-board NICS and 1x IPMI/BMC shared LAN port</li>
+  <li>Controller: I350 Dual-Port Ethernet, 2 Ports 6Gb/s SATA, and 8 Ports 3Gb/s SATA</li>
+  <li>LP PCIe 3.0 x16: LSI 9207-8i (8-Port Int, PCIe 3.0)</li>
+  <li>LP PCIe 3.0 x8 - 1: Intel X520-DA2 10GbE Dual-Port Server Adapter (82599ES) - 10GBASE-CR - SFP+ Direct Attach</li>
+  <li>Front Drive Set: 10 x 3TB Seagate Constellation CS (6Gb/s, 7.2K RPM, 64MB Cache) 3.5-inch SATA</li>
+</ul>
+
+<p>We went with 128GB of memory and lower wattage CPUs that still have 6 cores. We will be using 2x of the hot swap slots for the OS drive. These chassis have 2x internal hard drive slots for OS drives, but getting them out requires pulling the entire server out of the rack to get at them, so we aren’t going to use them.</p>
+
+<p>Silicon Mechanics also offers an SSD cache-drive option, but we aren’t going to deploy Swift using cache drives, though I think some organizations do. Perhaps we will in the future. SSD caching is certainly on our list of technologies to investigate.</p>
+
+<h3 id="metalops-issues">MetalOps Issues</h3>
+
+<p>We did have some issues with these servers, though not due to the vendor whatsoever.</p>
+
+<ul>
+  <li>We are reusing some 2.5” hard drives from another project as the OS drives for all these servers. I forgot to order 2.5” adapters for the 3.5” hot swap sleds, so we couldn’t install the OS drives.</li>
+  <li>The hdd screws that come with the 3.5” sleds in the storage nodes and the 2.5” sleds in the proxy nodes are too long for our 2.5” drives. So we had to order smaller screws.</li>
+  <li>We didn’t order c13-c14 power cables to plugin to the standard rack power. Fortunately our datacenter was able to provide them or we wouldn’t have been able to power up the servers.</li>
+  <li>The proxy rack rails are identical for the left and right rails. This means that in order to pull the server out of the rack the left rail release has to be pushed up, and the right release down. It took us a few minutes to figure this out. The storage node rails have distinct left and right rails.</li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

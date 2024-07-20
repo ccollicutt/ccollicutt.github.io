@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split OpenStack Keystone Catalog | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Split OpenStack Keystone Catalog">
+
+    
+    <meta name="twitter:description" content="<p>OpenStack Keystone is aptly named–it’s a service almost everyone who deploys OpenStack need to run. From a high level it provides authentication.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>OpenStack Keystone is aptly named–it’s a service almost everyone who deploys OpenStack need to run. From a high level it provides authentication.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/split-keystone-catalog.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/split-keystone-catalog.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Split OpenStack Keystone Catalog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/06/24/split-keystone-catalog.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Split OpenStack Keystone Catalog</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-06-24T00:00:00-04:00">
+                June 24, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>OpenStack Keystone is aptly named–it’s a service almost everyone who deploys OpenStack need to run. From a high level it provides authentication.</p>
+
+<blockquote>
+  <p>Keystone is an OpenStack project that provides Identity, Token, Catalog and Policy services for use specifically by projects in the OpenStack family. It implements OpenStack’s Identity API. – <a href="http://docs.openstack.org/developer/keystone/">Keystone documentation</a></p>
+</blockquote>
+
+<p>However, as the above quote mentions it also provides a catalog of OpenStack service endpoints, where endpoints essentially means where you make REST API calls to.</p>
+
+<h2 id="listing-the-catalog">Listing the catalog</h2>
+
+<p>When Keystone is deployed, you can use the OpenStack command line client to list the endpoints.</p>
+
+<p>Below I just show the endpoints for the compute service. Note that the endpoint starts with https, and thus these endpoints are TLS enabled. (Note that I alias <em>openstack</em> to <em>os</em>.)</p>
+
+<pre><code class="language-bash">ubuntu@uc-external-osclient-01:~$ os catalog show compute
++-----------+-----------------------------------------------------------------------+
+| Field     | Value                                                                 |
++-----------+-----------------------------------------------------------------------+
+| endpoints | yeg-uc-1                                                              |
+|           |   admin: https://uc-                                                  |
+|           | api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31     |
+|           | yeg-uc-1                                                              |
+|           |   public: https://uc-                                                 |
+|           | api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31     |
+|           | yeg-uc-1                                                              |
+|           |   internal: https://uc-                                               |
+|           | api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31     |
+|           |                                                                       |
+| name      | Compute Service                                                       |
+| type      | compute                                                               |
++-----------+-----------------------------------------------------------------------+
+</code></pre>
+
+<p>But if I run the same command from an internal client we see slightly different endpoints.</p>
+
+<pre><code class="language-bash">ubuntu@uc-internal-osclient-01:~$ os catalog show compute
++-----------+-----------------------------------------------------------------------------------------+
+| Field     | Value                                                                                   |
++-----------+-----------------------------------------------------------------------------------------+
+| endpoints | yeg-uc-1                                                                                |
+|           |   admin: http://uc-api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31    |
+|           | yeg-uc-1                                                                                |
+|           |   public: http://uc-api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31   |
+|           | yeg-uc-1                                                                                |
+|           |   internal: http://uc-api.lab.example.com:8774/v2/9a6a0815d6e74146bb76f19fd580bc31 |
+|           |                                                                                         |
+| name      | Compute Service                                                                         |
+| type      | compute                                                                                 |
++-----------+-----------------------------------------------------------------------------------------+
+</code></pre>
+
+<p>Note that it is <em>http</em> not <em>https</em>.</p>
+
+<h2 id="split-catalog">Split Catalog</h2>
+
+<p>In this example there are actually two Keystone servers running, and they are identical except for their default_catalog.template file. In fact that file is identical except that the internal Keystone server will use <em>http</em> as the protocol, and the external Keystone server provides a catalog of endpoints with TLS enabled.</p>
+
+<p>Why would we do this?</p>
+
+<p>Well, in some cases we want internal OpenStack services to simply use http/plaintext, perhaps for performance reasons, but obviously external access, even if it’s only accessible from a companies internal network, should be TLS enabled. Separating the Keystone catalog using two Keystone servers and perhaps a load balancer makes this split Keystone setup possible.</p>
+
+<p>In short, external is encrypted and internal is not.</p>
+
+<h2 id="default_catalogtemplate">default_catalog.template</h2>
+
+<p>There are two major ways to define the Keystone catalog: 1) via the database and 2) default_catalog.template.</p>
+
+<p>The template file is just that–a configuration file. Using this configuration file, different Keystone servers can return different catalogs. This is, in my opinion, the easiest way to manage the catalog, and what’s more, is much easier to maintain using configuration management tools. (To all developers: don’t put configuration information into the database if you can avoid it. LXC 2.0 I’m looking at you.)</p>
+
+<h2 id="split-dns">Split DNS</h2>
+
+<p>In this particular example internal and external access uses the same Keystone endpoint host name: <em>uc-api.lab.example.com</em> but the internal systems have a different IP address associated with that hostname than the external servers do.</p>
+
+<p>The load balancer in front of the Keystone servers directs traffic to the correct Keystone backend based on the IP address that is being accessed by the client. So external systems access the external Keystone server and vice-versa for internal.</p>
+
+<h2 id="configuration-management">Configuration management</h2>
+
+<p>Typically I use Ansible to manage configurations. The Keystone servers are separated into two groups: internal and external.</p>
+
+<p>The external servers have their protocol set to https.</p>
+
+<pre><code class="language-bash">[ansible-openstack]$ cat group_vars/external-keystone-api 
+---
+keystone_endpoint_protocol: "https"
+</code></pre>
+
+<p>By default the protocol in the default_catalog.template file is http.</p>
+
+<pre><code class="language-bash">[ansible-openstack]$ head roles/keystone/templates/default_catalog.templates 
+# keystone
+catalog.{{ region }}.identity.publicURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:$(public_port)s/v2.0
+catalog.{{ region }}.identity.adminURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:$(admin_port)s/v2.0
+catalog.{{ region }}.identity.internalURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:$(public_port)s/v2.0
+catalog.{{ region }}.identity.name = Identity Service
+
+# nova
+catalog.{{ region }}.compute.publicURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:8774/v2/$(tenant_id)s
+catalog.{{ region }}.compute.adminURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:8774/v2/$(tenant_id)s
+catalog.{{ region }}.compute.internalURL = {{ keystone_endpoint_protocol | default('http') }}://{{ api_fqdn }}:8774/v2/$(tenant_id)s
+</code></pre>
+
+<p>Certainly there are many other things that the configuration management tool will have to do, but the basics are shown above. There has to be some way to set the external Keystone template to use https and http for internal. This is just one way to accomplish that.</p>
+
+<h2 id="issues-with-this-model">Issues with this model</h2>
+
+<p>Using this model we are classifying traffic into internal and external. Further, we are suggesting that internal traffic for the OpenStack services does not require encryption. This is a big decision. Certainly it’s a common model, but it creates a “chewy center” so to speak, meaning that external access is a hard shell, but that once you get through that hard shell, everything within is easier to crack. Sometimes people thing that “defense in depth” means that it’s okay for each ring to be less secure, but that is not necesarily the goal.</p>
+
+<p>Another way to secure the API endpoints is to assume that all traffic, regardless of origin, may be malicious. With that assumption splitting Keystone would not be desirable, and instead it would be worthwhile to secure Keystone as much as possible regardless of the origin of the traffic, and in fact there would only be one API endpoint used by external end users and internal OpenStack services. Something to consider.</p>
+
+<p>That said, it’s sometimes difficult to get internal OpenStack services to use https, or at least it has been previously.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

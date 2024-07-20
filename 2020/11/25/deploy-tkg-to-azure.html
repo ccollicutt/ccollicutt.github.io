@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Tanzu Kubernetes Grid in Azure | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install Tanzu Kubernetes Grid in Azure">
+
+    
+    <meta name="twitter:description" content="<p>Tanzu Kubernetes Grid 1.2 (TKG) was recently released, and with it comes the ability to deploy TKG to Azure. Prior to 1.2 you could deploy to vSphere and AWS, but now, with 1.2, Azure is also supported. So you can now run the same Kubernetes with the same life cycle manager across vSphere, AWS, and Azure. That’s pretty powerful from a multicloud perspective.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Tanzu Kubernetes Grid 1.2 (TKG) was recently released, and with it comes the ability to deploy TKG to Azure. Prior to 1.2 you could deploy to vSphere and AWS, but now, with 1.2, Azure is also supported. So you can now run the same Kubernetes with the same life cycle manager across vSphere, AWS, and Azure. That’s pretty powerful from a multicloud perspective.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/deploy-tkg-to-azure.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/deploy-tkg-to-azure.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install Tanzu Kubernetes Grid in Azure" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/11/25/deploy-tkg-to-azure.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install Tanzu Kubernetes Grid in Azure</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-11-25T00:00:00-05:00">
+                November 25, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Tanzu Kubernetes Grid 1.2 (TKG) was recently released, and with it comes the ability to deploy TKG to Azure. Prior to 1.2 you could deploy to vSphere and AWS, but now, with 1.2, Azure is also supported. So you can now run the same Kubernetes with the same life cycle manager across vSphere, AWS, and Azure. That’s pretty powerful from a multicloud perspective.</p>
+
+<p>For this post, let’s focus on Azure.</p>
+
+<blockquote>
+  <p>NOTE: Read the official docs <a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-mgmt-clusters-azure.html">here</a>.</p>
+</blockquote>
+
+<h2 id="requirements">Requirements</h2>
+
+<h3 id="tkg-cli">TKG CLI</h3>
+
+<p>Use this <a href="https://www.vmware.com/go/get-tkg">link</a> to access my.vmware.com and download the TKG CLI. You’ll have to login to actually download.</p>
+
+<pre><code>$ tkg version
+Client:
+	Version: v1.2.0
+	Git commit: 05b233e75d6e40659247a67750b3e998c2d990a5
+</code></pre>
+
+<p>The above is the version of TKG that we’ll be using for this post.</p>
+
+<h3 id="azure-cli">Azure CLI</h3>
+
+<p>Here are the <a href="https://github.com/kubernetes-sigs/cluster-api-provider-azure/blob/master/docs/getting-started.md#prerequisites">docs for the prerequisites</a> for Azure’s Cluster API implementation. But don’t worry about reading that doc unless you want to. Not required.</p>
+
+<pre><code>az account show 
+</code></pre>
+
+<p>This post assumes that the <code>az</code> CLI has been setup and configured enough so that you can run something like the above.</p>
+
+<h3 id="docker">Docker</h3>
+
+<p>TKG uses a local Docker install to setup a small, ephemeral, temporary <a href="https://kind.sigs.k8s.io/">kind</a> based Kubernetes cluster to build the TKG management cluster in Azure. (More about that later.) Thus we need Docker locally to run the kind cluster.</p>
+
+<p>I’m just using an Ubuntu 18.04 instance with the default docker.io package.</p>
+
+<pre><code>$ cat /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=18.04
+DISTRIB_CODENAME=bionic
+DISTRIB_DESCRIPTION="Ubuntu 18.04.5 LTS"
+$ dpkg --list docker.io
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                   Version          Architecture     Description
++++-======================-================-================-==================================================
+ii  docker.io              19.03.6-0ubuntu1 amd64            Linux container runtime
+</code></pre>
+
+<p>The Linux user doing the TKG deploy must be able to access Docker, ie. run something like the below.</p>
+
+<pre><code>docker ps
+</code></pre>
+
+<p>Easy peasy.</p>
+
+<h3 id="ssh-key">SSH Key</h3>
+
+<p>We’ll also need an ssh key in ssh format. If there isn’t an ssh key setup, then the below command will create one.</p>
+
+<pre><code>ssh-keygen
+</code></pre>
+
+<p>In this post I assume the key is in <code>~/.ssh/id_rsa.pub</code>.</p>
+
+<h2 id="setup-azure-and-tkg-variables">Setup Azure and TKG Variables</h2>
+
+<p>First, decide on an Azure application name, such as “tkg-azure” and export that as a variable. This name is up to you.</p>
+
+<pre><code>export AZURE_APP_NAME="tkg-azure"
+</code></pre>
+
+<p>Next get your Azure subscription ID.</p>
+
+<pre><code>export AZURE_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+</code></pre>
+
+<p>Now we can setup an Azure application with a service principle.</p>
+
+<pre><code>export RETURNED_SP_APP_JSON=$(az ad sp create-for-rbac --name $AZURE_APP_NAME)
+</code></pre>
+
+<p>And use the information returned by that command to configure the other variables we need.</p>
+
+<pre><code>export AZURE_CLIENT_ID=$(echo "$RETURNED_SP_APP_JSON" | jq -r '.appId')
+export AZURE_CLIENT_SECRET=$(echo "$RETURNED_SP_APP_JSON" | jq -r '.password')
+export AZURE_TENANT_ID=$(echo "$RETURNED_SP_APP_JSON" | jq -r '.tenant')
+</code></pre>
+
+<p>Need a couple of standard Azure variables.</p>
+
+<blockquote>
+  <p>NOTE: <code>AZURE_ENVIRONMENT</code> will always be “AzurePublicCLoud” but the <code>AZURE_LOCATION</code> can be any region you’d lke.</p>
+</blockquote>
+
+<pre><code>export AZURE_LOCATION="canadacentral"
+export AZURE_ENVIRONMENT="AzurePublicCloud"
+</code></pre>
+
+<p>Also, decide on a management cluster name, such as “tkg-mgmt”.</p>
+
+<pre><code>export MANAGEMENT_CLUSTER_NAME="tkg-mgmt"
+</code></pre>
+
+<p>Setup a base64 encoded string of your ssh public key. Assuming your key is in <code>~/.ssh/id_rsa.pub</code>.</p>
+
+<pre><code>export AZURE_SSH_PUBLIC_KEY_B64=$(base64 &lt; ~/.ssh/id_rsa.pub | tr -d '\r\n')
+</code></pre>
+
+<p>At this point we should have this many variables setup:</p>
+
+<pre><code>$ env | grep "AZURE\|MANAGEMENT_CLUSTER" | wc -l
+9
+</code></pre>
+
+<p>If so, you are good to go to the next step.</p>
+
+<h2 id="accept-image-license">Accept Image License</h2>
+
+<p>Accept the license agreement for the images published to Azure. (This only has to be done once.)</p>
+
+<pre><code>az vm image terms accept --publisher vmware-inc --offer tkg-capi --plan k8s-1dot19dot1-ubuntu-1804
+</code></pre>
+
+<h2 id="deploy-management-cluster">Deploy Management Cluster</h2>
+
+<p>At this point, with only a few Azure az commands, we’re setup to build the TKG management cluster.</p>
+
+<blockquote>
+  <p>NOTE: TKG uses <a href="https://cluster-api.sigs.k8s.io/">Cluster API</a> to manage the life cycle of Kubernetes clusters. TKG will first deploy a management cluster to Azure, which will contain Cluster API. To do that it uses a local Docker-based Kind cluster to bootstrap the management cluster. Once the management cluster has been bootstrapped into Azure the local Kind cluster is deleted, and going forward TKG will use the Azure based management cluster to build workload clusters. There are a few artifacts that should be kept, eg. <code>~/.kube</code>  and <code>~/.tkg</code> on the bootstrap node prior to its removal, but once those files are stored and secured the Linux virtual machine could be deleted.</p>
+</blockquote>
+
+<p>Now we can deploy the management cluster.</p>
+
+<p>Run <code>tkg get mc</code> to setup the <code>~/.tkg</code> directory.</p>
+
+<pre><code>tkg get mc
+</code></pre>
+
+<p>Now build the management cluster.</p>
+
+<blockquote>
+  <p>NOTE: We are using the <code>dev</code> plan.</p>
+</blockquote>
+
+<pre><code>tkg init --infrastructure=azure --name="$MANAGEMENT_CLUSTER_NAME" --plan=dev -v 6
+</code></pre>
+
+<p>With the management cluster deployed, we can now build many workload clusters.</p>
+
+<blockquote>
+  <p>NOTE: Like many others, I believe that organizations will require many Kubernetes clusters as opposed to a couple large ones. So TKG controls the life cycle of many, many clusters.</p>
+</blockquote>
+
+<p>Once that command has completed you’ll see something like:</p>
+
+<pre><code>SNIP!
+Deleting Cluster="tkg-mgmt" Namespace="tkg-system"
+Deleting ClusterResourceSet="tkg-mgmt-cni-antrea" Namespace="tkg-system"
+Resuming the target cluster
+Set Cluster.Spec.Paused Paused=false Cluster="tkg-mgmt" Namespace="tkg-system"
+Context set for management cluster tkg-mgmt as 'tkg-mgmt-admin@tkg-mgmt'.
+Deleting kind cluster: tkg-kind-buv4teb68jjgrg38f0kg
+
+Management cluster created!
+
+
+You can now create your first workload cluster by running the following:
+
+  tkg create cluster [name] --kubernetes-version=[version] --plan=[plan]
+</code></pre>
+
+<p>At this point we can create workload clusters.</p>
+
+<h2 id="create-workload-clusters">Create Workload Clusters</h2>
+
+<p>Let’s create a workload cluster.</p>
+
+<pre><code>tkg create cluster workload-01 --plan=dev
+</code></pre>
+
+<p>eg. output looks like:</p>
+
+<pre><code>$ tkg create cluster workload-01 --plan=dev
+Logs of the command execution can also be found at: /tmp/tkg-20201125T132139302956804.log
+Validating configuration...
+Creating workload cluster 'workload-01'...
+Waiting for cluster to be initialized...
+Waiting for cluster nodes to be available...
+Waiting for addons installation...
+
+Workload cluster 'workload-01' created
+</code></pre>
+
+<p>Boom! Workload cluster done. That workload cluster can then be used for any Kubernetes applications.</p>
+
+<blockquote>
+  <p>NOTE: Use <code>tkg get credentials workload-01</code> to obtain Kubernetes credentials for the workload cluster.</p>
+</blockquote>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>At this point we have two clusters, one management, and one workload, and this was all done with a few commands. While the IaaS object configuration will look slightly different in each IaaS, the use of TKG will be the same though all.</p>
+
+<blockquote>
+  <p>Notice how we have Kubernets 1.19!</p>
+</blockquote>
+
+<pre><code>$ tkg get clusters --include-management-cluster
+ NAME         NAMESPACE   STATUS   CONTROLPLANE  WORKERS  KUBERNETES        ROLES      
+ workload-01  default     running  1/1           1/1      v1.19.1+vmware.2  &lt;none&gt;     
+ tkg-mgmt     tkg-system  running  1/1           1/1      v1.19.1+vmware.2  management 
+</code></pre>
+
+<p>At first glance, the bootstrapping process can seem a bit complex, but it’s only because we are using Kubernetes to bootstrap Kubernetes via Cluster API. When you view it through the lens of using Kubernetes constructs where ever possible with the product, it makes sense. Instead of building a separate bootstrapping installer, we use Cluster API, an open source Kubernetes project, the same that is used to build workload clusters. Why re-invent the wheel.</p>
+
+<p>Using TKG gets you the ability to manage the same kubernetes in the same way across many infrastructure as as service products. If multicloud capability is a goal for your organization, then TKG can definitely get you there in terms of Kubernetes. So TKG lets you bootstrap Cluster API onto several common IaaS solutions, thus abstracting away the underlying IaaS. And, of course, it provides life cycle management of Kubernetes clusters.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

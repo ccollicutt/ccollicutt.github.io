@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vent - Kubernetes the Hard Way with Ansible and Packet.net | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Vent - Kubernetes the Hard Way with Ansible and Packet.net">
+
+    
+    <meta name="twitter:description" content="<p>In preparation to write the Certificate Kubernetes Administrator exam I’m going through the ever popular Kubernetes the Hard way (kthw), as developed by Mr. Kelsey Hightower. I actually did <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">the same thing a couple of years ago</a>, in which I translated kthw from a step by step command line depoyment into some Ansible that deployed kthw to Amazon Web Services.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In preparation to write the Certificate Kubernetes Administrator exam I’m going through the ever popular Kubernetes the Hard way (kthw), as developed by Mr. Kelsey Hightower. I actually did <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">the same thing a couple of years ago</a>, in which I translated kthw from a step by step command line depoyment into some Ansible that deployed kthw to Amazon Web Services.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/vent-kubernetes-the-hard-way.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/vent-kubernetes-the-hard-way.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Vent - Kubernetes the Hard Way with Ansible and Packet.net" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/09/03/vent-kubernetes-the-hard-way.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Vent - Kubernetes the Hard Way with Ansible and Packet.net</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-09-03T00:00:00-04:00">
+                September 03, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In preparation to write the Certificate Kubernetes Administrator exam I’m going through the ever popular Kubernetes the Hard way (kthw), as developed by Mr. Kelsey Hightower. I actually did <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">the same thing a couple of years ago</a>, in which I translated kthw from a step by step command line depoyment into some Ansible that deployed kthw to Amazon Web Services.</p>
+
+<p>In this blog post I discuss a repo I created that does something similar–it still converts the shell commands into Ansible, but instead of AWS it deploys Kubernetes to bare metal nodes on Packet.net.</p>
+
+<h2 id="packetnet">Packet.net</h2>
+
+<p>I’m a big fan of packet.net. I like four major things about packet.net:</p>
+
+<ol>
+  <li>Bare Metal resources</li>
+  <li>Layer 3 networking</li>
+  <li>Simplicity</li>
+  <li>Spot pricing</li>
+</ol>
+
+<h3 id="baremetal">Baremetal</h3>
+
+<p>Obviously the main point of packet.net is that instead of getting virtual machines, you get bare metal nodes. I really like getting bare metal nodes. You don’t have to worry about sharing resources with other tenants. You get the full speed of bare metal. They can be pricey over time, but if I was an organization seeking speed, for example in CI/CD, it would be well worth it to utilize packet to push things as fast as they can go.</p>
+
+<p>Specifically for Vent I focussed on the AMD EPYC nodes which are under plan c2.medium.x86. With 64GB of RAM, 20GB of networking, 24 cores, and about 1TB of SSD, it’s perfect for Kubernetes.</p>
+
+<p>Other cloud providers also have bare metal nodes, but I haven’t used them. I think AWS provides bare metal, and they have the Nitro hypervisor, which is effectively bare metal. But that is a discussion for another day. :)</p>
+
+<h3 id="networking">Networking</h3>
+
+<p>I like how Packet.net has done their networking–it’s all layer 3 based. As a public cloud, this is the right way to go. People often think networking means a shared layer 2 with a /24 netmask, like what you get with most clouds virtual private networking.</p>
+
+<p>Packet.net’s layer 3 model means that each node gets three IPs: a public IPv4, an Ipv6, and an internal, private RFC 1918 address (all on the same bond0 interface). The private address is in the 10.0.0.0/8 range, but it’s usually a /31, which means it just has a couple usable addresses–the hosts IP and the gateway. A route is setup to send all 10.0.0.0/8 addresses through that gateway, and packet must be doing filtering to allow “private networking” in the sense that other nodes in the same project are put into a filtering group (ie. network ACL), so that they can only talk to each other on the private network. So if you have three nodes, they each have their own /31 private IP space, but are part of an ACL group (presumably).</p>
+
+<p>This is a very scalable model for packet.net, and with an underlying layer 3 private network as a tenant you can set up an overlay network if you like, vxlan, what have you, and in the example of Kubernetes you could do something simple like use flannel, which is an overlay.</p>
+
+<p>When deploying things like Kubernetes and OpenStack I pay a lot of attention to networking models–it takes some thought about how to fit k8s into an environment. Overlays almost always work because they just ride on top of the underlying physical network and just need L3 connectivity between the virtual switches or whatever is taking care of the overlay. However, overlays are not alway the. Good architecture decisions must be made.</p>
+
+<p>One issue I have with this model is that I don’t necessarily want nodes listening on public IPv{4,6} address if they don’t need to be, but would still like them to have egress access to the Internet. It would be worthwhile for packet.net to have a nat gateway setup like AWS can do. They would have to perform some network magic in the background, but I think it’d be doable. More likely they will create a VPC-like model with a hidden overlay, perhaps using EVPN. Who knows. :)</p>
+
+<p>(Aside: I did do a lot of work and setup dnsmasq, squid, and apt-cacher-ng in packet.net. I removed the public IPv{4,6} addresses from the interface and setup nodes to go through a cache. This worked for 99% of what I was doing–but in some cases applications <em>cough</em> docker images <em>cough</em> are really annoying and require access to the Internet without a proxy. Again, another story for another day.)</p>
+
+<p>I had to do some tricks with macvlan to get flannel working with packet.net’s model, but it’s flannel’s issue. See the <a href="https://github.com/ccollicutt/vent">vent repo</a> for more information on that. At least I finally learned about macvlan to work around the issue.</p>
+
+<p><em>NOTE: Packet also support setting up your own standard VLANs in some capacity, but I haven’t explored that yet.</em></p>
+
+<h3 id="spot-pricing">Spot pricing</h3>
+
+<p>Spot pricing is essentially a way to bid on computing time. You put in your bid, and if it’s high enough you get the compute resources you asked for. Later on, if someone puts in a higher bid your resources get diverted to them. What this really means is that your bare metal server will be deleted.</p>
+
+<p>I’m a big fan of spot pricing, as I think that economics is really important in computing, or it should be at least. With spot markets you can really test out some economic theories. Or, at least, get less expensive short term resources, such as CI/CD or for testing out deployments, which I do a lot of. While working on Vent I usually was able to get the AMD EPYC nodes for about $.30 in spot pricing versus $1 they normally are per hour. That’s quite a discount.</p>
+
+<h2 id="simplicity">Simplicity</h2>
+
+<p>There is a core set of features that a public cloud requires, IMHO. Public clouds like AWS have hundreds of custom services. It can be very confusing to understand what is available and how they work, let alone their billing mode. I’m not saying one way is better than another, but it’s often refreshing to have a simpler view of public cloud resources. Digital Ocean is similar in their desire to keep things clean. Time will tell if this is a good product design, but I appreciate it. A good networking model, access to compute resources, and persistent volumes, elastic IPs…the basic requirements, it’s all I need. I’m not even a big fan of “security groups” which packet does not have. Load balancers are probably a good idea though.</p>
+
+<h2 id="kthw">kthw</h2>
+
+<p>Mr. Hightower has changed kthw considerably over the years. As I write this I’m sure he’s creating a new version that will come out soon. WHen I last worked with Kubernetes and kthw it was version 1.3.0. Now we are on 1.10.7 for Vent, 1.10.2 for kthw, and 1.11 for Kubernetes proper.</p>
+
+<p>kthw is not at this time using docker in a way that you think it would. Docker is not actually installed, instead it’s using <a href="https://containerd.io/">containerd</a>. It also uses <a href="https://github.com/google/gvisor">gvisor</a>, another Google project.</p>
+
+<blockquote>
+  <p>Gvisor [is] a new kind of sandbox that helps provide secure isolation for containers, while being more lightweight than a virtual machine (VM). gVisor integrates with Docker and Kubernetes, making it simple and easy to run sandboxed containers in production environments.</p>
+</blockquote>
+
+<p>I really appreciate the work that Mr. Hightower has put into kthw as I have used it quite a bit to learn about Kubernetes.</p>
+
+<h2 id="vent">Vent</h2>
+
+<p>Finally, lets chat about Vent a bit. First, I have an <a href="https://github.com/ccollicutt/vent/blob/master/OVERVIEW.md">overview document</a> in the vent repo that discusses the choices I made and issues I ran into if you’d like something more in depth.</p>
+
+<p>With Vent I took kthw and turned it into a set of Ansible playbooks. Specifically I didn’t use roles, each step in kthw is a separate playbook. For convenience, they are all brought together in a monolithic file, all.yml. I chose this model to make it look like kthw, with a step by step process. In the future I may change this to be role based.</p>
+
+<p>Provisioning packet.net instances is not done with Ansible, and instead I’m using the packet.net golang based CLI. it has support for spot instances. You can provision Packet.net instances with Ansible or Terraform, and probably other systems, but Ansible and Terraform don’t seem to support spot instance pricing (at least at this time). I should probably contribute that to the Ansible module, but haven’t had time.</p>
+
+<p>One thing I don’t like about how I’m deploying k8s is that I’m relying pretty heavily on the flannel k8s deployment yaml to manage the networking. I’d like to have Ansible set that up instead of using the magic deployment from CoreOS. Also, I’d like to not use flannel at all and move to an Open vSwitch based networking model, but that will take some time to research. For now it’s magic flannel. :)</p>
+
+<p>Like kthw, I’m not putting the k8s control plane into containers or self-hosted in k8s itself. Self-hosting is what kubeadm and some other deployment tools do. Something to look into in the future.</p>
+
+<p>Going forward I hope to write a “vent” CLI that does a lot of the setup, including provisioning, setting up a few basic variables, etc.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Thanks to packet.net for a great service. Thanks to Mr. Hightower for kthw. And wish me luck on the CKA exam!</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

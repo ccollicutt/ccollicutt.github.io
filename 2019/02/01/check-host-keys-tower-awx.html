@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Host Keys in Ansible Tower/AWX | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Check Host Keys in Ansible Tower/AWX">
+
+    
+    <meta name="twitter:description" content="<p>By default AWX doesn’t validate host keys.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>By default AWX doesn’t validate host keys.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/check-host-keys-tower-awx.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/check-host-keys-tower-awx.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Check Host Keys in Ansible Tower/AWX" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/02/01/check-host-keys-tower-awx.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Check Host Keys in Ansible Tower/AWX</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-02-01T00:00:00-05:00">
+                February 01, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>By default AWX doesn’t validate host keys.</p>
+
+<p>Users of plain old Ansible will know this is an option that you can enable or disable–by default in Ansible it’s enabled. However, by default in AWX it is <strong>disabled</strong>, which means that AWX does not validate host keys. However, you can enable it. The way that is done is a bit clunky, but it can be done.</p>
+
+<p>In the AWX web interface, go to “Settings -&gt; Jobs”. There you will see a section called “EXTRA ENVIRONMENT VAIRABLES.” Add <code>"ANSIBLE_HOST_KEY_CHECKING": "true"</code> as one of the variables. In my deployment the full configuration looked like this (yours might be different):</p>
+
+<pre><code>{
+ "HOME": "/var/lib/awx",
+ "ANSIBLE_HOST_KEY_CHECKING": "true"
+}
+</code></pre>
+
+<p>Then ensure you save your new settings. At this point AWX should now start validating SSH host keys.</p>
+
+<p><em>NOTE: I’m not aware of a way to do this outside of using the GUI, but maybe there is? If so, please let me know!</em></p>
+
+<h2 id="example-failed-job-run">Example Failed Job Run</h2>
+
+<p>I have an inventory that has already imported some hosts and a job has run against them, and thus the initial host key has already been set in AWX.</p>
+
+<p>In one of the hosts in the inventory I’ll force a new host key.</p>
+
+<pre><code>ubuntu@c03-01:/etc/ssh$ sudo rm /etc/ssh/ssh_host_*
+ubuntu@c03-01:/etc/ssh$ sudo dpkg-reconfigure openssh-server
+Creating SSH2 RSA key; this may take some time ...
+2048 SHA256:4dFI8aTPISOOZssvPKG+jUnASrft0xTQdWOJhqQLnPo root@c03-01 (RSA)
+Creating SSH2 DSA key; this may take some time ...
+1024 SHA256:t3bYKZW2FFIUnDxD5uvqpPJbh3h2jjT80GLxttzRU6U root@c03-01 (DSA)
+Creating SSH2 ECDSA key; this may take some time ...
+256 SHA256:GaONanT4kLLUMJuTH4rghjXfrrahAY0aa98jEL8pXEA root@c03-01 (ECDSA)
+Creating SSH2 ED25519 key; this may take some time ...
+256 SHA256:qvw390bj+BEOd15NjcHLYtdbk9qzaN5rCE4Xaoi6teQ root@c03-01 (ED25519)
+ubuntu@c03-01:/etc/ssh$ 
+</code></pre>
+
+<p>Now that that is done, let’s copy the key from <code>/etc/ssh/ssh_host_ecdsa_key.pub</code>.</p>
+
+<pre><code>ubuntu@c03-01:/etc/ssh$ cat ssh_host_ecdsa_key.pub 
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBK/6oDS05/WR6Cn8camUDFW3OuyRS3ThiTg+8AzS4s68fkP4EUS86IPVjvNb7w180JxGCBA2Dkmi5QdSCPZsLdg= root@c03-01
+</code></pre>
+
+<p>Later we will add that to the AWX task container in <code>/root/.ssh/known_hosts</code>.</p>
+
+<p>I have a job that constantly runs. It just ensures all new hosts have python 2.7, for $reasons…</p>
+
+<p>Because I’ve changed the host key and set AWX to check host keys, that job now fails for that host.</p>
+
+<pre><code>(tower-cli) ubuntu@awx-client:~$ tc job stdout 22314
+Identity added: /tmp/awx_22314_cU7Zqd/credential_2 (/tmp/awx_22314_cU7Zqd/credential_2)
+
+PLAY [all] *********************************************************************
+
+
+TASK [ensure python 2.7 is installed] ******************************************
+ok: [c02-03]
+ok: [c02-01]
+ok: [c02-04]
+ok: [c03-02]
+ok: [c02-02]
+fatal: [c03-01]: UNREACHABLE! =&gt; {"changed": false, "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\\r\\n@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @\\r\\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\\r\\nIT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\\r\\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\\r\\nIt is also possible that a host key has just been changed.\\r\\nThe fingerprint for the ECDSA key sent by the remote host is\\nSHA256:GaONanT4kLLUMJuTH4rghjXfrrahAY0aa98jEL8pXEA.\\r\\nPlease contact your system administrator.\\r\\nAdd correct host key in /root/.ssh/known_hosts to get rid of this message.\\r\\nOffending ECDSA key in /root/.ssh/known_hosts:13\\r\\nECDSA host key for 172.20.50.16 has changed and you have requested strict checking.\\r\\nHost key verification failed.\\r\\n", "unreachable": true}
+ok: [c01-01]
+ok: [c01-02]
+ok: [c01-03]
+
+TASK [ping] ********************************************************************
+ok: [c02-04]
+ok: [c02-03]
+ok: [c02-02]
+ok: [c02-01]
+ok: [c03-02]
+ok: [c01-03]
+ok: [c01-01]
+ok: [c01-02]
+
+PLAY RECAP *********************************************************************
+c03-01                 : ok=0    changed=0    unreachable=1    failed=0   
+c03-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-01                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-03                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-04                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-01                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-03                 : ok=2    changed=0    unreachable=0    failed=0   
+
+
+OK. (changed: false)
+</code></pre>
+
+<p>Note the big “IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!” warning.</p>
+
+<h2 id="add-new-key-to-awx-and-rerun-job">Add New Key to AWX and Rerun Job</h2>
+
+<p>To set the new host key, I’ll login to the AWX host. In my deployment AWX is “containerized” which means AWX is actually made up of several different Docker based containers.</p>
+
+<pre><code>root@awx:~# docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                                                 NAMES
+1169cf7d8918        ssl-haproxy                  "/bin/bash"              4 weeks ago         Up 4 weeks          0.0.0.0:443-&gt;443/tcp                                  haproxy
+c4bfceeba785        ubuntu:xenial                "/bin/bash"              4 weeks ago         Up 4 weeks                                                                tower-cli
+75ac023a773b        ansible/awx_task:2.1.2       "/tini -- /bin/sh -c…"   4 weeks ago         Up 4 weeks          8052/tcp                                              awx_task_1
+0773f80c42cc        ansible/awx_web:2.1.2        "/tini -- /bin/sh -c…"   4 weeks ago         Up 4 weeks          0.0.0.0:80-&gt;8052/tcp                                  awx_web_1
+54d91fe6c00f        memcached:alpine             "docker-entrypoint.s…"   4 weeks ago         Up 4 weeks          11211/tcp                                             awx_memcached_1
+1540a632c139        ansible/awx_rabbitmq:3.7.4   "docker-entrypoint.s…"   4 weeks ago         Up 4 weeks          4369/tcp, 5671-5672/tcp, 15671-15672/tcp, 25672/tcp   awx_rabbitmq_1
+6b8e0dfd7aab        postgres:9.6                 "docker-entrypoint.s…"   4 weeks ago         Up 4 weeks          5432/tcp                                              awx_postgres_1
+root@awx:~# 
+</code></pre>
+
+<p>I’ll login to the awx_task host and edit the line for this particular host, adding the ecdsa key.</p>
+
+<pre><code>root@awx:~# docker exec -it 75ac023a773b /bin/bash
+[root@awx awx]# vi ~/.ssh/known_hosts 
+# Add the key to the correct entry
+</code></pre>
+
+<p>The next time the job runs the host key will not cause an error.</p>
+
+<pre><code>(tower-cli) ubuntu@awx-client:~$ tc job stdout 22329
+Identity added: /tmp/awx_22329_zl5Pd7/credential_2 (/tmp/awx_22329_zl5Pd7/credential_2)
+
+
+PLAY [all] *********************************************************************
+
+TASK [ensure python 2.7 is installed] ******************************************
+ok: [c01-01]
+ok: [c02-04]
+ok: [c01-02]
+ok: [c01-03]
+ok: [c03-02]
+ok: [c02-01]
+ok: [c02-02]
+ok: [c03-01]
+ok: [c02-03]
+
+TASK [ping] ********************************************************************
+ok: [c02-04]
+ok: [c01-01]
+ok: [c01-03]
+ok: [c01-02]
+ok: [c03-02]
+ok: [c02-01]
+ok: [c02-03]
+ok: [c02-02]
+ok: [c03-01]
+
+PLAY RECAP *********************************************************************
+c03-01                 : ok=2    changed=0    unreachable=0    failed=0   
+c03-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-01                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-03                 : ok=2    changed=0    unreachable=0    failed=0   
+c02-04                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-01                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-02                 : ok=2    changed=0    unreachable=0    failed=0   
+c01-03                 : ok=2    changed=0    unreachable=0    failed=0   
+
+
+OK. (changed: false)
+</code></pre>
+
+<p>All good again. :)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>All that I did in this post was enable  host key checking in AWX and then do a simple verification that it was indeed checking host keys, and failing with unknown host keys.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

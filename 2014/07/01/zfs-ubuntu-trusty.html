@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install ZFS on Ubuntu Trusty 14.04 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install ZFS on Ubuntu Trusty 14.04">
+
+    
+    <meta name="twitter:description" content="<p>In this blog post I’ll install <a href="http://zfsonlinux.org/">ZFS-on-Linux</a> (ZoL) on trusty old Ubuntu Trusty 14.04.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In this blog post I’ll install <a href="http://zfsonlinux.org/">ZFS-on-Linux</a> (ZoL) on trusty old Ubuntu Trusty 14.04.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/zfs-ubuntu-trusty.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/zfs-ubuntu-trusty.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install ZFS on Ubuntu Trusty 14.04" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/07/01/zfs-ubuntu-trusty.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install ZFS on Ubuntu Trusty 14.04</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-07-01T00:00:00-04:00">
+                July 01, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In this blog post I’ll install <a href="http://zfsonlinux.org/">ZFS-on-Linux</a> (ZoL) on trusty old Ubuntu Trusty 14.04.</p>
+
+<p>ZFS is an amazing file system that is now also usable on Linux. One of ZFS’ best features is that it can “self heal” as it is a checksumming file system. Also it can use SSDs in a couple of different ways, such as the ZIL drive and the L2ARC cache.</p>
+
+<p>There are other interesting file systems and ways to cache with solid state drives. <a href="https://btrfs.wiki.kernel.org/index.php/Main_Page">btrfs</a> is continually getting better (I use it with <a href="http://serverascode.com/2014/06/09/docker-btrfs.html">Docker</a>) and recently the Linux kernel gained a few ways to do SSD caching: dmcache, flashcache, and bcache.</p>
+
+<p>In my situation I have various media files from short films I’ve made that I need to backup and protect from bitrot. To do that I’ve decided to use ZFS on Linux. I worked with ZFS + FreeBSD a bit, but I also want the ability to mount many different types of file systems, and surprisingly FreeBSD doesn’t support that many of them. I’m also a big fan of XFS, which I believe FreeBSD only supports in read-only mode. So Linux it is.</p>
+
+<h2 id="zol-ppa">ZoL PPA</h2>
+
+<p>The easiest way to get ZoL is to use the ZFS-native PPA. The software-properties-common package is required for the add-apt-repository command.</p>
+
+<pre>
+<code>curtis@storage:~$ sudo apt-get install software-properties-common
+curtis@storage:~$ sudo add-apt-repository ppa:zfs-native/stable
+</code>
+</pre>
+
+<p>Now we can install ZoL. Installing will also compile a kernel module.</p>
+
+<p><em>NOTE: I’m removing a lot of the output below for brevity; I usually mark that with SNIP!.</em></p>
+
+<pre>
+<code>curtis@storage:~$ sudo apt-get update
+curtis@storage:~$ sudo apt-get install -y ubuntu-zfs
+SNIP!
+zfs.ko:
+Running module version sanity check.
+ - Original module
+   - No original module exists within this kernel
+ - Installation
+   - Installing to /lib/modules/3.13.0-24-generic/updates/dkms/
+
+depmod....
+
+SNIP!
+Setting up ubuntu-zfs (8~trusty) ...
+Processing triggers for libc-bin (2.19-0ubuntu6) ...
+</code>
+</pre>
+
+<p>Now load the module.</p>
+
+<pre>
+<code>curtis@storage:~$ modprobe zfs
+curtis@storage:~$ lsmod | grep zfs
+zfs                  1185541  0
+zunicode              331251  1 zfs
+zavl                   15010  1 zfs
+zcommon                51321  1 zfs
+znvpair                89166  2 zfs,zcommon
+spl                   175436  5 zfs,zavl,zunicode,zcommon,znvpair
+</code>
+</pre>
+
+<h2 id="configure-zpool">Configure zpool</h2>
+
+<p>I have an older computer that I am using as the zfs backup server. In this example it has two 1.5TB drives that I want to use in a zfs mirror (ie. RAID1). I’ll add more storage later but for this example just the two 1.5TB drives, sdb and sdd. They were previously used elsewhere and need to be reformatted for zfs.</p>
+
+<pre>
+<code>curtis@storage:~$ lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 119.2G  0 disk
+├─sda1   8:1    0 113.3G  0 part /
+├─sda2   8:2    0     1K  0 part
+└─sda5   8:5    0     6G  0 part [SWAP]
+sdb      8:16   0   1.4T  0 disk
+├─sdb1   8:17   0   200M  0 part
+├─sdb2   8:18   0   1.4T  0 part
+└─sdb3   8:19   0   128M  0 part
+sdc      8:32   0 465.8G  0 disk
+├─sdc1   8:33   0    64K  0 part
+├─sdc2   8:34   0   462G  0 part
+└─sdc3   8:35   0   3.8G  0 part
+sdd      8:48   0   1.4T  0 disk
+├─sdd1   8:49   0   200M  0 part
+├─sdd2   8:50   0   1.4T  0 part
+└─sdd3   8:51   0   128M  0 part
+sr0     11:0    1  1024M  0 rom
+</code>
+</pre>
+
+<p>We’ll create a zpool mirror callled tank.</p>
+
+<pre>
+<code>curtis@storage:~$ sudo zpool create tank mirror sdb sdd
+curtis@storage:~$ zfs list
+NAME   USED  AVAIL  REFER  MOUNTPOINT
+tank  91.5K  1.34T    30K  /tank
+</code>
+</pre>
+
+<p>Interestingly zfs didn’t warn me about reformatting.</p>
+
+<p>There is now a /tank directory of about ~1.4TB.</p>
+
+<pre>
+<code>curtis@storage:~$ df -h | grep tank
+tank            1.4T     0  1.4T   0% /tank
+</code>
+</pre>
+
+<p>Now create another file system on tank. Note the casesensitivity=mixed for use with Windows.</p>
+
+<pre>
+<code>curtis@storage:/tank$ zfs create -o casesensitivity=mixed tank/bup
+</code>
+</pre>
+
+<h2 id="samba-and-zfs">Samba and ZFS</h2>
+
+<p>As stated previously, I want to use this as a backup server. I do a lot of work with video and audio files and that is all, unfortunately, done from a windows workstation. So I want to be able to backup from Windows to the ZoL backup server. I’ll use samba (SMB) to do that.</p>
+
+<p>Please note that I haven’t used samba in years, so I’m not quite sure this is the right way to go about it. But it is working for me. :)</p>
+
+<p>First, install samba.</p>
+
+<pre>
+<code>curtis@storage:~$ sudo apt-get install samba
+</code>
+</pre>
+
+<p>Now we can create a file system in /tank and share that via SMB.</p>
+
+<pre>
+<code>curtis@storage:~$ sudo zfs set sharesmb=on tank/bup
+curtis@storage:~$ sudo chown curtis:curtis /tank/bup
+</code>
+</pre>
+
+<p>Check what zfs thinks about the share status with regards to samba and nfs.</p>
+
+<pre>
+<code>root@storage:/var/log/samba# sudo zfs get sharesmb,sharenfs
+NAME      PROPERTY  VALUE     SOURCE
+tank      sharesmb  on        local
+tank      sharenfs  off       default
+tank/bup  sharesmb  on        local
+tank/bup  sharenfs  off       default
+</code>
+</pre>
+
+<p>Based on <a href="http://unix.stackexchange.com/questions/97812/fedora-19-zfsonlinux-how-to-configure-cifs-share">this blog post</a> I added the below to /etc/samba/smb.conf and restarted smbd and nmbd. These settings may or may not be appropriate for your use case.</p>
+
+<pre>
+<code>usershare path = /var/lib/samba/usershares
+usershare max shares = 100
+usershare allow guests = yes
+usershare owner only = n
+</code>
+</pre>
+
+<p>Next, add a samba user.</p>
+
+<pre>
+<code>root@storage:/var/log/samba# sudo smbpasswd -a curtis
+New SMB password:
+Retype new SMB password:
+Added user curtis.
+</code>
+</pre>
+
+<p>Finally I can connect to that server with \storage\tank_bup or the server and share should be browsable from the Windows workstation, assuming they are on the same network, and in this case they are.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post I’ve done a couple things:</p>
+
+<ul>
+  <li>Install ZFS on Linux</li>
+  <li>Create a pool with mirrored drives</li>
+  <li>Configure a samba share to access from Windows</li>
+</ul>
+
+<p>So far the performance has been fine. I get about 111MB/s write which is basically as fast as a 1GB network can go.</p>
+
+<p>Soon I’ll add an SSD caching device which will get me more IOPS but I’ve hit the limit on the network.</p>
+
+<h2 id="updates">Updates</h2>
+
+<ul>
+  <li>Commenter Ofer B says <em>apt-get update</em> is necessary, so I added that.</li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama & Llama 3:8b Running Locally | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Ollama & Llama 3:8b Running Locally">
+
+    
+    <meta name="twitter:description" content="<p>First, we start up ollama.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>First, we start up ollama.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ollama-running-locally.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/ollama-running-locally.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Ollama & Llama 3:8b Running Locally" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2024/04/23/ollama-running-locally.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Ollama & Llama 3:8b Running Locally</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-04-23T00:00:00-04:00">
+                April 23, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>First, we start up ollama.</p>
+
+<pre><code>$ ollama serve
+</code></pre>
+
+<p>OK, it’s running.</p>
+
+<pre><code>$ curl localhost:11434 &amp;&amp; echo
+Ollama is running
+</code></pre>
+
+<p>Now, let’s run Meta’s Llama 3:8b.</p>
+
+<blockquote>
+  <p>NOTE: This is only the 8b model, the smallest one so far, AFAIK.</p>
+</blockquote>
+
+<pre><code>$ ollama run llama3:8b
+pulling manifest 
+pulling 00e1317cbf74... 100% ▕█████████████████████████████████████████▏ 4.7 GB                         
+pulling 4fa551d4f938... 100% ▕█████████████████████████████████████████▏  12 KB                         
+pulling 8ab4849b038c... 100% ▕█████████████████████████████████████████▏  254 B                         
+pulling c0aac7c7f00d... 100% ▕█████████████████████████████████████████▏  128 B                         
+pulling db46ef36ef0b... 100% ▕█████████████████████████████████████████▏  483 B                         
+verifying sha256 digest 
+writing manifest 
+removing any unused layers 
+success 
+&gt;&gt;&gt; Send a message (/? for help)
+</code></pre>
+
+<p>Checkout memory usage. Not bad. Pretty small.</p>
+
+<pre><code>$ nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i 0
+5308
+</code></pre>
+
+<h2 id="intersecting-polygons">Intersecting Polygons</h2>
+
+<p>Lets ask Llama 3:8b to solve a problem: write the code to determine if two polygons are intersecting. This is a problem that some LLMs can’t answer. (However, it is possible that Llama 3 has “learned” how to solve the problem from it being discussed recently on the internet, and given the fact that Llama 3 has new training data.)</p>
+
+<p>Below, it looks like we’ve gotten a pretty good answer, as it uses the Python shapely library, which is the easiest thing to do, and what I’d expect to see.</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; Write a function that calculates the intersection of two polygons. The function is given two polygons
+...  represented as a list of points. A third polygon representing the intersection of the two is returne
+... d, or an empty list of points if the intersection is empty.
+Here's a Python function to calculate the intersection of two polygons:
+
+import shapely.geometry
+from typing import List
+
+def polygon_intersection(polygon1: List[List[float]], polygon2: List[List[float]]) -&gt; 
+List[List[float]]:
+    """
+    Calculate the intersection of two polygons.
+
+    Args:
+    polygon1 (List[List[float]]): The first polygon represented as a list of points.
+    polygon2 (List[List[float]]): The second polygon represented as a list of points.
+
+    Returns:
+    List[List[float]]: A list of points representing the intersection of the two polygons, or an 
+empty list if the intersection is empty.
+    """
+    # Convert the input polygons to Shapely Polygon objects
+    poly1 = shapely.geometry.Polygon(polygon1)
+    poly2 = shapely.geometry.Polygon(polygon2)
+
+    # Calculate the intersection polygon
+    intersection = poly1.intersection(poly2)
+
+    # If the intersection is not empty, return it as a list of points
+    if not intersection.is_empty:
+        return [(point.x, point.y) for point in intersection.exterior.coords]
+    else:
+        return []
+
+This function uses the Shapely library to work with geometric shapes. It first converts the input 
+polygons into Shapely Polygon objects. Then it calculates the intersection of these two polygons 
+using the `intersection` method.
+
+If the intersection is not empty, the function returns a list of points representing this polygon 
+as a list of coordinates. If the intersection is empty, an empty list is returned.
+
+Here's how you can use this function:
+
+polygon1 = [(0, 0), (0, 2), (2, 2), (2, 0)]
+polygon2 = [(1, 1), (1, 3), (3, 3), (3, 1)]
+
+intersection_polygon = polygon_intersection(polygon1, polygon2)
+print(intersection_polygon)
+
+This will output the points that make up the intersection of the two polygons.
+</code></pre>
+
+<p>However, this code, as is, as provided, will not run.</p>
+
+<pre><code>$ python polygons.py 
+Polygon 1:
+(0, 0)
+(0, 2)
+(2, 2)
+(2, 0)
+
+Polygon 2:
+(1, 1)
+(1, 3)
+(3, 3)
+(3, 1)
+Traceback (most recent call last):
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 43, in &lt;module&gt;
+    intersection_polygon = polygon_intersection(polygon1, polygon2)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 26, in polygon_intersection
+    return [(point.x, point.y) for point in intersection.exterior.coords]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 26, in &lt;listcomp&gt;
+    return [(point.x, point.y) for point in intersection.exterior.coords]
+             ^^^^^^^
+AttributeError: 'tuple' object has no attribute 'x'
+</code></pre>
+
+<p>But I provide llama 3 the error and it gives me this response.</p>
+
+<pre><code>&gt;&gt;&gt; I get this error: AttributeError: 'tuple' object has no attribute 'x'
+That's a great error message!
+
+It looks like the `point` variable is actually a tuple (a simple data structure in Python), not an 
+object with an `x` attribute. This is because the `intersection.exterior.coords` returns a list of 
+tuples, where each tuple represents a point on the polygon.
+
+To fix this, you can simply change the line:
+
+return [(point.x, point.y) for point in intersection.exterior.coords]
+
+to:
+
+return [tuple(point) for point in intersection.exterior.coords]
+
+This will convert each tuple (representing a point) into a new tuple with the same elements.
+
+Alternatively, you can also use a list comprehension to extract the `x` and `y` values from each 
+tuple, like this:
+
+return [[p[0], 
+p[1][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p]p[1][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p]p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][
+</code></pre>
+
+<blockquote>
+  <p>NOTE: Interesting additional output (the [p]s). I copied and pasted directly. Not sure what happened there…</p>
+</blockquote>
+
+<p>I replaced that line of code as it suggested, and the program ran. For an 8b model this capability seems perfectly fine, at least to me, and was better than what I found ChatGPT 3.5 was capable of a few months ago, in that Llama 3 used the Shapely module, whereas ChatGPT 3.5 would not. I would imagine Llama 3:8b would fail if I told it not to use Shapely.</p>
+
+<p>Results of running the provided code:</p>
+
+<pre><code>$ python polygons.py 
+Polygon 1:
+(0, 0)
+(0, 2)
+(2, 2)
+(2, 0)
+
+Polygon 2:
+(1, 1)
+(1, 3)
+(3, 3)
+(3, 1)
+
+Intersection Polygon:
+(2.0, 2.0)
+(2.0, 1.0)
+(1.0, 1.0)
+(1.0, 2.0)
+(2.0, 2.0)
+</code></pre>
+
+<h2 id="but-it-cant-graph-and-save-an-image">…But It Can’t Graph and Save an Image</h2>
+
+<p>Unfortunately, Llama 3:8b was unable to provide the code to plot the polygons and save them as an image file, which would have looked something like the below image. It may have been able to do this with a different prompt.</p>
+
+<p><img src="/img/intersection.png" alt="img" /></p>
+
+<h2 id="overall-impressive">Overall: Impressive</h2>
+
+<p>This was a very quick test. I only spent a handful of minutes on it.</p>
+
+<p>Llama 3:8B. It’s fast. It can run locally. It’s pretty “smart”, although it would take a bit of manual configuration to get the code it output to work; I didn’t give it much of a chance to get things right. Overall, I’m impressed with this little LLM–its compressed a lot of information.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

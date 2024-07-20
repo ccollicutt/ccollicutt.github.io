@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hipache | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="hipache">
+
+    
+    <meta name="twitter:description" content="<p>I’ve been trying out using <a href="http://blog.dotcloud.com/announcing-hipache-dotclouds-open-source-websocket-supporting-http-proxy">hipache</a> as a routing web proxy. It uses redis as a configuration store of sorts, so you can add webroutes (not sure what to call them…vhost routes?) without having to reload or restart hipache.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I’ve been trying out using <a href="http://blog.dotcloud.com/announcing-hipache-dotclouds-open-source-websocket-supporting-http-proxy">hipache</a> as a routing web proxy. It uses redis as a configuration store of sorts, so you can add webroutes (not sure what to call them…vhost routes?) without having to reload or restart hipache.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/hipache.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/hipache.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="hipache" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/03/12/hipache.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">hipache</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-03-12T00:00:00-04:00">
+                March 12, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’ve been trying out using <a href="http://blog.dotcloud.com/announcing-hipache-dotclouds-open-source-websocket-supporting-http-proxy">hipache</a> as a routing web proxy. It uses redis as a configuration store of sorts, so you can add webroutes (not sure what to call them…vhost routes?) without having to reload or restart hipache.</p>
+
+<p>Running it on Ubuntu 12.04 was fairly straight forward, other than I had to install a much newer version of nodejs and npm than what comes with the distro by default.</p>
+
+<h2 id="install-new-npm-nodejs-and-hipache">Install new npm, nodejs, and hipache</h2>
+
+<p>So first, get a recent version of nodejs.</p>
+
+<pre>
+<code># get a newer version of node
+root# grep DESC /etc/lsb-release 
+DISTRIB_DESCRIPTION="Ubuntu 12.04.4 LTS"
+root# sudo apt-get update
+root# sudo apt-get install -y python-software-properties python g++ make
+root# sudo add-apt-repository ppa:chris-lea/node.js
+root# sudo apt-get update
+root# sudo apt-get install nodejs
+root# node --version
+v0.10.26
+</code>
+</pre>
+
+<p>Next get a new npm…using npm.</p>
+
+<pre>
+<code>root# apt-get install npm
+# now update npm using npm
+root# npm install npm -g --ca=null
+root# npm config set ca=""
+root# npm --version
+1.3.26
+</code>
+</pre>
+
+<p>Now install hipache.</p>
+
+<pre>
+<code>root# npm install hipache -g
+</code>
+</pre>
+
+<h2 id="install-redis">Install redis</h2>
+
+<p>hipache uses redis as a data store for webroutes.</p>
+
+<p>I installed version 2.8.7 stable from source.</p>
+
+<pre>
+<code>root# wget http://download.redis.io/releases/redis-2.8.7.tar.gz
+root# tar zxf redis-2.8.7.tar.gz
+root# cd redis-2.8.7
+root# make
+root# make install
+root# cd utils
+# Setup redis init stuff
+root# ./install_server.sh
+</code>
+</pre>
+
+<p>At this point I had to edit the /etc/init.d/redis_6379 file because it had a bunch of “\n\n” newlines that weren’t converted for some reason. I’ll have to check into that later on.</p>
+
+<p>The head of that file should look like this.</p>
+
+<pre>
+<code>root# head redis_6379 
+#/bin/sh
+#Configurations injected by install_server below....
+EXEC=/usr/local/bin/redis-server
+CLIEXEC=/usr/local/bin/redis-cli
+PIDFILE=/var/run/redis_6379.pid
+CONF="/etc/redis/6379.conf"
+REDISPORT="6379"
+###############
+
+case "$1" in
+</code>
+</pre>
+
+<p>I configured redis to only to listen on localhost.</p>
+
+<pre>
+<code>root# grep bind 6379.conf 
+# interfaces using the "bind" configuration directive, followed by one or
+# bind 192.168.1.100 10.0.0.1
+bind 127.0.0.1
+</code>
+</pre>
+
+<p>Now we can start it.</p>
+
+<h2 id="start-redis">Start redis</h2>
+
+<p>Use service to start redis.</p>
+
+<pre>
+<code>root# service redis_6379 start
+</code>
+</pre>
+
+<p>It’s now listening on 6379.</p>
+
+<pre>
+<code>root# netstat -ant  |grep 6379  | grep LISTEN
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN    
+</code>
+</pre>
+
+<h2 id="start-hipache">Start hipache</h2>
+
+<p>Hipache provides an <a href="https://raw.githubusercontent.com/dotcloud/hipache/master/upstart.conf">upstart script</a>.</p>
+
+<pre>
+<code># hipache - distributed HTTP and websocket proxy
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+respawn
+respawn limit 15 5
+
+script
+  hipache --config /etc/hipache.json
+end script
+</code>
+</pre>
+
+<p>I placed that in /etc/init/hipache.conf</p>
+
+<pre>
+<code>root# ls /etc/init/hipache.conf 
+/etc/init/hipache.conf
+</code>
+</pre>
+
+<p>Finally we need a hipache config file.</p>
+
+<pre>
+<code>root# cat /etc/hipache.json 
+{
+    "server": {
+        "accessLog": "/var/log/hipache_access.log",
+        "port": 80,
+        "workers": 5,
+        "maxSockets": 100,
+        "deadBackendTTL": 30,
+        "address": ["127.0.0.1"],
+        "address6": ["::1"]
+    },
+    "redisHost": "127.0.0.1",
+    "redisPort": 6379,
+    "redisDatabase": 0,
+
+}
+</code>
+</pre>
+
+<p>Obviously this is a test config with no password, but it is only listening on localhost.</p>
+
+<p>We can start hipache.</p>
+
+<pre>
+<code>root# service hipache start
+</code>
+</pre>
+
+<h2 id="configure-vhosts">Configure vhosts</h2>
+
+<p>vhosts for hiapche to proxy are entered into redis.</p>
+
+<p>Here’s an example taken from the README:</p>
+
+<pre>
+<code>$ redis-cli rpush frontend:www.dotcloud.com mywebsite
+(integer) 1
+$ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.42:80
+(integer) 2
+$ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.43:80
+(integer) 3
+$ redis-cli lrange frontend:www.dotcloud.com 0 -1
+1) "mywebsite"
+2) "http://192.168.0.42:80"
+3) "http://192.168.0.43:80"
+</code>
+</pre>
+
+<p>Now accessing a hostname/URL that is associated with the IP hipache is listening on will redirect to the backend servers set in redis, assuming the vhost dns name is configured properly, and we can keep adding them and reconfiguring without taking down hipache.</p>
+
+<p>There isn’t a ton of documentation on using hipache, so I’m betting that I’ll eventually run into a wall with it, but for now it’s a pretty interesting project that not only gets me introduced to nodejs but also redis.</p>
+
+<p>Also I should setup an ansible role to do this. Not too happy about the packaging here either, upstart scripts all over the place.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

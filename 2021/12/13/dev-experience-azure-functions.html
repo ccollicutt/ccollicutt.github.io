@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Experience: My First Look at Azure Functions | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Dev Experience: My First Look at Azure Functions">
+
+    
+    <meta name="twitter:description" content="<h2 id="what-do-i-want-to-do">What Do I Want to Do?</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="what-do-i-want-to-do">What Do I Want to Do?</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/dev-experience-azure-functions.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/dev-experience-azure-functions.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Dev Experience: My First Look at Azure Functions" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2021/12/13/dev-experience-azure-functions.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Dev Experience: My First Look at Azure Functions</h1>
+        <p class="text-gray-600">
+            <time datetime="2021-12-13T00:00:00-05:00">
+                December 13, 2021
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="what-do-i-want-to-do">What Do I Want to Do?</h2>
+
+<p>I’ve not used Azure Functions before, so I’m going to run through a quick start to deploy an example nodejs function.</p>
+
+<p>What I have/want to do:</p>
+
+<ul>
+  <li>Already have <code>az</code> installed and an Azure account to work with</li>
+  <li>Running from a Linux workstation</li>
+  <li>Don’t want to use VSCode integration currently, prefer to use CLI for now</li>
+  <li>Deploy a NodeJS 16 “hello world” function manually</li>
+</ul>
+
+<h2 id="installing">Installing</h2>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Ccsharp%2Cportal%2Cbash%2Ckeda#v2">Docs</a></li>
+</ul>
+
+<p>Get the core tools, which presumably includes the func CLI.</p>
+
+<pre><code>$ sudo apt-get install azure-functions-core-tools-4
+Reading package lists... Done
+SNIP!
+Preparing to unpack .../azure-functions-core-tools-4_4.0.3971-1_amd64.deb ...
+Unpacking azure-functions-core-tools-4 (4.0.3971-1) ...
+Setting up azure-functions-core-tools-4 (4.0.3971-1) ...
+
+Telemetry
+---------
+The Azure Functions Core tools collect usage data in order to help us improve your experience.
+The data is anonymous and doesn't include any user specific or personal information. The data is collected by Microsoft.
+
+You can opt-out of telemetry by setting the FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT environment variable to '1' or 'true' using your favorite shell.
+</code></pre>
+
+<p>Now I have the <code>func</code> command.</p>
+
+<pre><code>$ which func
+/usr/bin/func
+</code></pre>
+
+<p>Init a new project. I’m going to use nodejs.</p>
+
+<pre><code>$ func init .
+Select a number for worker runtime:
+1. dotnet
+2. dotnet (isolated process)
+3. node
+4. python
+5. powershell
+6. custom
+Choose option: 3
+node
+Select a number for language:
+1. javascript
+2. typescript
+Choose option: 1
+javascript
+Writing package.json
+Writing .gitignore
+Writing host.json
+Writing local.settings.json
+Writing /home/curtis/working/sparrow-dns-azure-function/.vscode/extensions.json
+g /home/curtis/working/sparrow-dns-azure-function/MyFunctionProj/.vscode/extensions.json
+</code></pre>
+
+<p>That creates a few files.</p>
+
+<pre><code>$ tree
+.
+├── host.json
+├── local.settings.json
+└── package.json
+
+0 directories, 3 files
+</code></pre>
+
+<p>Next, let’s create a function.</p>
+
+<h2 id="creating-a-function">Creating a Function</h2>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-cli-node?tabs=azure-cli%2Cbrowser">Docs</a></li>
+</ul>
+
+<p>Create a function from a template “HTTP Trigger”.</p>
+
+<pre><code>$ func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
+Select a number for template:HTTP trigger
+Function name: [HttpTrigger] Writing /home/curtis/working/sparrow-dns-azure-function/HttpExample/index.js
+Writing /home/curtis/working/sparrow-dns-azure-function/HttpExample/function.json
+The function "HttpExample" was created successfully from the "HTTP trigger" template.
+</code></pre>
+
+<p>Interesting that there is a template option.</p>
+
+<h3 id="test-locally">Test Locally</h3>
+
+<p>Now in one terminal:</p>
+
+<pre><code>$ func start
+</code></pre>
+
+<p>Example output:</p>
+
+<pre><code>$ func start
+
+Azure Functions Core Tools
+Core Tools Version:       4.0.3971 Commit hash: d0775d487c93ebd49e9c1166d5c3c01f3c76eaaf  (64-bit)
+Function Runtime Version: 4.0.1.16815
+
+
+Functions:
+
+	HttpExample: [GET,POST] http://localhost:7071/api/HttpExample
+
+For detailed output, run func with --verbose flag.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://127.0.0.1:40553/AzureFunctionsRpcMessages.FunctionRpc/EventStream application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /AzureFunctionsRpcMessages.FunctionRpc/EventStream'
+[2021-12-13T11:29:47.400Z] Worker process started and initialized.
+[2021-12-13T11:29:52.128Z] Host lock lease acquired by instance ID '000000000000000000000000AC5DB4CC'.
+</code></pre>
+
+<p>And in another terminal, curl..</p>
+
+<pre><code>$ curl http://localhost:7071/api/HttpExample
+This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response
+</code></pre>
+
+<p>OK, great, but now how to publish to “the cloud”…</p>
+
+<h3 id="configure-azure-to-be-able-to-deploy-the-function-to-azure">Configure Azure to be able to Deploy the function to azure…</h3>
+
+<p>First we need to configure a resource group, etc.</p>
+
+<p>Login.</p>
+
+<pre><code>$ az login
+</code></pre>
+
+<p>Create a resource group.</p>
+
+<pre><code>export RG=sparrow-dns-functions-rg
+export REGION=canadacentral
+export APPNAME=&lt;project name&gt;
+export STORAGE=sparrowdnsfuncstorage
+az group create --name $RG --location $REGION
+</code></pre>
+
+<p>Storage account.</p>
+
+<blockquote>
+  <p>NOTE: What’s the deal with the storage names, yeesh. Lower case letters or numbers only. Don’t like it.</p>
+</blockquote>
+
+<blockquote>
+  <p>Question: What does a function need a storage account for?</p>
+</blockquote>
+
+<pre><code>az storage account create --name $STORAGE --location $REGION --resource-group $RG --sku Standard_LRS
+</code></pre>
+
+<p>Create the function app.</p>
+
+<blockquote>
+  <p>NOTE: Using node 16, not 14.</p>
+</blockquote>
+
+<blockquote>
+  <p>“…replace <STORAGE_NAME> with the name of the account you used in the previous step, and replace <APP_NAME> with a globally unique name appropriate to you. The <APP_NAME> is also the default DNS domain for the function app."</APP_NAME></APP_NAME></STORAGE_NAME></p>
+</blockquote>
+
+<pre><code>az functionapp create --resource-group $RG \
+--consumption-plan-location $REGION \
+--runtime node --runtime-version 16 --functions-version 4 \
+--name $APPNAME \
+--storage-account $STORAGE
+</code></pre>
+
+<p>oh no error.</p>
+
+<pre><code>$ az functionapp create --resource-group $RG \
+&gt; --consumption-plan-location $REGION \
+&gt; --runtime node --runtime-version 16 --functions-version 4 \
+&gt; --name $APPNAME \
+&gt; --storage-account $STORAGE
+az functionapp create: '4' is not a valid value for '--functions-version'. Allowed values: 2, 3.
+
+TRY THIS:
+az functionapp create --resource-group MyResourceGroup --plan MyPlan --name MyUniqueAppName --storage-account MyStorageAccount
+Create a basic function app.
+
+https://docs.microsoft.com/en-US/cli/azure/functionapp#az_functionapp_create
+Read more about the command in reference docs
+</code></pre>
+
+<p>Must need newer az CLI?</p>
+
+<pre><code>$ sudo apt-get --only-upgrade install azure-cli
+$ az version
+{
+  "azure-cli": "2.31.0",
+  "azure-cli-core": "2.31.0",
+  "azure-cli-telemetry": "1.0.6",
+  "extensions": {}
+}
+</code></pre>
+
+<p>Now run again…</p>
+
+<pre><code>$ az functionapp create --resource-group $RG\
+ --consumption-plan-location $REGION \
+ --runtime node --runtime-version 16 --functions-version 4 \
+ --name $APPNAME \
+ --storage-account $STORAGE
+Resource provider 'Microsoft.Web' used by this operation is not registered. We are registering for you.
+Registration succeeded.
+SNIP!
+</code></pre>
+
+<p>That gives you a link to this page to see “Application Insights” which it seems will be deprecated.</p>
+
+<p><img src="/img/azure-func-app-insight.jpg" alt="application insights" /></p>
+
+<p>Onward!</p>
+
+<h2 id="deploy-the-function">Deploy the Function</h2>
+
+<p>Now we actually push the function to the function app.</p>
+
+<pre><code>export APPNAME=&lt;project name&gt;
+func azure functionapp publish $APPNAME
+</code></pre>
+
+<p>Now can access.</p>
+
+<pre><code>$ func azure functionapp publish $APPNAME
+Getting site publishing info...
+Creating archive for current directory...
+Uploading 1.3 KB [#####################################################################]
+Upload completed successfully.
+Deployment completed successfully.
+Syncing triggers...
+Functions in sparrow-dns:
+    HttpExample - [httpTrigger]
+        Invoke url: https://&lt;project name&gt;.azurewebsites.net/api/httpexample
+
+</code></pre>
+
+<p>Connect with httpie.</p>
+
+<pre><code>$ http https://&lt;project name&gt;.azurewebsites.net/api/httpexample
+HTTP/1.1 200 OK
+Content-Encoding: gzip
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 13 Dec 2021 12:13:02 GMT
+Request-Context: appId=cid-v1:dd33b7ce-86e0-4822-a59b-9dd8b4116385
+Transfer-Encoding: chunked
+Vary: Accept-Encoding
+
+This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.
+</code></pre>
+
+<p>Provide a name.</p>
+
+<pre><code>$ http post https://&lt;project name&gt;.azurewebsites.net/api/httpexample name=curtis
+HTTP/1.1 200 OK
+Content-Encoding: gzip
+Content-Type: text/plain; charset=utf-8
+Date: Mon, 13 Dec 2021 12:14:01 GMT
+Request-Context: appId=cid-v1:dd33b7ce-86e0-4822-a59b-9dd8b4116385
+Transfer-Encoding: chunked
+Vary: Accept-Encoding
+
+Hello, curtis. This HTTP triggered function executed successfully.
+</code></pre>
+
+<p>That’s it.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hereare some basic thoughts:</p>
+
+<ul>
+  <li>I find Azure naming unusual</li>
+  <li>I like that there is a “template” option for functions, should explore what that means (Can I create my own templates? Probably not. That’s something that the <a href="https://docs.vmware.com/en/Application-Accelerator-for-VMware-Tanzu/index.html">Tanzu Application Acclerator</a> can do, template any application including Azure Functions)</li>
+  <li>Keep multiple functions in the same repo</li>
+  <li>Not sure why the <code>az</code> and <code>func</code> CLIs exist, can’t deploy a function with <code>az</code>?</li>
+  <li>I like the domain: your-project.azurewebsites.net/api/somefunction</li>
+  <li>Having links point me to services that are being deprecated is a bit concering, but Azure is a massive ecosystem so not unexpected, definitely good that there are application metrics/monitoring integrated of course</li>
+  <li>The localhost name of the function is “HttpExample” and the deployed version is “httpexample”</li>
+  <li>As is common with functions, I’m not sure what version of nodejs is being used everywhere….presumably 16 is being used in the cloud, as that is what I specified, but not sure locally what <code>func</code> does…</li>
+</ul>
+
+<p>Obviously this is my first time using Azure Functions, but so far, other than setting up the resource group and such, I quite like it. Didn’t take long to get a function deployed. Several languages are supported, including Java which I should experiment with.</p>
+
+<p>I’ll take Azure Functions a bit deeper in future posts. So far looks really great.</p>
+
+<h2 id="links">Links</h2>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-node?tabs=v2">Azure Functions Developer Guide</a></li>
+</ul>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

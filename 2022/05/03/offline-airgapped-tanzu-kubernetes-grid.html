@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy Tanzu Kubernetes Grid in an Offline/Airgapped Environment | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Deploy Tanzu Kubernetes Grid in an Offline/Airgapped Environment">
+
+    
+    <meta name="twitter:description" content="<p><a href="https://tanzu.vmware.com/kubernetes-grid/">Tanzu Kubernetes Grid (TKG)</a> is VMware’s distribution of Kubernetes that can be deployed into vSphere and public clouds like Azure and AWS. Sometimes customers prefer that the deployment and management of TKG is done “offline” without needing to obtain any artifacts of the deployment from Internet hosted resources, that the deployment is self-contained.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><a href="https://tanzu.vmware.com/kubernetes-grid/">Tanzu Kubernetes Grid (TKG)</a> is VMware’s distribution of Kubernetes that can be deployed into vSphere and public clouds like Azure and AWS. Sometimes customers prefer that the deployment and management of TKG is done “offline” without needing to obtain any artifacts of the deployment from Internet hosted resources, that the deployment is self-contained.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/offline-airgapped-tanzu-kubernetes-grid.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/offline-airgapped-tanzu-kubernetes-grid.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Deploy Tanzu Kubernetes Grid in an Offline/Airgapped Environment" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2022/05/03/offline-airgapped-tanzu-kubernetes-grid.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Deploy Tanzu Kubernetes Grid in an Offline/Airgapped Environment</h1>
+        <p class="text-gray-600">
+            <time datetime="2022-05-03T00:00:00-04:00">
+                May 03, 2022
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><a href="https://tanzu.vmware.com/kubernetes-grid/">Tanzu Kubernetes Grid (TKG)</a> is VMware’s distribution of Kubernetes that can be deployed into vSphere and public clouds like Azure and AWS. Sometimes customers prefer that the deployment and management of TKG is done “offline” without needing to obtain any artifacts of the deployment from Internet hosted resources, that the deployment is self-contained.</p>
+
+<p>This is a fairly common requirement, especially in organizations that consider segmentation of resources important, and it’s usually done at the network level, i.e. “network segmentation”, which has become even more popular as of late, around terms like microsegmentation and zero-trust networking.</p>
+
+<h2 id="documentation-and-links">Documentation and Links</h2>
+
+<ul>
+  <li><a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.5/vmware-tanzu-kubernetes-grid-15/GUID-mgmt-clusters-airgapped-environments.html">VMware Tanzu TKG - Internet Restricted Environments</a></li>
+  <li><a href="https://customerconnect.vmware.com/en/downloads/details?downloadGroup=TKG-153&amp;productId=988&amp;rPId=88185">Downloading TKG 1.5.3 CLIs</a></li>
+</ul>
+
+<h2 id="offline-environment">Offline Environment</h2>
+
+<p>Firewall rules:</p>
+
+<ul>
+  <li>tkg-offline-* networks: no internet access, all packets dropped at the edge firewall</li>
+  <li>Office network can connect to anything, i.e. the host that copies the container images from VMware to the internal Harbor instance</li>
+  <li>Anything on lab switch is available to tkg-offline-*, e.g. vCenter, DNS, Harbor, no firewalling, i.e. the TKG management clusters can talk to vCenter, etc</li>
+</ul>
+
+<p>Hardware, software:</p>
+
+<ul>
+  <li>TKG &gt;= 1.5.3</li>
+  <li>3 ESXI hosts</li>
+  <li>Running vSphere 7U2</li>
+  <li>Enough resources for TKG</li>
+  <li>A Linux + Docker instance to download the container images used in deployment, and to run the tanzu CLI from, as well as certain <a href="https://carvel.dev">Carvel</a> CLIs</li>
+</ul>
+
+<h2 id="a-word-on-container-images">A Word on Container Images</h2>
+
+<p>When we think of container images we think of running an application, like, oh I don’t know, nginx. But container images aren’t only used for software, they can also be used to store configuration information. That is something that TKG does a lot of. As the industry gets more and more mature around the use of container images, we will do more with them, and that will cause us to simply have more of them. Smaller images, but more of them. My point here is that the number of container images that TKG could use can seem considerable, around 500 or so, but most of them are quite small, on the order of a few megabytes or even kilobytes, and often contain configuration information like BOMs.</p>
+
+<p>In an online environment, one that is connected to the Internet, we probably wouldn’t even notice how many images are used by TKG when it’s being deployed. However, in an offline environment, one in which we need to copy these images, these artifacts, we have an opportunity to see first hand exactly how many images there are, and it can be surprising to some. I’d say there are about 500 total container images needed for ALL of TKG, and this is to support not only TKG itself, but also EVERY Kuberentes version that we support, which is many.</p>
+
+<h2 id="a-word-on-tls-certificates">A Word on TLS Certificates</h2>
+
+<p>In offline environments organizations almost always also use self-signed certificates, or certificates that are not part of the typical bundle found in operating systems, mostly for browsers. When deploying TKG many container images are pulled from the internal container image registry, in this case Harbor, and that Harbor instance will have a custom TLS certificate.</p>
+
+<p>This means we need to ensure that TLS certificate, or certificate authority, is deployed into the TKG nodes, the virtual machines that underlie the Kubernetes clusters. Along with the various image artifacts, this is a big part of managing the offline deployment.</p>
+
+<h2 id="relocating-container-images">Relocating Container Images</h2>
+
+<p>One of the things we have to do is relocate the necessary container images from VMware’s Internet available registry to the organizations offline registry. This requires some sort of intermediary system, a jumpbox/bastion host or similar.</p>
+
+<p>Currently our official docs provide a couple of scripts to do perform the actual relocation.</p>
+
+<p>First we generate a list of images to relocate.  To run this script we need to set some variables.</p>
+
+<pre><code>export TKG_CUSTOM_IMAGE_REPOSITORY="&lt;harbor&gt;/&lt;project&gt;"
+export TKG_IMAGE_REPO="projects.registry.vmware.com/tkg"
+export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=&lt;base64 certificate&gt;
+</code></pre>
+
+<p>I created a project in my Harbor called “tkg-1-5-3”.</p>
+
+<pre><code>export TKG_CUSTOM_IMAGE_REPOSITORY="&lt;harbor&gt;/tkg-1-5-3"
+</code></pre>
+
+<p>I use mkcert to manage my certificates internally, so for the CA certificate I used that. You might take a different approach, but it’s the same idea.</p>
+
+<pre><code>base64 -w 0 &lt; /home/curtis/.local/share/mkcert/rootCA.pem
+</code></pre>
+
+<p>The result of that command I put into TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE environment variable.</p>
+
+<p>Now I can run the script to generate the list of images to copy to the internal Harbor.</p>
+
+<pre><code>$ ./gen-publish-images.sh &gt; image-copy-list
+</code></pre>
+
+<p>That will create this list of images. Most of the lines will be imgpkg commands. imgpkg is a CLI from the Carvel set of tools.</p>
+
+<p>imgpkg is used to:</p>
+
+<blockquote>
+  <p>Package, distribute, and relocate your Kubernetes configuration and dependent OCI images as one OCI artifact: a bundle. Consume bundles with confidence that their contents are unchanged after relocation.</p>
+</blockquote>
+
+<pre><code>$ wc -l image-copy-list 
+4275 image-copy-list
+</code></pre>
+
+<p>While that seems like a lot of lines, some of the image copy commands are duplicates. So if we sort and uniq them, there are many fewer lines.</p>
+
+<pre><code>$ grep imgpkg image-copy-list | sort | uniq | wc -l
+568
+</code></pre>
+
+<p>The download image script does filter out the duplicate lines, so don’t worry about doing that yourself. I’m just illustrating what it does.</p>
+
+<p>Then we use that list of images via another script to download each image and copy it to the Harbor instance.</p>
+
+<blockquote>
+  <p>NOTE: I’m using Harbor, but it could be any OCI compliant registry.</p>
+</blockquote>
+
+<pre><code>$ ./download-images.sh image-copy-list
+</code></pre>
+
+<p>Depending on the speed of your internet connection and your environment, this can take a few minutes or a couple hours.</p>
+
+<p>Here’s what it looks like in Harbor.</p>
+
+<p><img src="/img/tkg-offline-1.jpg" alt="harbor" /></p>
+
+<h2 id="deploying-tkg">Deploying TKG</h2>
+
+<p>Now that all the images are copied to the internal container image registry, we can deploy TKG.</p>
+
+<p>First we need to set some configuration variables. These are the same as we set before for the image copy scripts, but now we’re going to set them up for TKG.</p>
+
+<pre><code>tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY &lt;harbor&gt;/&lt;project&gt;
+tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY_SKIP_TLS_VERIFY false
+tanzu config set env.TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE &lt;base64 certificate&gt;
+</code></pre>
+
+<p>Now validate those are set.</p>
+
+<pre><code>$ tanzu config get | grep TKG
+</code></pre>
+
+<p>At this point we can now go through the standard deployment.</p>
+
+<p>Usually I use the install GUI to setup the initial configuration file for the management cluster.</p>
+
+<pre><code>$ tanzu mc create --ui --bind 0.0.0.0:8080 --browser none
+
+Validating the pre-requisites...
+Serving kickstart UI at http://[::]:8080
+</code></pre>
+
+<p>I connect to this host on port 8080 and fill out the install GUI, and that will generate a randomly named file in “~/.config/tanzu/tkg/clusterconfigs/” and the GUI will give you a command to run from the CLI (or you can launch it from the GUI, but I always stop the GUI process run it from the CLI)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>There are quite a few images to copy, but after that work has been done, and the CA certificate has been properly setup for use, the deployment is straightforward. So, for an offline deployment, it’s really two big steps:</p>
+
+<ol>
+  <li>Relocate all the images locally, and,</li>
+  <li>Determine what certificate is used in the Harbor instance and make sure that TKG knows about it.</li>
+</ol>
+
+<p>I’m skipping quite a few other steps here, but those steps will be the same in any TKG deployment, offline or not, such as uploading the OVA file, or deploying/obtaining a container image registry like Harbor.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Cloud Images With KVM | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using Cloud Images With KVM">
+
+    
+    <meta name="twitter:description" content="<p>Most Linux distributions offer some kind of binary image that is typically used in “cloudy” situations–such as public cloud or with OpenStack. These images have been pre-built, use cloud-init, and are expecting to be configured based on metadata provided through a combination of the user and the infrastructure as a service (IaaS) system, either via network metadata or a “config drive” (a specially created ISO image that is attached to the vm).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Most Linux distributions offer some kind of binary image that is typically used in “cloudy” situations–such as public cloud or with OpenStack. These images have been pre-built, use cloud-init, and are expecting to be configured based on metadata provided through a combination of the user and the infrastructure as a service (IaaS) system, either via network metadata or a “config drive” (a specially created ISO image that is attached to the vm).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/using-cloud-images.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/using-cloud-images.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using Cloud Images With KVM" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/06/26/using-cloud-images.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using Cloud Images With KVM</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-06-26T00:00:00-04:00">
+                June 26, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Most Linux distributions offer some kind of binary image that is typically used in “cloudy” situations–such as public cloud or with OpenStack. These images have been pre-built, use cloud-init, and are expecting to be configured based on metadata provided through a combination of the user and the infrastructure as a service (IaaS) system, either via network metadata or a “config drive” (a specially created ISO image that is attached to the vm).</p>
+
+<p>However, one doesn’t always have an IaaS system available, and sometimes we just want to use KVM and not have to attach a custom cloud init ISO image, so here are some quick instructions on using a cloud image with plain KVM, and manually configuring the image.</p>
+
+<h2 id="step-1-download-the-image">Step 1: Download the image</h2>
+
+<p>Download from Ubuntu’s cloud image cache.</p>
+
+<pre><code>wget https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
+</code></pre>
+
+<p>Other bigger distros should offer a “cloud image” in some fashion.</p>
+
+<h2 id="enlarge-virtual-disk">Enlarge Virtual Disk</h2>
+
+<p>By default it’s only 2.2G. That’s not very many Gs. :)</p>
+
+<pre><code>$ qemu-img info bionic-server-cloudimg-amd64.img
+image: bionic-server-cloudimg-amd64.img
+file format: qcow2
+virtual size: 2.2G (2361393152 bytes)
+disk size: 322M
+cluster_size: 65536
+Format specific information:
+    compat: 0.10
+    refcount bits: 16
+</code></pre>
+
+<p>Resize it to 20G.</p>
+
+<pre><code>$ qemu-img resize bionic-server-cloudimg-amd64.img 20G
+Image resized.
+$ qemu-img info bionic-server-cloudimg-amd64.img
+image: bionic-server-cloudimg-amd64.img
+file format: qcow2
+virtual size: 20G (21474836480 bytes)
+disk size: 322M
+cluster_size: 65536
+Format specific information:
+    compat: 0.10
+    refcount bits: 16
+</code></pre>
+
+<p>Once we boot it we’ll resize inside the OS.</p>
+
+<h2 id="set-root-password">Set Root Password</h2>
+
+<p>virt-customize is an easy way to “edit” images.</p>
+
+<pre><code>$ virt-customize -a bionic-server-cloudimg-amd64.img --root-password password:coolpass
+[   0.0] Examining the guest ...
+[  22.3] Setting a random seed
+virt-customize: warning: random seed could not be set for this type of
+guest
+[  22.3] Setting the machine ID in /etc/machine-id
+[  22.4] Setting passwords
+[  24.4] Finishing off
+</code></pre>
+
+<h2 id="remove-cloud-init">Remove Cloud Init</h2>
+
+<p>Let’s uninstall cloud-init as well.</p>
+
+<p>(NOTE: These two virt-customize steps could be put into one command.)</p>
+
+<pre><code>$ virt-customize -a bionic-server-cloudimg-amd64.img --uninstall cloud-init
+[   0.0] Examining the guest ...
+[  12.1] Setting a random seed
+virt-customize: warning: random seed could not be set for this type of
+guest
+[  12.1] Uninstalling packages: cloud-init
+[  17.1] Finishing off
+</code></pre>
+
+<h2 id="boot-the-vm">Boot the VM</h2>
+
+<p>Create a vm definition file for virsh. Replace the various variables indicated by double braces with your choices of resources and file locations.</p>
+
+<p>Note that you could use virt-manager and load the backing image and do this graphically if you like that sort of thing.</p>
+
+<pre><code>&lt;domain type='kvm'&gt;
+  &lt;name&gt;{{ vm_name }}&lt;/name&gt;
+  &lt;memory unit='KiB'&gt;{{ vm_required_memory }}&lt;/memory&gt;
+  &lt;currentMemory unit='KiB'&gt;{{ vm_required_memory }}&lt;/currentMemory&gt;
+  &lt;vcpu&gt;{{ vm_required_vcpu }}&lt;/vcpu&gt;
+  &lt;os&gt;
+    &lt;type arch='x86_64'&gt;hvm&lt;/type&gt;
+    &lt;boot dev='hd'/&gt;
+  &lt;/os&gt;
+  &lt;clock offset='utc'/&gt;
+  &lt;on_poweroff&gt;destroy&lt;/on_poweroff&gt;
+  &lt;on_reboot&gt;restart&lt;/on_reboot&gt;
+  &lt;on_crash&gt;destroy&lt;/on_crash&gt;
+  &lt;devices&gt;
+    &lt;emulator&gt;/usr/bin/qemu-kvm&lt;/emulator&gt;
+  &lt;disk type='file' device='disk'&gt;
+       &lt;driver name='qemu' type='qcow2'/&gt;
+       &lt;source file='{{ location_of_backing_image }}'/&gt;
+       &lt;target dev='vda' bus='virtio'/&gt;
+  &lt;/disk&gt;
+  &lt;interface type='bridge'&gt;
+    &lt;source bridge='virbr0'/&gt;
+    &lt;model type='virtio'/&gt;
+  &lt;/interface&gt;
+  &lt;serial type='pty'&gt;
+    &lt;target port='0'/&gt;
+  &lt;/serial&gt;
+  &lt;console type='pty'&gt;
+    &lt;target type='serial' port='0'/&gt;
+  &lt;/console&gt;
+  &lt;/devices&gt;
+&lt;/domain&gt;
+</code></pre>
+
+<h2 id="define-and-start-the-vm">Define and Start the VM</h2>
+
+<p>Define and start.</p>
+
+<pre><code>virsh define vm.xml
+virsh start vm_name
+</code></pre>
+
+<h2 id="access-console">Access Console</h2>
+
+<p>Handy dandy virsh console.</p>
+
+<pre><code>virsh console vm_name
+</code></pre>
+
+<p>Login with username: root password: coolpass (or whatever you set it to).</p>
+
+<h2 id="setup-dhcp-ubuntu-bionic-only-example">Setup DHCP (Ubuntu Bionic only example)</h2>
+
+<p>Networking will likely not be configured at all (b/c we removed cloud-init).</p>
+
+<p>Create the below. Note the interface name. Could probably add this with virt-customize.</p>
+
+<p><em>NOTE: This is Ubuntu Bionic/18.04 and it has new networking configuration.</em></p>
+
+<pre><code>root@ubuntu:/etc/netplan# cat 01-netcfg.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s2:
+      dhcp4: true
+</code></pre>
+
+<p>Apply it.</p>
+
+<pre><code>root@ubuntu:/etc/netplan# sudo netplan --debug apply
+** (generate:930): DEBUG: 19:24:16.431: Processing input file //etc/netplan/01-netcfg.yaml..
+** (generate:930): DEBUG: 19:24:16.433: starting new processing pass
+** (generate:930): DEBUG: 19:24:16.434: enp0s2: setting default backend to 1
+** (generate:930): DEBUG: 19:24:16.435: Generating output files..
+** (generate:930): DEBUG: 19:24:16.436: NetworkManager: definition enp0s2 is not for us (backend 1)
+DEBUG:netplan generated networkd configuration exists, restarting networkd
+DEBUG:no netplan generated NM configuration exists
+DEBUG:device lo operstate is unknown, not replugging
+DEBUG:netplan triggering .link rules for lo
+DEBUG:replug enp0s2: unbinding virtio0 from /sys/bus/virtio/drivers/virtio_net
+DEBUG:replug enp0s2: rebinding virtio0 to /sys/bus/virtio/drivers/virtio_net
+</code></pre>
+
+<p>Now interface should have an IP. (Assuming the hypervisor was setup with a default network that does DHCP.)</p>
+
+<h2 id="disk-size">Disk size</h2>
+
+<p>Note that cloud-init usually does this. But b/c we don’t have it, we’ll perform the same basic steps manually.</p>
+
+<p>Growpart.</p>
+
+<pre><code>root@ubuntu:/etc/netplan# growpart /dev/vda 1
+CHANGED: partition=1 start=227328 old: size=4384735 end=4612063 new: size=41715679,end=41943007
+</code></pre>
+
+<p>Resize.</p>
+
+<pre><code>root@ubuntu:/etc/netplan# resize2fs /dev/vda1
+resize2fs 1.44.1 (24-Mar-2018)
+Filesystem at /dev/vda1 is mounted on /; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 3
+The filesystem on /dev/vda1 is now 5214459 (4k) blocks long.
+
+root@ubuntu:/etc/netplan# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            985M     0  985M   0% /dev
+tmpfs           200M  460K  199M   1% /run
+/dev/vda1        20G  959M   19G   5% /
+tmpfs           997M     0  997M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           997M     0  997M   0% /sys/fs/cgroup
+/dev/vda15      105M  3.4M  102M   4% /boot/efi
+tmpfs           200M     0  200M   0% /run/user/0
+</code></pre>
+
+<p>Should have a 20G / now.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>One should really use cloud-init properly, but if you are stuck or just plain don’t feel like it, then this is one way to go about getting a vm setup in KVM using a cloud image.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

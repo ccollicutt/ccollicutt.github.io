@@ -1,0 +1,1633 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-07-20T05:44:09-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A blog about technology</subtitle><entry><title type="html">Fine Tuning LLMs: Part 1 - Just Getting Started</title><link href="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html" rel="alternate" type="text/html" title="Fine Tuning LLMs: Part 1 - Just Getting Started" /><published>2024-05-16T00:00:00-04:00</published><updated>2024-05-16T00:00:00-04:00</updated><id>https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started</id><content type="html" xml:base="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html"><![CDATA[<p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
+
+<p>But why fine-tune an LLM?</p>
+
+<blockquote>
+  <p>Large language models (LLMs) like GPT-3 and Llama have shown immense promise for natural language generation. With sufficient data and compute, these models can produce remarkably human-like text. However, off-the-shelf LLMs still have limitations. They may generate text that is bland, inconsistent, or not tailored to your specific needs.
+This is where finetuning comes in. Finetuning is the process of taking a pre-trained LLM and customizing it for a specific task or dataset. With finetuning, you can steer the LLM towards producing the kind of text you want. - <a href="https://medium.com/@dave-shap/a-pros-guide-to-finetuning-llms-c6eb570001d3">https://medium.com/@dave-shap/a-pros-guide-to-finetuning-llms-c6eb570001d3</a></p>
+</blockquote>
+
+<p>As well I just want to make a little disclaimer here on decisions I’ve made. :)</p>
+
+<p><strong>DISCLAIMER</strong></p>
+
+<blockquote>
+  <p>Please note that what I’ve done here is really a personal experiment in fine-tuning an LLM. There’s no particular rhyme or reason to the infrastructure and other choices I’ve made. I’m using a particular GPU supplier. I’m using a certain Python notebook. I’ve made some choices that might actually make things more difficult, or that might not make sense to an experienced fine-tuner. Also, in this post, I’m not tuning with a specific set of data or goal in mind. I’m just trying out a set of basic tools.</p>
+</blockquote>
+
+<p>Happy hacking!</p>
+
+<h2 id="quick-fine-tuning-example">Quick Fine Tuning Example</h2>
+
+<p>Steps:</p>
+
+<ol>
+  <li>Get a GPU from somewhere (I’m using brev.dev)</li>
+  <li>Create an instance with proper CUDA and pytorch versioning</li>
+  <li>Build a data set to fine-tune with (or use an existing one), NOTE: This step I will build on in later posts</li>
+  <li>Use a <a href="https://github.com/unslothai/unsloth">Unsloth iPython notebook</a></li>
+  <li>Step through the provided notebook and create a fine-tuned LLM</li>
+</ol>
+
+<h2 id="gpu-instance">GPU Instance</h2>
+
+<p>First, we need a GPU.</p>
+
+<blockquote>
+  <p>NOTE: The easiest thing to do would just be to use Google Colab and the notebook that Unsloth links to; that would be super easy. Google Colab is a free cloud service to run Jupyter Notebooks and provides access to GPUs. But I’m not using Colab for…some reason. You might want to. Keep that in mind!</p>
+</blockquote>
+
+<p>I’m using <a href="https://brev.dev">brev.dev</a> to get access to a GPU instance, but there are tons of “GPU Brokers” out there.</p>
+
+<blockquote>
+  <p>NOTE: I have no relationship with brev.dev, I just randomly started using the service. I can’t tell you if it’s good or not, but the combination of the provider plus the docker image for CUDA + pytorch is working for me. Plus if you leave the GUI console for long enough, a cute DVD-style screen saver comes on. lol!</p>
+</blockquote>
+
+<p>Here I’m creating a small NVIDIA 4090 instance. Other much larger GPUs are available from brev.dev and other providers.</p>
+
+<p><img src="/img/brev1.jpg" alt="brev.dev" /></p>
+
+<p>Note that I’m using the “advanced container settings” and selecting the docker.io/pythorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime image. This is key because I’ve had lots of problems matching up these versions, especially on my home workstation where I have a NVIDIA 3090.</p>
+
+<p>I find versioning CUDA and Pytorch challenging so this is a really nice feature of brev.dev, though it’s really just about dialing in the right image/settings/etc.</p>
+
+<p><img src="/img/brev2.jpg" alt="brev.dev" /></p>
+
+<p>Once the instance is running there is an option to connect to a notebook.</p>
+
+<p><img src="/img/brev3.jpg" alt="brev.dev" /></p>
+
+<p>And now we can use the notebook.</p>
+
+<p><img src="/img/brev4.jpg" alt="brev.dev" /></p>
+
+<p>Or you can login with the the brev shell. Here my instance is brilliantly named “aaa”.</p>
+
+<pre><code>$ brev shell aaa
+⢿ waiting for SSH connection to be available Agent pid 9158
+Warning: Permanently added '[provider.pdx.nb.akash.pub]:31314' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+➜  verb-workspace 
+Connection to provider.pdx.nb.akash.pub closed.
+</code></pre>
+
+<h2 id="unsloth-notebook">Unsloth Notebook</h2>
+
+<p>Next I’ll upload the unsloth conversational notebook, which I obtained by opening the Colab notebook and downloading the file, then uploading it into the brev.dev instance’s notebook.</p>
+
+<blockquote>
+  <p>NOTE: There are a lot of notebooks for getting started training Llama3 out there. For example brev.dev has <a href="https://github.com/brevdev/notebooks/blob/main/README.md">some</a> too. As well, unsloth provides some via <a href="https://huggingface.co/datasets/unsloth/notebooks">huggingface</a>.</p>
+</blockquote>
+
+<p>Unsloth - <a href="https://github.com/unslothai/unsloth">https://github.com/unslothai/unsloth</a></p>
+
+<blockquote>
+  <p>Unsloth is a lightweight library for faster LLM fine-tuning which is fully compatible with the Hugging Face ecosystem (Hub, transformers, PEFT, TRL). The library is actively developed by the Unsloth team (Daniel and Michael) and the open source community. The library supports most NVIDIA GPUs–from GTX 1070 all the way up to H100s–, and can be used with the entire trainer suite from the TRL library (SFTTrainer, DPOTrainer, PPOTrainer). At the time of writing, Unsloth supports the Llama (CodeLlama, Yi, etc) and Mistral architectures. - <a href="https://huggingface.co/blog/unsloth-trl">https://huggingface.co/blog/unsloth-trl</a></p>
+</blockquote>
+
+<p>I’m using the <a href="https://colab.research.google.com/drive/1XamvWYinY6FOSX9GLvnqSjjsNflxdhNc?usp=sharing">conversational notebook</a> they link to in their README. That will bring you to a</p>
+
+<p><img src="/img/unsloth1.jpg" alt="unsloth" /></p>
+
+<h2 id="train-the-model">Train the Model</h2>
+
+<p>Now we can simply step through the notebook and train an example model.</p>
+
+<p><img src="/img/unsloth4.jpg" alt="unsloth" /></p>
+
+<p>After stepping through the cells, we come to the training cell.</p>
+
+<p><img src="/img/unsloth2.jpg" alt="unsloth" /></p>
+
+<p>And we can see the memory usage.</p>
+
+<p><img src="/img/unsloth3.jpg" alt="unsloth" /></p>
+
+<p>If you continue through the notebook you can save the model in various ways, upload it to hugging face, etc.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The technical part of fine-tuning a model is fairly straightforward from a user perspective if you know a bit of Python and understand the concept of a Jupyter notebook and have one to follow through with. Really this blog post is just connecting some dots, like GPU providers and Python notebooks. However, navigating through a notebook and understanding exactly what it does are two different things. Also, once you start understanding the fine tuning process, it becomes a matter of what data we put in and what results we get out. That is the real work. This is just a basic skeleton, but everyone needs a first step!</p>
+
+<h2 id="ps">PS.</h2>
+
+<p>One of the things I love about LLMs right now is just how messy the technology landscape is. There is so much going on, so many niche technologies, libraries, chunks of code, websites, notebooks, on and on. It’s an amazing time.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.]]></summary></entry><entry><title type="html">Ollama &amp;amp; Llama 3:8b Running Locally</title><link href="https://serverascode.com/2024/04/23/ollama-running-locally.html" rel="alternate" type="text/html" title="Ollama &amp;amp; Llama 3:8b Running Locally" /><published>2024-04-23T00:00:00-04:00</published><updated>2024-04-23T00:00:00-04:00</updated><id>https://serverascode.com/2024/04/23/ollama-running-locally</id><content type="html" xml:base="https://serverascode.com/2024/04/23/ollama-running-locally.html"><![CDATA[<p>First, we start up ollama.</p>
+
+<pre><code>$ ollama serve
+</code></pre>
+
+<p>OK, it’s running.</p>
+
+<pre><code>$ curl localhost:11434 &amp;&amp; echo
+Ollama is running
+</code></pre>
+
+<p>Now, let’s run Meta’s Llama 3:8b.</p>
+
+<blockquote>
+  <p>NOTE: This is only the 8b model, the smallest one so far, AFAIK.</p>
+</blockquote>
+
+<pre><code>$ ollama run llama3:8b
+pulling manifest 
+pulling 00e1317cbf74... 100% ▕█████████████████████████████████████████▏ 4.7 GB                         
+pulling 4fa551d4f938... 100% ▕█████████████████████████████████████████▏  12 KB                         
+pulling 8ab4849b038c... 100% ▕█████████████████████████████████████████▏  254 B                         
+pulling c0aac7c7f00d... 100% ▕█████████████████████████████████████████▏  128 B                         
+pulling db46ef36ef0b... 100% ▕█████████████████████████████████████████▏  483 B                         
+verifying sha256 digest 
+writing manifest 
+removing any unused layers 
+success 
+&gt;&gt;&gt; Send a message (/? for help)
+</code></pre>
+
+<p>Checkout memory usage. Not bad. Pretty small.</p>
+
+<pre><code>$ nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i 0
+5308
+</code></pre>
+
+<h2 id="intersecting-polygons">Intersecting Polygons</h2>
+
+<p>Lets ask Llama 3:8b to solve a problem: write the code to determine if two polygons are intersecting. This is a problem that some LLMs can’t answer. (However, it is possible that Llama 3 has “learned” how to solve the problem from it being discussed recently on the internet, and given the fact that Llama 3 has new training data.)</p>
+
+<p>Below, it looks like we’ve gotten a pretty good answer, as it uses the Python shapely library, which is the easiest thing to do, and what I’d expect to see.</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; Write a function that calculates the intersection of two polygons. The function is given two polygons
+...  represented as a list of points. A third polygon representing the intersection of the two is returne
+... d, or an empty list of points if the intersection is empty.
+Here's a Python function to calculate the intersection of two polygons:
+
+import shapely.geometry
+from typing import List
+
+def polygon_intersection(polygon1: List[List[float]], polygon2: List[List[float]]) -&gt; 
+List[List[float]]:
+    """
+    Calculate the intersection of two polygons.
+
+    Args:
+    polygon1 (List[List[float]]): The first polygon represented as a list of points.
+    polygon2 (List[List[float]]): The second polygon represented as a list of points.
+
+    Returns:
+    List[List[float]]: A list of points representing the intersection of the two polygons, or an 
+empty list if the intersection is empty.
+    """
+    # Convert the input polygons to Shapely Polygon objects
+    poly1 = shapely.geometry.Polygon(polygon1)
+    poly2 = shapely.geometry.Polygon(polygon2)
+
+    # Calculate the intersection polygon
+    intersection = poly1.intersection(poly2)
+
+    # If the intersection is not empty, return it as a list of points
+    if not intersection.is_empty:
+        return [(point.x, point.y) for point in intersection.exterior.coords]
+    else:
+        return []
+
+This function uses the Shapely library to work with geometric shapes. It first converts the input 
+polygons into Shapely Polygon objects. Then it calculates the intersection of these two polygons 
+using the `intersection` method.
+
+If the intersection is not empty, the function returns a list of points representing this polygon 
+as a list of coordinates. If the intersection is empty, an empty list is returned.
+
+Here's how you can use this function:
+
+polygon1 = [(0, 0), (0, 2), (2, 2), (2, 0)]
+polygon2 = [(1, 1), (1, 3), (3, 3), (3, 1)]
+
+intersection_polygon = polygon_intersection(polygon1, polygon2)
+print(intersection_polygon)
+
+This will output the points that make up the intersection of the two polygons.
+</code></pre>
+
+<p>However, this code, as is, as provided, will not run.</p>
+
+<pre><code>$ python polygons.py 
+Polygon 1:
+(0, 0)
+(0, 2)
+(2, 2)
+(2, 0)
+
+Polygon 2:
+(1, 1)
+(1, 3)
+(3, 3)
+(3, 1)
+Traceback (most recent call last):
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 43, in &lt;module&gt;
+    intersection_polygon = polygon_intersection(polygon1, polygon2)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 26, in polygon_intersection
+    return [(point.x, point.y) for point in intersection.exterior.coords]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/curtis/working/intersecting-polygons/polygons.py", line 26, in &lt;listcomp&gt;
+    return [(point.x, point.y) for point in intersection.exterior.coords]
+             ^^^^^^^
+AttributeError: 'tuple' object has no attribute 'x'
+</code></pre>
+
+<p>But I provide llama 3 the error and it gives me this response.</p>
+
+<pre><code>&gt;&gt;&gt; I get this error: AttributeError: 'tuple' object has no attribute 'x'
+That's a great error message!
+
+It looks like the `point` variable is actually a tuple (a simple data structure in Python), not an 
+object with an `x` attribute. This is because the `intersection.exterior.coords` returns a list of 
+tuples, where each tuple represents a point on the polygon.
+
+To fix this, you can simply change the line:
+
+return [(point.x, point.y) for point in intersection.exterior.coords]
+
+to:
+
+return [tuple(point) for point in intersection.exterior.coords]
+
+This will convert each tuple (representing a point) into a new tuple with the same elements.
+
+Alternatively, you can also use a list comprehension to extract the `x` and `y` values from each 
+tuple, like this:
+
+return [[p[0], 
+p[1][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p]p[1][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p]p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][p][
+</code></pre>
+
+<blockquote>
+  <p>NOTE: Interesting additional output (the [p]s). I copied and pasted directly. Not sure what happened there…</p>
+</blockquote>
+
+<p>I replaced that line of code as it suggested, and the program ran. For an 8b model this capability seems perfectly fine, at least to me, and was better than what I found ChatGPT 3.5 was capable of a few months ago, in that Llama 3 used the Shapely module, whereas ChatGPT 3.5 would not. I would imagine Llama 3:8b would fail if I told it not to use Shapely.</p>
+
+<p>Results of running the provided code:</p>
+
+<pre><code>$ python polygons.py 
+Polygon 1:
+(0, 0)
+(0, 2)
+(2, 2)
+(2, 0)
+
+Polygon 2:
+(1, 1)
+(1, 3)
+(3, 3)
+(3, 1)
+
+Intersection Polygon:
+(2.0, 2.0)
+(2.0, 1.0)
+(1.0, 1.0)
+(1.0, 2.0)
+(2.0, 2.0)
+</code></pre>
+
+<h2 id="but-it-cant-graph-and-save-an-image">…But It Can’t Graph and Save an Image</h2>
+
+<p>Unfortunately, Llama 3:8b was unable to provide the code to plot the polygons and save them as an image file, which would have looked something like the below image. It may have been able to do this with a different prompt.</p>
+
+<p><img src="/img/intersection.png" alt="img" /></p>
+
+<h2 id="overall-impressive">Overall: Impressive</h2>
+
+<p>This was a very quick test. I only spent a handful of minutes on it.</p>
+
+<p>Llama 3:8B. It’s fast. It can run locally. It’s pretty “smart”, although it would take a bit of manual configuration to get the code it output to work; I didn’t give it much of a chance to get things right. Overall, I’m impressed with this little LLM–its compressed a lot of information.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[First, we start up ollama.]]></summary></entry><entry><title type="html">My Cyberpunk Weekend - Part 3: Using Docker and GPUs</title><link href="https://serverascode.com/2023/12/18/cyberpunk-weekend-3.html" rel="alternate" type="text/html" title="My Cyberpunk Weekend - Part 3: Using Docker and GPUs" /><published>2023-12-18T00:00:00-05:00</published><updated>2023-12-18T00:00:00-05:00</updated><id>https://serverascode.com/2023/12/18/cyberpunk-weekend-3</id><content type="html" xml:base="https://serverascode.com/2023/12/18/cyberpunk-weekend-3.html"><![CDATA[<p>I’m working on running LocalAI. But I feel like running that out of Docker.</p>
+
+<p>So how to use a GPU with Docker (on Linux).</p>
+
+<p>First, need the <code>nvidia-docker2</code> driver. Otherwise you get an error like this:</p>
+
+<pre><code>docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]].
+</code></pre>
+
+<p>So install that.</p>
+
+<pre><code>sudo apt install nvidia-docker2
+</code></pre>
+
+<p>I had a fun thing to fix in that I had added some things to the “daemon.json” so had to fix that.</p>
+
+<pre><code>$ sudo dpkg --configure -a
+Setting up nvidia-docker2 (2.13.0-1) ...
+
+Configuration file '/etc/docker/daemon.json'
+ ==&gt; File on system created by you or by a script.
+ ==&gt; File also in package provided by package maintainer.
+   What would you like to do about it ?  Your options are:
+    Y or I  : install the package maintainer's version
+    N or O  : keep your currently-installed version
+      D     : show the differences between the versions
+      Z     : start a shell to examine the situation
+ The default action is to keep your current version.
+*** daemon.json (Y/I/N/O/D/Z) [default=N] ? D
+--- /etc/docker/daemon.json     2023-04-10 15:23:11.735382489 -0400
++++ /etc/docker/daemon.json.dpkg-new    2023-03-31 09:10:49.000000000 -0400
+@@ -1,4 +1,8 @@
+ {
+-  "registry-mirrors": ["http://10.8.24.123"],
+-  "insecure-registries": ["https://some.registry"]
++    "runtimes": {
++        "nvidia": {
++            "path": "nvidia-container-runtime",
++            "runtimeArgs": []
++        }
++    }
+ }
+</code></pre>
+
+<p>Next, I have two NVIDIA GPUS, one old one and one newer, better one, the 3090, which is what I want to be using for LLMs.</p>
+
+<p>So, locally I have two, as shown below.</p>
+
+<pre><code>$ nvidia-smi 
+Mon Dec 18 11:35:39 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |                  N/A |
+|  0%   32C    P8    12W / 350W |     10MiB / 24268MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+|   1  NVIDIA GeForce ...  Off  | 00000000:07:00.0 N/A |                  N/A |
+| 44%   71C    P0    N/A /  N/A |   2574MiB /  3015MiB |     N/A      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      1445      G   /usr/lib/xorg/Xorg                  4MiB |
+|    0   N/A  N/A      3231      G   /usr/lib/xorg/Xorg                  4MiB |
++-----------------------------------------------------------------------------+
+</code></pre>
+
+<p>But we can specify to use “device=0” only in the container, so we should only see one GPU.</p>
+
+<pre><code>$ docker run -it --gpus "device=0" nvidia/cuda:11.4.3-base-ubuntu20.04 nvidia-smi
+Mon Dec 18 16:33:29 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |                  N/A |
+|  0%   32C    P8    10W / 350W |     10MiB / 24268MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
++-----------------------------------------------------------------------------+
+</code></pre>
+
+<p>BOOM!</p>
+
+<p>One of the hard parts is figuring out what tag to use on the NVIDIA image. They are all listed here:</p>
+
+<ul>
+  <li><a href="https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/supported-tags.md">https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/supported-tags.md</a></li>
+</ul>
+
+<p>Examples:</p>
+
+<pre><code>11.4.3-base-ubuntu20.04 (11.4.3/ubuntu20.04/base/Dockerfile)
+11.4.3-cudnn8-devel-ubuntu20.04 (11.4.3/ubuntu20.04/devel/cudnn8/Dockerfile)
+11.4.3-cudnn8-runtime-ubuntu20.04 (11.4.3/ubuntu20.04/runtime/cudnn8/Dockerfile)
+11.4.3-devel-ubuntu20.04 (11.4.3/ubuntu20.04/devel/Dockerfile)
+11.4.3-runtime-ubuntu20.04 (11.4.3/ubuntu20.04/runtime/Dockerfile)
+</code></pre>
+
+<p>Note that these will change over time, of course. But if Docker reports it can’t find the tag, it’s likely because the tag is wrong, or has changed.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’m working on running LocalAI. But I feel like running that out of Docker.]]></summary></entry><entry><title type="html">My Cyberpunk Weekend - Part 2: The Llama</title><link href="https://serverascode.com/2023/12/10/cyberpunk-weekend-2.html" rel="alternate" type="text/html" title="My Cyberpunk Weekend - Part 2: The Llama" /><published>2023-12-10T00:00:00-05:00</published><updated>2023-12-10T00:00:00-05:00</updated><id>https://serverascode.com/2023/12/10/cyberpunk-weekend-2</id><content type="html" xml:base="https://serverascode.com/2023/12/10/cyberpunk-weekend-2.html"><![CDATA[<p>Well, last week I picked up the 3090 GPU. This week I need to try to use it. That is not an easy feat because “drivers.”</p>
+
+<p>My good old workstation is on Ubuntu 20.04. I should probably upgrade. I should probably not use this machine for AI work. But, I am.</p>
+
+<p>Currently I’m using the nvidia-driver-470 that I’ve had for a while, as though it’s some sort of cherished antique that I’ll hand down to my children. I do remember it being a pain to get working, back when I only had one GPU.</p>
+
+<pre><code class="language-bash">$ dpkg --list | grep nvidia-driver
+ii  nvidia-driver-460                          470.223.02-0ubuntu0.20.04.1                   amd64        Transitional package for nvidia-driver-470
+ii  nvidia-driver-470                          470.223.02-0ubuntu0.20.04.1                   amd64        NVIDIA driver metapackage
+</code></pre>
+
+<p>But to use a llamafile I need the right CUDA toolkit and driver match up. At first I installed 12.3, but then realized that’s not the driver I have. Need to match those up.</p>
+
+<pre><code class="language-bash">$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
+building ggml-cuda with nvcc -arch=native...
+nvcc fatal   : Unsupported gpu architecture 'compute_30'
+/usr/local/cuda-12.3/bin/nvcc: returned nonzero exit status
+building nvidia compute capability detector...
+cudaGetDeviceCount() failed: CUDA driver version is insufficient for CUDA runtime version
+error: compute capability detector returned nonzero exit status
+</code></pre>
+
+<p>Driver:</p>
+
+<pre><code class="language-bash">$ nvidia-smi | grep CUDA
+| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
+</code></pre>
+
+<p>I didn’t want to break my workstation and thus for now wanted to stay on the 470 driver. So I installed the 11.4 CUDA toolkit.</p>
+
+<p>First I purged the 12.3 CUDA toolkit:</p>
+
+<pre><code class="language-bash">$ dpkg -l | grep -E "cuda|cublas|cufft|cufile|curand|cusolver|cusparse|gds-tools|npp|nvjpeg|nsight|nvvm"
+$ # review that list
+$ # now remove
+sudo apt-get --purge remove "*cuda*" "*cublas*" "*cufft*" "*cufile*" "*curand*" \
+ "*cusolver*" "*cusparse*" "*gds-tools*" "*npp*" "*nvjpeg*" "nsight*" "*nvvm*"’’’
+</code></pre>
+
+<blockquote>
+  <p>NOTE: This requires setting up the NVIDIA repo! Not shown here.</p>
+</blockquote>
+
+<p>Then I installed the 11.4 CUDA toolkit:</p>
+
+<pre><code class="language-bash">$ sudo apt-get install cuda-toolkit-11-4
+</code></pre>
+
+<p>Added this to my path:</p>
+
+<pre><code class="language-bash">$ which nvcc
+/usr/local/cuda-11.4/bin/nvcc
+</code></pre>
+
+<p>Next I tried to run the llamafile again:</p>
+
+<pre><code class="language-bash">$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
+building ggml-cuda with nvcc -arch=native...
+nvcc fatal   : Value 'native' is not defined for option 'gpu-architecture'
+/usr/local/cuda-11.4/bin/nvcc: returned nonzero exit status
+building nvidia compute capability detector...
+building ggml-cuda with nvcc -arch=compute_86...
+NVIDIA cuBLAS GPU support successfully loaded
+ggml_init_cublas: GGML_CUDA_FORCE_MMQ:   no
+ggml_init_cublas: CUDA_USE_TENSOR_CORES: yes
+ggml_init_cublas: found 2 CUDA devices:
+  Device 0: NVIDIA GeForce RTX 3090, compute capability 8.6
+  Device 1: NVIDIA GeForce GTX 660 Ti, compute capability 3.0
+
+cuBLAS error 3 at /home/curtis/.llamafile/ggml-cuda.cu:6091
+current device: 1
+</code></pre>
+
+<p>But it was using the wrong card. I believe the error was due to using the old 660Ti and trying to compile for it using CUDA 11.4.</p>
+
+<p>Setting <code>CUDA_VISIBLE_DEVICES=0</code> fixed that:</p>
+
+<pre><code class="language-bash">$ env | grep CUDA
+CUDA_VISIBLE_DEVICES=0
+$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
+NVIDIA cuBLAS GPU support successfully loaded
+ggml_init_cublas: GGML_CUDA_FORCE_MMQ:   no
+ggml_init_cublas: CUDA_USE_TENSOR_CORES: yes
+ggml_init_cublas: found 1 CUDA devices:
+  Device 0: NVIDIA GeForce RTX 3090, compute capability 8.6
+{"timestamp":1702258585,"level":"INFO","function":"main","line":2650,"message":"build info","build":1500,"commit":"a30b324"}
+{"timestamp":1702258585,"level":"INFO","function":"main","line":2653,"message":"system info","n_threads":6,"n_threads_batch":-1,"total_threads":12,"system_info":"AVX = 1 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 1 | VSX = 0 | "}
+Multi Modal Mode Enabledclip_model_load: model name:   openai/clip-vit-large-patch14-336
+clip_model_load: description:  image encoder for LLaVA
+clip_model_load: GGUF version: 3
+clip_model_load: alignment:    32
+clip_model_load: n_tensors:    377
+clip_model_load: n_kv:         19
+clip_model_load: ftype:        q4_0
+SNIP!
+</code></pre>
+
+<p>That’s about as far as I’m getting this weekend.</p>
+
+<p>Here’s a fun command to watch the GPU:</p>
+
+<pre><code class="language-bash">nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,pcie.link.gen.max,pcie.link.gen.current,temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used --format=csv -l 5
+</code></pre>]]></content><author><name></name></author><summary type="html"><![CDATA[Well, last week I picked up the 3090 GPU. This week I need to try to use it. That is not an easy feat because “drivers.”]]></summary></entry><entry><title type="html">My Cyberpunk Weekend - Part 1: The Video Card (Or Neural Core, Take Your Pick)</title><link href="https://serverascode.com/2023/12/04/cyberpunk-weekend.html" rel="alternate" type="text/html" title="My Cyberpunk Weekend - Part 1: The Video Card (Or Neural Core, Take Your Pick)" /><published>2023-12-04T00:00:00-05:00</published><updated>2023-12-04T00:00:00-05:00</updated><id>https://serverascode.com/2023/12/04/cyberpunk-weekend</id><content type="html" xml:base="https://serverascode.com/2023/12/04/cyberpunk-weekend.html"><![CDATA[<p>There are a couple of ways to think about this post:</p>
+
+<p>Option 1 (boring):</p>
+
+<blockquote>
+  <p><em>I bought a video card and installed it in my computer.</em></p>
+</blockquote>
+
+<p>Option 2 (cheesy cliché cyberpunk; more fun):</p>
+
+<blockquote>
+  <p><em>In the gray low-rent business suburbs on the edge of the city, where the air hums with the buzz of a thousand illicit transactions, I found myself trudging through a seedy strip mall, its flickering signs casting long shadows over an assortment of massage parlors. Here, amid the cacophony of distant traffic and the murmur of hushed conversation, lay my destination: a dubious, fly-by-night eBay store. The place was a cybernetic bazaar, a maze of used technology and questionable merchandise covered in handwritten labels. Navigating the cramped aisles, I sought a particular treasure–a used AI processor, a critical component for powering my large language model efforts. The store’s operators, engaged in a rapid exchange in a language completely foreign to me, barely acknowledged my presence as their faces, etched with lines of weary experience, hesitated for a brief moment before extracting the neural core straight from the guts of a humming, overworked system host. The device, a relic of technological ambition, was burning hot and singed their fingertips, but not enough to deter them from accepting the cash I offered.</em></p>
+</blockquote>
+
+<p>LOL. I’m not sure which one is better. I’ll let you decide.</p>
+
+<h2 id="generative-artificial-intelligence">Generative Artificial Intelligence</h2>
+
+<p>Like most people, I have been surprised by the big changes in Artificial Intelligence (AI) over the last few years…surprised, caught off guard, out of the “know” and out of the loop.</p>
+
+<p>Also, like many people, I’ve been a big user of generative AI, but I don’t have a good understanding of how it works. I hope to change that. I want to be able to run Large Language Models (LLMs) locally, so first, I needed to get a video card–a GPU–capable of running these models.</p>
+
+<h2 id="its-just-a-video-card">It’s Just a Video Card?</h2>
+
+<p>It’s kind of amazing that I can use the phrase “video card” in connection with AI; that there’s any connection between the two at all. What’s a video card for? Connecting to a monitor. Playing video games. But for AI? It’s a bit of a stretch, but it’s true.</p>
+
+<p>So my first step was to find the right video card, the right graphics processing unit (GPU), to work with AI. After a bit of research it seemed like my best bet, the best value card, was to find a used NVIDIA 3090, mostly because it has 24GB of memory and is a good price at this time.</p>
+
+<p>There were a lot of comments and thoughts on sites like Reddit with this kind of advice:</p>
+
+<blockquote>
+  <p><em>The 3090 is the best bang for your buck. It comes with 24gb of nvram in a single consumer card with a built-in cooling solution and plugs right into your home rig. It lets you run 33b GPTQ models without fuss.</em></p>
+</blockquote>
+
+<h2 id="kijiji---the-canadian-craigslist">Kijiji - The Canadian Craigslist</h2>
+
+<p>Living in Toronto has some advantages in that you can find anything you need used–it’s out there, you just have to search and wait. It’s kind of like what I imagine living in a big city in China would be like - everything is available, you just have to go out and find it, maybe meet some interesting people along the way.</p>
+
+<p>In Canada we have a site called Kijiji (not even sure how to spell it) which is like Craigslist–but a Canadian Craigslist–so I started looking for a used NVIDIA 3090 GPU with 24GB of memory.</p>
+
+<p>Of course, there are all kinds of problems with buying a used video card on Kijiji, or anything else for that matter, but I was willing to take the risk in this case. Plus, it can be fun if you don’t mind possibly losing the money on a bad purchase. I’ve bought quite a few things on Kijiji and never had a problem, it’s really about finding the right person to buy from, like anything else in life. I’ve never been ripped off, but you will find some difficult people. I have a whole story about buying a canoe on Kijiji, but that’s for another time. Of course, you always want to keep your wits about you and meet in a public place.</p>
+
+<p>I set up a search on Kijiji and there are usually a few 3090s for sale, usually around $1000 to $1200. Then I saw a post from a local person, just a few blocks away in fact, who was selling one for $700. “Quick sale,” the ad said. I contacted them, but I wasn’t quick enough, and they sold it in a couple of hours before I could get over there.</p>
+
+<p>Eventually, I saw another ad for a used 3090 that had been pulled from a Dell Alienware workstation for $800 (Canadian) and contacted them about it. They said to give them a few hours notice before coming by to pick it up. Seemed like a good deal, so I said I’d give it a shot. Presumably, if it was from an Alienware computer, it was probably used for gaming, not crypto mining, which is a positive. On the other hand, the people selling it probably knew the value if they were going to part it out, i.e., sell the Alienware box as pieces instead of the entire thing, which means they are professional in some respect.</p>
+
+<p>A day or two later I went to pick it up. Their store was in a strip mall surrounded by massage parlors, which seemed a little seedy at first because there were more than one, but next to the computer store was a regular car dealership, so I figured it couldn’t be that bad. I pulled open the door to the shop, which was so jammed I was not sure I could get it open, and walked into a room completely filled with old computers and a couple of people working feverishly testing them and putting large strips of tape with non-English words on them. Stacks and stacks of computers, half of them falling over.</p>
+
+<p>I told them I was there for the video card and they asked me to wait a few minutes and showed me the card, which looked to be in perfect condition. I asked them if they would benchmark it for me, i.e. put it in a computer and run some tests. They hummed and hawed, but finally agreed to do it. He put it in a computer and ran Furmark and it seemed to work fine. To be honest, I don’t know that much about graphics cards or how they’re supposed to work, I mostly just watched the temperature and made sure the card was working. While the benchmark was running, they were talking to each other in a language I didn’t recognize, so I was never sure exactly what they were saying to each other. Sadly I only speak one language. But they were busy, which means they don’t have time to mess around with people. Frankly, they seemed like exactly the kind of place where you’d buy a used video card pulled from a high-end workstation.</p>
+
+<p>During the benchmark, the temperature of the card went up quite a bit, I think around 85 degrees, but I wasn’t surprised. I asked them where they sold all these computers, the ones stacked around the place, and the elderly gentleman gruffly gave me a one-word answer: “ebay.” Then he went to pull out the card, but didn’t let it cool down and almost burned his fingers, which was a bit worrying; you’d think he’d know it was hot. I sure did.</p>
+
+<p>In the end, I paid them $800 cash and took the card home. Surprisingly, they gave me a 30-day warranty card.</p>
+
+<p>It felt very much like a William Gibson-esque cyberpunk experience, and I was happy to have the card.</p>
+
+<h2 id="power">Power</h2>
+
+<p>In preparation for getting this card, I did some research on maybe building a whole new computer. It was around Black Friday time, so there were a lot of deals. I could have just bought a whole new workstation, but my current one is only a few years old and works just fine. Also, while there was a lot of stuff on sale, there were no good CPUs available; they were all out of stock. Theoretically, I could put the 3090 in my current computer, it would be louder, which is annoying since the computer is in my office, and I would need a new power supply and have to replace it myself, but it should work and it would save some money as well. So for now, I’m just using my existing Linux workstation to host the 3090.</p>
+
+<p>These 3090s can draw up to about 350 watts, which is quite a bit of power. So I had to get a properly sized power supply, as my current workstation only has a 550 watt power supply. I would need a lot more than that, at least 1000 watts. So I started looking for a bigger power supply. I ended up buying a refurbished Corsair RM1000x for $150 from Canada Computers. It’s one of the last remaining computer stores in Toronto. That and Memory Express, which doesn’t even have a Toronto location. <a href="https://www.canadacomputers.com/">Canada Computers</a> is about the best place we have to buy computer parts.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p><img src="/img/cyberpunk-1-3090.png" alt="3090 card" /></p>
+
+<p>I’m a bit of an odd person in that I have a lot of computers, like a lot, so much that I won’t write it down here. It’s just part of what I do for a living, and if you do it for long enough they start to accumulate. However, and I suppose this is the odd part, I don’t particularly like computer hardware, especially desktop computers. I don’t mind network switches for some reason, and rackmount computers, well, they’re okay (albeit desktops in another form). But everything else…not much fun. A lot of people take a considerable pride in their workstation setup, LED lights and all that, but that is not for me. With that in mind, I wasn’t super happy about having to change the power supply and open up the computer and move things around, but I did it. It took me a couple of hours, but I did it.</p>
+
+<p>Honestly, the new power supply went in really easily. There was a <a href="https://www.youtube.com/watch?v=yafbKAuyntw&amp;ab_channel=TheProvokedPrawn">Youtube video</a> that showed my exact power supply and a similar 3090, so that made me feel better about the power swap. I just had to pull three wires and put the new power supply in.</p>
+
+<p>However, my motherboard is a little unusual in that if you use the second M2 slot, the second PCIe slot is disabled, which is where I would put the 3090. I assumed that my NVMe card was in the first slot, so I installed the card and rebooted. But I couldn’t see the 3090 from Linux. Looking at the motherboard again, I realized that the technician who built my computer had put the NVMe card in the second slot, probably to get it farther away from the GPU so it wouldn’t be affected by the card’s heat. As soon as I moved the NVMe card to the first M2 slot, the second PCIe slot was enabled and I could see the 3090!</p>
+
+<pre><code>$ nvidia-smi -L | grep 3090
+GPU 0: NVIDIA GeForce RTX 3090
+</code></pre>
+
+<p>As you can see, I have an old 660ti as the video card that is connected to my monitors, and the 3090 is the second card. Nice to see the 24GB of memory, which is the whole point of all this “cyberpunk” work!</p>
+
+<pre><code>$ nvidia-smi	 
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4 	|
+|-------------------------------+----------------------+----------------------+
+| GPU  Name    	Persistence-M| Bus-Id    	Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|     	Memory-Usage | GPU-Util  Compute M. |
+|                           	|                  	|           	MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |              	N/A |
+|  0%   30C	P8 	8W / 350W | 	10MiB / 24268MiB |  	0%  	Default |
+|                           	|                  	|              	N/A |
++-------------------------------+----------------------+----------------------+
+|   1  NVIDIA GeForce ...  Off  | 00000000:07:00.0 N/A |              	N/A |
+| 34%   53C	P8	N/A /  N/A |	976MiB /  3015MiB | 	N/A  	Default |
+|                           	|                  	|              	N/A |
++-------------------------------+----------------------+----------------------+
+                                                                          	 
++-----------------------------------------------------------------------------+
+| Processes:                                                              	|
+|  GPU   GI   CI    	PID   Type   Process name              	GPU Memory |
+|    	ID   ID                                               	Usage  	|
+|=============================================================================|
+|	0   N/A  N/A  	1417  	G   /usr/lib/xorg/Xorg              	4MiB |
+|	0   N/A  N/A  	2346  	G   /usr/lib/xorg/Xorg              	4MiB |
++-----------------------------------------------------------------------------+
+</code></pre>
+
+<h2 id="cooling">Cooling</h2>
+
+<p>I assume I’ll have to find ways to cool this chassis once I start putting the 3090 through its paces.</p>
+
+<h2 id="drivers">Drivers</h2>
+
+<p>Because I had the 660ti installed already, I didn’t have to add any additional drivers to get the 3090 to show up. Finally a nice piece of luck!</p>
+
+<pre><code>$ dpkg --list | grep nvidia-kernel
+ii  nvidia-kernel-common-470                   470.223.02-0ubuntu0.20.04.1                   amd64        Shared files used with the kernel module
+ii  nvidia-kernel-source-470                   470.223.02-0ubuntu0.20.04.1                   amd64        NVIDIA kernel source package
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So far, I’ve spent about $1000 CDN on this, which isn’t too bad. It remains to be seen if my older computer is up to the task of running the 3090; that it doesn’t get too hot and too loud; that I don’t end up buying a new computer anyway after all this power supply swapping. I might end up doing that if, for example, I decide I want to run multiple GPUs (two 3090s would be optimal) and/or reduce the noise, because I could put the second computer in the basement with all the other computers where I can’t hear it, and leave my trusty old relatively quiet workstation in my office.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[There are a couple of ways to think about this post:]]></summary></entry><entry><title type="html">Restarting Kubernetes Pods When There Are New Secrets With Reloader</title><link href="https://serverascode.com/2023/11/23/reloader-kubernetes.html" rel="alternate" type="text/html" title="Restarting Kubernetes Pods When There Are New Secrets With Reloader" /><published>2023-11-23T00:00:00-05:00</published><updated>2023-11-23T00:00:00-05:00</updated><id>https://serverascode.com/2023/11/23/reloader-kubernetes</id><content type="html" xml:base="https://serverascode.com/2023/11/23/reloader-kubernetes.html"><![CDATA[<p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
+
+<h2 id="reloader">Reloader</h2>
+
+<blockquote>
+  <p><em>Reloader can watch changes in ConfigMap and Secret and do rolling upgrades on Pods with their associated DeploymentConfigs, Deployments, Daemonsets Statefulsets and Rollouts.</em> - <a href="https://github.com/stakater/Reloader">Reloader</a></p>
+</blockquote>
+
+<h2 id="install-reloader">Install Reloader</h2>
+
+<p>First add the repo.</p>
+
+<pre><code>$ helm repo add stakater https://stakater.github.io/stakater-charts
+$ helm repo update
+</code></pre>
+
+<p>Create a namespace.</p>
+
+<pre><code>$ k create ns reloader
+namespace/reloader created
+$ kn reloader 
+✔ Active namespace is "reloader"
+</code></pre>
+
+<p>Install reloader.</p>
+
+<pre><code>$ helm install reloader stakater/reloader
+NAME: reloader
+LAST DEPLOYED: Thu Nov 23 09:36:22 2023
+NAMESPACE: reloader
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+- For a `Deployment` called `foo` have a `ConfigMap` called `foo-configmap`. Then add this annotation to main metadata of your `Deployment`
+  configmap.reloader.stakater.com/reload: "foo-configmap"
+
+- For a `Deployment` called `foo` have a `Secret` called `foo-secret`. Then add this annotation to main metadata of your `Deployment`
+  secret.reloader.stakater.com/reload: "foo-secret"
+
+- After successful installation, your pods will get rolling updates when a change in data of configmap or secret will happen.
+</code></pre>
+
+<p>Now we’ve got pods.</p>
+
+<pre><code>$ k get pods
+NAME                                 READY   STATUS    RESTARTS   AGE
+reloader-reloader-64df699b8d-tm5rn   1/1     Running   0          3m4s
+</code></pre>
+
+<p>Nice and easy. Thanks Helm!</p>
+
+<h2 id="simple-test">Simple Test</h2>
+
+<p>Create a secret.</p>
+
+<pre><code>kubectl create secret generic foo-secret --from-literal=key1=bar
+</code></pre>
+
+<p>Create a cert-manager certificate. (Of course you need cert-manager installed.)</p>
+
+<pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: foo-certs
+  namespace: foo
+spec:
+  secretName: foo-certs
+  issuerRef:
+    name: kubeadm-ca
+    kind: ClusterIssuer
+  duration: 24h  # Validity period of the certificate
+  renewBefore: 12h 
+  commonName: foo.foo.svc.cluster.local
+  dnsNames:
+    - foo.foo.svc.cluster.local
+    - foo.foo.svc
+EOF
+</code></pre>
+
+<p>Use that secret in a deployment. Note the annotation for Reloader. We’re mounting the secret in <code>/etc/foo</code> and certificates <code>/etc/certs</code>.</p>
+
+<pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  labels:
+    app: foo
+  annotations:
+    secret.reloader.stakater.com/reload: "foo-secret,foo-certs"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+        volumeMounts:
+        - name: secret-volume
+          mountPath: "/etc/foo"
+          readOnly: true
+        - name: certs
+          mountPath: "/etc/certs"
+          readOnly: true
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: foo-secret
+      - name: certs
+        secret:
+          secretName: foo-certs
+EOF
+</code></pre>
+
+<p>Recreate the secret and check the logs of reloader.</p>
+
+<pre><code>$ kubectl create secret generic foo-secret --from-literal=key1=foo --dry-run=client -o yaml | kubectl apply -f -
+Warning: resource secrets/foo-secret is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+secret/foo-secret configured
+</code></pre>
+
+<p>Reloader logs. It has noticed the secret update and restarted the pod.</p>
+
+<pre><code>$ k logs -n reloader reloader-reloader-64df699b8d-tm5rn 
+time="2023-11-23T14:36:25Z" level=info msg="Environment: Kubernetes"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Reloader"
+time="2023-11-23T14:36:25Z" level=warning msg="KUBERNETES_NAMESPACE is unset, will detect changes in all namespaces."
+time="2023-11-23T14:36:25Z" level=info msg="created controller for: configMaps"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Controller to watch resource type: configMaps"
+time="2023-11-23T14:36:25Z" level=info msg="created controller for: secrets"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Controller to watch resource type: secrets"
+time="2023-11-23T15:18:53Z" level=info msg="Changes detected in 'foo-secret' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+</code></pre>
+
+<p>New pod should be starting.</p>
+
+<pre><code>$ k get pods
+NAME                   READY   STATUS        RESTARTS   AGE
+foo-5c67d96557-s6cj2   1/1     Running       0          18s
+foo-75cb458f7d-xcszx   1/1     Terminating   0          2m30s
+</code></pre>
+
+<p>Now it’s got the new secret.</p>
+
+<pre><code>$ k exec -it foo-5c67d96557-s6cj2 -- cat /etc/foo/key1
+foo
+</code></pre>
+
+<p>Boom.</p>
+
+<h2 id="certificates">Certificates</h2>
+
+<p>Above we crated a certificate with only 24 hours of validity that should renew after 12 hours. So when it’s renewed, there will be a new version of the secret, and reloader will restart the pod. Let’s see.</p>
+
+<pre><code>$ k logs -n reloader reloader-reloader-7f4859f649-6cvqt 
+time="2023-11-23T16:03:57Z" level=info msg="Environment: Kubernetes"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Reloader"
+time="2023-11-23T16:03:57Z" level=warning msg="KUBERNETES_NAMESPACE is unset, will detect changes in all namespaces."
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: secrets"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: secrets"
+time="2023-11-23T16:06:18Z" level=info msg="Changes detected in 'foo-secret' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+time="2023-11-24T04:44:56Z" level=info msg="Changes detected in 'foo-certs' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+</code></pre>
+
+<p>Looking at cert-manager logs we see:</p>
+
+<pre><code>I1124 04:44:56.006536       1 trigger_controller.go:194] "cert-manager/certificates-trigger: Certificate must be re-issued" key="foo/foo-certs" reason="Renewing" message="Renewing certificate as renewal was scheduled at 2023-11-24 04:44:56 +0000 UTC"
+SNIP!
+I1124 04:44:56.636293       1 conditions.go:263] Setting lastTransitionTime for CertificateRequest "foo-certs-jk5sq" condition "Ready" to 2023-11-24 04:44:56.636261134 +0000 UTC m=+4380108.430326366
+</code></pre>
+
+<p>Right, so the secret was updated. Let’s see if the pod was restarted.</p>
+
+<pre><code>$ k get pods
+NAME                  READY   STATUS    RESTARTS   AGE
+foo-746699dd7-kr99d   1/1     Running   0          6h43m
+$ k describe pod foo-746699dd7-kr99d | grep -i started
+      Started:      Thu, 23 Nov 2023 23:44:59 -0500
+</code></pre>
+
+<p>That time converts to 04:44:59 UTC, which is when the secret was updated. So it was restarted. This is great, so when a new certificate is issued, the pod will be restarted and mount the new secret and have access to the new certificate and key.</p>
+
+<p>There’s a reloader annotation as well.</p>
+
+<pre><code>$ k get pods -oyaml | grep reloader
+      reloader.stakater.com/last-reloaded-from: '{"type":"SECRET","name":"foo-certs","namespace":"foo","hash":"94af434fda756e922affdd1c43d723b26f196f3e","containerRefs":["my-container"],"observedAt":1700801096}'
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Personally, I would think that this kind of thing would be automatic, but it’s not. So this is a good way to make sure that your pods are restarted when there are new secrets.</p>
+
+<p>Kubernetes is a framework, and you have to pull in a lot of “libraries,” such as Reloader.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with Reloader.]]></summary></entry><entry><title type="html">Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes</title><link href="https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes.html" rel="alternate" type="text/html" title="Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes" /><published>2023-09-02T00:00:00-04:00</published><updated>2023-09-02T00:00:00-04:00</updated><id>https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes</id><content type="html" xml:base="https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes.html"><![CDATA[<p>You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.</p>
+
+<p>OK, maybe this isn’t “you” it’s “me”. I was trying to build a demo app that showed crash loop backoff in Kubernetes, and I couldn’t get the container to crash.</p>
+
+<p>Because pid 1 is Gunicorn, not the app itself.</p>
+
+<pre><code>$ k exec -it crash-only-backend-0 -- cat /proc/1/status | grep "Name\|Uid"
+Name:	gunicorn-run.sh
+Uid:	10001	10001	10001	10001
+</code></pre>
+
+<p>Let’s dive into why this happens and the importance of understanding PID 1 in containers.</p>
+
+<h2 id="what-the-heck-is-gunicorn">What the Heck is Gunicorn?</h2>
+
+<blockquote>
+  <p>Gunicorn ‘Green Unicorn’ is a Python WSGI HTTP Server for UNIX. It’s a pre-fork worker model. The Gunicorn server is broadly compatible with various web frameworks, simply implemented, light on server resources, and fairly speedy. - <a href="https://gunicorn.org/">Gunicorn</a></p>
+</blockquote>
+
+<h2 id="what-is-a-wsgi-server">What is a WSGI Server?</h2>
+
+<p>A Web Server Gateway Interface (WSGI) server is a web server that implements the WSGI specification. The WSGI specification is a Python standard that describes how a web server communicates with web applications.</p>
+
+<h2 id="why-does-flask-need-a-wsgi-server">Why Does Flask Need a WSGI Server?</h2>
+
+<p>Flask is a micro web framework written in Python. It’s a WSGI application, which means it needs a WSGI server to run.</p>
+
+<blockquote>
+  <p>“Production” means “not development”, which applies whether you’re serving your application publicly to millions of users or privately / locally to a single user. Do not use the development server when deploying to production. It is intended for use only during local development. It is not designed to be particularly secure, stable, or efficient. - <a href="https://flask.palletsprojects.com/en/2.3.x/deploying/">Flask</a></p>
+</blockquote>
+
+<h2 id="what-is-pid-1">What is PID 1?</h2>
+
+<p>In Unix-based systems, the process ID (PID) is a unique identifier for each running process. The very first process that runs when a system starts is the init system with PID 1. The init process has special responsibilities, like adopting orphaned child processes and handling signals.</p>
+
+<h2 id="gunicorn-and-pid-1">Gunicorn and PID 1</h2>
+
+<p>When you run a container, the process you start becomes PID 1 within that container. In the case of my Flask app, Gunicorn becomes PID 1.</p>
+
+<blockquote>
+  <p>NOTE: Why not just run Flask directly? Because Gunicorn is a production-ready WSGI server that can handle multiple requests concurrently.</p>
+</blockquote>
+
+<h2 id="why-doesnt-the-container-crash">Why Doesn’t the Container Crash?</h2>
+
+<p>If your Flask app (running as a Gunicorn worker) crashes, Gunicorn will restart it. Since Gunicorn is PID 1, the container will remain alive as long as Gunicorn does. This is why even if your Flask app encounters an error, the container doesn’t crash.</p>
+
+<h2 id="the-kubernetes-perspective">The Kubernetes Perspective</h2>
+
+<p>In a Kubernetes cluster, the kubelet will restart a crashed container based on its <code>restartPolicy</code>. However, if Gunicorn (PID 1) doesn’t crash, Kubernetes won’t know that something is wrong with your Flask app. This could lead to misleading metrics and logs, affecting your debugging and monitoring efforts.</p>
+
+<h2 id="killing-pid-1">Killing Pid 1</h2>
+
+<p>In the app I still wanted to use gunicorn which means to demonstrate an app crashing and Kubernetes restarting the container, I needed to kill gunicorn. I needed to kill PID 1.</p>
+
+<p>Here’s what I ended up with inside the app:</p>
+
+<pre><code>def random_crash():
+    if random.randint(1, 100) &gt; 94:
+        logger.error("&lt;&lt;&lt;&lt; Crashing... &gt;&gt;&gt;&gt;")
+        # gunicorn will restart the process, which is pretty cool, but for this
+        # app we want to purposely crash the whole container, so we kill the
+        # parent process which is gunicorn
+        os.kill(os.getppid(), 9)
+</code></pre>
+
+<blockquote>
+  <p>NOTE: I’m purposely trying to crash the container to demonstrate crashLoopBackoff. As well, I’m not using <code>sys.exit()</code> because that would just exit the flask process, not the container. (Which, by the way, is what I originally did and why I couldn’t get the container to crash.)</p>
+</blockquote>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Understanding PID 1 in containers is crucial for debugging, process management, and robustness, especially when deploying applications on Kubernetes.</p>
+
+<p>To many, this is elementary…even downright obvious. But I’ve been doing this for a while and I still learned something when building this little demo app. As well, while researching this I found a fair bit of confusion around using gunicorn in containers.</p>
+
+<p>Let me know if you have any questions or comments!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.]]></summary></entry><entry><title type="html">Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser</title><link href="https://serverascode.com/2023/09/02/runasnonroot-vs-runasuser.html" rel="alternate" type="text/html" title="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser" /><published>2023-09-02T00:00:00-04:00</published><updated>2023-09-02T00:00:00-04:00</updated><id>https://serverascode.com/2023/09/02/runasnonroot-vs-runasuser</id><content type="html" xml:base="https://serverascode.com/2023/09/02/runasnonroot-vs-runasuser.html"><![CDATA[<p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
+
+<h2 id="nginx-images">nginx images</h2>
+
+<p>I have to wonder what percentage of containers are just nginx instances that are there to test something out. Nginx is an easy image to deploy because you can just do:</p>
+
+<pre><code>kubectl run nginx --image=nginx
+</code></pre>
+
+<p>And you have a running nginx instance.</p>
+
+<p>However, that default nginx image will run as root (if your cluster allows that).</p>
+
+<pre><code>$ k exec -it nginx -- cat /proc/1/status | grep "Name\|Uid"
+Name:	nginx
+Uid:	0	0	0	0
+</code></pre>
+
+<p>There is an nginx unprivileged image that will run as a non-root user; it runs as user 101. I would definitely recommend using this image if you are just testing something out. It’s a few more letters to type, but it’s worth it.</p>
+
+<pre><code>kubectl run nginx-unprivileged --image=nginxinc/nginx-unprivileged
+</code></pre>
+
+<p>Inspecting the images…</p>
+
+<pre><code>$ docker image inspect nginx | jq '.[0].Config.User'
+""
+$ docker image inspect nginxinc/nginx-unprivileged | jq '.[0].Config.User'
+"101"
+</code></pre>
+
+<p>Here’s the nginx user in the unprivileged image:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- grep nginx /etc/passwd
+nginx:x:101:101:nginx user:/nonexistent:/bin/false
+</code></pre>
+
+<h2 id="differences-between-runasnonroot-and-runasuser">Differences Between runAsNonRoot and runAsUser</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>runAsNonRoot</th>
+      <th>runAsUser</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Purpose</strong></td>
+      <td>Ensure container doesn’t run as root</td>
+      <td>Specify the exact UID for container</td>
+    </tr>
+    <tr>
+      <td><strong>Settings</strong></td>
+      <td>true/false</td>
+      <td>Numeric UID</td>
+    </tr>
+    <tr>
+      <td><strong>Flexibility</strong></td>
+      <td>Less flexible</td>
+      <td>More flexible</td>
+    </tr>
+    <tr>
+      <td><strong>Specificity</strong></td>
+      <td>General: just not root</td>
+      <td>Very specific: exact UID</td>
+    </tr>
+    <tr>
+      <td><strong>Root Allowed</strong></td>
+      <td>No</td>
+      <td>Yes, if specified</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="runasnonroot">runAsNonRoot</h2>
+
+<p>The runAsNonRoot field specifies that the container must not run as the root user. Setting this to true enforces that the container should be executed as a non-root user. If the container image specifies a user as root or numerically as 0, the container won’t start. It’s a way to ensure that your application doesn’t unintentionally run with more permissions than it needs.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: non-root-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: my-container
+    image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ kubectl exec -it non-root-pod -- id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+</code></pre>
+
+<p>But if we run the plain nginx image, it will fail:</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: non-root-pod-plain
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: my-container
+    image: nginx
+EOF
+</code></pre>
+
+<p>Note that the container is not running:</p>
+
+<pre><code>$ k get pods
+NAME                 READY   STATUS                       RESTARTS   AGE
+non-root-pod         1/1     Running                      0          112s
+non-root-pod-plain   0/1     CreateContainerConfigError   0          5s
+</code></pre>
+
+<p>And the reason is:</p>
+
+<pre><code>$ k describe pod non-root-pod-plain  | grep Error
+      Reason:       CreateContainerConfigError
+  Warning  Failed     1s (x5 over 42s)  kubelet            Error: container has runAsNonRoot and image will run as root (pod: "non-root-pod-plain_runasnonroot(c5764bbb-c1cf-47b1-9606-3a3a49ebf666)", container: my-container)
+</code></pre>
+
+<h2 id="runasuser">runAsUser</h2>
+
+<p>On the other hand, runAsUser specifies which UID (User ID) the container process should run as. Unlike runAsNonRoot, this allows you to specify the exact UID of the user, including root if you explicitly set it to 0.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: specific-user-pod-nginx-priviliged
+spec:
+  securityContext:
+    runAsUser: 1001
+  containers:
+  - name: my-container
+    image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ kubectl exec -it specific-user-pod-nginx-priviliged -- id
+uid=1001 gid=0(root) groups=0(root)
+</code></pre>
+
+<p>But if we run the plain nginx image, it will fail:</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: specific-user-pod-nginx-plain
+spec:
+  securityContext:
+    runAsUser: 1001
+  containers:
+  - name: my-container
+    image: nginx
+EOF
+</code></pre>
+
+<p>Note that the container is not running:</p>
+
+<pre><code>$ k get pod specific-user-pod-nginx-plain 
+NAME                            READY   STATUS             RESTARTS      AGE
+specific-user-pod-nginx-plain   0/1     CrashLoopBackOff   1 (10s ago)   16s
+</code></pre>
+
+<h2 id="both-runasnonroot-and-runasuser">Both runAsNonRoot and runAsUser</h2>
+
+<p>You can also use both runAsNonRoot and runAsUser together. In this case, runAsUser specifies the UID to use, and runAsNonRoot ensures that UID is not root.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: runasnonroot-and-runasuser
+spec:
+  securityContext:
+    runAsUser: 1001
+    runAsNonRoot: true
+  containers:
+    - name: my-container
+      image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- id
+uid=1001 gid=0(root) groups=0(root)
+$ k get pods runasnonroot-and-runasuser 
+NAME                         READY   STATUS    RESTARTS   AGE
+runasnonroot-and-runasuser   1/1     Running   0          22s
+</code></pre>
+
+<p>And nginx is indeed running as user 1001:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- cat /proc/1/status | grep "Name\|Uid"
+Name:	nginx
+Uid:	1001	1001	1001	1001
+</code></pre>
+
+<blockquote>
+  <p>NOTE: PID 1 is the first process that runs in any operating system or containerized environment. When a container starts, it launches a single process with a PID (Process ID) of 1 within the isolated namespace of that container.</p>
+</blockquote>
+
+<h2 id="nginx-plain-as-non-root-with-runasuser">nginx plain as non-root with runAsUser</h2>
+
+<p>Will it blend?</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-plain-runasnonroot-and-runasuser
+spec:
+  securityContext:
+    runAsUser: 1001
+    runAsNonRoot: true
+  containers:
+    - name: my-container
+      image: nginx
+EOF
+</code></pre>
+
+<p>No.</p>
+
+<pre><code>$ k get pod nginx-plain-runasnonroot-and-runasuser 
+NAME                                     READY   STATUS             RESTARTS     AGE
+nginx-plain-runasnonroot-and-runasuser   0/1     CrashLoopBackOff   1 (7s ago)   12s
+</code></pre>
+
+<h2 id="use-cases">Use Cases</h2>
+
+<ul>
+  <li>
+    <p>runAsNonRoot: Use this setting when you want a general assurance that none of the containers in the Pod are running as root, without caring which user they run as.</p>
+  </li>
+  <li>
+    <p>runAsUser: Use this when you need more control over the exact user that runs the container process, such as for compliance with internal security policies that require specific UIDs for different types of applications. As well, some images require a specific UID to run properly.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>While runAsNonRoot and runAsUser both provide ways to control the user running a container, they serve different needs. runAsNonRoot is a more generalized setting to prevent root access, while runAsUser gives you fine-grained control over the user ID. Knowing when to use each can improve the security posture of your Kubernetes applications.</p>
+
+<p>That said, both runAsUser and runAsNonRoot can co-exist. When they do, runAsUser specifies which UID to use, and runAsNonRoot ensures that UID is not root.</p>
+
+<p>In normal, production systems one would never run a container as root so the image would, based on your organizations policies and image build process, have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.]]></summary></entry><entry><title type="html">Three Steps to a Default Secure Kubernetes</title><link href="https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes.html" rel="alternate" type="text/html" title="Three Steps to a Default Secure Kubernetes" /><published>2023-08-12T00:00:00-04:00</published><updated>2023-08-12T00:00:00-04:00</updated><id>https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes</id><content type="html" xml:base="https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes.html"><![CDATA[<p>Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.</p>
+
+<p>Because it’s a basic framework, a set of lego blocks, it’s not designed to be secure “out of the box.” We’ve got to make it as secure as we need it to be.</p>
+
+<h2 id="note-not-a-panacea">NOTE: Not a Panacea</h2>
+
+<p>This post is an exploration of some things we could do to make Kubernetes more secure by default. Like what are a couple minimal steps we could take that have a large return on investment. It’s not meant to meet every organization’s requirements or be the end-all-be-all of security. It’s meant as an exploration of a secure starting point that could potentially work for everyone and every Kuberenetes.</p>
+
+<p>In fact I should say here that I’ve already had people give me diffrent opinions on these settings. For example for network policies here I’m thinking more of lateral movement, but many organizations would prefer to stop outbound access. It really depends on your organization’s requirements.</p>
+
+<h2 id="1---pod-security-standards">1 - Pod Security Standards</h2>
+
+<p>First, if you’re not familiar with Pod Security Standards, it’s not a bad idea to <a href="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html">go read up on them</a>, but suffice it to say let’s make sure every namespace has the following label.</p>
+
+<pre><code>kubectl label namespace &lt;NAMESPACE&gt; pod-security.kubernetes.io/enforce=restricted
+</code></pre>
+
+<p>Which means:</p>
+
+<ul>
+  <li>Limit types of volumes</li>
+  <li>Don’t run as root user</li>
+  <li>No privilege escalation</li>
+  <li>Seccomp profile set to “RuntimeDefault” or “Localhost”</li>
+  <li>Drop all capabilities except perhaps add NET_BIND_SERVICE</li>
+</ul>
+
+<p>Here’s an example of running the nginx unprivileged container.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-meets-pod-security-standards
+  namespace: enforcing
+spec:
+  containers:
+  - image: nginxinc/nginx-unprivileged
+	name: nginx
+	securityContext:
+  	allowPrivilegeEscalation: false
+  	capabilities:
+    	drop:
+    	- ALL
+  	runAsNonRoot: true
+  	seccompProfile:
+    	type: RuntimeDefault
+EOF
+</code></pre>
+
+<p>That’s a pretty good start!</p>
+
+<h2 id="2---network-policies">2 - Network Policies</h2>
+
+<p>Historically, in Kubernetes, the connectivity was based on a giant, flat layer 3 network, which means every pod had an IP address and could talk to every other pod in the cluster. Obviously this doesn’t really work in enterprise environments, so Kubernetes added the ability to create <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">Network Policies</a>.</p>
+
+<p>Here let’s create a default policy to ensure that pods in a namespace can talk to one another, but cannot talk to pods OUTSIDE of their namespace. This is super basic, but I like it as a starting point. Note that services would still be accessible, just not pods directly.</p>
+
+<p>Here’s an example:</p>
+
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: namespace-only
+spec:
+  podSelector: {} # Selects all pods in the namespace
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector: {} # Allow pods in the same namespace to talk to one another
+  egress:
+  - to:
+    - ipBlock:
+   	 cidr: 0.0.0.0/0 # Allow egress to any destination
+</code></pre>
+
+<p>Obviously this can be taken a lot further, especially with a CNI that provides extra capabilities.</p>
+
+<h2 id="3-runtime-threat-detection">3: Runtime Threat Detection</h2>
+
+<p>The last step is to make sure that we’re monitoring our Kubernetes clusters for runtime threats. While we have a good baseline of security, something will always get through, no matter what we do. Any adversary worth their salt will find a way in, or mistakes will be made, etc. So we need to be able to detect them when they do. The only way to do that is to monitor the runtime environment.</p>
+
+<p>We can do that in a couple of ways, one is to use Sysdig Secure, which is a commercial <a href="https://sysdig.com/learn-cloud-native/cloud-security/cloud-native-application-protection-platform-cnapp-fundamentals/">CNAPP (Cloud Native Application Protection Platform)</a> that has a decade of history in runtime protection. The other is to use Falco, which is an open source project that is part of the CNCF. Sysdig as a company supports the Falco project.</p>
+
+<h3 id="3a---sysdig-secure">3a - Sysdig Secure</h3>
+
+<p>Sysdig Secure is a security platform which has a decade of history in runtime protection.</p>
+
+<p>It’s easy to sign up for a <a href="https://sysdig.com/start-free/">free trial</a> at Sysdig.</p>
+
+<p>Then, install the agent into Kubernetes clusters with Helm:</p>
+
+<pre><code>helm repo add sysdig https://charts.sysdig.com
+helm repo update
+helm install sysdig-agent --namespace sysdig-agent --create-namespace \
+--set global.sysdig.accessKey=&lt;ACCESS_KEY&gt; \
+--set global.sysdig.region=&lt;SAAS_REGION&gt; \
+--set nodeAnalyzer.secure.vulnerabilityManagement.newEngineOnly=true \
+--set global.kspm.deploy=true \
+--set nodeAnalyzer.nodeAnalyzer.benchmarkRunner.deploy=false \
+--set nodeAnalyzer.nodeAnalyzer.hostScanner.deploy=true
+--set global.clusterConfig.name=&lt;CLUSTER_NAME&gt; \
+sysdig/sysdig-deploy
+</code></pre>
+
+<p>Done!</p>
+
+<h3 id="3b---falco">3b - Falco</h3>
+
+<p><a href="https://falco.org/">Falco</a> is an open source project that is part of the CNCF. It’s a runtime threat detection engine that can be used to detect threats in Kubernetes clusters. Sysdig as a company supports the Falco project.</p>
+
+<blockquote>
+  <p>Falco is a cloud native runtime security tool for Linux operating systems. It is designed to detect and alert on abnormal behavior and potential security threats in real-time.
+At its core, Falco is a kernel monitoring and detection agent that observes events, such as syscalls, based on custom rules. Falco can enhance these events by integrating metadata from the container runtime and Kubernetes. The collected events can be analyzed off-host in SIEM or data lake systems. - <a href="https://falco.org/">Falco</a></p>
+</blockquote>
+
+<p>Installing Falco into Kubernetes is easy, just use Helm:</p>
+
+<pre><code>helm repo add falcosecurity https://falcosecurity.github.io/charts
+helm repo update
+helm install falco falcosecurity/falco
+</code></pre>
+
+<p>Done!</p>
+
+<h2 id="automation">Automation</h2>
+
+<p>I would prefer that this all be done automatically. Because Kubernetes is a framework there are ways to make these kinds of security settings default, including the concepts of building operators and admission controllers. That would be my next step, to set up some tooling that would automatically apply these settings to every cluster, to every namespace, and to every pod.</p>
+
+<p>So, look forward to a future blog post on that!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I want to be clear that the point here is to create something that is simple and at the same time really improves the default security of Kubernetes–like what’s the best bang for the buck we can get in terms of security.</p>
+
+<p>In this blog post we’ve seen how to create a higher level of default security for Kubernetes, and we looked at how to use Sysdig Secure and Falco to monitor the runtime environment for threats.</p>
+
+<p>Ultimately, this post is an exploration of how to configure a Kubernetes cluster so that it is much more secure “by default.” There’s no need to have Kubernetes be so wide open.</p>
+
+<p>PS. I’ve included an optional section discussing Buildpacks and how they can be used to create more secure container images.</p>
+
+<h2 id="optional-buildpacks-and-paketo">OPTIONAL: Buildpacks and Paketo</h2>
+
+<h3 id="background">Background</h3>
+
+<p>Often people are surprised to find out that there is more than one way to build a container image. I mean, what’s a container image: it’s just a fancy tar file. There are many ways one can make a fancy tar file.</p>
+
+<p>One way is <a href="https://buildpacks.io/">buildpacks</a>. I’ve written about them <a href="https://serverascode.com/2019/12/16/buidpack-pack.html">before</a>. <a href="https://paketo.io/">Paketo</a> is a set of buildpacks that are designed to be used with Kubernetes.</p>
+
+<p>For the purposes of this blog post, the point of Vuildpacks is that they are a way to build a container image that is more secure by default. For example, buildpacks don’t run as root. If we just get rid of that one thing, we’ve made our container images more secure.</p>
+
+<p>The value of Buildpacks:</p>
+
+<ul>
+  <li>Security - Buildpacks run as non-root by default.</li>
+  <li>Advanced Caching - Robust caching is used to improve performance.</li>
+  <li>Auto-detection -Images can be built directly from application source without additional instructions.</li>
+  <li>Bill-of-Materials - Insights into the contents of the app image through standard build-time SBOMs in CycloneDX, SPDX and Syft JSON formats.</li>
+  <li>Modular / Pluggable- Multiple buildpacks can be used to create an app image.</li>
+  <li>Multi-language - Supports more than one programming language family.</li>
+  <li>Multi-process - Image can have multiple entrypoints for each operational mode.</li>
+  <li>Minimal app image - Image contains only what is necessary.</li>
+  <li>Rebasing - Instant updates of base images without re-building.</li>
+  <li>Reproducibility - Reproduces the same app image digest by re-running the build.</li>
+  <li>Reusability - Leverage production-ready buildpacks maintained by the community.</li>
+</ul>
+
+<h3 id="paketo">Paketo</h3>
+
+<p><a href="https://paketo.io/">Paketo</a> is a set of buildpacks that are designed to be used with Kubernetes.</p>
+
+<p>First off this is a Python app and I’m using gunicorn, so we have a Procfile. This is really the only difference I have between a Dockerfile based image and a buildpack based image. Instead of a Dockerfile I have a Procfile, and the Procfile only describes the command to run the app, nothing else.</p>
+
+<blockquote>
+  <p>Procfiles define processes from your application’s code and contains one process per line.</p>
+</blockquote>
+
+<p>Here’s the example Procfile:</p>
+
+<pre><code>$ cat Procfile
+web: gunicorn app:app
+</code></pre>
+
+<p>Now we can build the image with a straight forward command.</p>
+
+<blockquote>
+  <p>NOTE: This assumes, of course, the pack CLI is installed.</p>
+</blockquote>
+
+<pre><code>pack build somepythonflaskapp \
+  --buildpack paketo-buildpacks/python \
+  --builder paketobuildpacks/builder:base
+</code></pre>
+
+<p>And deploy it into Kubernetes, port-forward to the service, and finally curl the app.</p>
+
+<blockquote>
+  <p>NOTE: This app is setup to report the user it’s running as.</p>
+</blockquote>
+
+<pre><code>$ curl localhost:8000
+Application is running as user: cnb
+</code></pre>
+
+<p>Above we can see the app, which is configured to return the user it’s running as, is reporting that it is running as user “cnb” aka not root, aka Cloud Native Buildpacks. Done by default. Nice.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.]]></summary></entry><entry><title type="html">Making Pod Security Standards the Default in Kubernetes</title><link href="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html" rel="alternate" type="text/html" title="Making Pod Security Standards the Default in Kubernetes" /><published>2023-08-02T00:00:00-04:00</published><updated>2023-08-02T00:00:00-04:00</updated><id>https://serverascode.com/2023/08/02/making-pod-security-standards-default</id><content type="html" xml:base="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html"><![CDATA[<p>In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.</p>
+
+<p>We used to have something called Pod Security Policies that we could use to increase the level of security, like reduce some exposure, but that model was <a href="https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/">deprecated</a>. Now we have something called Pod Security Standards. These are a set of recommendations for securing pods and are managed by the Pod Security Admission Controller which is part of Kubernetes. However, by default, no Pod Security Standards are configured, enforcing, etc…but what if we want them enforcing by default on a newly created namespace?</p>
+
+<h2 id="one-model-mutating-requests-using-kyverno">One Model: Mutating Requests Using Kyverno</h2>
+
+<p>One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests in, what I think, is a pretty straight forward fashion. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.</p>
+
+<p>Another way to do this would be to set up a mutating admission controller. Probably other methods as well. (Let me know!!!)</p>
+
+<p>I like “mutating” things because it really means having Kubernetes do the work for us. I like making Kubernetes do work for me instead of the other way around. :)</p>
+
+<h3 id="install-kyverno">Install Kyverno</h3>
+
+<ul>
+  <li>Install Kyverno</li>
+</ul>
+
+<pre><code>$ helm install kyverno kyverno/kyverno -n kyverno --create-namespace
+NAME: kyverno
+LAST DEPLOYED: Wed Aug  2 07:47:18 2023
+NAMESPACE: kyverno
+STATUS: deployed
+REVISION: 1
+NOTES:
+Chart version: 3.0.4
+Kyverno version: v1.10.2
+
+Thank you for installing kyverno! Your release is named kyverno.
+
+The following components have been installed in your cluster:
+- CRDs
+- Admission controller
+- Reports controller
+- Cleanup controller
+- Background controller
+
+
+⚠️  WARNING: Setting the admission controller replica count below 3 means Kyverno is not running in high availability mode.
+
+💡 Note: There is a trade-off when deciding which approach to take regarding Namespace exclusions. Please see the d
+</code></pre>
+
+<p>Done.</p>
+
+<h3 id="make-the-restricted-pod-security-standard-the-default">Make the Restricted Pod Security Standard the Default</h3>
+
+<p>Kyverno can mutate a request to create a namespace and add a label to it. In this case we’re telling it to add the label <code>pod-security.kubernetes.io/enforce: restricted</code> so that the pod security admission controller will enforce the Pod Security Standards on the namespace, in this case it will “enforce” the “restricted” profile.</p>
+
+<h3 id="configuring-kyverno-to-add-the-label-to-namespaces">Configuring Kyverno to Add the Label to Namespaces</h3>
+
+<ul>
+  <li>Add the ClusterPolicy to Kyverno</li>
+</ul>
+
+<blockquote>
+  <p>NOTE: In the “real world” we’d probably want to exclude some namespaces, but, again, only new namespaces will be affected by this policy.</p>
+</blockquote>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-ns-label
+spec:
+  background: false
+  rules:
+  - name: add-ns-label
+    match:
+      resources:
+        kinds:
+        - Namespace
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            pod-security.kubernetes.io/enforce: restricted
+EOF
+</code></pre>
+
+<p>Verify:</p>
+
+<pre><code>$ k get clusterpolicy add-ns-label
+NAME       	BACKGROUND   VALIDATE ACTION   READY   AGE	MESSAGE
+add-ns-label   true     	Audit         	True	7h1m   Ready
+</code></pre>
+
+<p>Good.</p>
+
+<h2 id="create-a-namespace-and-test">Create a Namespace and Test</h2>
+
+<ul>
+  <li>Create a new namespace (the name doesn’t matter)</li>
+</ul>
+
+<pre><code>kubectl create ns enforcing
+</code></pre>
+
+<ul>
+  <li>Review that the label was added by Kyverno mutating the request for a namespace</li>
+</ul>
+
+<pre><code>$ k get ns enforcing -oyaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+	policies.kyverno.io/last-applied-patches: |
+  	add-ns-label.add-ns-label.kyverno.io: added /metadata/labels/pod-security.kubernetes.io~1enforce
+  creationTimestamp: "2023-08-02T11:50:14Z"
+  labels:
+	kubernetes.io/metadata.name: enforcing
+	pod-security.kubernetes.io/enforce: restricted
+  name: enforcing
+  resourceVersion: "11055"
+  uid: ce552efc-172e-4aa6-bc6d-13179f73372c
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+</code></pre>
+
+<p>This label was added by Kyverno. This means the pod security admission controller will enforce the restricted Pod Security Standard in this namespace.</p>
+
+<pre><code>pod-security.kubernetes.io/enforce: restricted
+</code></pre>
+
+<ul>
+  <li>Create an “insecure” pod in the namespace, just any old pod will do…</li>
+</ul>
+
+<pre><code>kubectl run nginx --image=nginx -n enforcing
+</code></pre>
+
+<p>E.g. output:</p>
+
+<pre><code>$ k run nginx --image=nginx -n enforcing
+Error from server (Forbidden): pods "nginx" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "nginx" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "nginx" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "nginx" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "nginx" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+</code></pre>
+
+<p>The pod was not allowed to be created because it did not meet the Pod Security Standard.</p>
+
+<ul>
+  <li>Create a pod that meets the Pod Security Standard for the “restricted” profile</li>
+</ul>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-meets-pod-security-standards
+  namespace: enforcing
+spec:
+  containers:
+  - image: nginxinc/nginx-unprivileged
+    name: nginx
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+EOF
+</code></pre>
+
+<p>Ok, that worked.</p>
+
+<pre><code>$ k get pods
+NAME                             	READY   STATUS	RESTARTS   AGE
+nginx-meets-pod-security-standards   1/1 	Running   0      	6h26m
+</code></pre>
+
+<ul>
+  <li>Connect to nginx running in the pod by port forwarding</li>
+</ul>
+
+<pre><code>kubectl port-forward pod/nginx-meets-pod-security-standards 8080:8080 -n enforcing
+</code></pre>
+
+<ul>
+  <li>Curl it</li>
+</ul>
+
+<pre><code>$ curl localhost:8080
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href="http://nginx.org/"&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href="http://nginx.com/"&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Works!</p>
+
+<h2 id="what-is-the-pod-security-standard-restricted-profile">What is the Pod Security Standard “Restricted” Profile?</h2>
+
+<p>The Pod Security Standard “restricted” profile is defined in the <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Pod Security Standards</a> and is, er, the most restrictive profile.</p>
+
+<ul>
+  <li>Limit types of volumes</li>
+  <li>Don’t run as root user</li>
+  <li>No privilege escalation</li>
+  <li>Seccomp profile set to “RuntimeDefault” or “Localhost”</li>
+  <li>Drop all capabilities except perhaps add <code>NET_BIND_SERVICE</code></li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>No one should run vanilla, default Kubernetes in production. No one should run root user pods. I mean we’re mostly running web services here, they can listen on port 8080 and don’t really need much in the way of permissions. Definitely our namespaces should have security limitations that are only reduced later on if they need to be.</p>
+
+<p>Using Kyverno to do this is one way, there are others.</p>
+
+<p>Ultimately, the way to secure general purpose CPUs is to limit what the workloads can do with them.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="[https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/">https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/</a></li>
+  <li><a href="[https://kubernetes.io/docs/concepts/security/pod-security-standards/">https://kubernetes.io/docs/concepts/security/pod-security-standards/</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/">https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/</a></li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.]]></summary></entry></feed>

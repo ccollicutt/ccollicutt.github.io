@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiftacular - deploy OpenStack Swift with Ansible | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Swiftacular - deploy OpenStack Swift with Ansible">
+
+    
+    <meta name="twitter:description" content="<p>A few months ago I put a good amount of working into learning more about OpenStack Swift and how to deploy it. I used Ansible as my configuration management system, and called the whole project <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a>.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>A few months ago I put a good amount of working into learning more about OpenStack Swift and how to deploy it. I used Ansible as my configuration management system, and called the whole project <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a>.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/swiftacular-openstack-swift-with-ansible.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/swiftacular-openstack-swift-with-ansible.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Swiftacular - deploy OpenStack Swift with Ansible" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/03/21/swiftacular-openstack-swift-with-ansible.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Swiftacular - deploy OpenStack Swift with Ansible</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-03-21T00:00:00-04:00">
+                March 21, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>A few months ago I put a good amount of working into learning more about OpenStack Swift and how to deploy it. I used Ansible as my configuration management system, and called the whole project <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a>.</p>
+
+<p>Recently I realized that I forgot to blog about it, so I decided it was time to fix that. :)</p>
+
+<h2 id="openstack-swift">OpenStack Swift</h2>
+
+<p>OpenStack Swift is an object storage service made up of many components. From their <a href="http://docs.openstack.org/developer/swift/:">documentation</a></p>
+
+<blockquote>
+  <p>Swift is a highly available, distributed, eventually consistent object/blob store. Organizations can use Swift to store lots of data efficiently, safely, and cheaply.</p>
+</blockquote>
+
+<p>In several ways it is analogous to Amazon’s S3 service, which has billions and billions of files/blobs/objects (whatever you want to call them) stored in it.</p>
+
+<p>Most people who use the Internet or smartphones with mobile apps use object storage, they just don’t know it because it’s used in the background by the applications, such as ones that need to store many, many files, like pictures.</p>
+
+<h2 id="new-features-in-swift-replication-network-and-regions">New features in Swift: Replication network and regions</h2>
+
+<p>Swift has a couple new features which are used in Swiftacular. Though I should note that by default Swiftacular only sets up one region.</p>
+
+<p><a href="http://docs.openstack.org/developer/swift/replication_network.html:">Replication network</a></p>
+
+<blockquote>
+  <p>Swift’s replication process is essential for consistency and availability of data. By default, replication activity will use the same network interface as other cluster operations. However, if a replication interface is set in the ring for a node, that node will send replication traffic on its designated separate replication network interface.</p>
+</blockquote>
+
+<p>The idea is that you could do some quality of service on the replication network, or split it off entirely from the standard Swift network, as likely the replication network would go across the link between regions, which are in most cases going to be in different data centers. The link would likely be lower bandwidth and higher latency.</p>
+
+<p><a href="https://www.swiftstack.com/docs/admin/cluster_management/regions.html:">Regions</a></p>
+
+<blockquote>
+  <p>Whereas Zones are designed to distribute replicas among nodes and drives such that there is no single point of hardware / networking failure, Regions are conceptually designed to distribute those replicas among different geographical areas.</p>
+</blockquote>
+
+<p>Regions are great because you can then deploy one large OpenStack Swift cluster across multiple geographically separated data centers. The organization I currently work for is deploying Swift in Calgary, Alberta and Kelowna, B.C. Actually these are in different timezones too!</p>
+
+<h2 id="deploying-openstack-swift-with-ansible">Deploying OpenStack Swift with Ansible</h2>
+
+<p>I like to use Ansible because it’s straightforward to understand and executes over ssh instead of some custom RPC type system requiring a client running on the remote system and certificates. ssh is awesome. Ansible is awesome. Swift is awesome. Radical!</p>
+
+<p>First off, you can find the repository containing all the Ansible playbooks and roles needed to deploy Swift <a href="https://github.com/ccollicutt/swiftacular">here</a>. That repository also contains a README file that will likely be more up to date than this blog post.</p>
+
+<p>Requirements:</p>
+
+<ul>
+  <li>Vagrant</li>
+  <li>Virtualbox</li>
+  <li>Ansible</li>
+  <li>Internet connection</li>
+</ul>
+
+<p>Once you have those requirements, this is how to quickly deploy OpenStack Swift:</p>
+
+<pre>
+<code>$ git clone git@github.com:ccollicutt/swiftacular.git
+$ cd swiftacular
+$ mkdir library
+# Checkout some modules to help with managing openstack 
+$ git clone https://github.com/openstack-ansible/openstack-ansible-modules \
+library/openstack
+$ vagrant up 
+$ cp group_vars/all.example group_vars/all
+$ vi group_vars/all # ie. edit the CHANGEMEs in the file, if desired
+# Source aliases, etc
+$ . ansiblerc
+# Test connectivity to virtual machines
+$ ans -m ping all
+# Run the playbook to deploy Swift!
+$ pb site.yml
+</code>
+</pre>
+
+<p>After those commands have completed, you should end up with several virtual machines running.</p>
+
+<pre>
+<code>$ vagrant status
+SNIP!
+swift-package-cache-01    running (virtualbox)
+swift-keystone-01         running (virtualbox)
+swift-lbssl-01            running (virtualbox)
+swift-proxy-01            running (virtualbox)
+swift-storage-01          running (virtualbox)
+swift-storage-02          running (virtualbox)
+swift-storage-03          running (virtualbox)
+SNIP!
+</code>
+</pre>
+
+<p>Those virtual machines comprise an OpenStack Swift cluster. While there is only one region setup by default, the storage servers are setup with a replication network. Both regions and the replication network are new features of OpenStack Swift. In /etc/swift of each of the storage servers there is both a replication configuration file and a standard server configuration.</p>
+
+<pre>
+<code>root@swift-storage-01:~# ls /etc/swift/*-server
+/etc/swift/account-server:
+account-replication.conf  account-server.conf
+
+/etc/swift/container-server:
+container-replication.conf  container-server.conf
+
+/etc/swift/object-server:
+object-replication.conf  object-server.conf
+</code>
+</pre>
+
+<p>The replication server configuration file looks like this:</p>
+
+<pre>
+<code>root@swift-storage-01:~# cat /etc/swift/object-server/object-replication.conf 
+[DEFAULT]
+devices = /srv/node
+bind_ip = 10.0.30.200
+workers = 2
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+replication_server = True
+
+[object-replicator]
+
+[object-updater]
+
+[object-auditor]
+</code>
+</pre>
+
+<p>As can be seen above the replication server is listening on 10.0.30.200 where 10.0.30.0/24 is the replication network configured. Also the “replication_server” option is set to True.</p>
+
+<p>This is what the regular server config file looks like:</p>
+
+<pre>
+<code>root@swift-storage-01:~# cat /etc/swift/object-server/object-server.conf      
+[DEFAULT]
+devices = /srv/node
+bind_ip = 10.0.20.200
+workers = 2
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+
+[object-updater]
+
+[object-auditor]
+
+[object-expirer]
+</code>
+</pre>
+
+<p>It’s listening on 10.0.20.200 and is not setup as a replication only server.</p>
+
+<p>All three of the object, container, and account servers are setup in the same fashion.</p>
+
+<h2 id="using-ansible-delegation-to-setup-the-rings">Using Ansible delegation to setup the rings</h2>
+
+<p>Part of configuring OpenStack Swift involves adding devices to the ring. Thankfully Ansible supports delegating commands. So while some configuration management systems need to have centralized metadata (think PuppetDB) in order to configure all of the devices, with Ansible we can simply use a delegation command, which means that when a storage server is being configured, we can actually delegate a configuration command to run on the proxy server.</p>
+
+<p>That sounds complicated but it’s fairly simple. Maybe a better example is if using Ansible to configure a webserver, and then using a delegation command to add the webserver to a loadbalancer.</p>
+
+<p>As an example, when a storage server is configured we can tell the proxy to add it’s devices to the ring. Below is an Ansible task that is part of Swiftacular that delegates configuration of a ring device when a storage node is being configured. The command actually runs on the Swift proxy.</p>
+
+<p>(Sorry the example swift-ring-builder command below will probably stretch across the screen. It’s long and kinda complicated and is really meant to be invoked programatically.)</p>
+
+<pre>
+ <code>
+
+ - name: build account ring
+   command: swift-ring-builder account.builder \
+   add r{{ region }}z{{ zone }}-{{ ansible_eth3.ipv4.address }}:6002R{{ ansible_eth4.ipv4.address }}:6002/{{ disk_prefix }}{{ item }} 100
+           chdir=/etc/swift 
+   delegate_to: "{{ swift_proxy_server }}"
+   with_sequence: count={{ disks }}
+   when: "losetup.rc &gt; 0"
+ 
+ 
+ </code>
+ </pre>
+
+<p>Delegation is very handy, especially with OpenStack Swift where the proxy needs to know what devices each storage server has.</p>
+
+<h2 id="documentation-of-ssltls-in-openstack">Documentation of SSL/TLS in OpenStack</h2>
+
+<p>I don’t know why, but much of the OpenStack documentation, especially around the authentication system Keystone, avoids discussing how to deploy SSL/TLS enabled services. I’m not talking about Swift here specifically, rather the rest of OpenStack–authentication, endpoints, and other services that should be TLS enabled.</p>
+
+<p>On one hand most organizations deploying OpenStack know that there is going to be a layer of TLS termination in front of most services, but on the other it’s not obvious from that general documentation that this layer should exist. The <a href="http://docs.openstack.org/sec/">OpenStack Security Guide</a> goes into more detail about the TLS layer, but don’t go very deep:</p>
+
+<blockquote>
+  <p>OpenStack endpoints are HTTP services providing APIs to both end-users on public networks and to other OpenStack services within the same deployment operating over the management network. It is highly recommended these requests, both those internal and external, operate over SSL.</p>
+</blockquote>
+
+<p>I guess what I’m saying is that it would be good to know how larger OpenStack providers are securing OpenStack services with TLS. :)</p>
+
+<p>Swiftacular sets up Keystone and a loadbalancer with TLS enabled to front swift-proxy. Certainly it’s not setup as you would do it in production (likely with with a dedicated set of TLS termination servers) but it’s a good example. I don’t think the OpenStack documentation should show deploying systems such as Keystone without SSL.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Using the Swiftacular Ansible playbooks and roles, and using the provided Vagrantfile, it’s fairly easy to get a small OpenStack cluster going on a good laptop or workstation. It also includes regions and a replication network setup. This could be a good basis for starting out with OpenStack Swift.</p>
+
+<p>As usual–if you have any questions, concerns, comments or criticism, do let me know. It’s quite likely I’ve made a mistake somewhere here, small or large. :)</p>
+
+<h2 id="updates">Updates</h2>
+
+<ul>
+  <li>Tried to clarify SSL/TLS section</li>
+</ul>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

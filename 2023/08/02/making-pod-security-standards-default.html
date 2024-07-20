@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making Pod Security Standards the Default in Kubernetes | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Making Pod Security Standards the Default in Kubernetes">
+
+    
+    <meta name="twitter:description" content="<p>In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/making-pod-security-standards-default.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/making-pod-security-standards-default.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Making Pod Security Standards the Default in Kubernetes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Making Pod Security Standards the Default in Kubernetes</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-08-02T00:00:00-04:00">
+                August 02, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.</p>
+
+<p>We used to have something called Pod Security Policies that we could use to increase the level of security, like reduce some exposure, but that model was <a href="https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/">deprecated</a>. Now we have something called Pod Security Standards. These are a set of recommendations for securing pods and are managed by the Pod Security Admission Controller which is part of Kubernetes. However, by default, no Pod Security Standards are configured, enforcing, etc…but what if we want them enforcing by default on a newly created namespace?</p>
+
+<h2 id="one-model-mutating-requests-using-kyverno">One Model: Mutating Requests Using Kyverno</h2>
+
+<p>One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests in, what I think, is a pretty straight forward fashion. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.</p>
+
+<p>Another way to do this would be to set up a mutating admission controller. Probably other methods as well. (Let me know!!!)</p>
+
+<p>I like “mutating” things because it really means having Kubernetes do the work for us. I like making Kubernetes do work for me instead of the other way around. :)</p>
+
+<h3 id="install-kyverno">Install Kyverno</h3>
+
+<ul>
+  <li>Install Kyverno</li>
+</ul>
+
+<pre><code>$ helm install kyverno kyverno/kyverno -n kyverno --create-namespace
+NAME: kyverno
+LAST DEPLOYED: Wed Aug  2 07:47:18 2023
+NAMESPACE: kyverno
+STATUS: deployed
+REVISION: 1
+NOTES:
+Chart version: 3.0.4
+Kyverno version: v1.10.2
+
+Thank you for installing kyverno! Your release is named kyverno.
+
+The following components have been installed in your cluster:
+- CRDs
+- Admission controller
+- Reports controller
+- Cleanup controller
+- Background controller
+
+
+⚠️  WARNING: Setting the admission controller replica count below 3 means Kyverno is not running in high availability mode.
+
+💡 Note: There is a trade-off when deciding which approach to take regarding Namespace exclusions. Please see the d
+</code></pre>
+
+<p>Done.</p>
+
+<h3 id="make-the-restricted-pod-security-standard-the-default">Make the Restricted Pod Security Standard the Default</h3>
+
+<p>Kyverno can mutate a request to create a namespace and add a label to it. In this case we’re telling it to add the label <code>pod-security.kubernetes.io/enforce: restricted</code> so that the pod security admission controller will enforce the Pod Security Standards on the namespace, in this case it will “enforce” the “restricted” profile.</p>
+
+<h3 id="configuring-kyverno-to-add-the-label-to-namespaces">Configuring Kyverno to Add the Label to Namespaces</h3>
+
+<ul>
+  <li>Add the ClusterPolicy to Kyverno</li>
+</ul>
+
+<blockquote>
+  <p>NOTE: In the “real world” we’d probably want to exclude some namespaces, but, again, only new namespaces will be affected by this policy.</p>
+</blockquote>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-ns-label
+spec:
+  background: false
+  rules:
+  - name: add-ns-label
+    match:
+      resources:
+        kinds:
+        - Namespace
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            pod-security.kubernetes.io/enforce: restricted
+EOF
+</code></pre>
+
+<p>Verify:</p>
+
+<pre><code>$ k get clusterpolicy add-ns-label
+NAME       	BACKGROUND   VALIDATE ACTION   READY   AGE	MESSAGE
+add-ns-label   true     	Audit         	True	7h1m   Ready
+</code></pre>
+
+<p>Good.</p>
+
+<h2 id="create-a-namespace-and-test">Create a Namespace and Test</h2>
+
+<ul>
+  <li>Create a new namespace (the name doesn’t matter)</li>
+</ul>
+
+<pre><code>kubectl create ns enforcing
+</code></pre>
+
+<ul>
+  <li>Review that the label was added by Kyverno mutating the request for a namespace</li>
+</ul>
+
+<pre><code>$ k get ns enforcing -oyaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+	policies.kyverno.io/last-applied-patches: |
+  	add-ns-label.add-ns-label.kyverno.io: added /metadata/labels/pod-security.kubernetes.io~1enforce
+  creationTimestamp: "2023-08-02T11:50:14Z"
+  labels:
+	kubernetes.io/metadata.name: enforcing
+	pod-security.kubernetes.io/enforce: restricted
+  name: enforcing
+  resourceVersion: "11055"
+  uid: ce552efc-172e-4aa6-bc6d-13179f73372c
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+</code></pre>
+
+<p>This label was added by Kyverno. This means the pod security admission controller will enforce the restricted Pod Security Standard in this namespace.</p>
+
+<pre><code>pod-security.kubernetes.io/enforce: restricted
+</code></pre>
+
+<ul>
+  <li>Create an “insecure” pod in the namespace, just any old pod will do…</li>
+</ul>
+
+<pre><code>kubectl run nginx --image=nginx -n enforcing
+</code></pre>
+
+<p>E.g. output:</p>
+
+<pre><code>$ k run nginx --image=nginx -n enforcing
+Error from server (Forbidden): pods "nginx" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "nginx" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "nginx" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "nginx" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "nginx" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+</code></pre>
+
+<p>The pod was not allowed to be created because it did not meet the Pod Security Standard.</p>
+
+<ul>
+  <li>Create a pod that meets the Pod Security Standard for the “restricted” profile</li>
+</ul>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-meets-pod-security-standards
+  namespace: enforcing
+spec:
+  containers:
+  - image: nginxinc/nginx-unprivileged
+    name: nginx
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+EOF
+</code></pre>
+
+<p>Ok, that worked.</p>
+
+<pre><code>$ k get pods
+NAME                             	READY   STATUS	RESTARTS   AGE
+nginx-meets-pod-security-standards   1/1 	Running   0      	6h26m
+</code></pre>
+
+<ul>
+  <li>Connect to nginx running in the pod by port forwarding</li>
+</ul>
+
+<pre><code>kubectl port-forward pod/nginx-meets-pod-security-standards 8080:8080 -n enforcing
+</code></pre>
+
+<ul>
+  <li>Curl it</li>
+</ul>
+
+<pre><code>$ curl localhost:8080
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href="http://nginx.org/"&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href="http://nginx.com/"&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Works!</p>
+
+<h2 id="what-is-the-pod-security-standard-restricted-profile">What is the Pod Security Standard “Restricted” Profile?</h2>
+
+<p>The Pod Security Standard “restricted” profile is defined in the <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Pod Security Standards</a> and is, er, the most restrictive profile.</p>
+
+<ul>
+  <li>Limit types of volumes</li>
+  <li>Don’t run as root user</li>
+  <li>No privilege escalation</li>
+  <li>Seccomp profile set to “RuntimeDefault” or “Localhost”</li>
+  <li>Drop all capabilities except perhaps add <code>NET_BIND_SERVICE</code></li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>No one should run vanilla, default Kubernetes in production. No one should run root user pods. I mean we’re mostly running web services here, they can listen on port 8080 and don’t really need much in the way of permissions. Definitely our namespaces should have security limitations that are only reduced later on if they need to be.</p>
+
+<p>Using Kyverno to do this is one way, there are others.</p>
+
+<p>Ultimately, the way to secure general purpose CPUs is to limit what the workloads can do with them.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="[https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/">https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/</a></li>
+  <li><a href="[https://kubernetes.io/docs/concepts/security/pod-security-standards/">https://kubernetes.io/docs/concepts/security/pod-security-standards/</a></li>
+  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/">https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/</a></li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

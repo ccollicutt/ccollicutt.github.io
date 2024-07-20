@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Cloud Gateway - Animal Rescue | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Spring Cloud Gateway - Animal Rescue">
+
+    
+    <meta name="twitter:description" content="<p><a href="https://github.com/spring-cloud-services-samples/animal-rescue">Animal Rescue</a> is a sample application used to demonstrate Spring Cloud Gateway, and Single Sign On, in the <a href="https://tanzu.vmware.com/application-service">Tanzu Application Service</a> (TAS), which is based on Cloud Foundry. This particular demo has an an automated script that will deploy the microservice based Animal Rescue into TAS, and in doing so will setup a Spring Cloud Gateway (SCG) instance via a service in TAS. By using marketplace services in TAS developers get easy-to-use self-service access to single sign on and a API gateway.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><a href="https://github.com/spring-cloud-services-samples/animal-rescue">Animal Rescue</a> is a sample application used to demonstrate Spring Cloud Gateway, and Single Sign On, in the <a href="https://tanzu.vmware.com/application-service">Tanzu Application Service</a> (TAS), which is based on Cloud Foundry. This particular demo has an an automated script that will deploy the microservice based Animal Rescue into TAS, and in doing so will setup a Spring Cloud Gateway (SCG) instance via a service in TAS. By using marketplace services in TAS developers get easy-to-use self-service access to single sign on and a API gateway.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/spring-clould-gateway-animal-rescue.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/spring-clould-gateway-animal-rescue.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Spring Cloud Gateway - Animal Rescue" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/05/06/spring-clould-gateway-animal-rescue.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Spring Cloud Gateway - Animal Rescue</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-05-06T00:00:00-04:00">
+                May 06, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><a href="https://github.com/spring-cloud-services-samples/animal-rescue">Animal Rescue</a> is a sample application used to demonstrate Spring Cloud Gateway, and Single Sign On, in the <a href="https://tanzu.vmware.com/application-service">Tanzu Application Service</a> (TAS), which is based on Cloud Foundry. This particular demo has an an automated script that will deploy the microservice based Animal Rescue into TAS, and in doing so will setup a Spring Cloud Gateway (SCG) instance via a service in TAS. By using marketplace services in TAS developers get easy-to-use self-service access to single sign on and a API gateway.</p>
+
+<h2 id="whats-an-api-gateway">What’s an API gateway?</h2>
+
+<blockquote>
+  <p>An API gateway takes all API calls from clients, then routes them to the appropriate microservice with request routing, composition, and protocol translation. Typically it handles a request by invoking multiple microservices and aggregating the results, to determine the best path. It can translate between web protocols and web‑unfriendly protocols that are used internally. - <a href="https://www.nginx.com/learn/api-gateway/s">Nginx</a></p>
+</blockquote>
+
+<p>An API gateway organizes client requests to various microservices. It can manipulate those requests, aggregate multiple microservices together, translate protocols, etc, etc. They can consolidate authorization and other cross cutting concerns. Gateways can also help reduce the number of calls clients need to make, i.e. they don’t need to understand every backend service, just enough to talk to the gateway. Another useful thing about gateways is that they can add in security. They can kind of do anything, and frankly that is what often makes them confusing, especially to people like myself who don’t write code 100% of the time.</p>
+
+<h2 id="spring-cloud-gateway">Spring Cloud Gateway</h2>
+
+<p>If you write apps in Java there is a very high likelihood that you also are using the Spring Framework and Spring has it’s own gateway, thoughtfully called  <a href="https://tanzu.vmware.com/content/blog/microservices-essentials-getting-started-with-spring-cloud-gateway">Spring Cloud Gateway</a>.</p>
+
+<p>Spring Cloud (API?) Gateway:</p>
+
+<blockquote>
+  <p>This project provides a library for building an API Gateway on top of Spring MVC. Spring Cloud Gateway aims to provide a simple, yet effective way to route to APIs and provide cross cutting concerns to them such as: security, monitoring/metrics, and resiliency. - <a href="https://spring.io/projects/spring-cloud-gateway">Spring Cloud docs</a></p>
+</blockquote>
+
+<p>A few key features of SCG:</p>
+
+<ul>
+  <li>Built on Spring Framework 5, Project Reactor and Spring Boot 2.0</li>
+  <li>Able to match routes on any request attribute</li>
+  <li>Predicates and filters are specific to routes</li>
+  <li>Hystrix Circuit Breaker integration</li>
+  <li>Spring Cloud DiscoveryClient integration</li>
+  <li>Easy to write Predicates and Filters</li>
+  <li>Request Rate Limiting</li>
+  <li>Path Rewriting</li>
+</ul>
+
+<h2 id="install-spring-gateway-tile-into-tanzu-application-service">Install Spring Gateway Tile into Tanzu Application Service</h2>
+
+<p>In order to deploy Animal Rescue with Spring Cloud Gateway, we need the Spring Cloud Gateway Tile deployed in Tanzu Application Service (TAS). This is not the only way to use Spring Cloud Gateway, but it’s how Animal Rescue is expecting to access it, at least in terms of the bash script that comes with the repo that can initialize and deploy the app. So in this example, SCG will be a service managed by the platform (TAS) that can be bound to an application.</p>
+
+<p>The Single Sign On Tile is also required and in my case I enabled it for all orgs.</p>
+
+<p><img src="/img/animal-rescue4.jpg" alt="img" /></p>
+
+<p>There are a few tiles installed in this TAS instance, but the important ones for Animal Rescue are the SSO and SCG tiles.</p>
+
+<h2 id="deploy-animal-rescue-to-tanzu-application-service">Deploy Animal Rescue to Tanzu Application Service</h2>
+
+<p>Clone the repo:</p>
+
+<pre><code>git clone https://github.com/spring-cloud-services-samples/animal-rescue
+cd animal-rescue
+</code></pre>
+
+<p>Login to TAS:</p>
+
+<pre><code>cf login -a api.sys.yourdomain.com
+</code></pre>
+
+<p>I needed make, g++, jq installed, there may be other requirements my Linux box already had installed.</p>
+
+<pre><code>sudo apt install make g++ jq -y
+</code></pre>
+
+<p>Run the init script.</p>
+
+<pre><code>$ ./scripts/cf_deploy.sh init
+npm WARN prepare removing existing node_modules/ before installation
+
+&gt; core-js@2.6.11 postinstall /home/curtis/working/animal-rescue/frontend/node_modules/babel-runtime/node_modules/core-js
+&gt; node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+&gt; https://opencollective.com/core-js 
+&gt; https://www.patreon.com/zloirock 
+SNIP!
+BUILD SUCCESSFUL in 3s
+4 actionable tasks: 4 executed
+</code></pre>
+
+<p>Then deploy to TAS:</p>
+
+<pre><code>$ ./scripts/cf_deploy.sh deploy
+Service instance gateway-demo not found
+Gateway service does not exist, creating...
+Creating service instance gateway-demo in org java / space spring-cloud-gateway as admin...
+OK
+
+Create in progress. Use 'cf services' or 'cf service gateway-demo' to check operation status.
+Waiting for service instance to be ready...
+SNIP!
+&lt; X-Content-Type-Options: nosniff
+&lt; X-Frame-Options: DENY
+&lt; X-Vcap-Request-Id: 8c89f955-543f-4b3a-7e51-a9b42b1fbe31
+&lt; X-Xss-Protection: 1 ; mode=block
+&lt; Date: Thu, 07 May 2020 15:37:11 GMT
+&lt; 
+* Connection #0 to host gateway-demo.apps.sf.vsphere.local left intact
+
+=====
+Bound app animal-rescue-backend route configuration update response status: 204
+</code></pre>
+
+<p>Now I’ve got the frontend and backend apps running on internal urls.</p>
+
+<pre><code>$ cf apps
+Getting apps in org java / space spring-cloud-gateway as admin...
+OK
+
+name                     requested state   instances   memory   disk   urls
+animal-rescue-backend    started           1/1         1G       1G     animal-rescue-backend.apps.internal
+animal-rescue-frontend   started           1/1         1G       1G     animal-rescue-frontend.apps.internal
+</code></pre>
+
+<p>I can access that via the browser, login, and adopt animals.</p>
+
+<p>If I use the gateway org I can see the instance of the gateway service:</p>
+
+<pre><code>$ cf apps
+Getting apps in org p-spring-cloud-gateway-service / space fb081bbf-fa60-4a40-bbb0-4f4c47ab2c0a as admin...
+OK
+
+name      requested state   instances   memory   disk   urls
+gateway   started           1/1         1G       1G     gateway-demo.apps.sf.vsphere.local, gateway-fb081bbf-fa60-4a40-bbb0-4f4c47ab2c0a.apps.internal
+</code></pre>
+
+<p>And then that can be accessed in the browser. The login is via SSO.</p>
+
+<p>Look at all those cute animals up for microservice adoption.</p>
+
+<p><img src="/img/animal-rescue.jpg" alt="img" /></p>
+
+<h2 id="spring-cloud-gateway-configuration-and-service">Spring Cloud Gateway Configuration and Service</h2>
+
+<p>In the apps GUI, we can see the SCG instance.</p>
+
+<p><img src="/img/animal-rescue2.jpg" alt="scg" /></p>
+
+<p>And the corresponding routes.</p>
+
+<p><img src="/img/animal-rescue3.jpg" alt="routes" /></p>
+
+<p>Note that the route is internal.</p>
+
+<p>It’s worthwhile to have a look at the <a href="https://docs.pivotal.io/spring-cloud-gateway/1-0/configuring-routes.html">routes</a> that are configured in the gateway, frontend, and backend gateway-config.json files.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>API gateways can be really helpful with microservices. There are several solutions out there, but one of the most flexible is Spring Cloud Gateway. It’s absolutely worth looking at and is a serious competitor and will be improving, and innovating, rapidly. In this particular example, SCG was deployed and managed as a service in TAS, which makes it extremely easy for developers to use, but it can also be managed in other manners.</p>
+
+<p>This post only barely scratches the surface of what Spring Cloud Gateway can do, and in combination with TAS. There’s tons of <a href="https://spring.io/guides/gs/gateway/">docs</a> out there on getting started with SCG.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

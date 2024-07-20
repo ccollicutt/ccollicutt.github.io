@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiftacular - Install OpenStack Swift on Ubuntu Trusty 14.04 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Swiftacular - Install OpenStack Swift on Ubuntu Trusty 14.04">
+
+    
+    <meta name="twitter:description" content="<p>Recently I updated my <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> project to support Ubuntu Trusty 14.04 and OpenStack Icehouse (which Trusty comes with by default).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently I updated my <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> project to support Ubuntu Trusty 14.04 and OpenStack Icehouse (which Trusty comes with by default).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/swiftacultar-ubuntu-trusty-1404.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/swiftacultar-ubuntu-trusty-1404.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Swiftacular - Install OpenStack Swift on Ubuntu Trusty 14.04" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/05/24/swiftacultar-ubuntu-trusty-1404.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Swiftacular - Install OpenStack Swift on Ubuntu Trusty 14.04</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-05-24T00:00:00-04:00">
+                May 24, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently I updated my <a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> project to support Ubuntu Trusty 14.04 and OpenStack Icehouse (which Trusty comes with by default).</p>
+
+<p>Swiftacular installs OpenStack Swift using Ansible on CentOS 6.5, Ubuntu 12.04, and Ubuntu 14.04. In CentOS and Ubuntu 12.04 it installs the OpenStack Havana release of Swift, and in Ubuntu 14.04 it uses Icehouse.</p>
+
+<p>This post shows how to install OpenStack Swift Icehouse on Ubuntu 14.04 using Swiftacular.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>Below are the tools required:</p>
+
+<ul>
+  <li>Git</li>
+  <li>Ansible</li>
+  <li>Virtualbox</li>
+  <li>Vagrant</li>
+  <li>Internet connection</li>
+  <li>Enough resources for seven virtual machines</li>
+</ul>
+
+<p>Note that I’ve only tested this on OSX Mavericks. But it should be quite easy to adapt to any situation if you don’t mind changing some IP addresses in the group_vars/all file. Another goal I have is to have examples of getting Swiftacular up and running using libvirt + kvm, AWS, Digital Ocean, and other IaaS providers.</p>
+
+<h2 id="setup-openstack-swift-using-swiftacular">Setup OpenStack Swift using Swiftacular</h2>
+
+<p>First, clone the Swiftacular repository and add some libraries. (I should put this all into a make file–it’s on the todo list!)</p>
+
+<pre>
+<code>curtis$ git clone https://github.com/ccollicutt/swiftacular.git
+curtis$ cd swiftacular
+curtis$ git clone https://github.com/openstack-ansible/openstack-ansible-modules library/openstack
+</code>
+</pre>
+
+<p>Edit the Vagrantfile so that the Ubuntu Trusty box will be used instead of the default Precise box.</p>
+
+<pre>
+<code>curtis$ grep config.vm.box Vagrantfile 
+    config.vm.box = "trusty64"
+    config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+    #config.vm.box = "centos65"
+    #config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
+    #config.vm.box = "precise64"
+    #config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+</code>
+</pre>
+
+<p>Now we can use vagrant to start the virtual machines.</p>
+
+<pre>
+<code>curtis$ vagrant up
+SNIP!
+   swift-storage-03: Warning: Remote connection disconnect. Retrying...
+==&gt; swift-storage-03: Machine booted and ready!
+==&gt; swift-storage-03: Checking for guest additions in VM...
+==&gt; swift-storage-03: Setting hostname...
+==&gt; swift-storage-03: Configuring and enabling network interfaces...
+==&gt; swift-storage-03: Mounting shared folders...
+    swift-storage-03: /vagrant =&gt; /Users/curtis/working/swiftacular
+curtis$ # done booting all the vms
+</code>
+</pre>
+
+<p>Test connectivity using ansible ping.</p>
+
+<pre>
+<code>curtis$ ansible -m ping all
+192.168.100.100 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.50 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.30 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.200 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.20 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.201 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.202 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+</code>
+</pre>
+
+<p>Good.</p>
+
+<p>We can also use vagrant status to list all the vms. Their names should describe what they do fairly well. The lbssl server is the ssl termination point for the swift proxy. It’s not doing any load balancing in this situation, but could if there were multiple proxy servers.</p>
+
+<pre>
+<code>curtis$ vagrant status
+SNIP!
+swift-package-cache-01    running (virtualbox)
+swift-keystone-01         running (virtualbox)
+swift-lbssl-01            running (virtualbox)
+swift-proxy-01            running (virtualbox)
+swift-storage-01          running (virtualbox)
+swift-storage-02          running (virtualbox)
+swift-storage-03          running (virtualbox)
+</code>
+</pre>
+
+<p>Now lets set the ansible variables. The default variables should work, but the passwords are set to CHANGEME.</p>
+
+<pre>
+<code>curtis$ cp group_vars/all.example group_vars/all
+curtis$ # edit the group_vars/all file 
+</code>
+</pre>
+
+<p>Finally we can run ansible-playbook and install OpenStack Swift Icehouse across all the nodes. Depending on your internet connection and disk performance this should only take five or six minutes.</p>
+
+<pre>
+<code>curtis$ ansible-playbook site.yml 
+
+PLAY [package_cache] ********************************************************** 
+
+GATHERING FACTS *************************************************************** 
+ok: [192.168.100.20]
+SNIP!
+PLAY RECAP ******************************************************************** 
+192.168.100.100            : ok=28   changed=22   unreachable=0    failed=0   
+192.168.100.20             : ok=22   changed=16   unreachable=0    failed=0   
+192.168.100.200            : ok=46   changed=37   unreachable=0    failed=0   
+192.168.100.201            : ok=46   changed=37   unreachable=0    failed=0   
+192.168.100.202            : ok=46   changed=37   unreachable=0    failed=0   
+192.168.100.30             : ok=20   changed=17   unreachable=0    failed=0   
+192.168.100.50             : ok=43   changed=36   unreachable=0    failed=0  
+</code>
+</pre>
+
+<p>If I ssh into the proxy server I can see what OpenStack packages have been installed.</p>
+
+<pre>
+<code>curtis$ vagrant ssh swift-proxy-01
+SNIP!
+vagrant@swift-proxy-01:~$ dpkg --list | grep swift | tr -s " " | cut -f 2,3 -d " "
+python-swift 1.13.1-0ubuntu1
+python-swiftclient 1:2.0.3-0ubuntu1
+swift 1.13.1-0ubuntu1
+swift-object 1.13.1-0ubuntu1
+swift-plugin-s3 1.7-3
+swift-proxy 1.13.1-0ubuntu1
+</code>
+</pre>
+
+<p>Same with the storage servers.</p>
+
+<pre>
+<code>vagrant@swift-storage-01:~$ dpkg --list | grep swift | tr -s " " | cut -f 2,3 -d " "
+python-swift 1.13.1-0ubuntu1
+python-swiftclient 1:2.0.3-0ubuntu1
+swift 1.13.1-0ubuntu1
+swift-account 1.13.1-0ubuntu1
+swift-container 1.13.1-0ubuntu1
+swift-object 1.13.1-0ubuntu1
+</code>
+</pre>
+
+<p>Now we can run a small test by uploading a text file into a container. I usually run this from the package cache server that is created as part of Swiftacular. But you can run the swift command line client from anywhere that the proxy server can be accessed from.</p>
+
+<pre>
+<code>vagrant@swift-package-cache-01:~$ . testrc 
+vagrant@swift-package-cache-01:~$ echo "swift is cool" &gt; swift.txt
+vagrant@swift-package-cache-01:~$ swift upload test_container swift.txt 
+swift.txt
+vagrant@swift-package-cache-01:~$ swift list
+test_container
+vagrant@swift-package-cache-01:~$ swift list test_container
+swift.txt
+</code>
+</pre>
+
+<p>At this point we have a nice little working test cluster of OpenStack Swift Icehouse release running on Ubuntu Trusty 14.04.</p>
+
+<p>There is still a lot of work I would like to do with Swiftacular. If you have any suggestions, comments, or criticisms please do let me know in the comments or enter an issue into the github repository.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

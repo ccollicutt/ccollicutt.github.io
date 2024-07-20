@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converting VMWare Windows images to OpenStack with virt-v2v | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Converting VMWare Windows images to OpenStack with virt-v2v">
+
+    
+    <meta name="twitter:description" content="<p>As I’ve mentioned in previous posts, I’m currently working on a project that uses Apache VCL to provide university students with the ability to remotely login to a virtual machine and use specialized software to complete their classwork–a virtual computer lab if you will.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>As I’ve mentioned in previous posts, I’m currently working on a project that uses Apache VCL to provide university students with the ability to remotely login to a virtual machine and use specialized software to complete their classwork–a virtual computer lab if you will.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/converting-vmware-windows-to-openstack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/converting-vmware-windows-to-openstack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Converting VMWare Windows images to OpenStack with virt-v2v" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/11/26/converting-vmware-windows-to-openstack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Converting VMWare Windows images to OpenStack with virt-v2v</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-11-26T00:00:00-05:00">
+                November 26, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>As I’ve mentioned in previous posts, I’m currently working on a project that uses Apache VCL to provide university students with the ability to remotely login to a virtual machine and use specialized software to complete their classwork–a virtual computer lab if you will.</p>
+
+<p>Because we are moving off our current backend to OpenStack, we need to convert Windows images from VMWare to something that will work in OpenStack/KVM.</p>
+
+<h2 id="note-about-windows">Note about Windows…</h2>
+
+<p>Let me note that I am not a “windows guy”–I haven’t really used windows in the last 10 years. Because I have usually been employed as a Unix/Linux admin, I’ve always either ran OpenBSD, Linux, or OSX on my desktop, and literally never had to work with Windows. Until now of course. ;)</p>
+
+<h2 id="moving-the-backend-to-openstack">Moving the backend to OpenStack</h2>
+
+<p>Currently we are in the process of moving the backend of our VCL system from a VMWare ESXi based cluster to OpenStack (Essex to be precise.) There are a lot of reasons for this move, and I won’t get into them here.</p>
+
+<p>Unfortunately you can’t just take an ESXi image and drop it into OpenStack and have it work. Certainly we can actually import the image into glance, as vmdk images are supported, but the OS on the image will not have the virtio drivers for disk and network installed, drivers that OpenStack uses by default.</p>
+
+<p>Neither is it as easy as just installing the drivers into the OS image while it’s running in ESXi. While I believe it’s possible to do this in Windows Server 2008, I don’t believe you can install drivers into Windows 7 without having the actual “hardware” accessible to the image (please correct me if I’m wrong–I’d love to hear that I am), not without some registry and other hacks outside of my purview.</p>
+
+<p>This means we needed to find a way to convert the images from ones that work in VMWare ESXi, to ones that will work in OpenStack + KVM, preferably a way that doesn’t require me to learn anything about the Windows registry. ;)</p>
+
+<h2 id="virt-v2v-to-the-rescue">virt-v2v to the rescue</h2>
+
+<p>Fortunately RedHat provides a system called virt-v2v. This allows the cross-conversion of images for several different types of hypervisors.</p>
+
+<p>The main things I found out about RedHat and virt-v2v are:</p>
+
+<h1 id="some-of-the-packages-are-not-available-in-centos-or-at-least-i-couldnt-find-them-so-you-need-a-redhat-license-if-you-are-converting-images-from-vmware-esxi-to-openstack-then-you-probably-have-enough-money-in-the-project-to-buy-a-redhat-license-">Some of the packages are not available in CentOS, or at least I couldn’t find them, so you need a RedHat license. If you are converting images from VMWare ESXi to OpenStack, then you probably have enough money in the project to buy a RedHat license. ;)</h1>
+<h1 id="it-doesnt-work-in-a-virtual-machineit-expects-hardware-virtualization-so-you-need-a-hardware-server-you-dont-need-much-just-enough-to-support-hardware-virtualization-with-kvm">It doesn’t work in a virtual machine–it expects hardware virtualization, so you need a hardware server. You don’t need much, just enough to support hardware virtualization with KVM.</h1>
+<h1 id="currently-and-this-might-change-you-have-to-download-the-image-from-the-esxi-server-each-time-you-try-a-conversion-so-if-it-takes-a-long-time-to-download-then-the-conversion-will-also-take-a-long-time-to-finish">Currently, and this might change, you have to download the image from the ESXi server each time you try a conversion, so if it takes a long time to download, then the conversion will also take a long time to finish.</h1>
+
+<p>I’m sure most of the above could be changed with a bit of Perl hacking, but as far as I can tell, without changing any of the RedHat code you do need to meet those requirements.</p>
+
+<p>Note–RedHat has pretty good <a href="https://access.redhat.com/knowledge/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Desktops/2.2/html/Administration_Guide/virt-v2v-scripts.html">documentation</a> on the subject, a few quick google searches will tell you as much as I know. :)</p>
+
+<h2 id="installing-virt-v2v">Installing virt-v2v</h2>
+
+<p>First, as I’ve mentioned, you need a hardware server with RedHat Enterprise 6.x on it.</p>
+
+<pre>
+<code>[root@localhost ~]# cat /etc/redhat-release 
+Red Hat Enterprise Linux Server release 6.3 (Santiago)
+</code>
+</pre>
+
+<p>It needs to be registered with the RedHat Network and have the “RHEL Server Supplementary” and “RHEL V2VWIN” channels enabled, as per the below image.</p>
+
+<p><img src="https://raw.github.com/ccollicutt/ccollicutt.github.com/master/img/rhn_entitlements_virt-v2v.png" alt="" /></p>
+
+<pre>
+<code>[root@localhost ~]# yum repolist
+Loaded plugins: product-id, rhnplugin, subscription-manager
+Updating certificate-based repositories.
+Unable to read consumer identity
+repo id       repo name     status
+rhel-x86_64-server-6 Red Hat Enterprise Linux Server (v. 6 for 64-bit x86_64) 8,712
+rhel-x86_64-server-supplementary-6 RHEL Server Supplementary (v. 6 64-bit x86_64) 311
+rhel-x86_64-server-v2vwin-6 RHEL V2VWIN (v. 6 for 64-bit x86_64) 2
+repolist: 9,025
+</code>
+</pre>
+
+<p>Once those are configured, install the following packages.</p>
+
+<pre>
+<code>[root@localhost ~]# yum install virt-v2v virtio-win libguestfs-winsupport libvirt
+</code>
+</pre>
+
+<p>And then reboot.</p>
+
+<p>Once the server has rebooted, start libvirtd if it isn’t already.</p>
+
+<pre>
+<code>[root@localhost ~]# service libvirtd start
+</code>
+</pre>
+
+<p>Next we need to add a storage pool to libvirt. In this example, just because of the way RHEL defaulted my temporary install, we have a huge /home/images directory in which to put the converted images.</p>
+
+<pre>
+<code>[root@localhost ~]# df -h /home
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup-lv_home
+                      5.4T  235G  4.9T   5% /home
+[root@localhost ~]# cat pool.xml 
+  <pool type="dir">
+        <name>virtimages</name>
+        <target>
+          <path>/home/images</path>
+        </target>
+      </pool>
+</code>
+</pre>
+
+<p>Using that pool.xml file, we’ll configure the pool.</p>
+
+<pre>
+<code>[root@localhost ~]# virsh pool-create --file pool.xml
+[root@localhost ~]# virsh pool-list
+Name                 State      Autostart 
+-----------------------------------------
+virtimages           active     no        
+
+</code>
+</pre>
+
+<p>Finally, we configure a .netrc file, obviously entering the proper ESXi host, login, and password.</p>
+
+<pre>
+<code>[root@localhost ~]# cat .netrc
+machine <esxi host=""> login <login> password <password>
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Now we can run virt-v2v!
+
+<pre>
+<code>[root@localhost images]# virt-v2v -ic esx://<esxi host="">/?no_verify=1 -o libvirt
+ -os virtimages <exsi vm="" name="">
+<esxi vm="" name="">: 100% [========================]D 0h51m16s
+virt-v2v: WARNING: No mapping found for bridge interface public in config file. 
+The converted guest may not start until its network interface is updated.
+virt-v2v: <esxi vm="" name=""> configured with virtio drivers.
+&lt;/code&gt;
+&lt;/pre&gt;
+
+I don't worry about the "No mapping" message.
+
+## Bring that image into OpenStack
+
+Now that we have an image in the libvirt pool we configured, it's time to:
+
+# Convert the raw/vmdk image to qcow2 using "qemu-img".
+# Import the converted qcow2 image into glance.
+# Boot the image once and manually login to finish off virt-v2v's "firstboot" scripts. This means you need an admin login to the image.
+# "Set" the hardware, make any changes to the instance such as updating and the like.
+# Shut down the instance.
+# Create a new OpenStack image from that instance using _nova image-create_.
+# Then delete the original image, and instance booted from it, if you want. It's not much use except for archival purposes.
+# Boot a new instance from the new image, the one created with _nova image-create_, just to make sure it all works out Ok.
+
+At this point you should, hopefully, have a working Windows image, one that was converted from VMWare ESXi!
+
+</esxi></esxi></exsi></esxi></code></pre></password></login></esxi></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

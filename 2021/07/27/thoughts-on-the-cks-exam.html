@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thoughts on the Certified Kubernetes Security Specialist Certification Exam | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Thoughts on the Certified Kubernetes Security Specialist Certification Exam">
+
+    
+    <meta name="twitter:description" content="<p>First, let me say that Kubernetes is an extremely challenging piece of software to use, and, of course, to secure. I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> and Kubernetes is a massive part of our portfolio–in fact it’s the base of almost everything we do. But it’s just the base. You have to add so much on top of Kubernetes to make it useful, and even more to secure it. But enough about that, let’s talk about the Certified Kubernetes Security Specialist Certification (CKS).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>First, let me say that Kubernetes is an extremely challenging piece of software to use, and, of course, to secure. I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> and Kubernetes is a massive part of our portfolio–in fact it’s the base of almost everything we do. But it’s just the base. You have to add so much on top of Kubernetes to make it useful, and even more to secure it. But enough about that, let’s talk about the Certified Kubernetes Security Specialist Certification (CKS).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/thoughts-on-the-cks-exam.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/thoughts-on-the-cks-exam.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Thoughts on the Certified Kubernetes Security Specialist Certification Exam" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2021/07/27/thoughts-on-the-cks-exam.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Thoughts on the Certified Kubernetes Security Specialist Certification Exam</h1>
+        <p class="text-gray-600">
+            <time datetime="2021-07-27T00:00:00-04:00">
+                July 27, 2021
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>First, let me say that Kubernetes is an extremely challenging piece of software to use, and, of course, to secure. I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> and Kubernetes is a massive part of our portfolio–in fact it’s the base of almost everything we do. But it’s just the base. You have to add so much on top of Kubernetes to make it useful, and even more to secure it. But enough about that, let’s talk about the Certified Kubernetes Security Specialist Certification (CKS).</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<ul>
+  <li>It took me two tries to pass the test, but I didn’t do much extra in terms of studying for the second try. I think the first try just made me realize how fast I have to be to complete the test…get fast!</li>
+  <li>I used the <a href="https://kodekloud.com/courses/certified-kubernetes-security-specialist-cks/">Kodecloud</a> and the <a href="https://www.udemy.com/share/103O5A2@Pm5gfWJgc1MLcUdHC3ZNfj1tYFc=/">Kim Wüstkamp Udemy course</a></li>
+  <li>At this time, when you register for the test you get access to two practice test sessions on <a href="https://killer.sh/">killer.sh</a>. When I initially registered, I did not have access to these from the CNCF, instead they came with the Udemy course. But right now, when you register for the test, you get two sessions on killer.sh “for free”. These are extremely helpful, as are any practical lab or questions available.</li>
+  <li>I find practical labs and tests to be far the most valuable…videos and other training is not as useful</li>
+  <li>If I went through this again I would use the Kodecloud class which has great automated labs, and the two killer.sh practice test sessions</li>
+</ul>
+
+<h2 id="some-areas-to-focus-on">Some Areas to Focus On</h2>
+
+<p>Ultimately, in my opinion, the CKS test is–not surprisingly–a test taking exercise. Two hours is not a lot of time to answer all the questions, and it’s really about speed and confidence.</p>
+
+<ul>
+  <li>Ensure you are following all the exam requirements, eg. make sure your desk is clear so you aren’t spending time worrying about that just before writing the exam. Note that these requirements can and will change over time, so double check prior to your own exam!</li>
+  <li>Use the copy buttons on the test to copy text instead of typing it out (in case you make a typo)</li>
+  <li>Be great with the command line, know how to edit with vi–the better you are at vi the faster you will finish questions</li>
+  <li>Know how to setup kubectl completion and use it</li>
+  <li>Copy initial configs to something like .orig in case you break the deployment</li>
+  <li>Go through all the questions and use the notepad to note the number, points, and area of the question</li>
+  <li>Do the highest value easiest questions first, moving onto lower value, etc etc</li>
+  <li>Get all of the questions you easily can answer first, then move onto the harder questions, but don’t leave any high points questions unanswered (if you do, you aren’t fast enough yet)</li>
+  <li>Double check that you have answered all of the question components before moving on (and if you have time at the end, come back and check)</li>
+  <li>Don’t worry if you don’t pass the first time, you have a second try, and will do much better in the second exam</li>
+</ul>
+
+<h2 id="from-a-technical-perspective">From a Technical Perspective</h2>
+
+<p><strong>Kubernetes Services</strong></p>
+
+<p>Know how to:</p>
+
+<ul>
+  <li>configure the Kubernetes manifests of the major k8s services, such as kube-apiserver</li>
+  <li>find the docs for the settings that are available for each service</li>
+  <li>configure the services manifests and how they restart</li>
+  <li>find the logs for the containers</li>
+  <li>use admission controllers, especially ImagePolicyWebhook</li>
+</ul>
+
+<p><strong>Kuberentes Config</strong></p>
+
+<p>Know how to:</p>
+
+<ul>
+  <li>create network policies</li>
+  <li>copy an running pod/deploy config and edit it</li>
+</ul>
+
+<p><strong>3rd Party Tools</strong></p>
+
+<p>Know how to:</p>
+
+<ul>
+  <li>deploy an apparmor profile</li>
+  <li>configure a pod to use an app armor profile</li>
+  <li>add rules quickly to Falco and start falco</li>
+  <li>implement security best practices on Dockerfiles</li>
+  <li>use the docs for these services, but ONLY the ones that have been listed as OK to use during the CKS exam</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Note that I have only listed a <em>few</em> major things on this blog post. To pass the test you’d need to know a lot more, and all of that is covered in the documentation for the test, at least in terms of what is on the test.</p>
+
+<p>I personally believe that practical..er…practice is most important in terms of studying for the test. Watch fewer videos and instead practice <em>actually implementing</em> practical technical things as quickly as possible via the command line and the vi editor. Make up your own questions if you have to. This is why Killer.sh and the Kodecloud labs and practice tests are so useful. I would spend at least 75% of my time, if not more, on practical hands on (timed if possible) labs and questions as opposed to standard video training. But…this is just my opinion.</p>
+
+<p>Best of luck on your exam!</p>
+
+<h2 id="ps">PS.</h2>
+
+<p>I put up my <a href="https://github.com/ccollicutt/cks-bookmarks">CKS Chrome bookmarks</a> in github, but again, the allowed sites may change over time so please double check.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

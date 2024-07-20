@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Tools to Manage Kubernetes Manifests | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="20 Tools to Manage Kubernetes Manifests">
+
+    
+    <meta name="twitter:description" content="<blockquote>
+  <p>Of all the problems we have confronted, the ones over which the most brainpower, ink, and code have been spilled are related to managing <em>configurations.</em> - <a href="https://queue.acm.org/detail.cfm?id=2898444">Brendan Burns, Brian Grant, David Oppenheimer, Eric Brewer, and John Wilkes, Google Inc</a>.</p>
+</blockquote>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<blockquote>
+  <p>Of all the problems we have confronted, the ones over which the most brainpower, ink, and code have been spilled are related to managing <em>configurations.</em> - <a href="https://queue.acm.org/detail.cfm?id=2898444">Brendan Burns, Brian Grant, David Oppenheimer, Eric Brewer, and John Wilkes, Google Inc</a>.</p>
+</blockquote>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/20-tools-to-manage-kubernetes-maniftest.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/20-tools-to-manage-kubernetes-maniftest.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="20 Tools to Manage Kubernetes Manifests" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/02/16/20-tools-to-manage-kubernetes-maniftest.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">20 Tools to Manage Kubernetes Manifests</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-02-16T00:00:00-05:00">
+                February 16, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <blockquote>
+  <p>Of all the problems we have confronted, the ones over which the most brainpower, ink, and code have been spilled are related to managing <em>configurations.</em> - <a href="https://queue.acm.org/detail.cfm?id=2898444">Brendan Burns, Brian Grant, David Oppenheimer, Eric Brewer, and John Wilkes, Google Inc</a>.</p>
+</blockquote>
+
+<p>I spent some time tracking down tools that seem like they manage K8S manifests. I found…many. This list of ~20 only touches the surface of a bubbling ecosystem.</p>
+
+<p>Some of these tools are large and some are small. Some are simple templating systems, others can manage the entire life cycle of applications across many kinds of infrastructure. Some are libraries for programming languages, others complete languages themselves. A few are mature projects, some brand new, and others side projects of a single developer. The breadth and variance is quite amazing!</p>
+
+<p>Please note that these are in no specific order, and neither does that order represent any kind of preference. Further, some of these tools, eg. Ksonnet, are no longer maintained. <em>This is not an exhaustive list!</em></p>
+
+<p>But let’s get to it.</p>
+
+<h3 id="20-tools-and-2-bonus-tools"><em><strong>20 Tools (and 2 Bonus Tools)</strong></em></h3>
+
+<ol>
+  <li>
+    <p><a href="https://jsonnet.org/"><strong>Jsonnet</strong></a> - A data templating language. Used by many tools in this list behind the scenes. Powerful, but sometimes with great power comes with great, uh, cognitive load?</p>
+  </li>
+  <li>
+    <p><a href="https://jkcfg.github.io/#/"><strong>jk</strong></a> - <em>“jk generates all your JSON, YAML and arbitrary text configuration files. With a little luck, you will not have to touch a YAML file again. Ever.”</em> Bold claim!</p>
+  </li>
+  <li>
+    <p><a href="https://cuelang.org/"><strong>Cue</strong></a> - Apparently created by the person (or persons) behind the Borg Configuration Language (BCL) used at Google. <em>“CUE is an open source language, with a rich set APIs and tooling, for defining, generating, and validating all kinds of data: configuration, APIs, database schemas, code, … you name it.”</em></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/cruise-automation/isopod"><strong>Isopod</strong></a>  - <em>“Isopod is an expressive DSL framework for Kubernetes configuration. Without intermediate YAML artifacts, Isopod renders Kubernetes objects as <a href="https://github.com/protocolbuffers/protobuf"></a></em> <a href="https://github.com/protocolbuffers/protobuf"><em>Protocol Buffers</em></a><em>, so they are strongly typed and consumed directly by the Kubernetes API.”</em> Interesting that they skip the YAML. Based on <a href="https://github.com/stripe/skycfg"></a> <a href="https://github.com/stripe/skycfg">Skycfg</a>. A good intro <a href="https://medium.com/cruise/isopod-5ad7c565d350"></a> <a href="https://medium.com/cruise/isopod-5ad7c565d350">here</a>.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/brendandburns/configula"><strong>Configula</strong></a> - “<em>Configula is inspired by the <a href="https://reactjs.org/docs/introducing-jsx.html"></a></em> <a href="https://reactjs.org/docs/introducing-jsx.html"><em>JSX language</em></a> <em>in <a href="https://reactjs.org/"></a></em> <a href="https://reactjs.org/"><em>React</em></a> <em>that combines Javascript and HTML tags. Configula defines a similar pattern for Python and YAML (for now).”</em> Joe Beda went over it in <a href="https://www.youtube.com/watch?v=efUAuOxR-ro"></a> <a href="https://www.youtube.com/watch?v=efUAuOxR-ro">TKIG</a>. It’s a Go utility that calls out to Python!</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/google/ko"><strong>Ko</strong></a> - Point your K8S container image to a Go repo. It will build a container image using the binary generated from the repo. Does not use Docker to actually build the image. Wraps kubectl in some places.</p>
+  </li>
+  <li>
+    <p><a href="https://kustomize.io/"><strong>Kustomize</strong></a> - <em>“kustomize targets kubernetes; it understands and can patch kubernetes style API objects. It’s like make, in that what it does is declared in a file, and it’s like sed, in that it emits edited text.”</em> I’ve seen Kustomize used a few times; seems popular. Also it is conveniently part of Kubectl.</p>
+  </li>
+  <li>
+    <p><a href="https://helm.sh/"><strong>Helm</strong></a> <strong>-</strong> Helm is likely the most commonly used tool on this list. Recently Helm 3 was released removing its main criticism regarding the use of the tiller server.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/bitnami/kubecfg"><strong>Kubecfg</strong></a> - <em>“Kubecfg relies heavily on <a href="http://jsonnet.org/"></a></em> <a href="http://jsonnet.org/"><em>jsonnet</em></a> <em>to describe Kubernetes resources, and is really just a thin Kubernetes-specific wrapper around jsonnet evaluation.”</em> ‘nuff said!</p>
+  </li>
+  <li>
+    <p><a href="https://ksonnet.io/"><strong>Ksonnet</strong></a> - Ksonnet is no longer worked on, but I think it’s a good thing to have in this list as a reminder ensure that not every tool will stick around. Experimentation will continue in this space.</p>
+  </li>
+  <li>
+    <p><a href="https://k14s.io/"><strong>k14s</strong></a> - <em>“We believe that working with <a href="https://content.pivotal.io/blog/introducing-k14s-kubernetes-tools-simple-and-composable-tools-for-application-deployment"></a></em> <em><a href="https://content.pivotal.io/blog/introducing-k14s-kubernetes-tools-simple-and-composable-tools-for-application-deployment">simple, single-purpose tools</a></em> <em>that easily interoperate with one another results in a better, workflow compared to the all-in-one approach chosen by Helm. We have found this approach to be easier to understand and debug.”</em> k14s is developed by people at Pivotal (where I work, now part of VMware). There’s a <a href="https://www.youtube.com/watch?v=CSglwNTQiYg"></a> <a href="https://www.youtube.com/watch?v=CSglwNTQiYg">TGIK</a> episode on it. The Unix philosophy has done us all well over time, perhaps this is the right approach to managing K8S manifests.</p>
+  </li>
+  <li>
+    <p><a href="https://www.pulumi.com/"><strong>Pulumi</strong></a>  - Allows you to use “real” programming languages to manipulate cloud environments, including K8S. Interestingly supports multiple programming languages. <em>“Define infrastructure in JavaScript, TypeScript, Python, Go, or any .NET language, including C#, F#, and VB.”</em></p>
+  </li>
+  <li>
+    <p><a href="https://ballerina.io/"><strong>Ballerina</strong></a>  - _    “Ballerina is an open source programming language and platform for cloud-era application programmers to easily write software that just works.”_ Write code in the ballerina language that can build K8S objects for you.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/deepmind/kapitan"><strong>Kapitan</strong></a> - <em>“…a tool to manage complex deployments using jsonnet, kadet (alpha) and jinja2. Use Kapitan to manage your Kubernetes manifests, your documentation, your Terraform configuration or even simplify your scripts.”</em> Another tool wrapping jsonnet.</p>
+  </li>
+  <li>
+    <p><a href="https://docs.ansible.com/ansible/latest/modules/k8s_module.html"><strong>Ansible</strong></a>  - Ansible can manage K8S objects and is also fairly good a templating, allowing you to easily write custom inventories and pull in metadata about your systems. Simple and powerful.</p>
+  </li>
+  <li>
+    <p><a href="https://www.terraform.io/docs/providers/kubernetes/index.html"><strong>Terraform</strong></a>  - Terraform can manage K8S objects. Read about why one would use Terraform and K8S <a href="https://www.hashicorp.com/blog/managing-kubernetes-applications-with-hashicorp-terraform/"></a> <a href="https://www.hashicorp.com/blog/managing-kubernetes-applications-with-hashicorp-terraform/">here</a>. The fact that Terraform is declarative would likely be a good match for K8S.</p>
+  </li>
+  <li>
+    <p><a href="https://www.habitat.sh/"><strong>Habitat</strong></a>  - <em>“Chef Habitat is open source software that creates platform-independent build artifacts and provides built-in deployment and management capabilities.”</em> I can’t do Habitat any justice here, other than to say my impression is that it is a can manage applications on several different types of platforms, of which K8S is one.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/GoogleContainerTools/skaffold"><strong>Skaffold</strong></a>  - <em>“Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters.”</em> Aimed at the inner dev loop, but can deploy to K8S as well.</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/smartive/kuby/"><strong>Kuby</strong></a> - <em>“</em><a href="https://blog.smartive.ch/how-we-simplified-our-kubernetes-deployments-with-an-alternative-to-helm-aafedcfd4cce"><em>Kuby</em></a> <em>wraps kubectl and provides commands like kuby prepare to replace variables in YAML or kuby deploy to prepare and apply deployments to Kubernetes.”</em></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/dekorateio/dekorate"><strong>Dekorate</strong></a> - <em>“The are tons of tools out there for scaffolding / generating kubernetes manifests. Sooner or later these manifests will require customization…Using external tools, is often too generic. Using build tool extensions and adding configuration via xml, groovy etc is a step forward, but still not optimal.”</em> I think that introduction is apropos given this list. Keep manifest generation as part of your development/language environment, makes sense to me especially if your org is focussed on one language, i.e. Java.</p>
+  </li>
+  <li>
+    <p><strong>BONUS: <a href="https://github.com/pivotal/kpack"></a></strong> <a href="https://github.com/pivotal/kpack"><strong>Kpack</strong></a> - A system for using Cloud Native <a href="https://buildpacks.io/"></a> <a href="https://buildpacks.io/">buildpacks.</a> Buildpacks are a more structured, opinionated way to build container images. Joe Beda ran a <a href="https://www.youtube.com/watch?v=4zkRX9PSJ5k&amp;feature=youtu.be"></a> <a href="https://www.youtube.com/watch?v=4zkRX9PSJ5k&amp;feature=youtu.be">TKIG</a> on it. The pack command line can be used to build local images, or kpack can be deployed into K8S and will automatically rebuild images when code is changed in repositories. Kpack is focussed in image builds, not so much on generating manifests. (NOTE: Built by Pivotal, now VMware.)</p>
+  </li>
+  <li>
+    <p><strong>BONUS: Any programming language</strong> - I wanted to make sure that I put this on the list, as ultimately any language that can print to standard out could be used to generate K8S manifests. Of course, we would likely not want to do something that simplistic, but I don’t think it’s far fetched or unreasonable to use templates and a generic programming language to build manifests.</p>
+  </li>
+</ol>
+
+<h3 id="conclusion"><strong>Conclusion</strong></h3>
+
+<p>As I mentioned at the start this list is random–the order it comes in was the order I discovered them on the Internet. (Certainly there are some cool tools I have missed, let me know in the comments.)</p>
+
+<p>Ultimately, these tools provide some kind of templating, wrapper, abstraction, or other convenience around K8S, though, of course, they all do it in different ways and chose different approaches. The differences and value of these individual tools is typically under the surface layer and thus require some investigation to truly understand when, or when not, to use them.</p>
+
+<p>With so many options it does seem like the market (made up of us technical people–the people who want and use K8S) hasn’t decided how exactly to use Kubernetes. A “silver bullet” approach probably won’t work. Will one of these tools win out? A handful? Will we get something new? Or does Platform as a Service still make the most sense? Time will tell. Until then, we all have to perform some due diligence and keep innovating.</p>
+
+<hr />
+
+<p>PS. Once I found ~20 I stopped. A few minutes later I found <a href="https://docs.google.com/spreadsheets/d/1FCgqz1Ci7_VCz_wdh8vBitZ3giBtac_H8SBw4uxnrsE/edit#gid=0">this spreadsheet</a> with 120 similar tools!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

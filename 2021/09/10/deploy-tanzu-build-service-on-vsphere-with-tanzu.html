@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy Tanzu Build Service into a vSphere with Tanzu Workload Cluster | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Deploy Tanzu Build Service into a vSphere with Tanzu Workload Cluster">
+
+    
+    <meta name="twitter:description" content="<p>In this post we’ll deploy the <a href="https://tanzu.vmware.com/build-service">Tanzu Build Service</a> (TBS) onto a <a href="https://www.vmware.com/ca/products/vsphere/vsphere-with-tanzu.html">vSphere with Tanzu</a> Kubernetes workload cluster.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In this post we’ll deploy the <a href="https://tanzu.vmware.com/build-service">Tanzu Build Service</a> (TBS) onto a <a href="https://www.vmware.com/ca/products/vsphere/vsphere-with-tanzu.html">vSphere with Tanzu</a> Kubernetes workload cluster.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/deploy-tanzu-build-service-on-vsphere-with-tanzu.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/deploy-tanzu-build-service-on-vsphere-with-tanzu.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Deploy Tanzu Build Service into a vSphere with Tanzu Workload Cluster" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2021/09/10/deploy-tanzu-build-service-on-vsphere-with-tanzu.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Deploy Tanzu Build Service into a vSphere with Tanzu Workload Cluster</h1>
+        <p class="text-gray-600">
+            <time datetime="2021-09-10T00:00:00-04:00">
+                September 10, 2021
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In this post we’ll deploy the <a href="https://tanzu.vmware.com/build-service">Tanzu Build Service</a> (TBS) onto a <a href="https://www.vmware.com/ca/products/vsphere/vsphere-with-tanzu.html">vSphere with Tanzu</a> Kubernetes workload cluster.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<ol>
+  <li>vSphere with Tanzu deployed and enough resources for the TBS workload cluster</li>
+  <li>A container image repository, such as Harbor, or Azure CR, etc, any compliant registry should do</li>
+  <li>A place to run commands (a linux host is best IMHO)</li>
+</ol>
+
+<h2 id="about-the-tanzu-build-service">About the Tanzu Build Service</h2>
+
+<p>There are several ways to build container images (not just Dockerfiles).</p>
+
+<p>The Tanzu Build Service makes building container images easier, ie. no Dockerfiles, and provides an image control plane, which I believe Kubernetes sorely misses.</p>
+
+<blockquote>
+  <p>You have plenty of options for building containers from source code. Yet many require significant effort and ongoing maintenance to use them properly. And it can be hard to enforce security and operational rigor at scale. Tanzu Build Service offers the convenience of these workflows with more automation and the governance capabilities enterprises need. - <a href="https://tanzu.vmware.com/build-service">Tanzu Build Service</a></p>
+</blockquote>
+
+<h2 id="about-vsphere-with-tanzu">About vSphere with Tanzu</h2>
+
+<p>vSphere with Tanzu, what you may remember as being called “Project Pacific”, is Kubernetes lifecycle management built directly into vSphere.</p>
+
+<p>VMware believes that you will have many Kubernetes clusters. Not just one or two or three. So, the main feature of vSphere with Tanzu is to manage the lifecycle of <strong>many</strong> Kubernetes clusters. The way we do this is by extending Kubernetes with something called Cluster API.</p>
+
+<p>This means, and this can be confusing, that when we want to create a Kubernetes cluster, we actually ask a specialized Kubernetes cluster–the Supervisor Cluster–to do this for us. So we use Kubernetes to deploy Kubernetes. Make sense?</p>
+
+<p>Once the Supervisor Cluster has created our “workload” cluster (and there will be many of these), we can then talk directly to that new workload cluster via its own, completely separate, Kubernetes API.</p>
+
+<p>So, to create a workload cluster we ask the supervisor cluster. Once the workload cluster is created, we talk to it to deploy applications into it. Simple enough once you get the hang of it.</p>
+
+<h2 id="deploy-a-vsphere-with-tanzu-workload-cluster-for-tbs">Deploy a vSphere with Tanzu Workload Cluster for TBS</h2>
+
+<p>We need a cluster to install TBS into. That cluster needs a couple of things:</p>
+
+<ol>
+  <li>Enough room on the nodes to build images - the default 16Gi disk size is not enough, we need a cluster with at least 50Gi on each node for the image builds that TBS does</li>
+  <li>The right RBAC configuration and permissions</li>
+</ol>
+
+<p>First, let’s deploy the cluster with larger disks.</p>
+
+<h3 id="login-to-the-supervisor-cluster">Login to the Supervisor Cluster</h3>
+
+<p>Ensure you are logged into your vSphere with Tanzu supervisor Kubernetes cluster.</p>
+
+<blockquote>
+  <p>NOTE: I alias <code>kubectl</code> to <code>k</code>.</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: I’m logging into my vSphere with Tanzu supervisor cluster found at 10.0.14.128…yours will of course be different. I’m also using the admin account.</p>
+</blockquote>
+
+<pre><code>$ k vsphere login --server 10.0.14.128 --insecure-skip-tls-verify -u administrator@vsphere.local
+
+Password:
+Logged in successfully.
+
+You have access to the following contexts:
+   10.0.14.128
+   dev-team-purple
+   dev-team-tundra
+   test-ns
+
+If the context you wish to use is not in this list, you may need to try
+logging in again later, or contact your cluster administrator.
+
+To change context, use `kubectl config use-context &lt;workload name&gt;`
+</code></pre>
+
+<p>Now that I’m logged in, I have access to the supervisor cluster as well as the supervisor namespaces. So there will be several kube contexts set up.</p>
+
+<blockquote>
+  <p>NOTE: I’m using kubectx aliased to kc instead of <code>kubectl config use-context</code> just because it’s what I always use and I find it easier, IMHO.</p>
+</blockquote>
+
+<pre><code>$ kc
+10.0.14.128
+dev-team-purple
+dev-team-tundra
+test-ns
+</code></pre>
+
+<h3 id="switch-the-desired-supervisor-namespace">Switch the Desired Supervisor Namespace</h3>
+
+<p>I’m going to deploy the TBS workload cluster into the <code>dev-team-tundra</code> supervisor namespace. So I’ll switch to that config.</p>
+
+<pre><code>$ kc dev-team-tundra
+✔ Switched to context "dev-team-tundra".
+</code></pre>
+
+<h3 id="deploy-a-workload-cluster">Deploy a Workload Cluster</h3>
+
+<p>Set up a few variables that will be dependent on how you have set up the supervisor cluster, storage, etc.</p>
+
+<blockquote>
+  <p>NOTE: Change these to fit your environment.</p>
+</blockquote>
+
+<pre><code>export NS=dev-team-tundra # the supervisor namespaces to use
+export SC=k8s-storage-policy # the storage policy configured when enabling workload management
+export CLUSTER_NAME="tanzu-build-service-cluster2" # the name of the workload cluster
+export K8S_VERSION=v1.20.7 # version of k8s to deploy
+</code></pre>
+
+<p>Now I’ll deploy a cluster to that supervisor namespace.</p>
+
+<blockquote>
+  <p>NOTE: This will deploy the cluster! Note the pipe at the top of the command to <code>kubectl</code>.</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: Notice that in the YAML here we define a separate disk for /var/lib/containerd that is 50Gi in size. We need this for TBS.</p>
+</blockquote>
+
+<pre><code>cat &lt;&lt; EOF | kubectl create -f-
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name: $CLUSTER_NAME
+  namespace: $NS
+spec:
+  distribution:
+    version: $K8S_VERSION
+  topology:
+    controlPlane:
+      count: 1
+      class: best-effort-medium
+      storageClass: $SC
+      volumes:
+        - name: etcd
+          mountPath: /var/lib/etcd
+          capacity:
+            storage: 4Gi
+    workers:
+      count: 3
+      class: best-effort-medium
+      storageClass: $SC
+      volumes:
+        - name: containerd
+          mountPath: /var/lib/containerd
+          capacity:
+            storage: 50Gi
+  settings:
+    network:
+      services:
+        cidrBlocks: ["10.96.0.0/16"]
+      pods:
+        cidrBlocks: ["172.20.0.0/16"]
+    storage:
+      classes: ["$SC"]
+      defaultClass: $SC
+EOF
+</code></pre>
+
+<p>After a few minutes the cluster will be deployed. (How long depends on the speed of your infrastructure, but say 15-20 minutes.)</p>
+
+<h3 id="login-to-the-workload-cluster">Login to the Workload Cluster</h3>
+
+<p>Once the new, completely separate k8s cluster is created, we use the <code>kubectl vsphere</code> plugin to login to the workload cluster, switch to that kube context, and from this point on we’ll talk to that cluster’s Kubernetes API, not the supervisor cluster.</p>
+
+<pre><code>k vsphere login --server 10.0.14.128 --insecure-skip-tls-verify -u administrator@vsphere.local\
+  --tanzu-kubernetes-cluster-name $CLUSTER_NAME \
+  --tanzu-kubernetes-cluster-namespace $NS
+</code></pre>
+
+<p>Once that command completes you’ll have a new context for the workload cluster.</p>
+
+<pre><code>$ kc
+10.0.14.128
+dev-team-purple
+dev-team-tundra
+tanzu-build-service-cluster2
+test-ns
+</code></pre>
+
+<p>Use that context to deploy TBS into that cluster.</p>
+
+<pre><code>$ kc tanzu-build-service-cluster2
+✔ Switched to context "tanzu-build-service-cluster2".
+</code></pre>
+
+<p>Once switched to taht config, we can talk to that cluster’s API, and for example, get the nodes that make up the cluster. There should be one control plane and three worker nodes, unless you adjusted the cluster YAML.</p>
+
+<pre><code>$ k get nodes
+NAME                                                         STATUS   ROLES                  AGE   VERSION
+tanzu-build-service-cluster2-control-plane-86zx9             Ready    control-plane,master   39m   v1.20.7+vmware.1
+tanzu-build-service-cluster2-workers-268cf-9686cf46d-4ccdh   Ready    &lt;none&gt;                 33m   v1.20.7+vmware.1
+tanzu-build-service-cluster2-workers-268cf-9686cf46d-6sznb   Ready    &lt;none&gt;                 33m   v1.20.7+vmware.1
+tanzu-build-service-cluster2-workers-268cf-9686cf46d-d7nld   Ready    &lt;none&gt;                 33m   v1.20.7+vmware.1
+</code></pre>
+
+<h3 id="configure-pod-security-policy">Configure Pod Security Policy</h3>
+
+<p>The supervisor cluster configures some default security which we will need to further configure to allow TBS to deploy into this cluster.</p>
+
+<blockquote>
+  <p>NOTE: Ensure your kubeconfig is set to the workload cluster, not the supervisor cluster!</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: This RBAC is good for a PoC, it’s likely that we would want to customize this for production.</p>
+</blockquote>
+
+<pre><code>cat &lt;&lt; EOF | kubectl create -f-
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: psp:privileged
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - vmware-system-privileged
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: all:psp:privileged
+roleRef:
+  kind: ClusterRole
+  name: psp:privileged
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: Group
+  name: system:serviceaccounts
+  apiGroup: rbac.authorization.k8s.io
+EOF
+</code></pre>
+
+<p>Now we can deploy TBS!</p>
+
+<h2 id="install-tbs">Install TBS</h2>
+
+<blockquote>
+  <p>NOTE: Best to read through the <a href="https://docs.pivotal.io/build-service/1-2/installing.html">official docs</a> before proceeding.</p>
+</blockquote>
+
+<p>I’m going to skip through the requirements section and assume that you have read through it and downloaded all the correct pieces which are laid out in the above docs. There are quite a few pieces so please do read carefully. There are some activities you have to do, like downloading CLIs and accepting EULAs and the like.</p>
+
+<p>At this point we can start the deployment.</p>
+
+<h3 id="copy-tbs-images-to-your-container-image-repository">Copy TBS Images to Your Container Image Repository</h3>
+
+<p>We use <code>imgpkg</code> to copy the TBS images to your repo.</p>
+
+<p>First set up a variable.</p>
+
+<pre><code>export IMAGE_REPO="&lt;your.repo/some-repo&gt;"
+</code></pre>
+
+<p>In my example I’m using the Azure container registry. (Usually I would use Harbor, but I thought I’d try something different today.)</p>
+
+<blockquote>
+  <p>NOTE: This will take a few minutes to complete as we are copying several images from one repo to another.</p>
+</blockquote>
+
+<pre><code>imgpkg copy -b "registry.pivotal.io/build-service/bundle:1.2.2" --to-repo $IMAGE_REPO
+</code></pre>
+
+<p>Now pull this image locally and unpack in /tmp.</p>
+
+<pre><code>imgpkg pull -b $IMAGE_REPO:1.2.2 -o /tmp/bundle
+</code></pre>
+
+<p>There should be files in <code>/tmp/bundle</code>.</p>
+
+<pre><code>$ find /tmp/bundle/ | head
+/tmp/bundle/
+/tmp/bundle/values.yaml
+/tmp/bundle/.imgpkg
+/tmp/bundle/.imgpkg/images.yml
+/tmp/bundle/config
+/tmp/bundle/config/values.star
+/tmp/bundle/config/ca-cert.yaml
+/tmp/bundle/config/pod-webhook
+/tmp/bundle/config/pod-webhook/rbac.yaml
+/tmp/bundle/config/pod-webhook/deployment.yaml
+</code></pre>
+
+<h2 id="deploy-tbs">Deploy TBS</h2>
+
+<p>And we can now deploy.</p>
+
+<p>First configure some variables.</p>
+
+<blockquote>
+  <p>NOTE: Please configure all of these variables. They should not be empty.</p>
+</blockquote>
+
+<pre><code>export IMAGE_REPO="" # where we we copied the TBS images to
+export REGISTRY_USER=""
+export REGISTRY_PASS=""
+export TANZUNET_USER=""
+export TANZUNET_PASS=""
+</code></pre>
+
+<p>Next, perform the deployment.</p>
+
+<blockquote>
+  <p>NOTE: We’re using various Carvel tools to perform the deployment. <code>ytt</code>, <code>kbld</code>, and <code>kapp</code> to name a few.</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: If you supply the tanzunet user/password TBS will be configured to automatically talk to tanzunet and download the latest buildpacks so that you will always be automatically up to date. If they aren’t supplied, that’s fine, you’ll just be in charge of updating the underlying buildpacks. When supplying this information the last step in the deployment can take a while because it’s downloading and uploading images into your registry.</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: Of course this assumes that you’ve followed the TBS docs and downloaded all the Carvel CLIs.</p>
+</blockquote>
+
+<pre><code>ytt -f /tmp/bundle/values.yaml \
+    -f /tmp/bundle/config/ \
+    -v docker_repository="$IMAGE_REPO" \
+    -v docker_username="$REGISTRY_USER" \
+    -v docker_password="$REGISTRY_PASS" \
+    -v tanzunet_username="$TANZUNET_USER" \
+    -v tanzunet_password="$TANZUNET_PASS" \
+    | kbld -f /tmp/bundle/.imgpkg/images.yml -f- \
+    | kapp deploy -a tanzu-build-service -f- -y
+</code></pre>
+
+<p>This will take a few minutes to deploy.</p>
+
+<p>Once it completes we can run <code>kapp list</code>.</p>
+
+<pre><code>$ kapp list
+Target cluster 'https://10.0.14.140:6443' (nodes: tanzu-build-service-cluster2-control-plane-86zx9, 3+)
+
+Apps in namespace 'default'
+
+Name                 Namespaces                      Lcs   Lca  
+tanzu-build-service  (cluster),build-service,kpack,  true  2m  
+                     stacks-operator-system                  
+
+Lcs: Last Change Successful
+Lca: Last Change Age
+
+1 apps
+
+Succeeded
+</code></pre>
+
+<p>And would want to see <code>succeeded</code>.</p>
+
+<h2 id="build-an-image">Build an Image</h2>
+
+<p>With TBS installed we have extended the Kubernetes API so that it knows how to build container images. So to build images we’ll talk to the Kubernetes API using YAML, just like any other Kubernetes object such as pods.</p>
+
+<h3 id="configure-container-image-repository-secret">Configure Container Image Repository Secret</h3>
+
+<p>Decide what namespace you want to have the images in. I’ll use the default namespace.</p>
+
+<blockquote>
+  <p>NOTE: I use <a href="https://github.com/ahmetb/kubectx">kubectx</a> to manage my clusters and namespaces.</p>
+</blockquote>
+
+<pre><code>$ kn default
+✔ Active namespace is "default"
+</code></pre>
+
+<p>Create a repository secret. TBS needs to have write access to the container image repo to push the resulting image to.</p>
+
+<p>Use <code>kp</code> to do that.</p>
+
+<blockquote>
+  <p>NOTE: <code>kp</code> is the kpack CLI. It’s a way to use TBS and kpack. But it’s important to understand that kp just talks to Kubernetes, we can get the same information out of Kubernetes using kubectl as we can with <code>kp</code>.</p>
+</blockquote>
+
+<p>Set up some vars.</p>
+
+<pre><code>export SECRET_NAME=""
+export REGISTRY=""
+export REGISTRY_USER=""
+export REGISTRY_PASS=""
+</code></pre>
+
+<p>Now create the secret.</p>
+
+<pre><code>kp secret create $SECRET_NAME --registry $REGISTRY --registry-user $REGISTRY_USER --namespace default
+</code></pre>
+
+<p>You will have to enter the registry password on the command line.</p>
+
+<p>Now that we have TBS installed and a repo secret configured we can build an image.</p>
+
+<h3 id="build-spring-petclinic">Build Spring Petclinic</h3>
+
+<p>We need to ensure we’re going to upload the newly built image to the right container image repository. This repository is where you want the resulting image to end up!</p>
+
+<pre><code>export REPOSITORY="your.container.image.repo/some-repo"
+</code></pre>
+
+<p>Now ask TBS to build the image by using the <code>kp</code> CLI.</p>
+
+<blockquote>
+  <p>NOTE: This will take a while on the first build as all the maven dependencies will get downloaded…Spring Petclinic is written in Java.</p>
+</blockquote>
+
+<pre><code>[ -z "$REGISTRY" ] &amp;&amp; echo "ERROR: Please set REGISTRY variable" || \
+  kp image create spring-petclinic-image \
+  --tag $REGISTRY/spring-petclinic-image \
+  --git https://github.com/ccollicutt-tanzu/spring-petclinic \
+  --git-revision main
+</code></pre>
+
+<p>We can watch logs of the build with:</p>
+
+<pre><code>kp build logs spring-petclinic-image
+</code></pre>
+
+<p>Once the build is completed, the image will be pushed to the <code>$REPOSITORY</code>.</p>
+
+<blockquote>
+  <p>NOTE: I’ve pushed to Azure’s container image registry, yours would be different. <a href="https://goharbor.io/">Harbor</a> is a great choice as well. I just wanted to try out Azure’s registry.</p>
+</blockquote>
+
+<pre><code>$ az acr repository list --name $MY_REPO --output table | grep spring-petclinic-image
+build-service/spring-petclinic-image
+</code></pre>
+
+<p>From here on we can magically build almost any application just from the artifacts or source, without having to write and manage a dockerfile. Amazing!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Ultimately this post was about setting up a vSphere with Tanzu cluster that can accept a TBS deployment to it. We didn’t spend much time on <strong>why</strong> you’d want to use TBS. For that I’d suggest watching a <a href="https://www.youtube.com/watch?v=IMmUjUjBzes">video</a>.</p>
+
+<h2 id="hat-tip">Hat Tip</h2>
+
+<ul>
+  <li>This <a href="https://github.com/papivot/deploy-TBS-on-vSphere7">repo</a></li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

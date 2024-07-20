@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Collections/Groups in Bash Scripts | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Command Collections/Groups in Bash Scripts">
+
+    
+    <meta name="twitter:description" content="<p>I work a lot with Kubernetes. So I need to have Kubernetes clusters. The way that I have usually been building them is with the Killer.sh training courses scripts, which can be found here:</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I work a lot with Kubernetes. So I need to have Kubernetes clusters. The way that I have usually been building them is with the Killer.sh training courses scripts, which can be found here:</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/using-bash-script-command-groups.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/using-bash-script-command-groups.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Command Collections/Groups in Bash Scripts" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/03/31/using-bash-script-command-groups.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Command Collections/Groups in Bash Scripts</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-03-31T00:00:00-04:00">
+                March 31, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I work a lot with Kubernetes. So I need to have Kubernetes clusters. The way that I have usually been building them is with the Killer.sh training courses scripts, which can be found here:</p>
+
+<ul>
+  <li><a href="https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest">https://github.com/killer-sh/cks-course-environment/tree/master/cluster-setup/latest</a></li>
+</ul>
+
+<p>I decided to take that script and update it and change it around a bit for my liking.</p>
+
+<p>The changes I’ve made can be found here:</p>
+
+<ul>
+  <li><a href="https://github.com/ccollicutt/install-kubernetes">https://github.com/ccollicutt/install-kubernetes</a></li>
+</ul>
+
+<p>One of the things I found that I liked when writing this script is Bash command grouping.</p>
+
+<h2 id="bash-command-collectionsgrouping">Bash Command Collections/Grouping</h2>
+
+<p>From the <a href="https://www.gnu.org/software/bash/manual/html_node/Command-Grouping.html">bash docs</a>:</p>
+
+<blockquote>
+  <p>Bash provides two ways to group a list of commands to be executed as a unit. When commands are grouped, redirections may be applied to the entire command list. For example, the output of all the commands in the list may be redirected to a single stream.</p>
+</blockquote>
+
+<pre><code>{ list; }
+</code></pre>
+
+<p>Here’s a snippet of the install Kubernetes script where I use a grouping.</p>
+
+<pre><code>...
+### install containerd from binary over apt installed version
+function install_containerd(){
+  echo "Installing containerd"
+  {
+    wget -q https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
+    tar xvf containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
+    systemctl stop containerd
+    mv bin/* /usr/bin
+    rm -rf bin containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz
+    systemctl unmask containerd
+    systemctl start containerd
+  } 3&gt;&amp;2 &gt;&gt; $LOG_FILE 2&gt;&amp;1
+}
+...
+</code></pre>
+
+<p>It’s a function that downloads the latest binary of containerd and installs it. Hacky, sure. But it’s what I want to have done.</p>
+
+<p>But what you can see here is that all the commands are wrapped into a command group, ie. with the <code>{}</code>. This is useful because I can control the output of those commands from one place, where you see the:</p>
+
+<pre><code> } 3&gt;&amp;2 &gt;&gt; $LOG_FILE 2&gt;&amp;1
+</code></pre>
+
+<p>(More on the above later.)</p>
+
+<p>Basically I can take all the output of all the commands, there’s seven commands, and manage it with one command, as opposed to tagging a redirection onto each line. I think this is really useful. To create functions and put related commands into command groups. It made it a lot easier for me to understand this script.</p>
+
+<h2 id="outputting-to-a-log-file">Outputting to a log file</h2>
+
+<p>What I wanted to do is have the script have a verbose flag. If that’s not set, then don’t output anything other than some basic information, like the below.</p>
+
+<pre><code>sudo ./install-kubernetes.sh -c -v
+Starting install...
+==&gt; Logging all output to /tmp/install-kubernetes-XceXczAOta/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+...
+Configuring control plane node...
+Initializing the Kubernetes control plane
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&gt; Installing Calico tigera-operator
+==&gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&gt; Nodes are ready
+Install complete!
+</code></pre>
+
+<p>But if verbose is set, then show all the output of all the commands.</p>
+
+<pre><code>...
+### Log file ###
+E: Unable to locate package kubelet
+E: Unable to locate package kubeadm
+E: Can't select installed nor candidate version from package 'kubectl' as it has neither of them
+E: Unable to locate package kubernetes-cni
+E: No packages found
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages will be REMOVED:
+  moby-buildx moby-cli moby-compose moby-containerd moby-engine moby-runc
+0 upgraded, 0 newly installed, 6 to remove and 13 not upgraded.
+After this operation, 401 MB disk space will be freed.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+...
+</code></pre>
+
+<p>Do that that, I sent all the output to a log file. And if verbose is set, then cat the contents of that file.</p>
+
+<p>But I ran into one problem where because I was doing the command grouping, I couldn’t cat the file.</p>
+
+<p>The error I received:</p>
+
+<pre><code>cat: $LOG_FILE: input file is output file
+</code></pre>
+
+<p>So I went to stack overflow and ended up here:</p>
+
+<ul>
+  <li><a href="https://unix.stackexchange.com/questions/448323/trap-and-collect-script-output-input-file-is-output-file-error">https://unix.stackexchange.com/questions/448323/trap-and-collect-script-output-input-file-is-output-file-error</a></li>
+</ul>
+
+<p>Which gives a fix:</p>
+
+<pre><code>#!/bin/bash
+...
+exit_handler () {
+    # 1. Make standard output be the original standard error
+    #    (by using fd 3, which is a copy of original fd 2)
+    # 2. Do the same with standard error
+    # 3. Close fd 3.
+    exec &gt;&amp;3 2&gt;&amp;3 3&gt;&amp;-
+    cat "$logfile"
+    curl "some URL" -F "file=@$logfile"
+}
+...
+</code></pre>
+
+<p>This kind of hackery makes the script a bit harder to understand, but I still want it to work this way. Have functions, in the functions group commands, and then output the log file if the verbose flag is set. This definitely accomplishes that goal.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I’m a big fan of command grouping and functions in Bash. Of course Bash has been used like this for years, decades, longer…I’m not sure why I haven’t used them as much before. I still have a lot to learn about Bash. The learning never stops. For whatever reason, I really like this particular model of scripting.</p>
+
+<ul>
+  <li>Use functions</li>
+  <li>Put commands into command groups</li>
+  <li>Control the output into a log file</li>
+  <li>If verbose flag, cat the log file</li>
+</ul>
+
+<p>Let me know if you have any thoughts on this model. Thanks!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

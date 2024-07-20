@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes">
+
+    
+    <meta name="twitter:description" content="<p>You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/pid-one-gunicorn-kubernetes.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/pid-one-gunicorn-kubernetes.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-09-02T00:00:00-04:00">
+                September 02, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.</p>
+
+<p>OK, maybe this isn’t “you” it’s “me”. I was trying to build a demo app that showed crash loop backoff in Kubernetes, and I couldn’t get the container to crash.</p>
+
+<p>Because pid 1 is Gunicorn, not the app itself.</p>
+
+<pre><code>$ k exec -it crash-only-backend-0 -- cat /proc/1/status | grep "Name\|Uid"
+Name:	gunicorn-run.sh
+Uid:	10001	10001	10001	10001
+</code></pre>
+
+<p>Let’s dive into why this happens and the importance of understanding PID 1 in containers.</p>
+
+<h2 id="what-the-heck-is-gunicorn">What the Heck is Gunicorn?</h2>
+
+<blockquote>
+  <p>Gunicorn ‘Green Unicorn’ is a Python WSGI HTTP Server for UNIX. It’s a pre-fork worker model. The Gunicorn server is broadly compatible with various web frameworks, simply implemented, light on server resources, and fairly speedy. - <a href="https://gunicorn.org/">Gunicorn</a></p>
+</blockquote>
+
+<h2 id="what-is-a-wsgi-server">What is a WSGI Server?</h2>
+
+<p>A Web Server Gateway Interface (WSGI) server is a web server that implements the WSGI specification. The WSGI specification is a Python standard that describes how a web server communicates with web applications.</p>
+
+<h2 id="why-does-flask-need-a-wsgi-server">Why Does Flask Need a WSGI Server?</h2>
+
+<p>Flask is a micro web framework written in Python. It’s a WSGI application, which means it needs a WSGI server to run.</p>
+
+<blockquote>
+  <p>“Production” means “not development”, which applies whether you’re serving your application publicly to millions of users or privately / locally to a single user. Do not use the development server when deploying to production. It is intended for use only during local development. It is not designed to be particularly secure, stable, or efficient. - <a href="https://flask.palletsprojects.com/en/2.3.x/deploying/">Flask</a></p>
+</blockquote>
+
+<h2 id="what-is-pid-1">What is PID 1?</h2>
+
+<p>In Unix-based systems, the process ID (PID) is a unique identifier for each running process. The very first process that runs when a system starts is the init system with PID 1. The init process has special responsibilities, like adopting orphaned child processes and handling signals.</p>
+
+<h2 id="gunicorn-and-pid-1">Gunicorn and PID 1</h2>
+
+<p>When you run a container, the process you start becomes PID 1 within that container. In the case of my Flask app, Gunicorn becomes PID 1.</p>
+
+<blockquote>
+  <p>NOTE: Why not just run Flask directly? Because Gunicorn is a production-ready WSGI server that can handle multiple requests concurrently.</p>
+</blockquote>
+
+<h2 id="why-doesnt-the-container-crash">Why Doesn’t the Container Crash?</h2>
+
+<p>If your Flask app (running as a Gunicorn worker) crashes, Gunicorn will restart it. Since Gunicorn is PID 1, the container will remain alive as long as Gunicorn does. This is why even if your Flask app encounters an error, the container doesn’t crash.</p>
+
+<h2 id="the-kubernetes-perspective">The Kubernetes Perspective</h2>
+
+<p>In a Kubernetes cluster, the kubelet will restart a crashed container based on its <code>restartPolicy</code>. However, if Gunicorn (PID 1) doesn’t crash, Kubernetes won’t know that something is wrong with your Flask app. This could lead to misleading metrics and logs, affecting your debugging and monitoring efforts.</p>
+
+<h2 id="killing-pid-1">Killing Pid 1</h2>
+
+<p>In the app I still wanted to use gunicorn which means to demonstrate an app crashing and Kubernetes restarting the container, I needed to kill gunicorn. I needed to kill PID 1.</p>
+
+<p>Here’s what I ended up with inside the app:</p>
+
+<pre><code>def random_crash():
+    if random.randint(1, 100) &gt; 94:
+        logger.error("&lt;&lt;&lt;&lt; Crashing... &gt;&gt;&gt;&gt;")
+        # gunicorn will restart the process, which is pretty cool, but for this
+        # app we want to purposely crash the whole container, so we kill the
+        # parent process which is gunicorn
+        os.kill(os.getppid(), 9)
+</code></pre>
+
+<blockquote>
+  <p>NOTE: I’m purposely trying to crash the container to demonstrate crashLoopBackoff. As well, I’m not using <code>sys.exit()</code> because that would just exit the flask process, not the container. (Which, by the way, is what I originally did and why I couldn’t get the container to crash.)</p>
+</blockquote>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Understanding PID 1 in containers is crucial for debugging, process management, and robustness, especially when deploying applications on Kubernetes.</p>
+
+<p>To many, this is elementary…even downright obvious. But I’ve been doing this for a while and I still learned something when building this little demo app. As well, while researching this I found a fair bit of confusion around using gunicorn in containers.</p>
+
+<p>Let me know if you have any questions or comments!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

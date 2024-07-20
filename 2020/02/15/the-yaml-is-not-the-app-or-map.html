@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes and Mimesis - The YAML is not the (M)App | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Kubernetes and Mimesis - The YAML is not the (M)App">
+
+    
+    <meta name="twitter:description" content="<p>100% of organizations I have worked with and talk to either want to automate or already doing so. Everyone “automates.” Everyone “DevOps.”</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>100% of organizations I have worked with and talk to either want to automate or already doing so. Everyone “automates.” Everyone “DevOps.”</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/the-yaml-is-not-the-app-or-map.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/the-yaml-is-not-the-app-or-map.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Kubernetes and Mimesis - The YAML is not the (M)App" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/02/15/the-yaml-is-not-the-app-or-map.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Kubernetes and Mimesis - The YAML is not the (M)App</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-02-15T00:00:00-05:00">
+                February 15, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>100% of organizations I have worked with and talk to either want to automate or already doing so. Everyone “automates.” Everyone “DevOps.”</p>
+
+<blockquote>
+  <p>“Yes, yes, we have DevOps, we have automation. Been doing that forever. But it’s not enough.” - Customer</p>
+</blockquote>
+
+<p>Most want to do more than what automation can provide on its own. In my opinion, doing more demands abstraction.</p>
+
+<h2 id="fear-of-abstraction">Fear of Abstraction</h2>
+
+<p>Technology leaders often equate abstraction with “lock-in,” be it technical lock-in, contractual lock-in, or other. Abstraction is, to them, a concerning concept and something to be avoided.</p>
+
+<p>To engineers the mention of abstraction conjures a fear of the inscrutable. To engineers, abstraction is a black box. Key, even sacred, information is hidden within the confines of the dreaded cube. Of course, some information hiding is precisely the goal of abstraction. However, as an engineer might ask you, if information is hidden, then how can one truly understand every component of their vast and complex platform? Full stack or full stop.</p>
+
+<p>Thus we end up, as an industry, in a situation where abstraction is alarming to both technical leadership and engineers. So it is typically avoided, especially in terms of infrastructure.</p>
+
+<p>Instead of innovating and building powerful business outcomes on abstraction, we recreate–we imitate–the existing terrain by drawing an extremely detailed but novel map (just like the old one). With a new and detailed map in hand engineers feel safe and energized. With a new and detailed map, technology leaders have an artefact that can be displayed under glass with a label of progress. But I’m getting ahead of myself.</p>
+
+<p><img src="/img/not-the-map-2.jpg" alt="" /></p>
+
+<h2 id="release-the-shackles">Release the Shackles!</h2>
+
+<p>Prior to, oh say around about 1910, give or take, artists painted real things and those paintings looked like real things (as much as a two dimensional image can, anyway). In fact, if you didn’t paint real things that looked like real things, say something “abstract,” it was cause for serious concern. Take, for example, the harsh criticism of James Whistler’s “Nocturne in Black and Gold – The Falling Rocket” via which he eventually entered bankruptcy.</p>
+
+<p>When Malevich created his most well known work, “Black Square,” it was arguably “the first time someone made a painting that wasn’t of something.” Malevich’s work was designed, in part, to free the art world from its current limitations related to the explicit desire to continually imitate something real.</p>
+
+<p>Most importantly, I believe, in Malevich’s work “the white backgrounds against which they were set mapped the boundless space of the ideal.” When we avoid abstraction in technology, we also miss out on the benefits of the open playing field it creates. Without abstraction we don’t have room to run.</p>
+
+<p><img src="/img/not-the-map-3.jpg" alt="" /></p>
+
+<h2 id="kubernetes-and-mimesis">Kubernetes and Mimesis</h2>
+
+<p>First off, no, mimesis is not some new Kubernetes related project or product (at least…I don’t think it is). The typical definition of mimesis revolves around the idea of imitating or reproducing reality. To reiterate the quote I have from Richard Spalding above, “Malevich’s intent [was] to liberate painting from the shackles of mimesis.” I believe mimesis is an easy trap to fall into with k8s.</p>
+
+<p>Make no mistake, I am a big fan of Kubernetes. I even spent three hours wrangling YAML for the Certified Kubernetes Administrator exam. That said, I do feel like we, as an industry, have to be careful not to end up creating yet another detailed map of the territory. We should endeavour not to simply imitate existing constructs. We have to be willing to not only accept the wide open playing field the box/square/abstraction provides but to have an appetite for it. And, most importantly, use k8s to create it.</p>
+
+<p>This point has been well made by some of the originators of Kubernetes, people such as Joe Beda and Craig McLuckie of Heptio, and now VMWare, fame. Others too.</p>
+
+<p><img src="/img/not-the-map-4.png" alt="" /></p>
+
+<p>Kubernetes role is not to mimic the existing platforms and systems, ie. a map where the scale is a mile to a mile. Rather its mission is to provide the advanced machinery necessary to develop new abstractions on which we can then create novel, and financially beneficial, work. Abstraction doesn’t create black boxes, it provides the freedom to invent.</p>
+
+<p>In conclusion, suffice it to say, the YAML is not the (m)app.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Austin 2016 OpenStack Summit | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Austin 2016 OpenStack Summit">
+
+    
+    <meta name="twitter:description" content="<p><em>Random shopping cart in Austin</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>Random shopping cart in Austin</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-summit-2016-austin.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-summit-2016-austin.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Austin 2016 OpenStack Summit" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/05/01/openstack-summit-2016-austin.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Austin 2016 OpenStack Summit</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-05-01T00:00:00-04:00">
+                May 01, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>Random shopping cart in Austin</em></p>
+
+<p>##Or, You Know What’s Cool? A Trillion Dollars</p>
+
+<p>The OpenStack summit is a large, multi-faceted event. It brings vendors, operators, developers and users (among others) all together in one massive conference. At this summit there were ~7500 people in attendance [1]. The scale wasn’t just based on the number of people though–the number of conference tracks and talks was almost overwhelming.</p>
+
+<p>##Niche Clouds</p>
+
+<p>First I have to say that I felt that, even before leaving for the event, I would be more interested in what was going on at this conference than the Tokyo summit. During that summit I worked on operating a small public cloud in Canada. There are not that many, in my opinion, OpenStack-based public clouds. Thus it was hard to find some kind of operations solidarity in that particular niche. While I believe that there are in total somewhere around 18 public OpenStack-based public clouds [0], some much larger than others, their influence, especially the smaller ones, pales in comparison to the number of private OpenStack cloud deployments.</p>
+
+<p>At any rate, my point is that I no longer work in this particular OpenStack niche, and have moved into a new niche, one that is getting a considerable amount of attention.</p>
+
+<p>##Network Function Virtualization (NFV)</p>
+
+<p>I knew coming into this summit that NFV would be pretty high on the hype cycle. The sleeping telco giants have all been startled awake and their millions of employees and billions of dollars are yawning and stretching. Despite the hype of NFV and influence of telco (TELCO SMASH!) it is an exciting time in technology, especially around networking, automation, containers, and I would argue, operations. Change is good, but it’s hard.</p>
+
+<p>In one of the sessions it was suggested that telecommunications is a trillion dollar market. That is a massive number, and most of these organizations are only getting started with OpenStack. However, I have no doubt in saying <strong>all</strong> of them are looking to deploy OpenStack clouds. (Certainly, some will be implementing OpenStack clouds in hopes they fail, and they probably will, but others will be putting in an honest effort to succeed.) This is a sea change in IT if there ever was one.</p>
+
+<p>Almost every networking related design session I went to dealt with, in some capacity, the need to improve support for telecommunications requirements–especially around technologies and workflows like service function chaining (SFC) and monitoring/fault management. I went to several network component design sessions and SFC was discussed in nearly all of them. Networks are about to get a lot more complex, but also easier to automate and program.</p>
+
+<p>##Ops Telco/NFV Working Group</p>
+
+<p>I moderated a session in the Ops summit on Telco/NFV. Quite a few people showed up and we had a good discussion on Telco/NFV. [2] I think there is so much interest in NFV that people are looking anywhere for help and information. That’s why we ended up with so much interest in the working group. However, it’s an ops group, so if there is an operators need for the Telco/NFV group then we need to make sure we’re meeting that need, and not overlapping with other working groups and entities. So it will take a bit of time to figure out what we can do.</p>
+
+<p>One thing I can say is that I quite like the approach the Ops large deployment team has taken, which is to select one or two changes they would like to see in OpenStack and really shepherd those changes through the…uh stack over a long period of time to make sure they get into the project. More on this later.</p>
+
+<p>##Open Platform for NFV - OPNFV</p>
+
+<p>OPNFV is a really interesting project. I realized at this summit that OPNFV is essentially a group of OpenStack operators. They are doing the same work a large operators group would do, specifically around getting OpenStack and NFV up and running and nearly ready for production. They are modelling and improving, as best they can, OpenStack + NFV in production-like environments. I watched a couple great presentations by people working within OPNFV, and I’m hoping to go to their summit in June in Berlin.</p>
+
+<p>##Ops Informal Meetup</p>
+
+<p>At the Tokyo summit there was an informal ops meetup on the Friday, basically hanging out in the dev summit lunch area. I didn’t attend that meetup because there wasn’t quite room at the time for me even to sit down. I didn’t mind because I just went out into Tokyo for the day. But it apparently was a great meetup because the foundation scheduled a large room for the entire Friday for operators to meetup and have an informal discussion about being OpenStack operators. The result was a wide-ranging discussion on almost all facets of OpenStack. We ended up with a 700 line etherpad. [3]</p>
+
+<p>Some items I took out of the informal meetup:</p>
+
+<ul>
+  <li>Maybe there is a need in Horizon to have some sort of “simplistic” interface option, where simple means less options. After having worked in a public cloud I have no problem saying that most customers are using it to create long-lived virtual machines, and are not using much of the other functionality, at least not yet. Having some kind of operator option to…er reduce options would be a good idea. See Digital Ocean.</li>
+  <li>Redfish - I’m still not sure what this is, but if it’s about making IPMI/ILOM/BMC/out-of-band management easier then I’m all in. [4]</li>
+  <li>ZFS is in Ubuntu Xenial, but there is no OpenStack Cinder driver that I’m aware of. That’d be cool. Someone should do that. I would if I was good enough to do it quickly, but I’m not.</li>
+  <li>OCP hardware - There were a couple of people deploying OCP hardware. OpenStack Ops discussions never seem to talk much about hardware, perhaps because it’s so vendor centric. One would think OCP would be a different story. That said, it’s not always easy to buy small amounts of OCP hardware.</li>
+</ul>
+
+<p>Those are just a few things that I took from the informal session. I had hoped to split out the Telco/NFS working group in the afternoon, but I had the feeling most of the Telco/NFVers left after the morning session and the facilities just weren’t quite setup for splitting off. Perhaps the next ops meetup or summit will be better suited.</p>
+
+<p>##OpenStack Mission Statement</p>
+
+<p>I went to one BoF session on the mission statement. It seemed like the goal of the session was to try to ascertain how well OpenStack was doing in particular areas mentioned in the relatively new mission statement:</p>
+
+<blockquote>
+  <p>To produce a ubiquitous Open Source Cloud Computing platform that is
+easy to use, simple to implement, interoperable between deployments,
+works well at all scales, and meets the needs of users and operators of
+both public and private clouds.</p>
+</blockquote>
+
+<p>They broke out pieces of the statement:</p>
+
+<ul>
+  <li>Ubiquitous</li>
+  <li>Open Source Cloud Computing Platform</li>
+  <li>Easy to use</li>
+  <li>Simple to implement</li>
+  <li>Interoperable</li>
+  <li>Scales</li>
+  <li>(Can’t remember how they broke out the rest)</li>
+</ul>
+
+<p>and we talked about how well we were meeting these objectives.</p>
+
+<p>We got stuck on easy to use and simple to implement for a while. I personally don’t think those are actually OpenStack goals, especially around “simple to implement” because OpenStack is not a singular product, rather it’s a framework to build “Open Source Cloud Computing Platforms.” OpenStack doesn’t really have any artifacts of its build process–it’s just a collection of code and some documentation, and of course, a community around that code. (Actually I think they publish tgzs somewhere…)</p>
+
+<p>The tone in the room felt unusual, in that the people writing and thinking about the mission statement are pretty far away from actually using it or operating it. I understand that these phrases are long term goals for OpenStack, but at least one is not possible to meet.</p>
+
+<p>I would probably write something more like:</p>
+
+<blockquote>
+  <p>To produce an ubiquitous Open Source <strong>framework</strong> for cloud computing that is easy to use, interoperable between deployments, works well at all scales, and meets the needs of users and operators of both public and private clouds.</p>
+</blockquote>
+
+<p>and just get rid of the whole “simple to implement” component.</p>
+
+<p>##Austin</p>
+
+<p>I’ve been to Austin twice now. Austin is a great city, very eccentric. My home town of Edmonton always wants to be Austin. I took the bus from the Alamo Drafthouse downtown to Book People, and it was the happiest bus ride I’ve ever been on. An entire bus load of strangers was just laughing and having a great time. I thought I had stepped onto some kind of roaming festival, but nope, just a normal Austin bus ride. Oh, and I had a quick discussion with an Austinite who had recently watched Strange Brew. If it wasn’t so damn humid in Austin I could probably live there. Humidity is only 40% in Edmonton today.</p>
+
+<p>Also–Cheer Up Charlies was a great bar. People were bringing their dogs in! Crazy. Also, Argo’s foodtruck at Cheer Up Charlies had the best vegetarian bacon burger I’ve ever had. It was perfect. I think my biggest personal expense for the trip was eating there.</p>
+
+<p>##Conclusion</p>
+
+<p>OpenStack, public clouds like AWS, automation, containers, software defined networking–I was wondering where we’d go after innovation in these areas. At this point it seems like Telecos are now entering these relatively new spaces and bringing their considerable clout to bear. Perhaps we flounder around here a bit and then move on to whatever comes next. There is some danger of the massive resources of telcos putting pressure in the wrong places for OpenStack, and that things might break (though I didn’t see any obvious signals at the summit).</p>
+
+<p>I would imagine the OpenStack foundation is working hard to determine how to best direct those resources and ensure that the OpenStack project stays healthy, but it will be a difficult job. Telcos are strange beasts, but I think it’s important to remember that they, as organizations, have more change to implement to use OpenStack than vice-versa, mostly around their culture. Relatively speaking it’s much easier to deploy OpenStack than it is to adapt your culture to use it. OpenStack does offer a tremendous opportunity for telcos, and I suppose I should really be worried if telcos can handle the change, not the other way around.</p>
+
+<hr />
+
+<p>[0] <a href="https://twitter.com/e_monty/status/725482310879997953">https://twitter.com/e_monty/status/725482310879997953</a></p>
+
+<p>[1] Note that the summit will be changing over the next year or so. I believe the design portion of the summit is going to be split out into its own event.</p>
+
+<p>[2] <a href="https://etherpad.openstack.org/p/AUS-ops-NFV-Telco">https://etherpad.openstack.org/p/AUS-ops-NFV-Telco </a></p>
+
+<p>[3] <a href="https://etherpad.openstack.org/p/AUS-ops-informal-meetup">https://etherpad.openstack.org/p/AUS-ops-informal-meetup </a></p>
+
+<p>[4] <a href="http://redfish.dmtf.org/redfish/v1">http://redfish.dmtf.org/redfish/v1</a></p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

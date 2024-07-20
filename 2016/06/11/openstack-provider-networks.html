@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Provider Networks | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack Provider Networks">
+
+    
+    <meta name="twitter:description" content="<p>There are many ways to deploy networking in OpenStack. I’ve deployed it old-school with nova-network, new-school with Neutron and Midokura’s Midonet, and just recently I put up a lab deployment of Neutron + <a href="http://docs.openstack.org/mitaka/networking-guide/scenario-provider-ovs.html">provider networks</a>.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>There are many ways to deploy networking in OpenStack. I’ve deployed it old-school with nova-network, new-school with Neutron and Midokura’s Midonet, and just recently I put up a lab deployment of Neutron + <a href="http://docs.openstack.org/mitaka/networking-guide/scenario-provider-ovs.html">provider networks</a>.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-provider-networks.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-provider-networks.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack Provider Networks" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/06/11/openstack-provider-networks.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack Provider Networks</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-06-11T00:00:00-04:00">
+                June 11, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>There are many ways to deploy networking in OpenStack. I’ve deployed it old-school with nova-network, new-school with Neutron and Midokura’s Midonet, and just recently I put up a lab deployment of Neutron + <a href="http://docs.openstack.org/mitaka/networking-guide/scenario-provider-ovs.html">provider networks</a>.</p>
+
+<p>To me, provider networks are kind of like nova-network in terms of their simplicity of deployment, where simplcity means your network team probably doesn’t have to do anything new, and can rely on their (potentially) tried and true network designs. I mean, let’s face it–many network architects are going to dislike SDN and/or overlays, etc. Using provider networks will at least allow OpenStack to be deployed in somewhat hostile network environments.</p>
+
+<p>From the <a href="http://docs.openstack.org/mitaka/networking-guide/scenario-provider-ovs.html">OpenStack Networking Guide</a>:</p>
+
+<blockquote>
+  <p>Provider networks generally offer simplicity, performance, and reliability at the cost of flexibility. Unlike other scenarios, only administrators can manage provider networks because they require configuration of physical network infrastructure…In many cases, operators who are already familiar with network architectures that rely on the physical network infrastructure can easily deploy OpenStack Networking on it.</p>
+</blockquote>
+
+<p>The goal of this post is to go over the deployment and include some snippets of configuration to give a cursory example of how this deployment is working and what it looks like while running. Please note this is a lab deployment and is not necessarily meant for production use. Oh, and I’m not a “network architect” by any stretch, but I have deployed some fairly complicated networks in relation to OpenStack.</p>
+
+<h2 id="the-stack">The Stack</h2>
+
+<ol>
+  <li>Ubuntu 14.04</li>
+  <li>Edgecore 5712</li>
+  <li>Cumulus Linux 2.5.7</li>
+  <li>Open vSwitch 2.5.0 from Ubuntu’s Cloud Archive</li>
+  <li>OpenStack Mitaka from Ubuntu’s Cloud Archive</li>
+  <li>A single controller running LXC 2.0 and a bunch of containers</li>
+  <li>A couple of baremetal compute nodes</li>
+  <li>100% managed by Ansible</li>
+</ol>
+
+<h2 id="cumulus-linux">Cumulus Linux</h2>
+
+<p>In my case I control the physical network and it consists of an Edgecore 5712 with Cumulus Linux loaded on it.</p>
+
+<pre><code class="language-bash">cumulus@oc-sw-02$ cat /etc/lsb-release 
+DISTRIB_ID="Cumulus Linux"
+DISTRIB_RELEASE=2.5.7
+DISTRIB_DESCRIPTION=2.5.7-753304d-201603071654-build
+</code></pre>
+
+<p>Recently Cumulus released 3.0 so I should load that on soon, but for now I’m back on 2.5.7.</p>
+
+<p>Cumulus has an interesting feature called <a href="https://docs.cumulusnetworks.com/display/DOCS/VLAN-aware+Bridge+Mode+for+Large-scale+Layer+2+Environments">VLAN aware bridge mode</a> and that is what I’m using.</p>
+
+<p>Here’s a snippet of my interfaces file, which is managed by Ansible. VLANs 12 and 13 are meant to be the provider networks.</p>
+
+<pre><code># VLANS
+auto bridge0
+iface bridge0
+    bridge-ports controller-01-bond0 compute-01-bond0 compute-02-bond0
+    bridge-vlan-aware yes
+    bridge-vids 10 12 13 11
+    bridge-pvid 1
+    bridge-stp on
+
+auto bridge0.10
+iface bridge0.10
+    address 172.17.3.1/24
+auto bridge0.12
+iface bridge0.12
+    address 172.16.5.33/27
+auto bridge0.13
+iface bridge0.13
+    address 172.16.5.65/27
+auto bridge0.11
+iface bridge0.11
+    address 172.16.5.1/28
+</code></pre>
+
+<p>I quite like working with Cumulus linux. The Edgecore 5712 + Cumulus is a compelling offer.</p>
+
+<h1 id="neutron">Neutron</h1>
+
+<p>I deployed Neutron exactly like the Open vSwitch and provider networks is shown in the networking guide. One difference from the guide is that neutron-server by default doesn’t use the ml2_conf.ini file, only the openvswitch_agent.ini file.</p>
+
+<p>My deployment has the physical network providing layer 2 and layer 3, but Neutron is handling DHCP. So on the neutron-api node it sets up some namespaces where the DHCP server listens.</p>
+
+<pre><code>root@uc-neutron-api-01:/etc/neutron/plugins/ml2# cat openvswitch_agent.ini 
+[ml2]
+type_drivers = flat,vlan
+# empty because we don't support project/private networks
+tenant_network_types = 
+mechanism_drivers = openvswitch
+extension_drivers = port_security
+
+[ml2_type_flat]
+flat_networks = provider
+
+[ml2_type_vlan]
+network_vlan_ranges = provider 
+
+[securitygroup]
+firewall_driver = iptables_hybrid 
+enable_security_group = True
+
+[ovs]
+bridge_mappings = provider:br-provider
+</code></pre>
+
+<p>There are a couple of networks setup in neutron.</p>
+
+<pre><code>ubuntu@uc-osclient-01:~$ neutron net-list
++--------------------------------------+------------+-----------------------------------------------------+
+| id                                   | name       | subnets                                             |
++--------------------------------------+------------+-----------------------------------------------------+
+| 5e73a2f5-a52b-4833-9978-531fc98cd783 | vlan_13 | 725c3dbe-65f2-4dc5-b9ec-596309bc2229 172.16.5.64/27 |
+| eb175122-2500-4234-becb-030da538893a | vlan_12 | 7b799b92-ba55-454c-8db7-558476559b4e 172.16.5.32/27 |
++--------------------------------------+------------+-----------------------------------------------------+
+ubuntu@uc-osclient-01:~$ neutron subnet-list
++--------------------------------------+-------------------+----------------+------------------------------------------------+
+| id                                   | name              | cidr           | allocation_pools                               |
++--------------------------------------+-------------------+----------------+------------------------------------------------+
+| 725c3dbe-65f2-4dc5-b9ec-596309bc2229 | vlan_13-subnet | 172.16.5.64/27 | {"start": "172.16.5.66", "end": "172.16.5.94"} |
+| 7b799b92-ba55-454c-8db7-558476559b4e | vlan_12-subnet | 172.16.5.32/27 | {"start": "172.16.5.34", "end": "172.16.5.62"} |
++--------------------------------------+-------------------+----------------+------------------------------------------------+
+</code></pre>
+
+<p>We can see their network namespaces.</p>
+
+<pre><code>root@uc-neutron-api-01:~# ip netns list
+qdhcp-5e73a2f5-a52b-4833-9978-531fc98cd783
+qdhcp-eb175122-2500-4234-becb-030da538893a
+</code></pre>
+
+<p>And with a couple of virtual machines deployed we can see what interfaces OVS has created.</p>
+
+<p>I should note that the neutron-api server is an lxc container. eth2 in the container is bridged to a bonded interface in the baremetal OS.</p>
+
+<pre><code>root@uc-neutron-api-01:~# ovs-vsctl show
+58669c80-e22a-4ea8-9b2d-2d21d1c95163
+    Bridge br-provider
+        Port phy-br-provider
+            Interface phy-br-provider
+                type: patch
+                options: {peer=int-br-provider}
+        Port "eth2"
+            Interface "eth2"
+        Port br-provider
+            Interface br-provider
+                type: internal
+    Bridge br-int
+        fail_mode: secure
+        Port br-int
+            Interface br-int
+                type: internal
+        Port int-br-provider
+            Interface int-br-provider
+                type: patch
+                options: {peer=phy-br-provider}
+        Port "tapd404a48d-df"
+            tag: 3
+            Interface "tapd404a48d-df"
+                type: internal
+        Port "tapa02b5817-23"
+            tag: 2
+            Interface "tapa02b5817-23"
+                type: internal
+    ovs_version: "2.5.0"
+</code></pre>
+
+<p>On the compute node OVS looks like this. br-provider sits on bond0 and adds VLAN tags.</p>
+
+<pre><code>root@compute-01:/home/ubuntu# ovs-vsctl show
+543d058b-8452-4902-bc4c-77bd62ae3e07
+    Bridge br-int
+        fail_mode: secure
+        Port int-br-provider
+            Interface int-br-provider
+                type: patch
+                options: {peer=phy-br-provider}
+        Port br-int
+            Interface br-int
+                type: internal
+        Port "qvo60f707e9-0d"
+            tag: 3
+            Interface "qvo60f707e9-0d"
+        Port "qvoe77743d9-e1"
+            tag: 2
+            Interface "qvoe77743d9-e1"
+        Port "qvoaad386ab-2f"
+            tag: 2
+            Interface "qvoaad386ab-2f"
+    Bridge br-provider
+        Port "bond0"
+            Interface "bond0"
+        Port phy-br-provider
+            Interface phy-br-provider
+                type: patch
+                options: {peer=int-br-provider}
+        Port br-provider
+            Interface br-provider
+                type: internal
+    ovs_version: "2.5.0"
+</code></pre>
+
+<p>If I tcpdump bond0 on the compute node and ping an instance on that provider network…</p>
+
+<pre><code>root@compute-01:/home/ubuntu# tcpdump -n -e -ttt -i bond0 | grep "vlan 12"
+tcpdump: WARNING: bond0: no IPv4 address assigned
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on bond0, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+00:00:00.000848 fa:16:3e:c3:6f:17 &gt; cc:37:ab:2c:9c:92, ethertype 802.1Q (0x8100), length 102: vlan 12, p 0, ethertype IPv4, 172.16.5.35 &gt; 172.16.4.4: ICMP echo reply, id 19867, seq 1, length 64
+00:00:00.136563 cc:37:ab:2c:9c:92 &gt; fa:16:3e:c3:6f:17, ethertype 802.1Q (0x8100), length 102: vlan 12, p 0, ethertype IPv4, 172.16.4.4 &gt; 172.16.5.35: ICMP echo request, id 19867, seq 2, length 64
+00:00:00.000225 fa:16:3e:c3:6f:17 &gt; cc:37:ab:2c:9c:92, ethertype 802.1Q (0x8100), length 102: vlan 12, p 0, ethertype IPv4, 172.16.5.35 &gt; 172.16.4.4: ICMP echo reply, id 19867, seq 2, length 64
+00:00:00.999631 cc:37:ab:2c:9c:92 &gt; fa:16:3e:c3:6f:17, ethertype 802.1Q (0x8100), length 102: vlan 12, p 0, ethertype IPv4, 172.16.4.4 &gt; 172.16.5.35: ICMP echo request, id 19867, seq 3, length 64
+</code></pre>
+
+<p>Looks good to me. :)</p>
+
+<h2 id="ansible-openstack-network-modules">Ansible OpenStack network modules</h2>
+
+<p>Ansible 2.1 has modules for OpenStack networks and subnets that work quite well. The modules have been around for a while, but 2.1 added a couple required features for adding a provider network.</p>
+
+<p>Here’s a snippet of creating a provider network. The networks dict is a yaml dict that I’m working on to define the entire network stack.</p>
+
+<pre><code>    - name: ensure provider networks exist
+      os_network:
+        name: "{{ item.key }}"
+        provider_network_type: "vlan"
+        provider_physical_network: "provider"
+        provider_segmentation_id: "{{ item.value.vlan_id }}"
+        shared: True
+      delegate_to: uc-osclient-01
+      when: item.value.type == "provider" 
+      with_dict: networks
+
+    - name: ensure provider subnets exist
+      os_subnet:
+        network_name: "{{ item.key }}"
+        name: "{{ item.key }}-subnet" 
+        cidr: "{{ item.value.network }}{{ item.value.cidr }}" 
+        gateway_ip: "{{ item.value.address }}"
+      delegate_to: uc-osclient-01
+      when: item.value.type == "provider" 
+      with_dict: networks
+</code></pre>
+
+<p>It’s so nice to be able to automate the creation of the entire network stack, from Cumulus and bonds all the way up to neutron subnets.</p>
+
+<h2 id="interfaces-down">Interfaces down?</h2>
+
+<p>One thing that really confused me when working on this deployment was that the interfaces are marked down.</p>
+
+<pre><code>root@compute-01:/home/ubuntu# ip ad sh | grep DOWN | grep "ovs\|br-"
+15: ovs-system: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default 
+16: br-int: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default 
+17: br-provider: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default 
+</code></pre>
+
+<p>I’m not clear on why these are down, but everything is working fine. This is something I would like to understand.</p>
+
+<pre><code>root@compute-01:/home/ubuntu# ovs-ofctl show br-provider
+OFPT_FEATURES_REPLY (xid=0x2): dpid:000090e2babace6c
+n_tables:254, n_buffers:256
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS QUEUE_STATS ARP_MATCH_IP
+actions: output enqueue set_vlan_vid set_vlan_pcp strip_vlan mod_dl_src mod_dl_dst mod_nw_src mod_nw_dst mod_nw_tos mod_tp_src mod_tp_dst
+ 1(bond0): addr:90:e2:ba:ba:ce:6c
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 2(phy-br-provider): addr:ea:dc:cb:d8:23:25
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ LOCAL(br-provider): addr:90:e2:ba:ba:ce:6c
+     config:     PORT_DOWN
+     state:      LINK_DOWN
+     speed: 0 Mbps now, 0 Mbps max
+</code></pre>
+
+<p>Again, not sure why the LOCAL(br-povider) is down, but it is, and everything works fine.</p>
+
+<h2 id="instances">Instances</h2>
+
+<p>Here’s the routing table of a virtual machine running in the OpenStack cloud using a provider network.</p>
+
+<pre><code>ubuntu@t4:~$ netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         172.16.5.33     0.0.0.0         UG        0 0          0 eth0
+169.254.169.254 172.16.5.34     255.255.255.255 UGH       0 0          0 eth0
+172.16.5.32     0.0.0.0         255.255.255.224 U         0 0          0 eth0
+</code></pre>
+
+<p>Note the metadata server route at 169.254.169.254.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you are deploying a private cloud into an environment where software defined networking and/or overlays are not welcome, then provider networks might be your only option. If you are old-school OpenStack and liked nova-network, then provider networks will seem similar. I do like their simplicity.</p>
+
+<p>Not every OpenStack deployment is going to require hundreds or thousands of private tenant networks. If you have an OpenStack-hostile network environment, which is quite common I assure you, then this might help. Hopefully they’ll at least allow you to have neutron manage DHCP on the provider networks.</p>
+
+<p>Next up I need to look into IPv6 and Open vSwitch DPDK as well as performance testing and a host of other items.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

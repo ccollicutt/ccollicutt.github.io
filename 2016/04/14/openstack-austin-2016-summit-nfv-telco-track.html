@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis of OpenStack Austin 2016 NFV/Telco Track | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Analysis of OpenStack Austin 2016 NFV/Telco Track">
+
+    
+    <meta name="twitter:description" content="<p>I went through all the presentations in the <a href="https://www.openstack.org/summit/austin-2016/summit-schedule/global-search?t=Telecom+/+NFV">Telco/NFV</a> track at the summit to find out what companies were presenting, and how many presenters each had.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I went through all the presentations in the <a href="https://www.openstack.org/summit/austin-2016/summit-schedule/global-search?t=Telecom+/+NFV">Telco/NFV</a> track at the summit to find out what companies were presenting, and how many presenters each had.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-austin-2016-summit-nfv-telco-track.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-austin-2016-summit-nfv-telco-track.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Analysis of OpenStack Austin 2016 NFV/Telco Track" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/04/14/openstack-austin-2016-summit-nfv-telco-track.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Analysis of OpenStack Austin 2016 NFV/Telco Track</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-04-14T00:00:00-04:00">
+                April 14, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I went through all the presentations in the <a href="https://www.openstack.org/summit/austin-2016/summit-schedule/global-search?t=Telecom+/+NFV">Telco/NFV</a> track at the summit to find out what companies were presenting, and how many presenters each had.</p>
+
+<p>Please note this is not a scientific look at the numbers by any stretch of the imagination:</p>
+
+<ul>
+  <li>This analysis is occurring before the summit.</li>
+  <li>I’m not sure about a couple of companies in terms of their size.</li>
+  <li>I’m not counting unique presenters, just the occurrences. So if the same person did three presentations I’d count them as three different presenters.</li>
+  <li>I wrote this up on 2016-04-14 and things may have changed by then.</li>
+  <li>A presentation can have multiple people presenting, or it could be a panel which also has multiple people presenting.</li>
+  <li>I took the number of employees each company has from a simple Google search, so not accurate, but ball park. A recent article in the New York Times suggested AT&amp;T has 280000 employees.</li>
+  <li>Some companies are owned by larger companies, for example Nuage is owned by Alcatel-Lucent which I think is now owned by Nokia. Or something.</li>
+  <li>I did not submit a talk to the Austin 2016 summit.</li>
+</ul>
+
+<h2 id="information-about-telconfv-track-presentations-and-presenters">Information about Telco/NFV track presentations and presenters</h2>
+
+<p>Some basic numbers on the presentations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Presentations</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>Companies presenting</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>Total Presenters</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>Presenters with no affiliations</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Presenters with unknown affiliations</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Presenters from companies with &gt; 1000 employees</td>
+      <td>62</td>
+    </tr>
+    <tr>
+      <td>Presenters from companies with &gt; 100,000 employees</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <td>Presenters from non-profit foundations</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>Presenters from startups</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="/img/chart.jpg" alt="# of presenters" /></p>
+
+<h2 id="topics">Topics</h2>
+
+<p>The topics are fairly varied. I was hoping to be able to categorize them, but it does seem diverse, at least within the NFV realm.</p>
+
+<p>Below are some keywords I pulled out of the blurb for each talk.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Keyword</th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VNF</td>
+      <td>Distributed NFV</td>
+      <td>Service Chaining</td>
+      <td>Open Source</td>
+      <td>vCPE</td>
+    </tr>
+    <tr>
+      <td>Panel</td>
+      <td>VM Placement</td>
+      <td>Uptime</td>
+      <td>Orchestration</td>
+      <td>OPNFV</td>
+    </tr>
+    <tr>
+      <td>Deployment</td>
+      <td>Service Chaining</td>
+      <td>IPv6</td>
+      <td>OpenStack Congress</td>
+      <td>Multi-site Distributed</td>
+    </tr>
+    <tr>
+      <td>OpenStack Tacker</td>
+      <td>Performance</td>
+      <td>SR-IOV</td>
+      <td>Monitoring/Telemetry</td>
+      <td>Latency</td>
+    </tr>
+    <tr>
+      <td>Platform Aware Scheduling</td>
+      <td>OPNFV Doctor</td>
+      <td>CPU Pinning</td>
+      <td>Huge Pages</td>
+      <td>NUMA</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some of them were mentioned more than once, such as OPNFV, service chaining, and technologies like SR-IOV/CPU Pinning/NUMA/Huge Pages. Multi-site or distributed was mentioned a couple of times. Both OpenStack and OPNFV have ongoing Telecom/NFV related projects such as Congress and Tacker as well as Doctor that should be well represented.</p>
+
+<h2 id="number-of-employees">Number of employees</h2>
+
+<p>Below is a table of the larger companies and how many people each employs. It’s a considerable sum of over <em>two million employees!</em> That’s a lot of people.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Company</th>
+      <th># of Employees</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Juniper</td>
+      <td>9500</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>AT&amp;T</td>
+      <td>240000</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>HP(e?)</td>
+      <td>240000</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>BT</td>
+      <td>99000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Intel</td>
+      <td>107000</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Redhat</td>
+      <td>8000</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Ericsson</td>
+      <td>118000</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Cisco</td>
+      <td>72000</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Canonical</td>
+      <td>700</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>PlumGrid</td>
+      <td>250*</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>451 Research</td>
+      <td>250*</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Midokura</td>
+      <td>100*</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Nuage/Nokia</td>
+      <td>62000</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Verizon</td>
+      <td>178000</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Big Switch</td>
+      <td>100*</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>China Mobile</td>
+      <td>246000</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>NTT</td>
+      <td>242000</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>Orange</td>
+      <td>157000</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>Brocade</td>
+      <td>4000</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>Huawei</td>
+      <td>170000</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>NEC</td>
+      <td>102000</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>99Cloud</td>
+      <td>Unknown</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Again, more than <a href="https://www.youtube.com/watch?v=r0mO6UY6uTg">two million</a> employees represented from all over the world. Amazing stuff.</p>
+
+<p>Please note for the “*“-ed companies I’m pretty much just guessing.</p>
+
+<h2 id="conclusions">Conclusions</h2>
+
+<p>The vast majority of presenters in the Telco/NFV track are from extremely large companies. In fact most have more than 100,000 employees. 40 of the 75 presenters are from companies with more than 100,000 employees.</p>
+
+<p>I’m amazed at how large these companies are. As someone who is employed at a small company that works on NFV projects, I’m not sure what to make of this. Either small companies don’t submit presentations, or they are not accepted. Is NFV only important to large Telecoms? Are the only telecoms interested in OpenStack very large companies? Do small telecom companies even exist? Will they in the future?  Who are the people working on NFV in these companies…are they large teams or small, R&amp;D type groups? Do smaller companies help telecoms to deploy OpenStack-based NFV solutions?</p>
+
+<p>On one hand, the results are somewhat obvious: the majority of the companies doing presentations at the OpenStack summit on NFV related topics are very large because telecoms are very large. But on the other I’m surprised there aren’t more startups and the like in this mix. There is so much work to be done–so much software to be created–that there is, I believe, considerable opportunity. Perhaps this says something about the ability of a small company to able to participate in the OpenStack ecosystem.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

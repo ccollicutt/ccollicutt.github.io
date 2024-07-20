@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine Tuning LLMs: Part 1 - Just Getting Started | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Fine Tuning LLMs: Part 1 - Just Getting Started">
+
+    
+    <meta name="twitter:description" content="<p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/fine-tuning-llms-part-one-getting-started.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/fine-tuning-llms-part-one-getting-started.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Fine Tuning LLMs: Part 1 - Just Getting Started" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Fine Tuning LLMs: Part 1 - Just Getting Started</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-05-16T00:00:00-04:00">
+                May 16, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
+
+<p>But why fine-tune an LLM?</p>
+
+<blockquote>
+  <p>Large language models (LLMs) like GPT-3 and Llama have shown immense promise for natural language generation. With sufficient data and compute, these models can produce remarkably human-like text. However, off-the-shelf LLMs still have limitations. They may generate text that is bland, inconsistent, or not tailored to your specific needs.
+This is where finetuning comes in. Finetuning is the process of taking a pre-trained LLM and customizing it for a specific task or dataset. With finetuning, you can steer the LLM towards producing the kind of text you want. - <a href="https://medium.com/@dave-shap/a-pros-guide-to-finetuning-llms-c6eb570001d3">https://medium.com/@dave-shap/a-pros-guide-to-finetuning-llms-c6eb570001d3</a></p>
+</blockquote>
+
+<p>As well I just want to make a little disclaimer here on decisions I’ve made. :)</p>
+
+<p><strong>DISCLAIMER</strong></p>
+
+<blockquote>
+  <p>Please note that what I’ve done here is really a personal experiment in fine-tuning an LLM. There’s no particular rhyme or reason to the infrastructure and other choices I’ve made. I’m using a particular GPU supplier. I’m using a certain Python notebook. I’ve made some choices that might actually make things more difficult, or that might not make sense to an experienced fine-tuner. Also, in this post, I’m not tuning with a specific set of data or goal in mind. I’m just trying out a set of basic tools.</p>
+</blockquote>
+
+<p>Happy hacking!</p>
+
+<h2 id="quick-fine-tuning-example">Quick Fine Tuning Example</h2>
+
+<p>Steps:</p>
+
+<ol>
+  <li>Get a GPU from somewhere (I’m using brev.dev)</li>
+  <li>Create an instance with proper CUDA and pytorch versioning</li>
+  <li>Build a data set to fine-tune with (or use an existing one), NOTE: This step I will build on in later posts</li>
+  <li>Use a <a href="https://github.com/unslothai/unsloth">Unsloth iPython notebook</a></li>
+  <li>Step through the provided notebook and create a fine-tuned LLM</li>
+</ol>
+
+<h2 id="gpu-instance">GPU Instance</h2>
+
+<p>First, we need a GPU.</p>
+
+<blockquote>
+  <p>NOTE: The easiest thing to do would just be to use Google Colab and the notebook that Unsloth links to; that would be super easy. Google Colab is a free cloud service to run Jupyter Notebooks and provides access to GPUs. But I’m not using Colab for…some reason. You might want to. Keep that in mind!</p>
+</blockquote>
+
+<p>I’m using <a href="https://brev.dev">brev.dev</a> to get access to a GPU instance, but there are tons of “GPU Brokers” out there.</p>
+
+<blockquote>
+  <p>NOTE: I have no relationship with brev.dev, I just randomly started using the service. I can’t tell you if it’s good or not, but the combination of the provider plus the docker image for CUDA + pytorch is working for me. Plus if you leave the GUI console for long enough, a cute DVD-style screen saver comes on. lol!</p>
+</blockquote>
+
+<p>Here I’m creating a small NVIDIA 4090 instance. Other much larger GPUs are available from brev.dev and other providers.</p>
+
+<p><img src="/img/brev1.jpg" alt="brev.dev" /></p>
+
+<p>Note that I’m using the “advanced container settings” and selecting the docker.io/pythorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime image. This is key because I’ve had lots of problems matching up these versions, especially on my home workstation where I have a NVIDIA 3090.</p>
+
+<p>I find versioning CUDA and Pytorch challenging so this is a really nice feature of brev.dev, though it’s really just about dialing in the right image/settings/etc.</p>
+
+<p><img src="/img/brev2.jpg" alt="brev.dev" /></p>
+
+<p>Once the instance is running there is an option to connect to a notebook.</p>
+
+<p><img src="/img/brev3.jpg" alt="brev.dev" /></p>
+
+<p>And now we can use the notebook.</p>
+
+<p><img src="/img/brev4.jpg" alt="brev.dev" /></p>
+
+<p>Or you can login with the the brev shell. Here my instance is brilliantly named “aaa”.</p>
+
+<pre><code>$ brev shell aaa
+⢿ waiting for SSH connection to be available Agent pid 9158
+Warning: Permanently added '[provider.pdx.nb.akash.pub]:31314' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+➜  verb-workspace 
+Connection to provider.pdx.nb.akash.pub closed.
+</code></pre>
+
+<h2 id="unsloth-notebook">Unsloth Notebook</h2>
+
+<p>Next I’ll upload the unsloth conversational notebook, which I obtained by opening the Colab notebook and downloading the file, then uploading it into the brev.dev instance’s notebook.</p>
+
+<blockquote>
+  <p>NOTE: There are a lot of notebooks for getting started training Llama3 out there. For example brev.dev has <a href="https://github.com/brevdev/notebooks/blob/main/README.md">some</a> too. As well, unsloth provides some via <a href="https://huggingface.co/datasets/unsloth/notebooks">huggingface</a>.</p>
+</blockquote>
+
+<p>Unsloth - <a href="https://github.com/unslothai/unsloth">https://github.com/unslothai/unsloth</a></p>
+
+<blockquote>
+  <p>Unsloth is a lightweight library for faster LLM fine-tuning which is fully compatible with the Hugging Face ecosystem (Hub, transformers, PEFT, TRL). The library is actively developed by the Unsloth team (Daniel and Michael) and the open source community. The library supports most NVIDIA GPUs–from GTX 1070 all the way up to H100s–, and can be used with the entire trainer suite from the TRL library (SFTTrainer, DPOTrainer, PPOTrainer). At the time of writing, Unsloth supports the Llama (CodeLlama, Yi, etc) and Mistral architectures. - <a href="https://huggingface.co/blog/unsloth-trl">https://huggingface.co/blog/unsloth-trl</a></p>
+</blockquote>
+
+<p>I’m using the <a href="https://colab.research.google.com/drive/1XamvWYinY6FOSX9GLvnqSjjsNflxdhNc?usp=sharing">conversational notebook</a> they link to in their README. That will bring you to a</p>
+
+<p><img src="/img/unsloth1.jpg" alt="unsloth" /></p>
+
+<h2 id="train-the-model">Train the Model</h2>
+
+<p>Now we can simply step through the notebook and train an example model.</p>
+
+<p><img src="/img/unsloth4.jpg" alt="unsloth" /></p>
+
+<p>After stepping through the cells, we come to the training cell.</p>
+
+<p><img src="/img/unsloth2.jpg" alt="unsloth" /></p>
+
+<p>And we can see the memory usage.</p>
+
+<p><img src="/img/unsloth3.jpg" alt="unsloth" /></p>
+
+<p>If you continue through the notebook you can save the model in various ways, upload it to hugging face, etc.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The technical part of fine-tuning a model is fairly straightforward from a user perspective if you know a bit of Python and understand the concept of a Jupyter notebook and have one to follow through with. Really this blog post is just connecting some dots, like GPU providers and Python notebooks. However, navigating through a notebook and understanding exactly what it does are two different things. Also, once you start understanding the fine tuning process, it becomes a matter of what data we put in and what results we get out. That is the real work. This is just a basic skeleton, but everyone needs a first step!</p>
+
+<h2 id="ps">PS.</h2>
+
+<p>One of the things I love about LLMs right now is just how messy the technology landscape is. There is so much going on, so many niche technologies, libraries, chunks of code, websites, notebooks, on and on. It’s an amazing time.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

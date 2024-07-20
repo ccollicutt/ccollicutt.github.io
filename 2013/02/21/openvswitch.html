@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software defined networking, Openvswitch, and Ubuntu 12.04 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Software defined networking, Openvswitch, and Ubuntu 12.04">
+
+    
+    <meta name="twitter:description" content="<p>Recently I’ve been testing over committing on KVM. Once I started running hundreds of virtual machines (vms) on a single node, I realized that in order to get them to do anything I have to access them over the network to run something like <a href="http://ansible.cc">Ansible</a> playbooks designed to test load.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently I’ve been testing over committing on KVM. Once I started running hundreds of virtual machines (vms) on a single node, I realized that in order to get them to do anything I have to access them over the network to run something like <a href="http://ansible.cc">Ansible</a> playbooks designed to test load.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openvswitch.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openvswitch.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Software defined networking, Openvswitch, and Ubuntu 12.04" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/02/21/openvswitch.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Software defined networking, Openvswitch, and Ubuntu 12.04</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-02-21T00:00:00-05:00">
+                February 21, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently I’ve been testing over committing on KVM. Once I started running hundreds of virtual machines (vms) on a single node, I realized that in order to get them to do anything I have to access them over the network to run something like <a href="http://ansible.cc">Ansible</a> playbooks designed to test load.</p>
+
+<p>In order to provide networking resources to the vms, I decided to take a look at <a href="http://openvswitch.org">Openvswitch</a> and what it takes to get it up and running with KVM and Ubuntu 12.04/Precise.</p>
+
+<h2 id="software-defined-networking">Software defined networking</h2>
+
+<p>Like cloud and big-data, <a href="http://en.wikipedia.org/wiki/Software-defined_networking">software defined networking</a> (SDN) is a loaded term. But, like those terms, I feel I need to at least try to get a grasp of what it means.</p>
+
+<blockquote>
+  <p>“A good working definition of SDN is the separation of the data and control functions of today’s routers and other layer two networking infrastructure with a well-defined programming interface between the two.” – Via <a href="http://arstechnica.com/information-technology/2013/02/100gbps-and-beyond-what-lies-ahead-in-the-world-of-networking/2/">Arstechnica</a></p>
+</blockquote>
+
+<p>SDN is a big part of <a href="http://docs.openstack.org/trunk/openstack-network/admin/content/">OpenStack</a> as well. Starting with the <a href="http://www.openstack.org/software/folsom/">Folsom</a> release, networking was split out into it’s own <em>*as-a-Service</em> capability called <a href="https://wiki.openstack.org/wiki/Quantum">Quantum</a>, whereas previously it was a sub-component of Nova. So given I’m a big fan, and user, of OpenStack, it’s important for me to get a good grasp of SDN.</p>
+
+<p><a href="http://www.openflow.org/wk/index.php/OpenFlow_Tutorial">Openflow</a> is also an important technology in SDN that requires some research time.</p>
+
+<p>But, having said all that, basically I’m just going to install and use Openvswitch on a single compute node. :)</p>
+
+<h2 id="building-on-others-work">Building on other’s work</h2>
+
+<p>I followed these blog posts on configuring Openvswitch on Ubuntu 12.04/Precise:</p>
+
+<ul>
+  <li><a href="http://networkstatic.net/how-to-build-an-sdn-lab-without-needing-openflow-hardware/">How to build a SDN Lab without needing Openflow hardware</a></li>
+  <li><a href="http://en.community.dell.com/techcenter/networking/w/wiki/3820.openvswitch-openflow-lets-get-started.aspx">Openvswitch and OpenFlow: Let’s get started</a></li>
+  <li><a href="http://blog.scottlowe.org/2012/08/17/installing-kvm-and-open-vswitch-on-ubuntu/">Installing KVM and Openvswtich on Ubuntu</a></li>
+</ul>
+
+<p>I’m not really doing anything new here–though I hope to at some point… :)</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>I put together an <a href="https://github.com/ccollicutt/ansible_playbooks/blob/master/sdn/tasks/setup.yml">ansible playbook</a> to install Openvswitch in Ubuntu 12.04. There is no easy, direct way (that I’m aware of) to install Openvswitch in Precise…unfortunately I just can’t do @apt-get install openvswitch@ and have everything work like magic. I guess building the module is the only unusual thing, and this will disappear in future versions of Ubuntu–perhaps it’s already not necessary in 12.10, not sure, haven’t looked it up.</p>
+
+<p>I’m not going to directly cut and paste my <a href="https://github.com/ccollicutt/ansible_playbooks/blob/master/sdn/tasks/setup.yml">ansible playbook</a> into this post, but suffice it to say that most dependencies can be installed via <code>apt-get</code>, but there is one step required to build and module.</p>
+
+<pre>
+<code># Install these packages:
+#   - openvswitch-datapath-source 
+#   - bridge-utils
+#   - module-assistant  
+#   - openvswitch-brcompat
+#   - openvswitch-common
+#   - openvswitch-switch
+#   - linux-headers-3.2.0-23-generic
+#   - linux-headers-generic-pae
+# Then build the module:
+$ module-assistant auto-install openvswitch-datapath
+</code>
+</pre>
+
+<p>Next we set <code>BRCOMPAT=yes</code> in <code>/etc/default/openvswitch-switch</code> and restart <code>openvswitch-switch</code>.</p>
+
+<h2 id="pox">Pox</h2>
+
+<p><a href="http://www.noxrepo.org/pox/about-pox/">Pox</a>, among other things, is an Openflow controller.</p>
+
+<blockquote>
+  <p>“At its core, it’s a platform for the rapid development and prototyping of network control software using Python.  Meaning, at a very basic level, it’s one of a growing number of frameworks…for helping you write an OpenFlow controller.” – Via <a href="http://www.noxrepo.org/pox/about-pox/">Pox website</a></p>
+</blockquote>
+
+<p>Hey, it’s Python, it’s Openflow…what else do I need. Sign me up. :)</p>
+
+<pre>
+<code>$ cd /usr/local/src
+$ git clone http://github.com/noxrepo/pox
+$ zdaemon -p 'python /usr/local/src/pox/pox.py \
+--no-cli forwarding.l2_learning' -d start
+</code>
+</pre>
+
+<p>And now Pox should be listening on port 6633:</p>
+
+<pre>
+<code>$ netstat -ant | grep 6633
+tcp        0      0 0.0.0.0:6633            0.0.0.0:*               LISTEN     
+$ sudo lsof -i | grep 6633
+python   34150   root    3u  IPv4 39211055      0t0  TCP *:6633 (LISTEN)
+</code>
+</pre>
+
+<p>More information about pox can be found on the <a href="http://www.openflow.org/wk/index.php/OpenFlow_Tutorial#Controller_Choice:_POX_.28Python.29">Openflow site</a>.</p>
+
+<h2 id="configure-the-bridge">Configure the bridge</h2>
+
+<p>Now we can add a bridge to the openv switch.</p>
+
+<pre>
+<code>$ ovs-vsctl add-br br-int
+</code>
+</pre>
+
+<p>And then configure br-int (or whatever you’ve called the bridge), and I’m using the eth2 interface in this example.</p>
+
+<pre>
+<code>$ ovs-vsctl add-port br-int eth2; ifconfig eth2 0; ifconfig br-int <IPv4 Address=""> \
+netmask 255.255.255.0
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Let's tell Openvswitch to use the Pox controller that is running.
+
+<pre>
+<code>$ ovs-vsctl set-controller br-int tcp:<IPv4 Address="">:6633
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Finally we need interface up and down scripts.
+
+ifdown:
+
+<pre>
+<code>$ cat /sbin/ovs-ifdown
+#!/bin/sh 
+switch='br-int' 
+/sbin/ifconfig $1 0.0.0.0 down 
+ovs-vsctl del-port ${switch} $1
+</code>
+</pre>
+
+ifup:
+
+<pre>
+<code>$ cat /sbin/ovs-ifup
+#!/bin/sh switch='br-int' 
+/sbin/ifconfig $1 0.0.0.0 up
+ ovs-vsctl add-port ${switch} $1
+ </code>
+</pre>
+
+Now we can boot some vms!
+
+## Booting a vm
+
+I'm booting vms via a script, and part of the `kvm` command line options is the network tap, which uses the ifup/ifdown scripts:
+
+<pre>
+<code>-net tap,script=/sbin/ovs-ifup,downscript=/sbin/ovs-ifdown
+</code>
+</pre>
+
+And, here is a running instance:
+
+<pre>
+<code>$ ps ax | grep "kvm -drive" | head -1
+  9831 ?        Sl    21:01 kvm -drive if=virtio,file=/mnt/intel/1.img -m 2048 \
+  -boot a -net nic,macaddr=52:54:00:a1:c0:fd \
+  -net tap,script=/sbin/ovs-ifup,downscript=/sbin/ovs-ifdown -nographic -vnc :1 \
+   -chardev file,id=charserial0,path=/mnt/intel/1.console.log \
+   -device isa-serial,chardev=charserial0,id=serial0 -chardev pty,id=charserial1 \
+   -device isa-serial,chardev=charserial1,id=serial1 \
+   -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5
+</code>
+</pre>
+
+Right now there's about 300 vms running on this single compute node.
+
+<pre>
+<code>$ ps ax  |grep "kvm -drive" | wc -l
+301
+</code>
+</pre>
+
+Fun stuff. :)
+
+## What now?
+
+Well, I've achieved my goal of getting Openvswitch up and running to enable networking between vms on a single compute node. 
+
+<pre>
+<code>ubuntu@ubuntu:~$ ifconfig eth0 | grep 192
+          inet addr:192.168.100.111  Bcast:192.168.100.255  Mask:255.255.255.0
+ubuntu@ubuntu:~$ ping -c 1 192.168.100.23
+PING 192.168.100.23 (192.168.100.23) 56(84) bytes of data.
+64 bytes from 192.168.100.23: icmp_req=1 ttl=64 time=0.452 ms
+
+--- 192.168.100.23 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.452/0.452/0.452/0.000 ms
+</code>
+</pre>
+
+I think my next step will be to work in multiple virtual machines to see if I can do some of the interesting and useful things that Openflow is capable of, and to find out how I can work with the Pox system to learn more about SDN.
+
+Another important thing to do is to get a test environment of OpenStack Folsom (or Grizzly) up and running to see how Quantum utilizes Openflow and SDN.
+
+I'm hoping to spend the next few days learning about [Pox](http://www.noxrepo.org/pox/about-pox/). Wish me luck. :)
+</IPv4></code></pre></IPv4></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

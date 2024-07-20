@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boot Ubuntu Trusty Tahr 14.04 with libvirt | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Boot Ubuntu Trusty Tahr 14.04 with libvirt">
+
+    
+    <meta name="twitter:description" content="<p>Then next Ubuntu long term service (LTS) operating system, <a href="https://wiki.ubuntu.com/TrustyTahr/ReleaseSchedule">Trusty Tahr or version 14.04</a>, is currently expected to be released on April 27th of 2014, about a month away from the writing of this post. So note that right now it is still beta.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Then next Ubuntu long term service (LTS) operating system, <a href="https://wiki.ubuntu.com/TrustyTahr/ReleaseSchedule">Trusty Tahr or version 14.04</a>, is currently expected to be released on April 27th of 2014, about a month away from the writing of this post. So note that right now it is still beta.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/trusty-libvirt.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/trusty-libvirt.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Boot Ubuntu Trusty Tahr 14.04 with libvirt" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/03/17/trusty-libvirt.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Boot Ubuntu Trusty Tahr 14.04 with libvirt</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-03-17T00:00:00-04:00">
+                March 17, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Then next Ubuntu long term service (LTS) operating system, <a href="https://wiki.ubuntu.com/TrustyTahr/ReleaseSchedule">Trusty Tahr or version 14.04</a>, is currently expected to be released on April 27th of 2014, about a month away from the writing of this post. So note that right now it is still beta.</p>
+
+<p>Below I’ll take a quick look at how to deploy the cloud image prepared by Ubuntu with libvirt. We’ll use libvirt + kvm on Ubuntu Precise to boot the Trusty Tahr image. The server running libvirt is Ubuntu 12.04, and is setup in a default manner, which means vms should IPs from dnsmasq and get natted access to the Internet.</p>
+
+<h2 id="download-the-image">Download the image</h2>
+
+<p>First we download the cloud image from Ubuntu’s site. Thankfully Ubuntu provides ready-to-go images.</p>
+
+<pre><code>root# cd /var/lib/libvirt/images
+root# wget https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
+root# mv trusty-server-cloudimg-amd64-disk1.img trusty-server-cloudimg-amd64-disk1.img.dist
+root# qemu-img convert -O qcow2 trusty-server-cloudimg-amd64-disk1.img.dist \
+trusty-server-cloudimg-amd64-disk1.img
+root# qemu-img resize trusty-server-cloudimg-amd64-disk1.img +8G
+</code></pre>
+
+<p>Above I downloaded the image, converted it from compressed to uncompressed, and then increase it’s size by 8G, making it about a 10G image. If it’s not resized it will be about 2G.</p>
+
+<p>Next create a snapshotted backing file which will allow us to keep the original image pristine.</p>
+
+<pre><code>root# qemu-img create -f qcow2 -b trusty-server-cloudimg-amd64-disk1.img trusty1.img
+</code></pre>
+
+<p>That’s all it takes to grab a pre-built Ubuntu Trusty Tahr image!</p>
+
+<h2 id="checkout-cloud-localds">Checkout cloud-localds</h2>
+
+<p>We need to get cloud-utils from launchpad which includes a cloud-localds script. Using this script we can easily create an ISO file that can be used locally by the vm with cloud-init to configure the vm.</p>
+
+<pre><code>root# cd ~
+root# bzr branch lp:cloud-utils
+root# ls cloud-utils/bin/cloud-localds
+cloud-utils/bin/cloud-localds
+</code></pre>
+
+<p>Using that script we can create a user-data image that can be attached to our virtual machine.</p>
+
+<h2 id="create-a-user-data-file">Create a user-data file</h2>
+
+<p>Essentially what this allows us to do is have a local disk file attached to the vm which <a href="http://cloudinit.readthedocs.org/en/latest/">cloud-init</a> can use to setup the system as we would like it, at least by setting a password and/or an ssh key.</p>
+
+<p>I’m not showing my public key below just because it doesn’t fit well on the page. But just paste your public ssh key in after the “-“. The password for the ubuntu user is set to “passw0rd” which is in fact not a good password. It might be better to either not set the password at all and just use and ssh key, or to set a very good password. This is just an example.</p>
+
+<pre><code>#cloud-config
+password: passw0rd
+chpasswd: { expire: False }
+ssh_pwauth: True
+ssh_authorized_keys:
+  - &lt;enter your public key&gt;
+</code></pre>
+
+<p>Cloud-init has a ton more features and options so I suggest checking out the documentation. That said, it is a rather new and fast moving project.</p>
+
+<h2 id="build-the-user-data-image">Build the user-data image</h2>
+
+<p>Now we convert the user-data file to an ISO file.</p>
+
+<pre><code>root# ~/cloud-utils/bin/cloud-localds user-data.img user-data
+root# cp user-data.img /var/lib/libvirt/images
+</code></pre>
+
+<p>With that file created, we can now setup a libvirt xml file to boot the virtual machine.</p>
+
+<h2 id="prepare-a-libvirtxml-file">Prepare a libvirt.xml file</h2>
+
+<p>Here is an example libvirt xml file, in this case called trusty1.xml.</p>
+
+<pre><code>root# cat trusty1.xml
+&lt;domain type='kvm'&gt;
+    &lt;name&gt;trusty1&lt;/name&gt;
+    &lt;memory&gt;1048576&lt;/memory&gt;
+    &lt;os&gt;
+        &lt;type&gt;hvm&lt;/type&gt;
+        &lt;boot dev="hd" /&gt;
+    &lt;/os&gt;
+    &lt;features&gt;
+        &lt;acpi/&gt;
+    &lt;/features&gt;
+    &lt;vcpu&gt;1&lt;/vcpu&gt;
+    &lt;devices&gt;
+        &lt;disk type='file' device='disk'&gt;
+            &lt;driver type='qcow2' cache='none'/&gt;
+            &lt;source file='/var/lib/libvirt/images/trusty1.img'/&gt;
+            &lt;target dev='vda' bus='virtio'/&gt;
+        &lt;/disk&gt;
+        &lt;disk type='file' device='disk'&gt;
+            &lt;source file='/var/lib/libvirt/images/user-data.img'/&gt;
+            &lt;target dev='vdb' bus='virtio'/&gt;
+        &lt;/disk&gt;
+        &lt;interface type='network'&gt;
+            &lt;source network='default'/&gt;
+                &lt;model type='virtio'/&gt;
+        &lt;/interface&gt;
+    &lt;/devices&gt;
+&lt;/domain&gt;
+</code></pre>
+
+<p>Now that we have a libvirt xml file we can define and start the vm.</p>
+
+<h2 id="define-and-start-the-virtual-machine">Define and start the virtual machine</h2>
+
+<p>Lets define and start the vm based on the images we created and the libvirt xml file.</p>
+
+<pre><code>root# virsh define trusty1.xml
+Domain trusty1 defined from trusty1.xml
+root# virsh start trusty1
+</code></pre>
+
+<p>Now that the vm is booted, by default it should get an IP from dnsmasq, and has a random mac address. Figuring out the IP is not that easy with libvirt (if you know a way, let me know) but generally I look at the leases file or would set specific mac addresses to get specific IPs.</p>
+
+<pre><code>root# cat /var/lib/libvirt/dnsmasq/default.leases
+1395108553 52:54:00:6a:f1:c8 192.168.122.103 cloudimg *
+</code></pre>
+
+<p>From dnsmasq know that the instance has the 192.168.122.103 IP, we can ssh in. Note that because I put my ssh public key in I can ssh into the server without a password. I removed some content for brevity.</p>
+
+<pre><code>root# ssh ubuntu@192.168.122.103
+Warning: Permanently added '192.168.122.103' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu Trusty Tahr (development branch) (GNU/Linux 3.13.0-14-generic x86_64)
+SNIP!
+Last login: Sun Mar 16 18:46:59 2014 from 192.168.122.1
+ubuntu@cloudimg:~$ cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=14.04
+DISTRIB_CODENAME=trusty
+DISTRIB_DESCRIPTION="Ubuntu Trusty Tahr (development branch)"
+ubuntu@cloudimg:~$ df -h | grep vda1
+/dev/vda1        11G  898M  8.7G  10% /
+</code></pre>
+
+<p>That is about the minimum required to get a Trusty image up and running via libvirt. Certainly there are other considerations one might have to make in a production environment, such as passwords and keys, actual production Trusty Tahr image, etc.</p>
+
+<p>Now to explore the new features of Trusty Tahr!</p>
+
+<p>Don’t forget it won’t be officially released until late April of 2014.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

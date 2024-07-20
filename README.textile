@@ -1,7 +1,0 @@
-h1. ccollicutt.github.com blog
-
-The theme is commercial. I bought it, so unless you buy a license from the original seller you can't use it. :) Sorry, I'm just terrible with CSS so I had no choice.
-
-h1. License
-
-_posts is copyright ccollicutt.

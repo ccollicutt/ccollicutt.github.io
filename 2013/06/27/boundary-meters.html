@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploying a boundary.com meter with ansible | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Deploying a boundary.com meter with ansible">
+
+    
+    <meta name="twitter:description" content="<p>Lately we have started using <a href="http://boundary.com">Boundary</a> at work. While <a href="https://forge.puppetlabs.com/puppetlabs/boundary">puppet</a>  and <a href="https://github.com/boundary/bprobe_cookbook">chef</a> recipes and a <a href="https://github.com/boundary/boundary_scripts">shell script</a> already exist to deploy a boundary meter onto a node/server, there was not a way to easily deploy one using <a href="http://ansibleworks.com">ansible</a>, which is my preferred configuration management and orchestration tool.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Lately we have started using <a href="http://boundary.com">Boundary</a> at work. While <a href="https://forge.puppetlabs.com/puppetlabs/boundary">puppet</a>  and <a href="https://github.com/boundary/bprobe_cookbook">chef</a> recipes and a <a href="https://github.com/boundary/boundary_scripts">shell script</a> already exist to deploy a boundary meter onto a node/server, there was not a way to easily deploy one using <a href="http://ansibleworks.com">ansible</a>, which is my preferred configuration management and orchestration tool.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/boundary-meters.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/boundary-meters.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Deploying a boundary.com meter with ansible" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/06/27/boundary-meters.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Deploying a boundary.com meter with ansible</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-06-27T00:00:00-04:00">
+                June 27, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Lately we have started using <a href="http://boundary.com">Boundary</a> at work. While <a href="https://forge.puppetlabs.com/puppetlabs/boundary">puppet</a>  and <a href="https://github.com/boundary/bprobe_cookbook">chef</a> recipes and a <a href="https://github.com/boundary/boundary_scripts">shell script</a> already exist to deploy a boundary meter onto a node/server, there was not a way to easily deploy one using <a href="http://ansibleworks.com">ansible</a>, which is my preferred configuration management and orchestration tool.</p>
+
+<p>Creating a boundary meter on a server is not complicated, but it was not really possible to do it with ansible without simply using ansible to copy a shell script up to the server. And, as ansible’s documentation suggests, if you’re pushing a script up to the server to run it with ansible, then it might be time to turn that bash script into an ansible module.</p>
+
+<p>So, I have written a basic boundary meter module for ansible, and it is currently sitting in the <a href="https://github.com/ansible/ansible/pull/3272">pull request</a> queue waiting to be reviewed, and hopefully added to the many <a href="http://www.ansibleworks.com/docs/modules.html">ansible modules</a> in core.</p>
+
+<p><em>NOTE: Both boundary and ansible move pretty fast, so it’s likely that things will have changed even by the time I post this. :)</em></p>
+
+<h2 id="obtaining-the-capem-file">Obtaining the ca.pem file</h2>
+
+<p><em>NOTE: It seems this file may be in the ubuntu package now, and is installed in /etc/bprobe/ca.pem.dkpg-dist</em></p>
+
+<p>One file that the bprobe package and my ansible module do not provide is the ca.pem file that is necessary for bprobe to contact boundary’s api server.</p>
+
+<p>The easiest way to get that file is to grab it from the bprobe_cookbook github repo.</p>
+
+<pre>
+<code>$ wget https://raw.github.com/boundary/bprobe_cookbook/master/files/default/ca.pem
+$ md5sum ca.pem
+11f809a92ed1cc029c3ac86b42460a10  ca.pem
+</code>
+</pre>
+
+<p>or I believe it is also available in the official tar.gz release.</p>
+
+<p>That file needs to go into /etc/bprobe and would likely be put there using a configuration management system of some kind, be it chef, ansible, puppet, saltstack, etc… :)</p>
+
+<h2 id="getting-the-bprobe-client">Getting the bprobe client</h2>
+
+<p>While you don’t need the bprobe client to create a meter, you do need bprobe in order to send data. So let’s start by installing bprobe.</p>
+
+<p>I’m installing the bprobe client on ubuntu 12.04. Below I’ll simply show the parts of my ansible playbook that setup the official boundary repository and install bprobe. Even if you don’t use ansible it’s pretty straightforward to understand what’s happening.</p>
+
+<pre>
+<code>#Snippet of an ansible playbook
+
+- name: ensure boundary repository is installed
+  action: apt_repository repo='deb https://apt.boundary.com/ubuntu/ precise universe'
+  
+- name: ensure boundary repository gpg key is installed
+  action: apt_key url=https://apt.boundary.com/APT-GPG-KEY-Boundary state=present
+
+- name: install boundary bprobe
+  action: apt pkg=bprobe state=installed force=yes
+</code>
+</pre>
+
+<p>Once those three actions have run, bprobe will be installed.</p>
+
+<pre>
+<code>$ which bprobe
+/usr/local/bin/bprobe
+</code>
+</pre>
+
+<h2 id="creating-a-meter">Creating a meter</h2>
+
+<p>In order to start sending data to boundary’s api, that’s all done with a restful api, we need to register a meter. In order to do that with ansible, you’ll need the <a href="https://github.com/ccollicutt/ansible/blob/devel/library/monitoring/boundary_meter">boundary_meter module</a> I (initially) wrote, which by now, if I’m lucky, will be in ansible’s core set of modules.</p>
+
+<p>Once that module is available to ansible, using it to create a meter looks like the below:</p>
+
+<pre>
+<code>- name: register boundary meter
+  action: boundary_meter apikey=AAAAAAA apiid=BBBBBB state=present \
+  name=${ inventory_hostname }
+  notify: restart bprobe
+
+handlers:
+  - name: restart bprobe
+    action: service name=bprobe state=restarted
+</code>
+</pre>
+
+<p>where AAAAAA and BBBBBB are your organizations api id and api key for boundary.</p>
+
+<h2 id="monitoring">Monitoring</h2>
+
+<p>Once the meter is registered and bprobe up and running connecting back to boundary’s api server, data should be flowing, and you can login to the boundary web gui and check out the node.</p>
+
+<p>Thanks, and as always, if there are questions, suggestions, comments or criticisms, do let me know. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

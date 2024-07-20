@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an OpenStack Load Balancer | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Create an OpenStack Load Balancer">
+
+    
+    <meta name="twitter:description" content="<p>In a recent post I discussed the <a href="http://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html">OpenStack Octavia</a> project which provides a backend to Neutron’s LBaaS system.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In a recent post I discussed the <a href="http://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html">OpenStack Octavia</a> project which provides a backend to Neutron’s LBaaS system.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/use-openstack-loadbalancer.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/use-openstack-loadbalancer.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Create an OpenStack Load Balancer" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/08/15/use-openstack-loadbalancer.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Create an OpenStack Load Balancer</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-08-15T00:00:00-04:00">
+                August 15, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In a recent post I discussed the <a href="http://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html">OpenStack Octavia</a> project which provides a backend to Neutron’s LBaaS system.</p>
+
+<p>In this post I’ll just go over a quick example of creating and using a load balancer and using it in OpenStack.</p>
+
+<p>The <a href="https://docs.openstack.org/mitaka/networking-guide/config-lbaas.html">official docs</a> are pretty good on this, but it’s worthwhile to cover them in a real environment.</p>
+
+<h2 id="create-two-webservers">Create Two Webservers</h2>
+
+<p>I’ve already created two web servers, web-1 and web-2.</p>
+
+<pre><code>$ os server list | grep web-
+| 05f0bb14-2895-4c7b-a493-ef2a1b57c721 | web-2 | ACTIVE  | vxlan1=10.50.0.15 | xenial     |
+| 3ff621cd-46cb-4fcf-8d9d-2193718a11f5 | web-1 | ACTIVE  | vxlan1=10.50.0.35 | xenial     |
+</code></pre>
+
+<p>I’ve also changed each of the /var/www/html/index.html pages to have only the hostname in it, so that if you connect to port 80 on either of them they respond with their hostname.</p>
+
+<h2 id="create-a-load-balancer">Create a Load Balancer</h2>
+
+<p>First, we create a load balancer and put it onto a specific network.</p>
+
+<pre><code>$ neutron lbaas-loadbalancer-create --name web-lb vxlan1-subnet
+Created a new loadbalancer:
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| admin_state_up      | True                                 |
+| description         |                                      |
+| id                  | 6b9c75c1-4af2-424d-8b20-681926de4e0d |
+| listeners           |                                      |
+| name                | web-lb                               |
+| operating_status    | OFFLINE                              |
+| pools               |                                      |
+| provider            | octavia                              |
+| provisioning_status | PENDING_CREATE                       |
+| tenant_id           | 3b29434130cd487186f1da0b5831232f     |
+| vip_address         | 10.50.0.11                           |
+| vip_port_id         | b88dd055-e963-4227-86e1-558df52dc946 |
+| vip_subnet_id       | 5ce133ce-cce6-4142-89d4-a71da87bbde6 |
++---------------------+--------------------------------------+
+</code></pre>
+
+<p>Show the newly created loadbalancer. Note the “octavia” provider, and the IP the load balancer received.</p>
+
+<pre><code>$ neutron lbaas-loadbalancer-show web-lb
++---------------------+--------------------------------------+
+| Field               | Value                                |
++---------------------+--------------------------------------+
+| admin_state_up      | True                                 |
+| description         |                                      |
+| id                  | 6b9c75c1-4af2-424d-8b20-681926de4e0d |
+| listeners           |                                      |
+| name                | web-lb                               |
+| operating_status    | ONLINE                               |
+| pools               |                                      |
+| provider            | octavia                              |
+| provisioning_status | ACTIVE                               |
+| tenant_id           | 3b29434130cd487186f1da0b5831232f     |
+| vip_address         | 10.50.0.11                           |
+| vip_port_id         | b88dd055-e963-4227-86e1-558df52dc946 |
+| vip_subnet_id       | 5ce133ce-cce6-4142-89d4-a71da87bbde6 |
++---------------------+--------------------------------------+
+</code></pre>
+
+<p>There is also an existing security group called web that allows port 80.</p>
+
+<pre><code>$ os security group list | grep web
+| db3f7e2d-2453-416d-8651-ba8544502d0f | web           | web                    | 3b29434130cd487186f1da0b5831232f |
+</code></pre>
+
+<p>The security group must be added to the LB VIP port which was shown above in the LB show.</p>
+
+<pre><code>$ neutron port-update --security-group web b88dd055-e963-4227-86e1-558df52dc946
+Updated port: b88dd055-e963-4227-86e1-558df52dc946
+</code></pre>
+
+<p>Now to create a listener.</p>
+
+<pre><code>$ neutron lbaas-listener-create --name web-lb-http --loadbalancer web-lb --protocol HTTP --protocol-port 80
+Created a new listener:
++---------------------------+------------------------------------------------+
+| Field                     | Value                                          |
++---------------------------+------------------------------------------------+
+| admin_state_up            | True                                           |
+| connection_limit          | -1                                             |
+| default_pool_id           |                                                |
+| default_tls_container_ref |                                                |
+| description               |                                                |
+| id                        | 364c08e7-29a6-4c02-b6e6-7b0d18f3e10e           |
+| loadbalancers             | {"id": "6b9c75c1-4af2-424d-8b20-681926de4e0d"} |
+| name                      | web-lb-http                                    |
+| protocol                  | HTTP                                           |
+| protocol_port             | 80                                             |
+| sni_container_refs        |                                                |
+| tenant_id                 | 3b29434130cd487186f1da0b5831232f               |
++---------------------------+------------------------------------------------+
+</code></pre>
+
+<p>Create a pool.</p>
+<pre><code>$ neutron lbaas-pool-create \
+&gt;   --name web-lb-pool-http \
+&gt;   --lb-algorithm ROUND_ROBIN \
+&gt;   --listener web-lb-http \
+&gt;   --protocol HTTP
+
+Created a new pool:
++---------------------+------------------------------------------------+
+| Field               | Value                                          |
++---------------------+------------------------------------------------+
+| admin_state_up      | True                                           |
+| description         |                                                |
+| healthmonitor_id    |                                                |
+| id                  | 19e86ff3-aa58-4582-8399-4ad3c9eaeb9d           |
+| lb_algorithm        | ROUND_ROBIN                                    |
+| listeners           | {"id": "364c08e7-29a6-4c02-b6e6-7b0d18f3e10e"} |
+| loadbalancers       | {"id": "6b9c75c1-4af2-424d-8b20-681926de4e0d"} |
+| members             |                                                |
+| name                | web-lb-pool-http                               |
+| protocol            | HTTP                                           |
+| session_persistence |                                                |
+| tenant_id           | 3b29434130cd487186f1da0b5831232f               |
++---------------------+------------------------------------------------+
+</code></pre>
+
+<p>Add the first member.</p>
+
+<pre><code>$ neutron lbaas-member-create \
+&gt;     --subnet vxlan1-subnet \
+&gt;     --address 10.50.0.35 \
+&gt;     --protocol-port 80 \
+&gt;     web-lb-pool-http
+Created a new member:
++----------------+--------------------------------------+
+| Field          | Value                                |
++----------------+--------------------------------------+
+| address        | 10.50.0.35                           |
+| admin_state_up | True                                 |
+| id             | 38fb7a37-24f4-4fc5-a50b-4e21502d239e |
+| name           |                                      |
+| protocol_port  | 80                                   |
+| subnet_id      | 5ce133ce-cce6-4142-89d4-a71da87bbde6 |
+| tenant_id      | 3b29434130cd487186f1da0b5831232f     |
+| weight         | 1                                    |
++----------------+--------------------------------------+
+</code></pre>
+
+<p>Add the second member.</p>
+
+<pre><code>$ neutron lbaas-member-create \
+&gt;     --subnet vxlan1-subnet \
+&gt;     --address 10.50.0.15 \
+&gt;     --protocol-port 80 \
+&gt;     web-lb-pool-http
+Created a new member:
++----------------+--------------------------------------+
+| Field          | Value                                |
++----------------+--------------------------------------+
+| address        | 10.50.0.15                           |
+| admin_state_up | True                                 |
+| id             | 02074bde-90b2-4c0d-bfb1-2bb2e215d7fb |
+| name           |                                      |
+| protocol_port  | 80                                   |
+| subnet_id      | 5ce133ce-cce6-4142-89d4-a71da87bbde6 |
+| tenant_id      | 3b29434130cd487186f1da0b5831232f     |
+| weight         | 1                                    |
++----------------+--------------------------------------+
+</code></pre>
+
+<h2 id="assign-a-floating-ip-to-the-load-balancer">Assign a Floating IP to the Load Balancer</h2>
+
+<p>A floating IP has already been created.</p>
+
+<pre><code>$ neutron floatingip-list
++--------------------------------------+------------------+---------------------+---------+
+| id                                   | fixed_ip_address | floating_ip_address | port_id |
++--------------------------------------+------------------+---------------------+---------+
+| 9e048a99-8533-4dc6-9e6f-1347c09d28e9 |                  | &lt;floating ip&gt;       |         |
++--------------------------------------+------------------+---------------------+---------+
+</code></pre>
+
+<p>Actually associate the floating IP. In this case we are associating a floating IP with a port instead of a “server.”</p>
+
+<pre><code>neutron floatingip-associate 9e048a99-8533-4dc6-9e6f-1347c09d28e9 b88dd055-e963-4227-86e1-558df52dc946
+Associated floating IP 9e048a99-8533-4dc6-9e6f-1347c09d28e9
+</code></pre>
+
+<h2 id="testing-a-load-balancer">Testing a Load balancer</h2>
+
+<p>Now that the floating IP is up and attached to a working load balancer, and behind it is a couple of working web servers…</p>
+
+<pre><code>$ while true; do curl &lt;floating ip&gt;; sleep 1; done
+web-2
+web-1
+web-2
+web-1
+web-2
+web-1
+web-2
+web-1
+^
+</code></pre>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

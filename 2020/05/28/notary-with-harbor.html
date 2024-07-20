@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUF, Notary, and Harbor Registry | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="TUF, Notary, and Harbor Registry">
+
+    
+    <meta name="twitter:description" content="<p>If you watch this <a href="https://www.youtube.com/watch?v=Hnzc6va4l6k">video</a> by Justin Cormack, he starts it off by talking about an attack vector that is used successfully by “evil doers” time and time again…<strong>software updates</strong>. Securing software updates is complicated and can’t be solved with simple solutions, and what’s worse, when using simple solutions can make software updates ineffective. Without some kind of process/framework for managing updates, securing systems is impossible. Sure, securing software updates will require signing things digitally, most technical people get that, but that’s just one part of the solution and it’s not enough on its own.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>If you watch this <a href="https://www.youtube.com/watch?v=Hnzc6va4l6k">video</a> by Justin Cormack, he starts it off by talking about an attack vector that is used successfully by “evil doers” time and time again…<strong>software updates</strong>. Securing software updates is complicated and can’t be solved with simple solutions, and what’s worse, when using simple solutions can make software updates ineffective. Without some kind of process/framework for managing updates, securing systems is impossible. Sure, securing software updates will require signing things digitally, most technical people get that, but that’s just one part of the solution and it’s not enough on its own.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/notary-with-harbor.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/notary-with-harbor.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="TUF, Notary, and Harbor Registry" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/05/28/notary-with-harbor.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">TUF, Notary, and Harbor Registry</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-05-28T00:00:00-04:00">
+                May 28, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>If you watch this <a href="https://www.youtube.com/watch?v=Hnzc6va4l6k">video</a> by Justin Cormack, he starts it off by talking about an attack vector that is used successfully by “evil doers” time and time again…<strong>software updates</strong>. Securing software updates is complicated and can’t be solved with simple solutions, and what’s worse, when using simple solutions can make software updates ineffective. Without some kind of process/framework for managing updates, securing systems is impossible. Sure, securing software updates will require signing things digitally, most technical people get that, but that’s just one part of the solution and it’s not enough on its own.</p>
+
+<p>That’s where <a href="https://theupdateframework.io/">TUF</a>, “The Update Framework,” comes in.</p>
+
+<blockquote>
+  <p>The Update Framework (TUF) helps developers maintain the security of software update systems, providing protection even against attackers that compromise the repository or signing keys. TUF provides a flexible framework and specification that developers can adopt into any software update system.</p>
+</blockquote>
+
+<p>The <a href="https://github.com/theupdateframework/tuf/blob/develop/docs/OVERVIEW.rst">overview</a> for TUF is quite good. I don’t want to try (and fail) to reproduce that work here. So just go read it. :)</p>
+
+<h2 id="harbor">Harbor</h2>
+
+<p>The easiest way to describe Harbor is that it’s an image registry. But, with the <a href="https://goharbor.io/blog/harbor-2.0/">recent release of Harbor 2.0</a>, it is much more than just a simple image registry…it’s an OCI compliant registry!</p>
+
+<blockquote>
+  <p>This release makes Harbor the first OCI ( Open Container Initiative)-compliant open source registry capable of storing a multitude of cloud-native artifacts like container images, Helm charts, OPAs, Singularity, and much more.</p>
+</blockquote>
+
+<p>When Harbor is deployed it can have Notary enabled.</p>
+
+<h2 id="notary">Notary</h2>
+
+<p>Notary is an implementation of TUF, and, like TUF, it’s a <a href="https://www.linuxfoundation.org/cloud-containers-virtualization/2017/10/cncf-host-two-security-projects-notary-tuf-specification/">CNCF project</a>.</p>
+
+<blockquote>
+  <p>Notary is one of the industry’s most mature implementations of the TUF specification and its Go implementation is used today to provide robust security for container image updates, even in the face of a registry compromise. Notary takes care of the operations necessary to create, manage, and distribute the metadata needed to ensure the integrity and freshness of user content. Notary/TUF provides both a client, and a pair of server applications to host signed metadata and perform limited online signing functions.</p>
+</blockquote>
+
+<h2 id="quick-look-at-notary-and-harbor">Quick Look at Notary and Harbor</h2>
+
+<p>I’ve got a Harbor installation setup to use. I’ve also installed the notary CLI.</p>
+
+<p>First, I tell Docker to use content trust and point it to the Notary instance that comes with Harbor. In this case Harbor was deployed via the Helm chart, and Notary is exposed on its own hostname via ingress.</p>
+
+<pre><code>export DOCKER_CONTENT_TRUST=1
+export DOCKER_CONTENT_TRUST_SERVER=https://notary.example.com
+</code></pre>
+
+<p>Next I try to push an image. By doing this, I’ll be initializing the keys for use with Notary. I’m glossing over what is happening here, as generating these keys should have a lot of thought put around it, and they should be properly stored and themselves secured. More on this in a future post, I hope.</p>
+
+<pre><code>$ docker pull alpine
+$ docker tag alpine harbor.example.com/secure/alpine-signed:1.0
+$ docker push  harbor.example.com/secure/alpine-signed:1.0
+The push refers to repository [harbor.example.com/secure/alpine-signed]
+3e207b409db3: Pushed
+1.0: digest: sha256:39eda93d15866957feaee28f8fc5adb545276a64147445c64992ef69804dbf01 size: 528
+Signing and pushing trust metadata
+You are about to create a new root signing key passphrase. This passphrase
+will be used to protect the most sensitive key in your signing system. Please
+choose a long, complex passphrase and be careful to keep the password and the
+key file itself secure and backed up. It is highly recommended that you use a
+password manager to generate the passphrase and keep it safe. There will be no
+way to recover this key. You can find the key in your config directory.
+Enter passphrase for new root key with ID 6b438eb:
+Repeat passphrase for new root key with ID 6b438eb:
+Enter passphrase for new repository key with ID aafd072:
+Repeat passphrase for new repository key with ID aafd072:
+Finished initializing "harbor.example.com/secure/alpine-signed"
+Successfully signed harbor.example.com/secure/alpine-signed:1.0
+</code></pre>
+
+<p>This first signed image push initializes TUF. Files are created in ~/.docker/trust.</p>
+
+<pre><code>$ find ~/.docker/trust/ | head
+/home/ubuntu/.docker/trust/
+/home/ubuntu/.docker/trust/tuf
+/home/ubuntu/.docker/trust/tuf/harbor.example.com
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure/alpine-signed
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure/alpine-signed/changelist
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure/alpine-signed/metadata
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure/alpine-signed/metadata/targets.json
+/home/ubuntu/.docker/trust/tuf/harbor.example.com/secure/alpine-signed/metadata/root.json
+/home/ubuntu/.docker/trust/tuf/docker.io
+</code></pre>
+
+<p>Using the Notary CLI we can see that image is registered.</p>
+
+<pre><code>$ alias notary="notary -s https://notary.example.com -d ~/.docker/trust"
+$ notary list harbor.example.com/secure/alpine-signed
+Enter username: admin
+Enter password:
+NAME    DIGEST                                                              SIZE (BYTES)    ROLE
+----    ------                                                              ------------    ----
+1.0     39eda93d15866957feaee28f8fc5adb545276a64147445c64992ef69804dbf01    528             targets
+</code></pre>
+
+<p>In the Harbor GUI the image is show as being signed.</p>
+
+<p><img src="/img/harbor-tuf2.png" alt="signed image in harbor" /></p>
+
+<p>The Harbor project we are pushing the image to has content trust enabled.</p>
+
+<p><em>NOTE: What enabling this means is that Harbor won’t allow any images to be pulled from this repo unless they are signed.</em></p>
+
+<p><img src="/img/harbor-tuf1.png" alt="harbor project content trust enabled" /></p>
+
+<p>As an example, here I’m trying to pull an <strong>UNSIGNED</strong> image into a k8s cluster, which, when “content trust” is enabled in the project, Harbor will not allow.</p>
+
+<pre><code>$ k describe pod alpine-unsigned-1.0  | tail
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type     Reason     Age                From                                          Message
+  ----     ------     ----               ----                                          -------
+  Normal   Scheduled  48s                default-scheduler                             Successfully assigned default/alpine-unsigned-1.0 to central-tools-md-0-5bfcdd98d9-2w5kx
+  Normal   BackOff    21s (x3 over 47s)  kubelet, central-tools-md-0-5bfcdd98d9-2w5kx  Back-off pulling image "harbor.example.com/secure/alpine-unsigned:1.0"
+  Warning  Failed     21s (x3 over 47s)  kubelet, central-tools-md-0-5bfcdd98d9-2w5kx  Error: ImagePullBackOff
+  Normal   Pulling    9s (x3 over 47s)   kubelet, central-tools-md-0-5bfcdd98d9-2w5kx  Pulling image "harbor.example.com/secure/alpine-unsigned:1.0"
+  Warning  Failed     9s (x3 over 47s)   kubelet, central-tools-md-0-5bfcdd98d9-2w5kx  Failed to pull image "harbor.example.com/secure/alpine-unsigned:1.0": rpc error: code = Unknown desc = failed to pull and unpack image "harbor.example.com/secure/alpine-unsigned:1.0": failed to copy: httpReaderSeeker: failed open: unexpected status code https://harbor.example.com/v2/secure/alpine-unsigned/manifests/sha256:39eda93d15866957feaee28f8fc5adb545276a64147445c64992ef69804dbf01: 412 Precondition Failed - Server message: unknown: The image is not signed in Notary.
+  Warning  Failed     9s (x3 over 47s)   kubelet, central-tools-md-0-5bfcdd98d9-2w5kx  Error: ErrImagePull
+</code></pre>
+
+<p>Note the error message Harbor responds with:</p>
+
+<pre><code>  412 Precondition Failed - Server message: unknown: The image is not signed in Notary.
+</code></pre>
+
+<p>Pulling a signed image is fine, of course.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Here’s a very basic example of using Notary and content trust in Harbor. To put this process into production would take a fair amount of consideration and should not be taken lightly. But if you want to quickly try out signing an image in combination with using content trust with Harbor, then it’s quite simple to do. Deploying Harbor with Helm is also <a href="http://localhost:4000/2020/04/28/local-harbor-install.html">straight forward</a> if you have a k8s cluster to use. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiftacular - deploy OpenStack Swift with Ansible on CentOS | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Swiftacular - deploy OpenStack Swift with Ansible on CentOS">
+
+    
+    <meta name="twitter:description" content="<p><a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> is a project that can deploy an OpenStack Swift cluster using <a href="http://ansible.com">Ansible</a>. In this post I’ll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> is a project that can deploy an OpenStack Swift cluster using <a href="http://ansible.com">Ansible</a>. In this post I’ll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/swiftacular-openstack-swift-with-centos.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/swiftacular-openstack-swift-with-centos.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Swiftacular - deploy OpenStack Swift with Ansible on CentOS" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/04/12/swiftacular-openstack-swift-with-centos.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Swiftacular - deploy OpenStack Swift with Ansible on CentOS</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-04-12T00:00:00-04:00">
+                April 12, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><a href="https://github.com/ccollicutt/swiftacular">Swiftacular</a> is a project that can deploy an OpenStack Swift cluster using <a href="http://ansible.com">Ansible</a>. In this post I’ll talk about a recent feature I added which is the ability to deploy to RedHat/CentOS 6.</p>
+
+<h2 id="providers">Providers</h2>
+
+<p>For the most part Swiftacular is used for getting used to how OpenStack <a href="http://docs.openstack.org/developer/swift/">Swift</a> works and is installed, and will usually be deployed using Vagrant and Virtualbox.</p>
+
+<p>One of the features I hope to add is the ability to use multiple provisioners, such as IaaS providers like as Digital Ocean, OpenStack, etc. Having said that, it’s not required to use Vagrant, you could easily change some IPs around in the ansible hosts file, make a couple changes in other spots, and deploy to any servers, whether they are provided by Vagrant, virtual servers or even bare metal.</p>
+
+<p>But for now, Swiftacular uses Vagrant and Virtualbox.</p>
+
+<h2 id="deploying-to-centos">Deploying to CentOS</h2>
+
+<p>By default the Vagrantfile that comes with Swiftacular will use the Ubuntu 12.04 Precise 64bit box that the Vagrant project provides.</p>
+
+<p>But, if you would like to try deploying OpenStack Swift to CentOS 6 Swiftacular supports that as well, and doing so is as easy as changing which box the Vagrantfile points to.</p>
+
+<pre>
+<code>#config.vm.box = "centos65"
+#config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
+config.vm.box = "precise64"
+config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+</code>
+</pre>
+
+<p>So if you would like to deploy to CentOS, simply make the Vagrantfile look like this:</p>
+
+<pre>
+<code>config.vm.box = "centos65"
+config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-nocm.box"
+#config.vm.box = "precise64"
+#config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+</code>
+</pre>
+
+<p>Then, once vagrant up is run and the virtual machines are created, the site.yml playbook can be run and OpenStack Swift will be deployed using the <a href="http://openstack.redhat.com/Main_Page">RDO packages</a>. The playbooks will detect that it is a RedHat-like operating system and deploy the right packages and files for that operating system.</p>
+
+<h2 id="about-redhat-rdo">About RedHat RDO</h2>
+
+<p>Apparently RDO is a meaningless acronym, but I tend to think of it as “RedHat’s Distribution of OpenStack.”</p>
+
+<p>One thing I found while using RDO is that the rdo-release.repo has a priorities setting. Note the “priority=98” option below.</p>
+
+<pre>
+<code>[vagrant@swift-proxy-01 yum.repos.d]$ cat rdo-release.repo 
+[openstack-havana]
+name=OpenStack Havana Repository
+baseurl=http://repos.fedorapeople.org/repos/openstack/openstack-havana/epel-6/
+enabled=1
+skip_if_unavailable=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-RDO-Havana
+priority=98
+</code>
+</pre>
+
+<p>This means that it will be used before other repos that don’t have a priority setting (as I believe the default is 99, and the lower the number the higher the priority).</p>
+
+<p>But, this requires the yum priorities plugin to work.</p>
+
+<pre>
+<code>[vagrant@swift-proxy-01 yum.repos.d]$ rpm -qa | grep priorities
+yum-plugin-priorities-1.1.30-17.el6_5.noarch
+</code>
+</pre>
+
+<p>Thus that plugin must be installed in order to use the priority setting, otherwise the wrong packages may be installed.</p>
+
+<h2 id="run-swiftacular">Run Swiftacular</h2>
+
+<p>Once the Vagrantfile has been changed to use a CentOS 6 box and vagrant up has been run, swiftacular can install the Swift cluster.</p>
+
+<p>Below I show that the servers are all CentOS 6.5.</p>
+
+<pre>
+<code>curtis$ ansible -a "cat /etc/redhat-release" all
+192.168.100.20 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.30 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.200 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.100 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.50 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.202 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+
+192.168.100.201 | success | rc=0 &gt;&gt;
+CentOS release 6.5 (Final)
+</code>
+</pre>
+
+<p>Now to run the site playbook. Note that occasionally I’ve had to run the site playbook twice because of a <a href="https://github.com/ccollicutt/swiftacular/issues/12">bug</a>. So below is on the second run.</p>
+
+<pre>
+<code>curtis$ #second run
+curtis$ ansible-playbook site.yml 
+SNIP!
+PLAY RECAP ******************************************************************** 
+192.168.100.100            : ok=26   changed=1    unreachable=0    failed=0   
+192.168.100.20             : ok=22   changed=0    unreachable=0    failed=0   
+192.168.100.200            : ok=42   changed=3    unreachable=0    failed=0   
+192.168.100.201            : ok=42   changed=3    unreachable=0    failed=0   
+192.168.100.202            : ok=45   changed=8    unreachable=0    failed=0   
+192.168.100.30             : ok=17   changed=2    unreachable=0    failed=0   
+192.168.100.50             : ok=35   changed=0    unreachable=0    failed=0   
+</code>
+</pre>
+
+<p>Once the Swiftacular playbook has completed successfully, swift is up and running.</p>
+
+<pre>
+<code>curtis$ vagrant ssh swift-package-cache-01
+working on swift-package-cache-01 with ip of 192.168.100.20
+Last login: Sat Apr 12 09:26:12 2014 from 192.168.100.1
+Welcome to your Vagrant-built virtual machine.
+[vagrant@swift-package-cache-01 ~]$ . testrc 
+[vagrant@swift-package-cache-01 ~]$ swift list
+[vagrant@swift-package-cache-01 ~]$ #nothing there yet, let's add 100 files
+[vagrant@swift-package-cache-01 ~]$ mkdir test
+[vagrant@swift-package-cache-01 ~]$ for i in $(seq 1 100); do echo "swift $i" &gt; \
+test/swift$i.txt; done
+[vagrant@swift-package-cache-01 ~]$ swift upload test test
+test/swift76.txt
+test/swift28.txt
+test/swift79.txt
+test/swift27.txt
+SNIP!
+[vagrant@swift-package-cache-01 ~]$ swift list
+test
+[vagrant@swift-package-cache-01 ~]$ swift list test | head
+test/swift1.txt
+test/swift10.txt
+test/swift100.txt
+test/swift11.txt
+test/swift12.txt
+test/swift13.txt
+test/swift14.txt
+test/swift15.txt
+test/swift16.txt
+test/swift17.txt
+[vagrant@swift-package-cache-01 ~]$ swift list test  |wc -l
+100
+</code>
+</pre>
+
+<p>Now that I’ve uploaded 100 files, and we have replicas set to 2, I can do a little digging around to see where files ended up.</p>
+
+<pre>
+<code>curtis$ ansible -m shell -a "sudo find /srv | grep data | wc -l" storage
+192.168.100.202 | success | rc=0 &gt;&gt;
+0
+
+192.168.100.200 | success | rc=0 &gt;&gt;
+100
+
+192.168.100.201 | success | rc=0 &gt;&gt;
+100
+</code>
+</pre>
+
+<p>Above it can be seen that there are 100 files on two of the three servers, which makes sense if we want two copies of each file. Though I still have a lot to learn about what OpenStack Swift is actually doing in the background.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Swiftacular now has the basic ability to deploy OpenStack Swift to RedHat 6 based operating systems using the RDO packages. There is a lot more to be done, but now with Ubuntu 12.04 and RedHat 6 support I can move onto adding other interesting features.</p>
+
+<p>If you have any suggestions or run into errors, please do let me know and I’ll fix them. I’d love to get some testers. :)</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

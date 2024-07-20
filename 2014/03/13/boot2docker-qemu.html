@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>boot2docker and libvirt | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="boot2docker and libvirt">
+
+    
+    <meta name="twitter:description" content="<p><a href="https://www.docker.io">Docker</a> is so hot right now. Well, containers in general are. LXC just hit version 1.0 and the developers have declared it production ready.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><a href="https://www.docker.io">Docker</a> is so hot right now. Well, containers in general are. LXC just hit version 1.0 and the developers have declared it production ready.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/boot2docker-qemu.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/boot2docker-qemu.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="boot2docker and libvirt" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/03/13/boot2docker-qemu.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">boot2docker and libvirt</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-03-13T00:00:00-04:00">
+                March 13, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><a href="https://www.docker.io">Docker</a> is so hot right now. Well, containers in general are. LXC just hit version 1.0 and the developers have declared it production ready.</p>
+
+<p>Here is part of the LXC 1.0 release announcement:</p>
+
+<blockquote>
+  <p>LXC 1.0 is the first production ready release of LXC and it comes with a commitment from upstream to maintain it until at least Ubuntu 14.04 LTS reaches end of life in April 2019. That’s slightly over 5 years of support!</p>
+</blockquote>
+
+<p>So what is docker? From the website:</p>
+
+<blockquote>
+  <p>Docker is an open-source project to easily create lightweight, portable, self-sufficient containers from any application. The same container that a developer builds and tests on a laptop can run at scale, in production, on VMs, bare metal, OpenStack clusters, public clouds and more.</p>
+</blockquote>
+
+<h2 id="boot2docker">boot2docker</h2>
+
+<p>The idea behind <a href="https://github.com/boot2docker/boot2docker">boot2docker</a> is to be able to use docker quickly, mostly on OSX. But OSX doesn’t support containers (yet, maybe someday), so running docker natively isn’t possible.</p>
+
+<p>To use docker on OSX it has to be done inside a Linux virtual machine running in a hypervisor (like Virtualbox or VMWare Fusion) on top of OSX. This is what boot2docker does–provides a small Linux vm with docker installed, and helps get it all configured and provides a command line interface.</p>
+
+<p>From the github repo for boot2docker:</p>
+
+<blockquote>
+  <p>boot2docker is a lightweight Linux distribution based on Tiny Core Linux made specifically to run Docker containers. It runs completely from RAM, weighs ~24MB and boots in ~5s (YMMV).</p>
+</blockquote>
+
+<p>boot2docker comes with helpful commands and setup to get this running easily and quickly on OSX, but I’m not going to use it on OSX…I’m going to use it with libvirt and KVM.</p>
+
+<h2 id="use-boot2docker-with-libvirt">Use boot2docker with libvirt</h2>
+
+<p>First I downloaded the boot2docker iso from github.</p>
+
+<pre>
+<code>root# wget \
+https://github.com/boot2docker/boot2docker/releases/download/v0.7.0/boot2docker.iso
+</code>
+</pre>
+
+<p>Then I created a qemu disk image from that iso.</p>
+
+<pre>
+<code>root# qemu-img convert -O qcow2 boot2docker.iso /var/lib/libvirt/images/boot2docker.img
+root# file /var/lib/libvirt/images/boot2docker.img: QEMU QCOW Image (v2), 25165824 bytes
+</code>
+</pre>
+
+<h2 id="boot2docker-boot-script">boot2docker boot script</h2>
+
+<p>Now that I have a base backing file made from the boot2docker ISO file, I can boot virtual machines off it.</p>
+
+<p>I wrote a script that I am still in the process of refining (ie. this is still pretty ugly) but using it I can start several boot2docker based virtual machines from libvirt.</p>
+
+<p>I’ve also added a second drive for each vm and in the script the drive image gets partitioned and ext4 formatted with a label that boot2docker recognizes and mounts automatically.</p>
+
+<p>I’m using sfdisk to partition a second file, and the partitioning may not be setup properly. I haven’t done enough testing, but it’s working so far. :)</p>
+
+<pre>
+<code>root# cat boot2docker.sh 
+#!/bin/bash
+
+vmtype=boot2docker
+num_vms=4
+backing_image=boot2docker.img
+
+for ((i=1; i&lt;=num_vms; i++)); do
+
+  virsh destroy ${vmtype}$i &gt; /dev/null
+  virsh undefine ${vmtype}$i &gt; /dev/null
+  rm -f ./${vmtype}0${i}.xml &gt; /dev/null
+  rm -f /var/lib/libvirt/images/${vmtype}$i.img &gt; /dev/null
+  rm -f /var/lib/libvirt/images/${vmtype}$i-persist.img &gt; /dev/null
+
+#
+# Setup partitions for image
+#
+
+cat &lt;&lt;-SFDISKOUT &gt; /var/tmp/sfdisk.out.${vmtype}${i}
+# partition table of boot2docker1-persist.img
+unit: sectors
+
+${vmtype}${i}-persist.img1 : start=     2048, size= 10483712, Id=83
+${vmtype}${i}-persist.img2 : start=        0, size=        0, Id= 0
+${vmtype}${i}-persist.img3 : start=        0, size=        0, Id= 0
+${vmtype}${i}-persist.img4 : start=        0, size=        0, Id= 0
+SFDISKOUT
+
+  #
+  # Create images
+  # 
+
+  pushd /var/lib/libvirt/images &gt; /dev/null
+    qemu-img create -f qcow2 -b ${backing_image} ${vmtype}${i}.img &gt; /dev/null
+    qemu-img create -f raw ${vmtype}${i}-persist.img 5G
+    sfdisk --force ${vmtype}${i}-persist.img &lt; /var/tmp/sfdisk.out.${vmtype}${i}
+    losetup --offset 1048576 /dev/loop0 ${vmtype}${i}-persist.img
+    mkfs.ext4 -F -L boot2docker-data /dev/loop0
+    losetup -d /dev/loop0
+  popd &gt; /dev/null
+
+  rm -f /var/tmp/sfdisk.out.${vmtype}${i}
+
+  chown libvirt-qemu:kvm /var/lib/libvirt/images/*.img
+
+  vm_uuid=`uuid`
+
+  #
+  # Build the libvirt xml file
+  #
+
+ cat &lt;&lt;-LIBVIRTXML &gt; ${vmtype}${i}.xml
+<domain type="kvm">
+    <uuid>${uuid}</uuid>
+    <name>${vmtype}${i}</name>
+    <memory>4194304</memory>
+    <os>
+            <type>hvm</type>
+            <boot dev="hd" />
+    </os>
+    <features>
+        <acpi />
+    </features>
+    <vcpu>1</vcpu>
+    <devices>
+        <disk type="file" device="disk">
+            <driver type="qcow2" cache="none" />
+            <source file="/var/lib/libvirt/images/${vmtype}${i}.img" />
+            <target dev="vda" bus="virtio" />
+        </disk>
+        <disk type="file" device="disk">
+      	    <driver type="raw" cache="none" />
+            <source file="/var/lib/libvirt/images/${vmtype}${i}-persist.img" />
+            <target dev="vdb" bus="virtio" />
+        </disk>
+
+  <interface type="network">
+     <source network="default" />
+            <model type="virtio" />
+            <mac address="fa:16:3e:18:89:0${i}" />
+  </interface>
+
+
+    </devices>
+</domain>
+LIBVIRTXML
+
+  #
+  # Define and start the vm
+  #
+
+  virsh define ${vmtype}${i}.xml &gt; /dev/null
+  if virsh start ${vmtype}${i} &gt; /dev/null; then
+	echo "${vmtype}${i} started"
+  fi
+  sleep 1
+
+done
+
+virsh list --all
+exit 0
+</code>
+</pre>
+
+<h2 id="create-some-boot2docker-virtual-machines">Create some boot2docker virtual machines</h2>
+
+<p>If I run that script, which is a little noisy, I end up with four virtual machines running the boot2docker OS (which is based on Tiny Linux).</p>
+
+<p>The script ends off by listing all the running vms on the box.</p>
+
+<pre>
+<code>root# ./boot2docker.sh 
+SNIP!
+boot2docker4 started
+ Id Name                 State
+----------------------------------
+127 boot2docker1         running
+128 boot2docker2         running
+129 boot2docker3         running
+130 boot2docker4         running
+</code>
+</pre>
+
+<p>The vms are getting IPs from dnsmasq which is configured by default by libvirt.</p>
+
+<pre>
+<code>root# cat /var/lib/libvirt/dnsmasq/default.leases 
+1394830266 fa:16:3e:18:89:04 192.168.122.246 * 01:fa:16:3e:18:89:04
+1394830262 fa:16:3e:18:89:03 192.168.122.245 * 01:fa:16:3e:18:89:03
+1394830263 fa:16:3e:18:89:02 192.168.122.244 * 01:fa:16:3e:18:89:02
+1394830255 fa:16:3e:18:89:01 192.168.122.243 * 01:fa:16:3e:18:89:01
+</code>
+</pre>
+
+<p>I set the mac adresses in the script to be fa:16:3e:18:89:0X.</p>
+
+<p>Knowing the IPs the vms received from libvirt/dnsmasq, I can ssh into them. (The default user/pass is docker/tcuser.)</p>
+
+<pre>
+<code>root# ssh docker@192.168.122.243
+Warning: Permanently added '192.168.122.243' (ECDSA) to the list of known hosts.
+docker@192.168.122.243's password: 
+                        ##        .
+                  ## ## ##       ==
+               ## ## ## ##      ===
+           /""""""""""""""""\___/ ===
+      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
+           \______ o          __/
+             \    \        __/
+              \____\______/
+ _                 _   ____     _            _
+| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+| '_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ '__|
+| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   &lt;  __/ |
+|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+boot2docker: 0.7.0
+</code>
+</pre>
+
+<p>And we can see that the second device, which is /dev/vdb, has indeed been mounted.</p>
+
+<pre>
+<code>docker@boot2docker:~$ df -h
+Filesystem                Size      Used Available Use% Mounted on
+rootfs                    3.5G    223.4M      3.3G   6% /
+tmpfs                     1.9G         0      1.9G   0% /dev/shm
+/dev/vdb1                 4.8G     25.3M      4.5G   1% /mnt/vdb1
+cgroup                    1.9G         0      1.9G   0% /sys/fs/cgroup
+</code>
+</pre>
+
+<h2 id="use-docker">Use docker</h2>
+
+<p>We can run docker version to see if it works.</p>
+
+<pre>
+<code>docker@boot2docker:~$ docker version
+Client version: 0.9.0
+Go version (client): go1.2.1
+Git commit (client): 2b3fdf2
+Server version: 0.9.0
+Git commit (server): 2b3fdf2
+Go version (server): go1.2.1
+Last stable version: 0.9.0
+</code>
+</pre>
+
+<p>And also run a docker command. The first time we run a container type it’ll have to be downloaded.</p>
+
+<pre>
+<code>docker@boot2docker:~$ docker run ubuntu /bin/echo hello world
+Unable to find image 'ubuntu' locally
+Pulling repository ubuntu
+9f676bd305a4: Download complete 
+9cd978db300e: Download complete 
+eb601b8965b8: Download complete 
+5ac751e8d623: Download complete 
+9cc9ea5ea540: Download complete 
+511136ea3c5a: Download complete 
+6170bb7b0ad1: Download complete 
+1c7f181e78b9: Download complete 
+f323cf34fd77: Download complete 
+321f7f4200f4: Download complete 
+7a4f87241845: Download complete 
+hello world
+</code>
+</pre>
+
+<p>With boot2docker we can have many small vms that quickly boot and are ready to run docker right away. Not sure how practical this is, but it’s interesting none-the-less.</p>
+
+<p>Now I need to fix up the script a bit, and also figure out how to setup ssh keys so that I don’t have to enter a password to login.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

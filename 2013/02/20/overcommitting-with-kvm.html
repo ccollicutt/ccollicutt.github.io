@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Over committing with KVM | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Over committing with KVM">
+
+    
+    <meta name="twitter:description" content="<p>It’s quite possible to over commit resources with the KVM hypervisor.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>It’s quite possible to over commit resources with the KVM hypervisor.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/overcommitting-with-kvm.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/overcommitting-with-kvm.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Over committing with KVM" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/02/20/overcommitting-with-kvm.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Over committing with KVM</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-02-20T00:00:00-05:00">
+                February 20, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>It’s quite possible to over commit resources with the KVM hypervisor.</p>
+
+<p>I should say first that most of the work I’ve been doing around over committing in KVM is based on a project I am working in where the virtual machines are stateless. This makes over committing easier because if we run out of resources on a compute node and this causes a vm to crash, it’s not the end of the world–the end-user can just restart their session.</p>
+
+<p>To me over committing means having virtual machines running on a node where the total CPU, main memory (ie. ram), and disk that is available to the virtual machines is much larger than the actual physical resources available on the node. Hopefully five or ten times larger.</p>
+
+<h2 id="hardware">Hardware</h2>
+
+<p>I am running these tests on a single Dell C6220 node. It has 32 cores (including hyperthreading), 128GB of main memory, and SSD drives.</p>
+
+<pre>
+<code>test_host:~$ cat /proc/cpuinfo | grep processor | wc -l
+32
+</code>
+</pre>
+
+<p>The SSD drive types we are testing with are:</p>
+
+<ul>
+  <li>2x Standard Dell 300GB SSD</li>
+  <li>2x Samsung 830 512GB</li>
+  <li>2x Intel 520 480GB</li>
+</ul>
+
+<p>Each of them is in a stripe/RAID0 configuration, so we have three striped devices, md2 (Samsung) and the poorly named md126 (Intel) and md127 (Dell).</p>
+
+<pre>
+<code>test_host:~$ cat /proc/mdstat 
+Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4]
+[raid10] 
+md0 : active raid1 sdb1[1] sda1[0]
+      307136 blocks [2/2] [UU]
+      
+md2 : active raid0 sdb5[1] sda5[0]
+      882155520 blocks super 1.2 512k chunks
+      
+md1 : active raid1 sdb2[1] sda2[0]
+      41910144 blocks super 1.2 [2/2] [UU]
+      
+md126 : active raid0 sdd[1] sdc[0]
+      937702400 blocks super 1.2 512k chunks
+      
+md127 : active raid0 sdf[1] sde[0]
+      586072064 blocks super 1.2 512k chunks
+      
+unused devices: <none>
+&lt;/code&gt;
+&lt;/pre&gt;
+
+The striped Samsungs are really fast--84K IOPS from the stripe!
+
+## Memory over committing: KSM (not KVM)
+
+KSM, or Kernel Samepage Merging, is a memory de-duplication feature that is present in most Linux systems that support KVM. I wrote a bit about it in a [previous blog post](http://serverascode.com/2012/11/11/ksm-kvm.html). Basically if you up the scanning rate it will de-duplicate more memory. This means if I'm running 300 Ubuntu Precise images there is a lot of memory that can be de-duplicated.
+
+## CPU over committing
+
+I don't have a lot of information on how over committing CPU works in KVM, but there are some best practices documented by a couple organizations, which I have listed below. This is an area I need to do more research in.
+
+- [IBM says:](http://publib.boulder.ibm.com/infocenter/lnxinfo/v3r0m0/index.jsp?topic=%2Fliaat%2Fliaatbpprocmem.htm)
+** Target system use at max 80%--ie. each vm shouldn't be using 100% of their CPU, and in fact should max out at 80%
+** Allocate minimum VCPUs per vm--ie. if the vm doesn't need four CPUs, rather say, only one, then just give it one
+- [RedHat says](https://access.redhat.com/knowledge/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Administration_Guide/sect-Virtualization-Tips_and_tricks-Overcommitting_with_KVM.html:)
+** _Virtualized CPUs are over committed best when each guest only has a single VCPU. The Linux scheduler is very efficient with this type of load. KVM should safely support guests with loads under 100% at a ratio of five VCPUs. Over committing single VCPU guests is not an issue._
+
+Notice that RedHat is saying a 5:1 ratio for CPU over committing.
+
+## Disk space over committing
+
+This is straight forward: image snapshots. qcow2 images can be created as snapshots of a backing file.
+
+<pre>
+<code>test_host:/mnt/intel$ file 263.img 
+263.img: QEMU QCOW Image (v2), has backing file 
+(path /mnt/intel/precise-server-cloudimg-amd64-disk1.qcow2), 2147483648 bytes
+</code>
+</pre>
+
+This is also how OpenStack handles images. It puts one base image on the compute node and each instance based on that same image is backed by a qcow2 snapshot. I suppose we could do the same with LVM, if desired, using snapshots.
+
+## Can't over commit IOPS
+
+The part that is difficult in terms of running hundreds of vms on a single node is the amount of IOPS each vm takes up. In my experiments the Ubuntu cloud image doesn't really do anything at all in terms of IOPS--maybe one or two IOPS per image when they are idle. So if I'm running 300 images, they don't even use 300 IOPS when idle. Even during boot they hardly do anything. (Of course when they are working they could be using a lot of IOPS.)
+
+But, if I boot 100 Windows 7 images five minutes apart, I need 5000 IOPS. 
+
+Yup: *5000 IOPS*. 
+
+Six SATA drives in RAID10 are going to barely provide 400 IOPS let alone 5000. So, SSDs, or at least some kind of faster storage, are required. Pretty much any SSD is capable of 5000 IOPS. 
+
+IMHO, it's a lot more efficient to run the Ubuntu cloud image than a standard Windows image.
+
+## Load
+
+Right now I have 300 Ubuntu images running, each being given 2048MB of memory. 
+
+<pre>
+<code>test_host:~$ ps ax | grep "kvm -drive" | wc -l
+300
+</code>
+</pre>
+
+And load and memory usage are just fine. A bit of swapping, but that's Ok.
+
+<pre>
+<code>top - 10:58:13 up 8 days, 23:55,  2 users,  load average: 1.35, 1.29, 1.92
+Tasks: 845 total,   2 running, 843 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.8%us,  3.1%sy,  0.0%ni, 95.9%id,  0.1%wa,  0.0%hi,  0.0%si,  0.0%st
+Mem:  131997760k total, 122223236k used,  9774524k free,   142448k buffers
+Swap: 33554424k total,   242172k used, 33312252k free, 42323472k cached
+SNIP!
+</code>
+</pre>
+
+They have been running for a few days, and are not using much in terms of IOPS as they are completely idle. Below is the output from [iostat](http://linuxcommand.org/man_pages/iostat1.html). All the vms are running off qcow2 images on the Intel 520 based stripe, md126.
+
+<pre>
+<code>avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.67    0.00    3.08    0.05    0.00   96.20
+
+Device:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn
+sda              16.40         0.00         0.17          0          1
+sdb              16.40         0.00         0.17          0          1
+sdc              44.70         0.00         0.16          0          1
+sde               0.00         0.00         0.00          0          0
+sdd              44.20         0.00         0.15          0          1
+sdf               0.00         0.00         0.00          0          0
+md127             0.00         0.00         0.00          0          0
+md126            60.10         0.00         0.31          0          3
+md1              35.20         0.00         0.17          0          1
+md2               0.00         0.00         0.00          0          0
+md0               0.00         0.00         0.00          0          0
+dm-0              0.00         0.00         0.00          0          0
+nb0               0.00         0.00         0.00          0          0
+</code>
+</pre>
+
+It would be great to have IOPS usage on a per-process basis, but I couldn't find a tool that would do that. The best I could do is iostat with IOPS per storage device.
+
+## Running tests
+
+Each vm gets its IPs from dnsmasq running on an [Openvswitch](http://openvswitch.org/) bridge (topic of a future blog post). So we have 300 tap devices.
+
+<pre>
+<code>test_host:~/performance_testing$ sudo ovs-vsctl show
+SNIP!
+        Port "tap166"
+            Interface "tap166"
+        Port "tap0"
+            Interface "tap0"
+    ovs_version: "1.4.0+build0"
+
+test_host:~/performance_testing$ ifconfig | grep tap | wc -l
+300
+</code>
+</pre>
+
+I like using the [Ansible](http://ansible.cc) configuration management system. I've written a custom inventory script that pulls the IPs out of the dnsmasq lease file.
+
+<pre>
+<code>test_host:~/performance_testing$ ansible all -c ssh -i ./inventory.py \
+-m ping -u ubuntu
+SNIP 298 hosts!
+192.168.100.98 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+
+192.168.100.99 | success &gt;&gt; {
+    "changed": false, 
+    "ping": "pong"
+}
+</code>
+</pre>
+
+Then, using that inventory and Ansible I can run whatever load tests I want across however many virtual instances I want. For example I could run [fio](http://linux.die.net/man/1/fio) tests across 10% of the vms and watch the IOPS usage on the compute node.
+
+If you have any questions, criticisms or concerns, please let me know by posting in the comments. :)
+</none></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

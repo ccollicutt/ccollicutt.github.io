@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinc VPN (and Ansible) | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Tinc VPN (and Ansible)">
+
+    
+    <meta name="twitter:description" content="<p>VPNs are a pain. The more I work with technology the more I see how some things like VPNs are just poor constructs and are, in a way, workarounds. Maybe that’s all IT is…workarounds. I don’t know. This is philosophical. At any rate, VPNs are difficult to setup, secure, and use, so sometimes it’s fun to play with technologies that try to make things easier, and I think tinc fits into that category. Would I use it in production? Probably not, but it’s still good to take a look at other implementations and see what can be done.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>VPNs are a pain. The more I work with technology the more I see how some things like VPNs are just poor constructs and are, in a way, workarounds. Maybe that’s all IT is…workarounds. I don’t know. This is philosophical. At any rate, VPNs are difficult to setup, secure, and use, so sometimes it’s fun to play with technologies that try to make things easier, and I think tinc fits into that category. Would I use it in production? Probably not, but it’s still good to take a look at other implementations and see what can be done.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/tinc-vpn-ansible.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/tinc-vpn-ansible.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Tinc VPN (and Ansible)" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/01/29/tinc-vpn-ansible.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Tinc VPN (and Ansible)</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-01-29T00:00:00-05:00">
+                January 29, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>VPNs are a pain. The more I work with technology the more I see how some things like VPNs are just poor constructs and are, in a way, workarounds. Maybe that’s all IT is…workarounds. I don’t know. This is philosophical. At any rate, VPNs are difficult to setup, secure, and use, so sometimes it’s fun to play with technologies that try to make things easier, and I think tinc fits into that category. Would I use it in production? Probably not, but it’s still good to take a look at other implementations and see what can be done.</p>
+
+<h2 id="tinc">Tinc</h2>
+
+<p>I think the most interesting thing about <a href="http://www.tinc-vpn.org/">tinc</a> is that it sets up a mesh.</p>
+
+<blockquote>
+  <p>Regardless of how you set up the tinc daemons to connect to each other, VPN traffic is always (if possible) sent directly to the destination, without going through intermediate hops.</p>
+</blockquote>
+
+<p>Also, it’s easy to extend.</p>
+
+<blockquote>
+  <p>When you want to add nodes to your VPN, all you have to do is add an extra configuration file, there is no need to start new daemons or create and configure new devices or network interfaces</p>
+</blockquote>
+
+<p>So those are a couple of good reasons to try out tinc.</p>
+
+<h2 id="tinc-with-ansible">Tinc with Ansible</h2>
+
+<p>I was playing around with tinc a few days ago and came up with an <a href="https://github.com/ccollicutt/ansible-tinc">Ansible playbook</a> to setup a tinc VPN between several Ubuntu Trusty servers.</p>
+
+<p>Right now I have four virtual machines running in the same OpenStack infrastructure, which is a FlatDHCP system, so the tenants don’t share a private network…unless we set one up for them with Tinc. (This is not something you’d normally want for production systems…I don’t think, I’m just messin’ around.)</p>
+
+<pre>
+<code>curtis@parker:~/tinc-testing$ cat hosts
+trusty1 ansible_ssh_host=x.y.z.21
+trusty2 ansible_ssh_host=x.y.z.22
+trusty3 ansible_ssh_host=x.y.z.23
+trusty4 ansible_ssh_host=x.y.z.24
+</code>
+</pre>
+
+<p>I can ping all those with Ansible.</p>
+
+<pre>
+<code>curtis@parker:~/tinc-testing$ ansible -m ping all
+trusty3 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+trusty4 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+trusty1 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+trusty2 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+</code>
+</pre>
+
+<p>And I can run the Ansible playbook that sets up one VPN, called “vpnone.”</p>
+
+<pre>
+<code>curtis@parker:~/tinc-testing$ ansible-playbook site.yml
+SNIP!
+PLAY RECAP ********************************************************************
+trusty1                    : ok=17   changed=1    unreachable=0    failed=0
+trusty2                    : ok=17   changed=1    unreachable=0    failed=0
+trusty3                    : ok=17   changed=1    unreachable=0    failed=0
+trusty4                    : ok=17   changed=1    unreachable=0    failed=0
+</code>
+</pre>
+
+<p>Now Tinc has setup a tun0 on each node.</p>
+
+<pre>
+<code>curtis@parker:~/tinc-testing$ ansible -a "ip ad sh tun0" all
+trusty3 | success | rc=0 &gt;&gt;
+4: tun0: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 500
+    link/none
+    inet 10.0.0.23/24 scope global tun0
+       valid_lft forever preferred_lft forever
+
+trusty2 | success | rc=0 &gt;&gt;
+4: tun0: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 500
+    link/none
+    inet 10.0.0.22/24 scope global tun0
+       valid_lft forever preferred_lft forever
+
+trusty1 | success | rc=0 &gt;&gt;
+4: tun0: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 500
+    link/none
+    inet 10.0.0.21/24 scope global tun0
+       valid_lft forever preferred_lft forever
+
+trusty4 | success | rc=0 &gt;&gt;
+4: tun0: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UNKNOWN group default qlen 500
+    link/none
+    inet 10.0.0.24/24 scope global tun0
+       valid_lft forever preferred_lft forever
+</code>
+</pre>
+
+<p>And I can ping nodes from one another. In this example I just ping 10.0.0.24 from all four nodes.</p>
+
+<pre>
+<code>curtis@parker:~/tinc-testing$ ansible -m shell -a "ping -c 1 -w 1 10.0.0.24" all
+trusty2 | success | rc=0 &gt;&gt;
+PING 10.0.0.24 (10.0.0.24) 56(84) bytes of data.
+64 bytes from 10.0.0.24: icmp_seq=1 ttl=64 time=0.685 ms
+
+--- 10.0.0.24 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.685/0.685/0.685/0.000 ms
+
+trusty4 | success | rc=0 &gt;&gt;
+PING 10.0.0.24 (10.0.0.24) 56(84) bytes of data.
+64 bytes from 10.0.0.24: icmp_seq=1 ttl=64 time=0.029 ms
+
+--- 10.0.0.24 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.029/0.029/0.029/0.000 ms
+
+trusty3 | success | rc=0 &gt;&gt;
+PING 10.0.0.24 (10.0.0.24) 56(84) bytes of data.
+64 bytes from 10.0.0.24: icmp_seq=1 ttl=64 time=0.501 ms
+
+--- 10.0.0.24 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.501/0.501/0.501/0.000 ms
+
+trusty1 | success | rc=0 &gt;&gt;
+PING 10.0.0.24 (10.0.0.24) 56(84) bytes of data.
+64 bytes from 10.0.0.24: icmp_seq=1 ttl=64 time=0.702 ms
+
+--- 10.0.0.24 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.702/0.702/0.702/0.000 ms
+
+</code>
+</pre>
+
+<p>By default the playbook sets up “vpnone” but the name is configurable. But it only does one VPN right now, though tinc can support many.</p>
+
+<pre>
+<code>ubuntu@trusty1:~$ ls /etc/tinc/vpnone/
+hosts  rsa_key.priv  tinc.conf  tinc-down  tinc-up
+ubuntu@trusty1:~$ ls /etc/tinc/vpnone/hosts
+trusty1  trusty2  trusty3  trusty4
+ubuntu@trusty1:~$ ls /etc/tinc/
+nets.boot  vpnone
+</code>
+</pre>
+
+<h2 id="firewall-rules">Firewall rules</h2>
+
+<p>I should note that tcp/udp on port 655 needs to be open between the nodes.</p>
+
+<h2 id="so-there-you-go">So there you go</h2>
+
+<p>If you want a VPN setup between several hosts, then tinc is a good way to do that, and if you want to use my <a href="https://github.com/ccollicutt/ansible-tinc">playbook</a> to automatically setup a single vpn between several hosts, then that’d be great. The playbook is not perfect, so if you see something you’d like changed, just let me know or send a pull request. :)</p>
+
+<p>Happy tincing!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

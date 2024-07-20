@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack Tokyo Summit | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack Tokyo Summit">
+
+    
+    <meta name="twitter:description" content="<p>I was lucky enough to be able to attend the OpenStack Tokyo Summit, which of course, is in Tokyo. Weirdly enough it is quite easy to get to Tokyo from Edmonton–all I had to do was the short flight from Edmonton to Vancouver, up and over the Rockies, and then from there take All Nippon Air (ANA) to Tokyo. I flew on on a nice, new 787 complete with USB connections. (Aside: ANA is the best airline I’ve flown on.)</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I was lucky enough to be able to attend the OpenStack Tokyo Summit, which of course, is in Tokyo. Weirdly enough it is quite easy to get to Tokyo from Edmonton–all I had to do was the short flight from Edmonton to Vancouver, up and over the Rockies, and then from there take All Nippon Air (ANA) to Tokyo. I flew on on a nice, new 787 complete with USB connections. (Aside: ANA is the best airline I’ve flown on.)</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-tokyo-summit.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-tokyo-summit.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack Tokyo Summit" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/11/07/openstack-tokyo-summit.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack Tokyo Summit</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-11-07T00:00:00-05:00">
+                November 07, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I was lucky enough to be able to attend the OpenStack Tokyo Summit, which of course, is in Tokyo. Weirdly enough it is quite easy to get to Tokyo from Edmonton–all I had to do was the short flight from Edmonton to Vancouver, up and over the Rockies, and then from there take All Nippon Air (ANA) to Tokyo. I flew on on a nice, new 787 complete with USB connections. (Aside: ANA is the best airline I’ve flown on.)</p>
+
+<p>I think it was cheaper, just flight and hotel, to send me to Tokyo for a week than it was for the Palo Alto operators meetup for three days. Tokyo is not that expensive for a major city, and Palo Alto bloody well is (for a minor one).</p>
+
+<h2 id="the-summit">The Summit</h2>
+
+<p>The summit took place at the Grand Prince International Convention center. This was a collection of buildings, more like a campus, that the summit spread out over. I’ve never looked at the same map so many times. I missed the start of a couple of sessions because I got a bit lost. The Vancouver convention center was much easier to navigate, but it’s also much newer, so not a fair comparison.</p>
+
+<p>For the last few summits I’ve been to I spend most, if not all of my time in the design summit going to operator sessions. Which makes sense because I am a OpenStack operator. Surprisingly I am a real person, not some mythical beast. :) I have to wrangle this massive OpenStack conglomerate into a working, highly available system. It’s not easy, but it’s not impossible either.</p>
+
+<p>Here are some of the sessions and talks I went to:</p>
+
+<ul>
+  <li>Ops - Quotas and Billing (which I moderated as best I could)</li>
+  <li>Ops - How to work with the community on a small budget</li>
+  <li>Cross project workshop - Performance</li>
+  <li>Talk - Kuryr: Docker networking in an OpenStack World</li>
+  <li>Ops - Upgrades</li>
+  <li>Ops working session - Large Deployments Team</li>
+  <li>Talk - How to reboot the cloud (in the face of a Xen vulnerability)</li>
+  <li>Magnum - Networking past, present, and future (related to Kuryr)</li>
+  <li>Ansible collaboration day - Most sessions</li>
+  <li>Talk - Real world devops experience securing a cloud (this was not a great presentation unfortunately)</li>
+  <li>Security - How should security serve the community? (very few in attendance, mostly for security team members, which I am not)</li>
+  <li>Talk - CloudKitty</li>
+</ul>
+
+<p>All of the sessions were great, if short and either really busy or not busy at all. There were some sessions where it was so busy I couldn’t even get into the room and had to go watch something else. Basically I learned my lesson on getting there early. A couple of the Ansible collaboration day sessions and the informal operators meetup on the Friday were both so busy I couldn’t get in or get a seat because I showed up a bit late.</p>
+
+<p>Primarily it seemed that at this summit I was interested in billing and networking. I am not a networking expert, but I certainly have to know a lot about it, especially with Neutron. I almost want to run a few clouds to try out different networking models, like Midokura, DragonFlow, and Calico. One thing I noticed is how there are fewer security sessions now. OpenStack security has moved to primarily supplying tools like Bandit and security notes, and not much more than that.</p>
+
+<p>I can definitely say that Ansible’s popularity has expanded considerably compared to the last summit, which was only six months ago. Here’s hoping the Redhat purchase goes well. OpenStack infra uses Ansible as well and the new <a href="http://docs.openstack.org/infra/shade/">Shade</a> library is an important piece of the puzzle. The OpenStack Ansible project (OSAD) also continues to move along, almost too fast for me to keep up. Well, not almost–I can’t keep up with the improvements just due to lack of time. If you want to learn about how to use Ansible that is the best project to look at in terms of actually writing playbooks and modules and callbacks.</p>
+
+<p>Billing is also interesting because it’s heavily tied into metrics, ie. Ceilometer. CloudKitty is fascinating and I’m sure I will be implementing it soon. Perhaps that is something we can contribute back to.</p>
+
+<h2 id="regional-clouds">Regional Clouds</h2>
+
+<p>Probably the best session I had was at the LDT meeting where we talked a bit about public clouds, specifically what I call “regional” public clouds, which are typically clouds meant for use in a particular country or geographical area, eg. Canada or New Zealand or Europe. Many people don’t know this, but, for example, in Canada there are many companies that want to use IaaS but don’t want their data in the US. It’s like some kind of data-protectionism and it happens in many countries, which leads to regional clouds.</p>
+
+<p>These clouds are usually smaller than other clouds, but have to be more featureful–or “complete” was another word that was used. I think it’s harder to run a smaller cloud with more features, as opposed to a larger cloud that has less features, especially around the networking component.</p>
+
+<p>Weirdly it’s somewhat lonely working in a regional cloud. Typically we (as in regional clouds) don’t have a large staff, nor a large budget to send people to meetups and summits. Further we don’t have the resources to contribute back much because we’re so busy (like all operators generally speaking), and, what’s more, because of the smaller scale we don’t typically run into common larger issues like running cells or applying custom patches to run a simpler network setup. Instead we run a lot of features such as LBaaS and have to do real billing. Customers want features like backups and DNS and containers and VPNaaS, etc, etc. Larger OpenStack public clouds typically don’t provide those services, but we have to. Oh, and AWS compatibility, that’s a big one too. Big clouds do less but have more vms running, regional clouds do more but have less vms.</p>
+
+<p>I’m hoping that various regional clouds can start working together in some fashion, even if it only means sharing operational aspects, or perhaps even doing a exchange. I’m not sure if the OpenStack foundation is interested in helping regional clouds, but we’ll do our best anyways.</p>
+
+<h2 id="japantokyo">Japan/Tokyo</h2>
+
+<p>I stayed a few days longer in Tokyo. I didn’t leave the city except for a short trip out to Hakone (which kind of felt like Japan’s Jasper). I visited most of the museums, including the incredible 500 Arhats exhibit at the Mori. I also visited all the areas such as Akihabara and “Kitchen Town.” Mostly I rode the subway a lot and then caught an awful cold. The public transport system is massive, but by the end I had it kinda figured out. I think I visited every vegetarian restaurant in Tokyo. For a city of 13 million plus, there is not much for vegetarian options. Edmonton probably has twice the vegetarian restaurants that Tokyo does. Strange.</p>
+
+<p>My trip was a bit up and down–at first I was like “Wow! Look at all these people!” then after a while it became overwhelming. I spent a lot of mental energy just walking around trying not to bump into people and remembering to walk on the left side. But then after a couple more days I came back around to enjoying it. I had one poor experience, which I won’t mention other than to say I had one poor experience.</p>
+
+<p>My favorite morning activity was to grab a coffee at the Starbucks in the train station (yeah, Starbucks, but the location was perfect for people watching) and sit and watch all the commuters on their way to work. The number of men wearing a black suit and a white shirt with no tie was staggering. I tried counting for a while but after ten or twenty seconds I couldn’t keep up. Literally thousands would pass in an hour. Sometimes the cadence of their footsteps would all fall in line and echo throughout the station. Very surreal.</p>
+
+<p>Finally it was time to come home. In the end I packed four bottles of (what I hope is) premium sake–which the nice Canadian border guard let me in without having to pay duty on! She sure asked me a lot of questions but then didn’t care about the sake.</p>
+
+<p>Overall I had a great first trip to Japan, and now that I’ve been there once I think I have a good idea of what I’d like to do the next time I go. I found the flight to Tokyo to be fairly easy, but the jet lag was a killer. I’m still not sleeping 100% correctly. But only having one stop in Vancouver is convenient.</p>
+
+<p>I’m looking forward to the next operators meetup which should be relatively soon, and also, I’m guessing, may not be in North America.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

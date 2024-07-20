@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Persistent Volumes with Kubernetes | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Local Persistent Volumes with Kubernetes">
+
+    
+    <meta name="twitter:description" content="<p>Let’s quickly discuss using persistent local volumes with Kubernetes.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Let’s quickly discuss using persistent local volumes with Kubernetes.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/persistent-local-volumes-kubernetes.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/persistent-local-volumes-kubernetes.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Local Persistent Volumes with Kubernetes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/09/19/persistent-local-volumes-kubernetes.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Local Persistent Volumes with Kubernetes</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-09-19T00:00:00-04:00">
+                September 19, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Let’s quickly discuss using persistent local volumes with Kubernetes.</p>
+
+<p>First, get yourself a k8s. I have one here running on a packet.net instance. It’s only a single node. Deployed with kubeadm and is running calico as the network plugin.</p>
+
+<pre><code># k get nodes
+NAME      STATUS    ROLES     AGE       VERSION
+cka       Ready     master    6h        v1.11.1
+</code></pre>
+
+<p>Let’s look at everything that’s running.</p>
+
+<pre><code># k get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   172.17.0.1   &lt;none&gt;        443/TCP   6h
+
+# k get all -n kube-system
+NAME                                           READY     STATUS    RESTARTS   AGE
+pod/calico-etcd-2hcdc                          1/1       Running   0          6h
+pod/calico-kube-controllers-74b888b647-qr86d   1/1       Running   0          6h
+pod/calico-node-5jmrc                          2/2       Running   17         6h
+pod/coredns-78fcdf6894-4ngmq                   1/1       Running   0          6h
+pod/coredns-78fcdf6894-gzqcw                   1/1       Running   0          6h
+pod/etcd-cka                                   1/1       Running   0          6h
+pod/kube-apiserver-cka                         1/1       Running   0          6h
+pod/kube-controller-manager-cka                1/1       Running   0          6h
+pod/kube-proxy-62hp2                           1/1       Running   0          6h
+pod/kube-scheduler-cka                         1/1       Running   0          6h
+
+NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)         AGE
+service/calico-etcd   ClusterIP   172.17.0.136   &lt;none&gt;        6666/TCP        5h
+service/kube-dns      ClusterIP   172.17.0.10    &lt;none&gt;        53/UDP,53/TCP   6h
+
+NAME                         DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR                     AGE
+daemonset.apps/calico-etcd   1         1         1         1            1           node-role.kubernetes.io/master=   6h
+daemonset.apps/calico-node   1         1         1         1            1           &lt;none&gt;                            6h
+daemonset.apps/kube-proxy    1         1         1         1            1           beta.kubernetes.io/arch=amd64     6h
+
+NAME                                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/calico-kube-controllers    1         1         1            1           6h
+deployment.apps/calico-policy-controller   0         0         0            0           6h
+deployment.apps/coredns                    2         2         2            2           6h
+
+NAME                                                  DESIRED   CURRENT   READY     AGE
+replicaset.apps/calico-kube-controllers-74b888b647    1         1         1         6h
+replicaset.apps/calico-policy-controller-55b469c8fd   0         0         0         6h
+</code></pre>
+
+<p>The c2.medium.x86 (AMD EPYC!) has two extra SSDs.</p>
+
+<pre><code>mkfs.ext4 /dev/sdc
+mkfs.ext4 /dev/sdd
+mkdir -p /mnt/disks/sdc
+mkdir -p /mnt/disks/sdd
+mount /dev/sdc /mnt/disks/sdc
+mount /dev/sdd /mnt/disks/sdd
+</code></pre>
+
+<p>Now both are formated and mounted.</p>
+
+<pre><code># lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 111.8G  0 disk
+sdb      8:16   0 111.8G  0 disk
+├─sdb1   8:17   0   512M  0 part /boot/efi
+├─sdb2   8:18   0   1.9G  0 part
+└─sdb3   8:19   0 109.4G  0 part /
+sdc      8:32   0 447.1G  0 disk /mnt/disks/sdc
+sdd      8:48   0 447.1G  0 disk /mnt/disks/sdd
+</code></pre>
+
+<p>I usually abbreviate kubectl to k.</p>
+
+<pre><code>alias k=kubectl
+</code></pre>
+
+<p>Setup a storage class.</p>
+
+<pre><code>cat &gt; storage-class.yml &lt;&lt;EOF
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+EOF
+
+kubectl create -f storage-class.yml
+</code></pre>
+
+<p>List the available storage classes.</p>
+
+<pre><code># k get sc
+NAME            PROVISIONER                    AGE
+local-storage   kubernetes.io/no-provisioner   4s
+</code></pre>
+
+<p>Create a persistent volume.</p>
+
+<pre><code>cat &gt; pv-sdc.yml &lt;&lt;EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-sdc
+spec:
+  capacity:
+    storage: 440Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/disks/sdc
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cka
+EOF
+
+kubectl create -f pv-sdc.yml
+</code></pre>
+
+<p>Same for sdd.</p>
+
+<pre><code>cat &gt; pv-sdd.yml &lt;&lt;EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-sdd
+spec:
+  capacity:
+    storage: 440Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/disks/sdd
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cka
+EOF
+
+kubectl create -f pv-sdd.yml
+</code></pre>
+
+<p>Now I have two PVs.</p>
+
+<pre><code># k get pv
+NAME           CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM     STORAGECLASS    REASON    AGE
+local-pv-sdc   440Gi      RWO            Retain           Available             local-storage             53s
+local-pv-sdd   440Gi      RWO            Retain           Available             local-storage             4s
+</code></pre>
+
+<p>Create a persistent volume claim.</p>
+
+<pre><code>cat &gt; pvc1.yml &lt;&lt;EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 100Gi
+EOF
+
+kubectl create -f pvc1.yml
+</code></pre>
+
+<p>PVC will be pending until we create a node that uses it.</p>
+
+<pre><code># k get pvc
+NAME      STATUS    VOLUME    CAPACITY   ACCESS MODES   STORAGECLASS    AGE
+pvc1      Pending                                       local-storage   3s
+</code></pre>
+
+<p>Now a deployment that uses the pvc.</p>
+
+<pre><code>cat &gt; deploy-nginx.yml &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: pvc1
+EOF
+
+kubectl create -f deploy-nginx.yml
+</code></pre>
+
+<p>pvc is now bound.</p>
+
+<pre><code># k get pvc
+NAME      STATUS    VOLUME         CAPACITY   ACCESS MODES   STORAGECLASS    AGE
+pvc1      Bound     local-pv-sdc   440Gi      RWO            local-storage   21m
+</code></pre>
+
+<p>Expose nginx.</p>
+
+<pre><code># kubectl expose deployment nginx-deployment --type=NodePort
+service/nginx-deployment exposed
+# kubectl get svc nginx-deployment
+NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+nginx-deployment   NodePort   172.17.0.157   &lt;none&gt;        80:31813/TCP   7m
+</code></pre>
+
+<p>Now create an index.html page. I’ll use a uuid just to show it’s not already setup.</p>
+
+<pre><code># uuid=`uuidgen`
+# echo $uuid
+b5d3c8cd-a56f-4252-a026-7107790fcd44
+# echo $uuid &gt; /mnt/disks/sdc/index.html
+# curl 172.17.0.157
+b5d3c8cd-a56f-4252-a026-7107790fcd44
+</code></pre>
+
+<p>Let’s delete the pod.</p>
+
+<pre><code># k delete pod nginx-deployment-7d869874bc-dlz4s
+pod "nginx-deployment-7d869874bc-dlz4s" deleted
+</code></pre>
+
+<p>A new pod will automatically be created by Kubernetes.</p>
+
+<pre><code># k get pods
+NAME                                READY     STATUS    RESTARTS   AGE
+nginx-deployment-7d869874bc-fkt4m   1/1       Running   0          28s
+</code></pre>
+
+<p>Run the same curl.</p>
+
+<pre><code># curl 172.17.0.157
+b5d3c8cd-a56f-4252-a026-7107790fcd44
+</code></pre>
+
+<p>Same UUID.</p>
+
+<p>Lets check from the pod.</p>
+
+<pre><code># k exec -it nginx-deployment-7d869874bc-fkt4m -- cat /usr/share/nginx/html/index.html
+b5d3c8cd-a56f-4252-a026-7107790fcd44
+</code></pre>
+
+<p>As expected.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Kubernetes.io has a <a href="https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/">blog post</a> announcing local persistent volumes. It’s worth a read. Anything I say here of value would just be copying from that. :) There are several reasons not to use this model for storage. Seems like it would be best for data heavy applications…data gravity. There is also a <a href="https://github.com/kubernetes-incubator/external-storage/tree/master/local-volume">simple volume manager</a> available as well, but I didn’t explore that in this blog post.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

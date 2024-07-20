@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demystifying Kubernetes and OpenStack | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Demystifying Kubernetes and OpenStack">
+
+    
+    <meta name="twitter:description" content="<p><em>OpenStack on k8s and/or k8s on OpenStack</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>OpenStack on k8s and/or k8s on OpenStack</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/demystifying-kubernetes-and-openstack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/demystifying-kubernetes-and-openstack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Demystifying Kubernetes and OpenStack" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/11/23/demystifying-kubernetes-and-openstack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Demystifying Kubernetes and OpenStack</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-11-23T00:00:00-05:00">
+                November 23, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>OpenStack on k8s and/or k8s on OpenStack</em></p>
+
+<p>There seems to be some confusion around using Kubernetes (k8s) and OpenStack together. As an OpenStack Operator, it bugs me a little bit that two very different models of using OpenStack and Kubernetes together are often conflated, occasionally for marketing purposes. In this post I want to identify the two major ways they work together and which is which.</p>
+
+<p>##tl;dr</p>
+
+<p>The two main ways of using OpenStack and k8s together are:</p>
+
+<p><strong>1) Use k8s to manage the OpenStack Control Plane</strong></p>
+
+<p>You can use k8s to manage the OpenStack control plane. Many people don’t realize (especially VMWare administrators), that OpenStack has a fairly complex and resource intensive control plane. For example, if you are buying hardware for an OpenStack deployment, you need to buy hardware for the compute nodes AND the control plane. Typically OpenStack Operators use (n/2)+1 nodes for the control plane due to the use of distributed systems for messaging and state.</p>
+
+<p>This would be a methodology used by OpenStack Operators.</p>
+
+<p><strong>2) Install k8s into an OpenStack Project</strong></p>
+
+<p>Once you have deployed an OpenStack cloud, you can then deploy k8s into a project within that cloud, ie. you, as an OpenStack end-user, provision virtual machines within OpenStack and deploy k8s onto those virtual machines.</p>
+
+<p>This would be a methodology used by OpenStack end-users.</p>
+
+<h2 id="k8s-and-the-openstack-control-plane">k8s and the OpenStack Control Plane</h2>
+
+<p>OpenStack is a complex system. It requires many API servers and other services in order to work. APIs and other OpenStacks services are typically Python based servers. Supporting infrastructure such as MySQL/MariaDB and RabbitMQ, among others, are also required. These systems all have to run somewhere, and this somewhere makes up the OpenStack control plane.</p>
+
+<p>For example, Nova, which provides compute in OpenStack, is made up of several servers, a few of which I list below:</p>
+
+<pre><code class="language-bash">/usr/bin/nova-api
+/usr/bin/nova-cert
+/usr/bin/nova-conductor
+/usr/bin/nova-consoleauth
+/usr/bin/nova-novncproxy
+/usr/bin/nova-scheduler
+</code></pre>
+
+<p>Each of those services could be run on a monolithic “controller” server, ie. a single physical server, or they could each be split out into their own container (or virtual machine).</p>
+
+<p>Using containers can make an OpenStack Operators life easier, especially when it comes to upgrading, or when you would like to run different versions of particular services which can often have dependency issues.</p>
+
+<p>If you decide to use containers to deploy OpenStack services, then you will either have to manually schedule them, or you will need some kind of Container Orchestration Engine (COE) such as k8s, Docker Swarm, or something else. (I should note that in talking with other OpenStack Operators, it is not actually that common to use a COE to manage containers. Quite often containers are “manually” scheduled using some kind of configuration management tool such as Puppet or Ansible, both of which can provision containers.)</p>
+
+<p>If you would like to use a COE, or have additional feature requirements, then using k8s may be of value to you. You could use k8s to manage each OpenStack service. Not only can k8s schedule containers, it also has some additional features that helps to keep those containers running. But it also brings additional complexity. k8s still requires care and feeding like any complex system. If an OpenStack Operator is running 60 containers on 3 physical servers, it may not be worth the additional complexity to run k8s.</p>
+
+<p>In this example, k8s would only run the services required to provide the OpenStack control plane.</p>
+
+<p>Certain OpenStack distributions, such as Mirantis’, are working to alter their deployment system to use k8s as the underlying COE for the OpenStack control plane.</p>
+
+<h2 id="running-k8s-in-openstack">Running k8s in OpenStack</h2>
+
+<p>This is likely the more common use of k8s and OpenStack together. OpenStack would be used like any other Infrastructure as a Service system (IaaS), be it public or private cloud. You would somehow provision virtual machines within and OpenStack project/tenant and then deploy k8s to those virtual machines. k8s would then be running <em>in OpenStack</em>.</p>
+
+<p>There are many ways to install k8s into OpenStack, from using kubeup.sh (which I believe supports OpenStack) to using the <a href="https://wiki.openstack.org/wiki/Magnum">OpenStack Magnum</a> project, and many others. I don’t want to list them all here, but suffice it to say that there are many ways to get k8s installed <em>into</em> an OpenStack cloud. Likely one would use some kind of automated k8s-onto-OpenStack deployment system.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully I’ve demonstrated that there are two major ways that k8s and OpenStack can work together, and that they are quite different. By far the most common way of using k8s and OpenStack together will be to deploy a k8s cluster <em>into</em> an OpenStack tenant/project. That said, managing the OpenStack control plane with k8s could also be beneficial, but it does bring additional complexity.</p>
+
+<p>Finally, to make things confusing, one could run the OpenStack control plane on k8s, and then also install another k8s cluster, or multiple k8s clusters, into the OpenStack cloud. Fun!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

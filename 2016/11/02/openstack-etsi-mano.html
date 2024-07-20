@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack and ETSI MANO | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack and ETSI MANO">
+
+    
+    <meta name="twitter:description" content="<p>The summit for the Newton release of OpenStack was held in Barcelona. I attended and found it to be a very interesting summit, one that, as usual, marks change for OpenStack.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>The summit for the Newton release of OpenStack was held in Barcelona. I attended and found it to be a very interesting summit, one that, as usual, marks change for OpenStack.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-etsi-mano.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-etsi-mano.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack and ETSI MANO" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/11/02/openstack-etsi-mano.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack and ETSI MANO</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-11-02T00:00:00-04:00">
+                November 02, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>The summit for the Newton release of OpenStack was held in Barcelona. I attended and found it to be a very interesting summit, one that, as usual, marks change for OpenStack.</p>
+
+<p>OpenStack has always had more existential crisis than other open source projects. Previous crisis have regarded things like CloudStack (remember that?), the “public cloud” (which is still partially ongoing), the “big tent,” the continued–but improving–separation of developers and users, whether or not it is simply a vendor dumping ground, etc, etc.</p>
+
+<p>The current crisis would be around its growing adoption by telecommunications companies. As we enter a phase of OpenStack’s lifecycle in which it sees serious adoption by extremely large, conservative, (<em>cough</em> inefficient) enterprises I would imagine that we could very well see OpenStack slowly change into something that might be unrecognizable to early adopters.</p>
+
+<h2 id="telecommunications">Telecommunications</h2>
+
+<p>One of the biggest changes that has occurred in the past year for OpenStack is that telecommunication companies have (finally) begun adoption. And they are going all in, so to speak.</p>
+
+<p>Telecommunications is potentially a 1 trillion dollar industry. Even a small percentage of that is a huge sum of money, and given the relatively minimal size of the OpenStack market share, is considerable in terms of how it could sway OpenStack’s development and progress. (1)</p>
+
+<p>Jay Pipes, someone who has been around the community for some time, has thoughts, or at least a tweet, on where he thinks OpenStack is going:</p>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Prediction: in less than 2 years, Telcos will have fully taken over <a href="https://twitter.com/hashtag/OpenStack?src=hash">#OpenStack</a> and converted it into a purpose-built NFVi+MANO solution</p>&mdash; Jay Pipes (@jaypipes) <a href="https://twitter.com/jaypipes/status/790943000931233792">October 25, 2016</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="mano---management-and-orchestration">MANO - Management and Orchestration</h2>
+
+<p>For those of you unfamiliar with the acronym MANO, it stands for “Management and Orchestration.” The standards group ETSI has defined a large part of the way that telecommunications companies are going to perform Network Function Virtualization (NFV).</p>
+
+<p>At this point OpenStack mostly makes up the NFV infrastructure (NFVi) and Virtualization Infrastructure Manager (VIM) components, and, in my opinion, currently stops there. The ETSI MANO layer, however, sits on top of all of this infrastructure, which would likely include many OpenStack clouds in many datacenters as well as other components such as Software Defined Networking (SDN) controllers, and magically manages and orchestrates it. (4)</p>
+
+<p>To suggest that OpenStack will also own the MANO component is surprising. So far, other than relatively unused multi-region support, OpenStack has not had many projects dealing with managing multiple clouds, or external systems outside of its own particular realm. Adding a MANO system would be a big change for the OpenStack project, one I’m not sure will happen. There are several open source MANO projects (2) and I have difficulty seeing them being moved within the OpenStack namespace. But, it could happen.</p>
+
+<p>An example of an OpenStack project within reach of the MANO layer is the Tacker (3) project. Tacker is a generic Virtual Network Function Manager (VNFM) and a Network Function Orchestrator (NFO) but (I guess) not a full fledged MANO. But in effect it can act as one, as one of Tacker’s features is the “[a]bility to orchestrate VNFs across Multiple VIMs and Multiple Sites (POPs).” So in some respects there is already evidence of OpenStack working (somewhat?) at the MANO level. Once could see a MANO project coming into existence (if it’s not there already) and use Tacker as the VNFM component, and the rest of OpenStack as the NFVi and VIM blocks.</p>
+
+<p>However, these MANO layers are going to be extremely important to the success of telecoms as they migrate/evolve to NFV. Further, these MANO layers are going to be extremely complicated and feature rich. My impression is that they will attempt to be all-encompassing.(5,6) They will have to talk to all kinds of complex systems. The MANO layer might simply be too big to be part of the OpenStack project and may more likely end up beneath the Linux Foundation (which is where Jay Pipes says OpenStack will end up eventually anyways).</p>
+
+<p>Common sense suggests that OpenStack remain a set of primitives that higher level abstractions can use. So this MANO layer can use Neutron, Nova, Heat, Telemetry, etc, etc, to perform its job across multiple, complex systems, and not just OpenStack clouds. But, perhaps instead of common sense this is really just opinion, and other people and organizations will have a differing one.</p>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<ol>
+  <li>“Revenue from OpenStack, the open source software platform for cloud computing, will likely top $5 billion by 2020 and grow at a 35 percent compounded annual growth rate, according to 451 Research. While that growth rate is strong, the platform’s overall revenue is still fairly small compared to that of market leaders like VMware and Amazon Web Services (AWS), the firm said.” - via <a href="https://www.sdxcentral.com/articles/news/openstack-revenue-will-top-5b-by-2020-says-451-research/2016/10/">SDXCentral</a> and <a href="https://451research.com/images/Marketing/press_releases/10.24.16_OpenStack_Pulse_PR_Final.pdf">451 Research</a></li>
+  <li>Eg. <a href="https://osm.etsi.org/">OSM</a> and <a href="https://www.open-o.org/">Open-O</a></li>
+  <li><a href="https://wiki.openstack.org/wiki/Tacker">Tacker</a></li>
+  <li>Should have called it ETSI MAGI. ;)</li>
+  <li>Video: <a href="https://www.youtube.com/watch?v=pxrDmqCMBLQ">OpenStack and the Orchestration Options for Telecom NFV</a></li>
+  <li>I would expect all-encompassing MANO systems, ones that try to take over everything (<em>hint</em> vendor lock-in <em>hint</em>) to fail.</li>
+</ol>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

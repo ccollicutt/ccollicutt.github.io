@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigating Curl Bash Installs with Docker | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Investigating Curl Bash Installs with Docker">
+
+    
+    <meta name="twitter:description" content="<p>Many sytems install with some version of <code>curl https://install.example.com | bash</code>. Using this model for installation is typically DIScouraged. But what if you don’t have much of an option for installation? How can you investigate what this bash script does?</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Many sytems install with some version of <code>curl https://install.example.com | bash</code>. Using this model for installation is typically DIScouraged. But what if you don’t have much of an option for installation? How can you investigate what this bash script does?</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/curl-bash-investigation-docker-diff.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/curl-bash-investigation-docker-diff.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Investigating Curl Bash Installs with Docker" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/02/02/curl-bash-investigation-docker-diff.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Investigating Curl Bash Installs with Docker</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-02-02T00:00:00-05:00">
+                February 02, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Many sytems install with some version of <code>curl https://install.example.com | bash</code>. Using this model for installation is typically DIScouraged. But what if you don’t have much of an option for installation? How can you investigate what this bash script does?</p>
+
+<p>One simple way is to use docker diff.</p>
+
+<h2 id="sdkman-install-inspection">sdkman Install Inspection</h2>
+
+<p>Recently I have started working with Java. Pretty new to it all. I’m used to basic Python development and often use virtual environments. What provides a similar pattern in the Java ecosystem? One example may be sdkman. I’m not sure, haven’t used it. However, to install it requires the curl bash (anti?) pattern. I’d like to investigate what that curl bash does.</p>
+
+<p>First, an image with the base requirements for sdkman. It uses which to check for zip, ect.</p>
+
+<pre><code>localhost$ cat Dockerfile 
+FROM fedora
+RUN dnf install -y unzip zip curl which
+</code></pre>
+
+<pre><code>localhost$ docker build . -t sdkman-test
+</code></pre>
+
+<p>Run it.</p>
+
+<pre><code>docker run -it --name sdkman-test-run sdkman-test /bin/bash
+</code></pre>
+
+<p>Manually install sdkman into that container through the curl bash.</p>
+
+<pre><code>container$ curl -s "https://get.sdkman.io" | bash 
+</code></pre>
+
+<p>Inspect the differences in the filesystem in the RUNNING container.</p>
+
+<pre><code>localhost$ docker diff sdkman-test-run
+C /root
+C /root/.bashrc
+A /root/.sdkman
+A /root/.sdkman/ext
+A /root/.sdkman/src
+A /root/.sdkman/src/sdkman-offline.sh
+A /root/.sdkman/src/sdkman-selfupdate.sh
+A /root/.sdkman/src/sdkman-uninstall.sh
+A /root/.sdkman/src/sdkman-use.sh
+A /root/.sdkman/src/sdkman-availability.sh
+A /root/.sdkman/src/sdkman-env-helpers.sh
+A /root/.sdkman/src/sdkman-install.sh
+A /root/.sdkman/src/sdkman-list.sh
+A /root/.sdkman/src/sdkman-update.sh
+A /root/.sdkman/src/sdkman-version.sh
+A /root/.sdkman/src/sdkman-current.sh
+A /root/.sdkman/src/sdkman-default.sh
+A /root/.sdkman/src/sdkman-help.sh
+A /root/.sdkman/src/sdkman-main.sh
+A /root/.sdkman/src/sdkman-broadcast.sh
+A /root/.sdkman/src/sdkman-flush.sh
+A /root/.sdkman/src/sdkman-upgrade.sh
+A /root/.sdkman/src/sdkman-cache.sh
+A /root/.sdkman/src/sdkman-path-helpers.sh
+A /root/.sdkman/src/sdkman-utils.sh
+A /root/.sdkman/tmp
+A /root/.sdkman/tmp/sdkman-5.7.4+362.zip
+A /root/.sdkman/tmp/stage
+A /root/.sdkman/var
+A /root/.sdkman/var/candidates
+A /root/.sdkman/var/version
+A /root/.sdkman/archives
+A /root/.sdkman/bin
+A /root/.sdkman/bin/sdkman-init.sh
+A /root/.sdkman/candidates
+A /root/.sdkman/etc
+A /root/.sdkman/etc/config
+A /root/.zshrc
+</code></pre>
+
+<p>Seems like /root/.bashrc has changed. Unfortunately docker diff can’t diff individual files. So I’ll need to build a new image and diff the base Fedora file.</p>
+
+<p>Let’s add the curl bash to the image so we can diff it.</p>
+
+<pre><code>localhost$ cat Dockerfile 
+FROM fedora
+RUN dnf install -y unzip zip curl which
+RUN curl -s "https://get.sdkman.io" | bash 
+</code></pre>
+
+<p>Build again.</p>
+
+<pre><code>localhost$ docker build . -t sdkman-test
+</code></pre>
+
+<p>Now grab the two bashrc file, one from the base fedora image and one from the image just built.</p>
+
+<pre><code>docker run --rm -v `pwd`:/out sdkman-test /bin/cp /root/.bashrc /out/bashrc-sdkman
+docker run --rm -v `pwd`:/out fedora /bin/cp /root/.bashrc /out/bashrc-base
+</code></pre>
+
+<p>Diff.</p>
+
+<pre><code>localhost$ diff bashrc-base bashrc-sdkman 
+12a13,16
+&gt; 
+&gt; #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+&gt; export SDKMAN_DIR="/root/.sdkman"
+&gt; [[ -s "/root/.sdkman/bin/sdkman-init.sh" ]] &amp;&amp; source "/root/.sdkman/bin/sdkman-init.sh"
+</code></pre>
+
+<p>Not surprisingly the install has added sourcing an sdkman init script to <code>~/.bashrc</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Obviously there is no limit to the amount of inspection one could do on foreign code, nor the amount of changes an imported bash file could do to an OS. In this case all I’ve done is find out what files sdkman adds or changes, and review the diffs on one file. But at least it gives me an idea of what is going on with the install.</p>
+
+<p>Using docker to evaluate tools makes a lot of sense to me, mostly because I don’t want to mess up my physical OS (which is actually running in a virtual machine, but I digress). Some people take this <a href="https://github.com/jessfraz/dockerfiles">much farther</a> and use containers to run things like sdkman.</p>
+
+<p>Even though I’ve worked a lot with Docker, I’ve never tried to inspect the diffs of image layers. Likely that would be a better option that what I’ve done above. Something to look into…</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hard Thing About Hard Things | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="The Hard Thing About Hard Things">
+
+    
+    <meta name="twitter:description" content="<p>For some reason I was expecting this book to be about how to do hard things. In my mind a “hard thing” was a single project that was technically difficult. I’m not sure where that idea came from, but that isn’t what this book is about. <em>The Hard Thing about Hard Things</em> is about being a CEO and how challenging that job is.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>For some reason I was expecting this book to be about how to do hard things. In my mind a “hard thing” was a single project that was technically difficult. I’m not sure where that idea came from, but that isn’t what this book is about. <em>The Hard Thing about Hard Things</em> is about being a CEO and how challenging that job is.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/hard-things-book-review.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/hard-things-book-review.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="The Hard Thing About Hard Things" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/07/01/hard-things-book-review.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">The Hard Thing About Hard Things</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-07-01T00:00:00-04:00">
+                July 01, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>For some reason I was expecting this book to be about how to do hard things. In my mind a “hard thing” was a single project that was technically difficult. I’m not sure where that idea came from, but that isn’t what this book is about. <em>The Hard Thing about Hard Things</em> is about being a CEO and how challenging that job is.</p>
+
+<p>I enjoyed the book and it’s something one could come back to again and again over the span of a career.</p>
+
+<h2 id="loudcloudopsware">Loudcloud/Opsware</h2>
+
+<p>I remember hearing about Opsware waaaaay back in the day. At the time it wasn’t something I would keep track of; I wasn’t paying attention to the whole Silicon Valley thing at the time. I was just getting out of school and into a job that was almost as far away from Silicon Valley as you could get (Northern Alberta). I should do some more reading on Loudcloud and Opsware, as it sounds like they were far ahead of the game for a while, and this was prior to even virtualization. (In fact in the book Horowitz mentions that the invention of virtualization was a part of why he decided to sell Opsware to HP, in that they would have had to spend a lot of time and money supporting virtualization in their product.)</p>
+
+<h2 id="a-few-notes-from-my-reading">A few notes from my reading</h2>
+
+<ul>
+  <li>The right kind of ambition</li>
+</ul>
+
+<blockquote>
+  <p>At a macro level, a company will be most successful if the senior managers optimize for the company’s success (think of this as global optimization) as opposed to their own personal success (local optimization)</p>
+</blockquote>
+
+<blockquote>
+  <p>When I spoke to Mark Cranney…it was difficult to get him to discuss his personal accomplishments. He really only wanted to discuss how his old company won.</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>Much discussion of wartime vs peacetime CEOs…what wartime CEOs do is much different than peacetime, and most of the time one person is not great at both styles. So if you are “at war” you need a different CEO.</p>
+  </li>
+  <li>
+    <p>“The struggle” of the CEO</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>…if there is one skill that stands out, it’s the ability to focus and make the best move when there are no good moves. It’s the moments where you feel most like hiding or dying that you can make the biggest difference as CEO…I offer some lessons on how to make it through the struggle without quitting or throwing up too much.</p>
+</blockquote>
+
+<ul>
+  <li>Training</li>
+</ul>
+
+<p>This book is very pro-training. I love it. Horowitz quotes Andy Grove:</p>
+
+<blockquote>
+  <p>Training is, quite simply, one of the highest-leverage activities a manager can perform.</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>Andy Grove, Bill Campbell - Horowitz mentions these people many times throughout the book. A <a href="https://www.trilliondollarcoach.com/">new book</a> about Bill Campbell is out. Definitely going to read it.</p>
+  </li>
+  <li>
+    <p>Being honest</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>If you run a company, you will experience overwhelming psychological pressure to be overly positive. Stand up to the pressure, face your fear, and tell it like it is.</p>
+</blockquote>
+
+<p>I’m assuming Horiwitz determined when to be honest very carefully.</p>
+
+<ul>
+  <li>$1.6 billion sale to HP</li>
+</ul>
+
+<p>Everything in the book is working towards this sale. That number is the success of the company. Nothing else matters. Any other choices Horowitz could have made over the lifetime of the company might have watered down this number. He fought hard to get a specific share price and was willing to have the deal fall through if he didn’t get it.</p>
+
+<ul>
+  <li>Mark Cranney</li>
+</ul>
+
+<p>I found any discussion around Mark Cranney fascinating. I have a pet theory, which I think is more than a theory, that most high ranking managers and sales people are…just tall. Note that I am exactly average height so maybe that has something to do with it. :)</p>
+
+<blockquote>
+  <p>I interviewed Mark Cranney. He wasn’t what I expected: he didn’t fit the stereotype of a hard-charging sales executive. For starters, Mark was average height, whereas most sales executives tend to be rather tall. Next, he was as wide as he was tall. not fat, just square. His square body seemed to fit rather uncomfortably into what must have been a custom-tailored suit–there is no way an off-the-rack business suite would fit a square guy like Mark.</p>
+</blockquote>
+
+<p>Later in the book Horowitz says that if Cranney had better met the physical stereotype of an executive he would have been CEO of IBM, ie. that Opsware got Cranney at a discount.</p>
+
+<ul>
+  <li>Hire for strength</li>
+</ul>
+
+<p>He discusses reasons why CEOs fail executives and then have to fire them. One of the reasons is not hiring for strengths.</p>
+
+<blockquote>
+  <p>You hired for lack of weakness rather than for strengths. This is especially common when you run a consensus-based hiring process. The group will often find the candidate’s weaknesses, but they won’t place a high enough value on the areas where you need the executive to be a world-class performer. As a result you hire an executive…who is mediocre where you need her to be great.</p>
+</blockquote>
+
+<p>There’s much more to get out of this book. Like most of Silicon Valley, I heavily suggest just picking up a copy.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

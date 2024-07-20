@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using OpenShift's Docker Remote Registry | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using OpenShift's Docker Remote Registry">
+
+    
+    <meta name="twitter:description" content="<p>In this post I will cover using an OpenShift Origin deployment that has a registry as a remote registry for Docker images. Note that I’m not covering installing OpenShift–it’s already deployed. I’m just going to use its registry.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In this post I will cover using an OpenShift Origin deployment that has a registry as a remote registry for Docker images. Note that I’m not covering installing OpenShift–it’s already deployed. I’m just going to use its registry.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openshift-remote-registry-docker.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openshift-remote-registry-docker.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using OpenShift's Docker Remote Registry" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/07/02/openshift-remote-registry-docker.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using OpenShift's Docker Remote Registry</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-07-02T00:00:00-04:00">
+                July 02, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In this post I will cover using an OpenShift Origin deployment that has a registry as a remote registry for Docker images. Note that I’m not covering installing OpenShift–it’s already deployed. I’m just going to use its registry.</p>
+
+<h2 id="official-documentation">Official Documentation</h2>
+
+<p>This <a href="https://docs.openshift.com/container-platform/3.9/install_config/registry/accessing_registry.html">doc</a> is pretty good; won’t get you all the way, but it’s close.</p>
+
+<h2 id="about-the-deployment">About the Deployment</h2>
+
+<p>This OpenShift installation is running in AWS (not that it really matters where it’s running) and the registry is backed by S3. As far as I’m concerned object storage is the best backend for Docker images. Well, at least it’s effectively infinite.</p>
+
+<p>The version of OpenShift Origin being used is 3.9.</p>
+
+<h2 id="s3-permissions">S3 Permissions</h2>
+
+<p>OpenShift was deployed using openshift-ansible, and the hosts file was configured to use an AWS user that has been configured with specific permissions.</p>
+
+<p>A bucket, <code>openshift-1-registry</code>, was created by an administrative user. The OpenShift AWS user was provided the below permissions to be able to use that bucket.</p>
+
+<pre><code>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::openshift-1-registry",
+                "arn:aws:s3:::openshift-1-registry/*"
+            ]
+        }
+    ]
+}
+</code></pre>
+
+<p>I’m sure that could be firmed up, wildcards are frowned upon, but at least the OpenShift user only has access to his particular bucket. The user can’t list all buckets, but can access <code>openshift-1-registry</code>.</p>
+
+<p>Below I’m using the AWS CLI as an example of access permissions.</p>
+
+<pre><code>$ aws s3 ls
+
+An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
+$ aws s3 ls s3://openshift-1-registry
+                           PRE registry/
+</code></pre>
+
+<h2 id="registry-information">Registry Information</h2>
+
+<p>As root on the controller instance I can find out the route for the docker registry. Of course this assumes that OpenShift has been setup with a wildcard apps domain.</p>
+
+<pre><code>openshift-controller# oc get routes
+NAME               HOST/PORT                                   PATH      SERVICES           PORT      TERMINATION   WILDCARD
+docker-registry    docker-registry-default.apps.example.com              docker-registry    &lt;all&gt;     passthrough   None
+registry-console   registry-console-default.apps.example.com             registry-console   &lt;all&gt;     passthrough   None
+</code></pre>
+
+<p>*.apps.example.com is available through an ELB on AWS.</p>
+
+<p><em>NOTE: I’ve replaced the real URL with example.com.</em></p>
+
+<h2 id="local-docker">Local Docker</h2>
+
+<p>This post assumes you have a local docker instance. In this example, docker 1.13.1 is running in a CentOS 7 host.</p>
+
+<p>We need to add an insecure registry to the local docker (that is, of course, unless you have properly setup all the SSL certificates, which would be a good thing to do for production).</p>
+
+<p>Edit Docker’s daemon.json file to add the insecure registry.</p>
+
+<pre><code>local-docker$ sudo cat /etc/docker/daemon.json
+{
+  "insecure-registries" : ["docker-registry-default.apps.example.com:443"]
+}
+</code></pre>
+
+<p>The restart it.</p>
+
+<h2 id="login">Login</h2>
+
+<p>On the local docker, which also has the <code>oc</code> command line and access to OpenShift…</p>
+
+<pre><code>local-docker$ oc login
+local-docker$ docker login -u $(oc whoami) -p $(oc whoami -t) docker-registry-default.apps.example.com:443
+</code></pre>
+
+<h2 id="pull-and-push-and-image">Pull and Push and Image</h2>
+
+<p>Check what OC project you are in. Note that I’ve created a “example-project” project.</p>
+
+<pre><code>local-docker$ oc project
+Using project "example-project" on server "https://openshift.example.com:443".
+</code></pre>
+
+<p>Pull, tag, and push an image.</p>
+
+<pre><code>local-docker$ docker pull docker.io/busybox
+local-docker$ docker tag docker.io/busybox docker-registry-default.apps.example.com:443/example-project/busybox
+local-docker$ docker push docker-registry-default.apps.example.com:443/example-project/busybox
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Now you’re using a remote registry that is managed by OpenShift. The part I found most confusing was the project name and how it relates to the image tag.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

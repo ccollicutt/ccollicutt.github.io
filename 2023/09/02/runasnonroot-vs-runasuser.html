@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser">
+
+    
+    <meta name="twitter:description" content="<p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/runasnonroot-vs-runasuser.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/runasnonroot-vs-runasuser.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/09/02/runasnonroot-vs-runasuser.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-09-02T00:00:00-04:00">
+                September 02, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.</p>
+
+<h2 id="nginx-images">nginx images</h2>
+
+<p>I have to wonder what percentage of containers are just nginx instances that are there to test something out. Nginx is an easy image to deploy because you can just do:</p>
+
+<pre><code>kubectl run nginx --image=nginx
+</code></pre>
+
+<p>And you have a running nginx instance.</p>
+
+<p>However, that default nginx image will run as root (if your cluster allows that).</p>
+
+<pre><code>$ k exec -it nginx -- cat /proc/1/status | grep "Name\|Uid"
+Name:	nginx
+Uid:	0	0	0	0
+</code></pre>
+
+<p>There is an nginx unprivileged image that will run as a non-root user; it runs as user 101. I would definitely recommend using this image if you are just testing something out. It’s a few more letters to type, but it’s worth it.</p>
+
+<pre><code>kubectl run nginx-unprivileged --image=nginxinc/nginx-unprivileged
+</code></pre>
+
+<p>Inspecting the images…</p>
+
+<pre><code>$ docker image inspect nginx | jq '.[0].Config.User'
+""
+$ docker image inspect nginxinc/nginx-unprivileged | jq '.[0].Config.User'
+"101"
+</code></pre>
+
+<p>Here’s the nginx user in the unprivileged image:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- grep nginx /etc/passwd
+nginx:x:101:101:nginx user:/nonexistent:/bin/false
+</code></pre>
+
+<h2 id="differences-between-runasnonroot-and-runasuser">Differences Between runAsNonRoot and runAsUser</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>runAsNonRoot</th>
+      <th>runAsUser</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Purpose</strong></td>
+      <td>Ensure container doesn’t run as root</td>
+      <td>Specify the exact UID for container</td>
+    </tr>
+    <tr>
+      <td><strong>Settings</strong></td>
+      <td>true/false</td>
+      <td>Numeric UID</td>
+    </tr>
+    <tr>
+      <td><strong>Flexibility</strong></td>
+      <td>Less flexible</td>
+      <td>More flexible</td>
+    </tr>
+    <tr>
+      <td><strong>Specificity</strong></td>
+      <td>General: just not root</td>
+      <td>Very specific: exact UID</td>
+    </tr>
+    <tr>
+      <td><strong>Root Allowed</strong></td>
+      <td>No</td>
+      <td>Yes, if specified</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="runasnonroot">runAsNonRoot</h2>
+
+<p>The runAsNonRoot field specifies that the container must not run as the root user. Setting this to true enforces that the container should be executed as a non-root user. If the container image specifies a user as root or numerically as 0, the container won’t start. It’s a way to ensure that your application doesn’t unintentionally run with more permissions than it needs.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: non-root-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: my-container
+    image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ kubectl exec -it non-root-pod -- id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+</code></pre>
+
+<p>But if we run the plain nginx image, it will fail:</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: non-root-pod-plain
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: my-container
+    image: nginx
+EOF
+</code></pre>
+
+<p>Note that the container is not running:</p>
+
+<pre><code>$ k get pods
+NAME                 READY   STATUS                       RESTARTS   AGE
+non-root-pod         1/1     Running                      0          112s
+non-root-pod-plain   0/1     CreateContainerConfigError   0          5s
+</code></pre>
+
+<p>And the reason is:</p>
+
+<pre><code>$ k describe pod non-root-pod-plain  | grep Error
+      Reason:       CreateContainerConfigError
+  Warning  Failed     1s (x5 over 42s)  kubelet            Error: container has runAsNonRoot and image will run as root (pod: "non-root-pod-plain_runasnonroot(c5764bbb-c1cf-47b1-9606-3a3a49ebf666)", container: my-container)
+</code></pre>
+
+<h2 id="runasuser">runAsUser</h2>
+
+<p>On the other hand, runAsUser specifies which UID (User ID) the container process should run as. Unlike runAsNonRoot, this allows you to specify the exact UID of the user, including root if you explicitly set it to 0.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: specific-user-pod-nginx-priviliged
+spec:
+  securityContext:
+    runAsUser: 1001
+  containers:
+  - name: my-container
+    image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ kubectl exec -it specific-user-pod-nginx-priviliged -- id
+uid=1001 gid=0(root) groups=0(root)
+</code></pre>
+
+<p>But if we run the plain nginx image, it will fail:</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: specific-user-pod-nginx-plain
+spec:
+  securityContext:
+    runAsUser: 1001
+  containers:
+  - name: my-container
+    image: nginx
+EOF
+</code></pre>
+
+<p>Note that the container is not running:</p>
+
+<pre><code>$ k get pod specific-user-pod-nginx-plain 
+NAME                            READY   STATUS             RESTARTS      AGE
+specific-user-pod-nginx-plain   0/1     CrashLoopBackOff   1 (10s ago)   16s
+</code></pre>
+
+<h2 id="both-runasnonroot-and-runasuser">Both runAsNonRoot and runAsUser</h2>
+
+<p>You can also use both runAsNonRoot and runAsUser together. In this case, runAsUser specifies the UID to use, and runAsNonRoot ensures that UID is not root.</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: runasnonroot-and-runasuser
+spec:
+  securityContext:
+    runAsUser: 1001
+    runAsNonRoot: true
+  containers:
+    - name: my-container
+      image: nginxinc/nginx-unprivileged
+EOF
+</code></pre>
+
+<p>Check the id of the user running the container:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- id
+uid=1001 gid=0(root) groups=0(root)
+$ k get pods runasnonroot-and-runasuser 
+NAME                         READY   STATUS    RESTARTS   AGE
+runasnonroot-and-runasuser   1/1     Running   0          22s
+</code></pre>
+
+<p>And nginx is indeed running as user 1001:</p>
+
+<pre><code>$ k exec -it runasnonroot-and-runasuser -- cat /proc/1/status | grep "Name\|Uid"
+Name:	nginx
+Uid:	1001	1001	1001	1001
+</code></pre>
+
+<blockquote>
+  <p>NOTE: PID 1 is the first process that runs in any operating system or containerized environment. When a container starts, it launches a single process with a PID (Process ID) of 1 within the isolated namespace of that container.</p>
+</blockquote>
+
+<h2 id="nginx-plain-as-non-root-with-runasuser">nginx plain as non-root with runAsUser</h2>
+
+<p>Will it blend?</p>
+
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-plain-runasnonroot-and-runasuser
+spec:
+  securityContext:
+    runAsUser: 1001
+    runAsNonRoot: true
+  containers:
+    - name: my-container
+      image: nginx
+EOF
+</code></pre>
+
+<p>No.</p>
+
+<pre><code>$ k get pod nginx-plain-runasnonroot-and-runasuser 
+NAME                                     READY   STATUS             RESTARTS     AGE
+nginx-plain-runasnonroot-and-runasuser   0/1     CrashLoopBackOff   1 (7s ago)   12s
+</code></pre>
+
+<h2 id="use-cases">Use Cases</h2>
+
+<ul>
+  <li>
+    <p>runAsNonRoot: Use this setting when you want a general assurance that none of the containers in the Pod are running as root, without caring which user they run as.</p>
+  </li>
+  <li>
+    <p>runAsUser: Use this when you need more control over the exact user that runs the container process, such as for compliance with internal security policies that require specific UIDs for different types of applications. As well, some images require a specific UID to run properly.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>While runAsNonRoot and runAsUser both provide ways to control the user running a container, they serve different needs. runAsNonRoot is a more generalized setting to prevent root access, while runAsUser gives you fine-grained control over the user ID. Knowing when to use each can improve the security posture of your Kubernetes applications.</p>
+
+<p>That said, both runAsUser and runAsNonRoot can co-exist. When they do, runAsUser specifies which UID to use, and runAsNonRoot ensures that UID is not root.</p>
+
+<p>In normal, production systems one would never run a container as root so the image would, based on your organizations policies and image build process, have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

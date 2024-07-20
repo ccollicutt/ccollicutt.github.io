@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rsyslog to Elasticsearch | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Rsyslog to Elasticsearch">
+
+    
+    <meta name="twitter:description" content="<p>For decades systems administrations have known that it’s important to centralize logs, be it for troubleshooting or security reasons. In my case, not only do I want to centralize logs, but I also want them to be searchable. (Not that grep on a centralized log file isn’t powerful, but that’s not the solution I’m looking for at this time.)</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>For decades systems administrations have known that it’s important to centralize logs, be it for troubleshooting or security reasons. In my case, not only do I want to centralize logs, but I also want them to be searchable. (Not that grep on a centralized log file isn’t powerful, but that’s not the solution I’m looking for at this time.)</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ryslog-to-elasticsearch.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/ryslog-to-elasticsearch.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Rsyslog to Elasticsearch" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/11/11/ryslog-to-elasticsearch.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Rsyslog to Elasticsearch</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-11-11T00:00:00-05:00">
+                November 11, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>For decades systems administrations have known that it’s important to centralize logs, be it for troubleshooting or security reasons. In my case, not only do I want to centralize logs, but I also want them to be searchable. (Not that grep on a centralized log file isn’t powerful, but that’s not the solution I’m looking for at this time.)</p>
+
+<h2 id="elasticsearch">Elasticsearch</h2>
+
+<p>Elasticsearch has also been around for a while.</p>
+
+<p>Elasticsearch:</p>
+
+<blockquote>
+  <p>… is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data so you can discover the expected and uncover the unexpected.</p>
+</blockquote>
+
+<p>Bascially it allows storing, indexing, and searching data. Typically it’s part of a stack, the “ELK” stack, made up of Elasticsearch, Logstash, and Kibana.</p>
+
+<p>As a systems administrator, I think it’s also important to note that Elasticsearch is, when used as a cluster, a distributed system, which means Aphyr has <a href="https://aphyr.com/posts/323-jepsen-elasticsearch-1-5-0">tested it</a>. One shouldn’t take the addition of yet another distributed system lightly. As an example, I have MySQL Galera, RabbitMQ, Nomad, and now Elasticsearch for distributed systems in production right now.</p>
+
+<h2 id="rsyslog-directly-to-elasticsearch">Rsyslog directly to Elasticsearch</h2>
+
+<p>The point of this post is to show how to use rsyslog to send logs directly into an Elasticsearch cluster. Currently I am not using the L part of the stack, meaning I have no Logstash. I’m just using rsyslog to send log messages directly into Elasticsearch, and I use Kibana as a graphical interface to search logs. I would imagine that in the future I will use Logstash, but for now I am not.</p>
+
+<p>I’ve put up a very simple <a href="https://github.com/ccollicutt/ansible-role-elasticsearch-rsyslog">Ansible role</a> to configure rsyslog to send logs to Elasticsearch. I run Haproxy in front of the Elasticsearch cluster so I send all the logs to the Haproxy virtual IP, which loadbalances across the Elasticsearch cluster. But other than that, this is what I use, and it has been taking in millions of logs, probably 30/second, for a few weeks.</p>
+
+<h2 id="omelasticsearch">omelasticsearch</h2>
+
+<p>omelasticsearch does all the work. You just need a rsyslog version recent enough to have that module. Then add in a configuration file which points to your Elasticsearch cluster, and you’re done. Quite simple actually.</p>
+
+<p>Here is the package:</p>
+
+<pre><code class="language-bash">$ dpkg --list rsyslog-elasticsearch
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                                  Version                 Architecture            Description
++++-=====================================-=======================-=======================-===============================================================================
+ii  rsyslog-elasticsearch                 8.16.0-1ubuntu3         amd64                   Elasticsearch output plugin for rsyslog
+</code></pre>
+
+<p>And here is the configuration file:</p>
+
+<pre><code class="language-bash">$ cat templates/etc/rsyslog.d/elasticsearch.conf 
+module(load="omelasticsearch") # Elasticsearch output module
+
+# this is for index names to be like: logstash-YYYY.MM.DD
+template(name="logstash-index"
+  type="list") {
+    constant(value="logstash-")
+    property(name="timereported" dateFormat="rfc3339" position.from="1" position.to="4")
+    constant(value=".")
+    property(name="timereported" dateFormat="rfc3339" position.from="6" position.to="7")
+    constant(value=".")
+    property(name="timereported" dateFormat="rfc3339" position.from="9" position.to="10")
+}
+
+
+# template to generate JSON documents for Elasticsearch in Logstash format
+template(name="plain-syslog"
+  type="list") {
+    constant(value="{")
+    constant(value="\"@timestamp\":\"")         property(name="timereported" dateFormat="rfc3339")
+    constant(value="\",\"host\":\"")            property(name="hostname")
+    constant(value="\",\"severity-num\":")      property(name="syslogseverity")
+    constant(value=",\"facility-num\":")        property(name="syslogfacility")
+    constant(value=",\"severity\":\"")          property(name="syslogseverity-text")
+    constant(value="\",\"facility\":\"")        property(name="syslogfacility-text")
+    constant(value="\",\"syslogtag\":\"")       property(name="syslogtag" format="json")
+    constant(value="\",\"message\":\"")         property(name="msg" format="json")
+    constant(value="\"}")
+  }
+
+action(type="omelasticsearch"
+  server="{{ elastic_search_ip }}"
+  serverport="9200"
+  template="plain-syslog"  # use the template defined earlier
+  searchIndex="logstash-index"
+  dynSearchIndex="on"
+  searchType="events"
+  bulkmode="on"                   # use the Bulk API
+  queue.dequeuebatchsize="5000"   # ES bulk size
+  queue.size="100000"   # capacity of the action queue
+  queue.workerthreads="5"   # 5 workers for the action
+  action.resumeretrycount="-1"  # retry indefinitely if ES is unreachable
+  errorfile="/var/log/omelasticsearch.log"
+) 
+</code></pre>
+
+<h2 id="curator">Curator</h2>
+
+<p>You will probably want to prune the logs that are entered into your ES cluster, that is unless you have a lot of storage space. I am using <a href="https://github.com/elastic/curator">Curator</a> to do that. The omelastic module configuration show above adds indices with names like “logstash-YYY-MM-DD” and you can use that pattern with a curator action file to delete indices older than a certain number of days. I have a daily job that is run out of a Nomad cluster to prune indices over 30 days old.</p>
+
+<pre><code class="language-bash">$ curl 'elasticsearch-vip:9200/_cat/indices?v'
+health status index               pri rep docs.count docs.deleted store.size pri.store.size 
+SNIP!
+green  open   logstash-2016.11.04   5   1     158184            0     55.4mb         27.7mb 
+green  open   .kibana               1   1          7            1     72.1kb           36kb 
+green  open   logstash-2016.11.05   5   1     538415            0      181mb         90.5mb 
+green  open   logstash-2016.11.06   5   1     538909            0    181.1mb         90.5mb 
+green  open   logstash-2016.11.07   5   1     591699            0    219.6mb        109.9mb 
+green  open   logstash-2016.11.08   5   1     574186            0      207mb        103.5mb 
+green  open   logstash-2016.11.09   5   1     626842            0    231.8mb        115.9mb 
+green  open   logstash-2016.11.10   5   1     570544            0    203.8mb        101.9mb 
+green  open   logstash-2016.11.11   5   1     350968            0      145mb         69.9mb 
+</code></pre>
+
+<h2 id="performance">Performance</h2>
+
+<p>I should also note that this configuration may not be as performant as you would like. There are certainly considerations to make in terms of the number of indices, and shards, and their size, and how that relates to performance of the ES cluster over time. I would doubt that this example will be useful in large systems and would require a fair amount of tuning. Please keep that in mind. :)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This is a pretty simplistic example of Elasticsearch use. But I think it’s helpful because it can get you up and running, logging to Elasticsearch, quickly, and from this point you can work on improving things as you learn about ES. That’s my plan anyways. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

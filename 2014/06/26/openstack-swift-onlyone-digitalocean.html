@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy OpenStack Swift OnlyOne to Digital Ocean | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Deploy OpenStack Swift OnlyOne to Digital Ocean">
+
+    
+    <meta name="twitter:description" content="<p>In this blog post I want to show how to get your very own internet available object storage system using <a href="http://docs.openstack.org/developer/swift/">OpenStack Swift</a> and <a href="https://docker.com">Docker</a>. Also it will be terminated by SSL (though with a self-signed certificate).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>In this blog post I want to show how to get your very own internet available object storage system using <a href="http://docs.openstack.org/developer/swift/">OpenStack Swift</a> and <a href="https://docker.com">Docker</a>. Also it will be terminated by SSL (though with a self-signed certificate).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-swift-onlyone-digitalocean.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-swift-onlyone-digitalocean.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Deploy OpenStack Swift OnlyOne to Digital Ocean" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/06/26/openstack-swift-onlyone-digitalocean.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Deploy OpenStack Swift OnlyOne to Digital Ocean</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-06-26T00:00:00-04:00">
+                June 26, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>In this blog post I want to show how to get your very own internet available object storage system using <a href="http://docs.openstack.org/developer/swift/">OpenStack Swift</a> and <a href="https://docker.com">Docker</a>. Also it will be terminated by SSL (though with a self-signed certificate).</p>
+
+<p>It’s important to note that this is a special case OpenStack Swift setup–it only has one storage device and will only make one replica, which I call OpenStack Swift OnlyOne. Normally Swift installations are huge! But his one is small, which I think is cool. Or fun. But not fun and cool. That’s too much.</p>
+
+<p>This is what we are going to do:</p>
+
+<ul>
+  <li>Boot a virtual machine on Digital Ocean</li>
+  <li>Configure it to be able to use xattr</li>
+  <li>Pull a few docker images</li>
+  <li>Start three docker containers</li>
+  <li>Create swift containers and upload files into them</li>
+  <li>Set a container to serve an index.html page</li>
+</ul>
+
+<h2 id="get-a-docker-virtual-machine">Get a docker virtual machine</h2>
+
+<p>Handily Digital Ocean has an image that comes with Docker 1.0 already. I’m going to use the tugboat CLI.</p>
+
+<pre>
+<code>curtis$ tugboat images --global | grep Docker
+Docker 1.0 on Ubuntu 14.04 (id: 4296335, distro: Ubuntu)
+Dokku v0.2.3 on Ubuntu 14.04 (w/ Docker 1.0) (id: 4381169, distro: Ubuntu)
+</code>
+</pre>
+
+<p>Let’s boot it. 66 is the 512MB image.</p>
+
+<p><em>NOTE: If you really plan on using this for work instead of just testing Swift, a larger droplet size will likely be necessary. I did get some out of memory errors with the 512MB size.</em></p>
+
+<pre>
+<code>curtis$ tugboat create swifty-onlyone -i 4296335 -s 66 -k 118429
+Queueing creation of droplet 'swifty-onlyone'...done
+curtis$ tugboat droplets
+swifty-onlyone (ip: <droplet IP="">, status: new, region: 4, id: 1945827)
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Wait until it's active, then ssh in.
+
+<pre>
+<code>curtis$ tugboat droplets
+swifty-onlyone (ip: <droplet IP="">, status: active, region: 4, id: 1945827)
+curtis$ ssh root@<droplet IP="">
+SNIP!
+root@swifty-onlyone:~# 
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Add xattr attribute to fstab for root and remount. 
+
+_NOTE: Swift requires the file system support xattr. I'm not sure if it's enabled by default or not._
+
+<pre>
+<code>root@swift-onlyone:~# # vi /etc/fstab and add user_xattr
+root@swift-onlyone:~# grep xattr /etc/fstab
+UUID=050e1e34-39e6-4072-a03e-ae0bf90ba13a /               ext4    errors=remount-ro,user_xattr 0       1
+root@swift-onlyone:~# mount -o remount /
+</code>
+</pre>
+
+## Get docker images
+
+Pull some docker images:
+
+- busybox
+- serverascode/swift-onlyone
+- serverascode/pound
+
+<pre>
+<code>root@swift-onlyone:~# docker pull busybox; docker pull serverascode/swift-onlyone; docker pull serverascode/pound
+</code>
+</pre>
+
+Now we have all those images locally.
+
+<pre>
+<code>root@swifty-onlyone:~# docker images
+REPOSITORY                   TAG                   IMAGE ID            CREATED             VIRTUAL SIZE
+serverascode/swift-onlyone   latest                1b562d4e3975        3 hours ago         349.2 MB
+serverascode/pound           latest                2bfef1fdc39d        3 hours ago         285.2 MB
+busybox                      buildroot-2013.08.1   d200959a3e91        3 weeks ago         2.489 MB
+busybox                      ubuntu-14.04          37fca75d01ff        3 weeks ago         5.609 MB
+busybox                      ubuntu-12.04          fd5373b3d938        3 weeks ago         5.455 MB
+busybox                      buildroot-2014.02     a9eb17255234        3 weeks ago         2.433 MB
+busybox                      latest                a9eb17255234        3 weeks ago         2.433 MB
+</code>
+</pre>
+
+
+## Create the containers
+
+We're going to create three containers:
+
+1. SWIFT_DATA: A volume only container
+2. SWIFT: Has OnlyOne installed, volume from SWIFT_DATA
+3. A pound ssl termination container, linked to SWIFT
+
+First, create a volume only container.
+
+<pre>
+<code>root@swift-onlyone:~# docker run -v /srv --name SWIFT_DATA busybox
+root@swift-onlyone:~# docker ps -a | grep DATA
+838c68ce031b        busybox:buildroot-2014.02   /bin/sh             15 seconds ago      Exited (0) 14 seconds ago                       SWIFT_DATA    
+</code>
+</pre>
+
+Should see a volume in /var/lib/docker/volumes now.
+
+<pre>
+<code>root@swift-onlyone:~# ls /var/lib/docker/volumes/
+1b6e87f07e2e5c0e49362bfa51f22fb8a32bca691a12d5c5872db0b90baf5241  _tmp
+</code>
+</pre>
+
+Now create the OnlyOne container using a volume from SWIFT_DATA. Make sure to call it SWIFT.
+
+Please note a couple of environment variables being set:
+
+- *SWIFT_STORAGE_URL_SCHEME=https* Tells Swift Proxy to use https for the storage url
+- *SWIFT_SET_PASSWORDS=yes* The startmain.sh script for Swift OnlyOne will change the default password for each use to one password.
+
+<pre>
+<code>root@swift-onlyone:~# docker run -d -e SWIFT_SET_PASSWORDS=yes -e SWIFT_STORAGE_URL_SCHEME=https --volumes-from SWIFT_DATA --name SWIFT -t serverascode/swift-onlyone
+</code>
+</pre>
+
+If SWIFT_SET_PASSWORDS=yes was set, then the password will be echoed to the container log.
+
+As an example, below it's been set to: laibiibooghu.
+
+<pre>
+<code>root@swift-onlyone:~# docker logs 6807caaaaf3b | head
+Ring files already exist in /srv, copying them to /etc/swift...
+Setting default_storage_scheme to https in proxy-server.conf...
+storage_url_scheme = https
+Setting passwords in /etc/swift/proxy-server.conf
+user_test_tester = laibiibooghu .admin
+user_test2_tester2 = laibiibooghu .admin
+user_test_tester3 = laibiibooghu
+Starting supervisord...
+Starting to tail /var/log/syslog...(hit ctrl-c if you are starting the container in a bash shell)
+Jun 27 16:46:24 6807caaaaf3b object-replicator: Starting object replicator in daemon mode.
+</code>
+</pre>
+
+Finally create a pound container. This will be the ssl termination point and will be available from the Internet.
+
+This container will be linked to the SWIFT container.
+
+<pre>
+<code>root@swift-onlyone:~# docker run -d --link SWIFT:SWIFT -p 443:443 -t serverascode/pound
+</code>
+</pre>
+
+Now we have three containers, two of them running, and the other being the volume only container.
+
+<pre>
+<code>root@swift-onlyone:~# docker ps -a
+CONTAINER ID        IMAGE                               COMMAND                CREATED              STATUS                         PORTS                  NAMES
+2f6dcdae1db2        serverascode/pound:latest           /bin/sh -c /usr/loca   15 seconds ago       Up 14 seconds                  0.0.0.0:443-&gt;443/tcp   naughty_turing               
+76d27dafa403        serverascode/swift-onlyone:latest   /bin/sh -c /usr/loca   About a minute ago   Up About a minute              8080/tcp               SWIFT,naughty_turing/SWIFT   
+838c68ce031b        busybox:buildroot-2014.02           /bin/sh                About an hour ago    Exited (0) About an hour ago                          SWIFT_DATA
+</code>
+</pre>
+
+Now from my laptop I can run the swift command line.
+
+<pre>
+<code>curtis$ alias sw='swift --insecure -A https://<droplet IP="">/auth/v1.0 -U test:tester -K <password>'
+curtis$ sw stat
+       Account: AUTH_test
+    Containers: 0
+       Objects: 0
+         Bytes: 0
+  Content-Type: text/plain; charset=utf-8
+   X-Timestamp: 1403882745.61961
+    X-Trans-Id: tx28102150d50b484a92f3a-0053ad8cf9
+X-Put-Timestamp: 1403882745.61961
+&lt;/code&gt;
+&lt;/pre&gt;
+
+And upload a directory with a file in it.
+
+<pre>
+<code>curtis$ echo "hi" &gt; index.html
+curtis$ sw upload www index.html
+index.html
+</code>
+</pre>
+
+Set permissions so that anyone can read the files in the www container, ie. they are public.
+
+<pre>
+<code>curtis$ sw post --read-acl='.r:*,.rlistings' www
+curtis$ sw stat www
+       Account: AUTH_test
+     Container: www
+       Objects: 1
+         Bytes: 3
+      Read ACL: .r:*,.rlistings
+     Write ACL:
+       Sync To:
+      Sync Key:
+ Accept-Ranges: bytes
+   X-Timestamp: 1403883848.54012
+    X-Trans-Id: txd858295e7d294d39bdf3e-0053ad921d
+  Content-Type: text/plain; charset=utf-8
+</code>
+</pre>
+
+Make index.html the default web index.
+
+<pre>
+<code>curtis$ sw post -m 'web-index:index.html' www
+</code>
+</pre>
+
+Now we can access that page in a web browser, and get the index.html. 
+
+<pre>
+<code>curtis$ wget --no-check-certificate https://<droplet IP="">/v1/AUTH_test/www/
+--2014-06-27 11:48:20--  https://<droplet IP="">/v1/AUTH_test/www/
+Connecting to <droplet IP="">:443... connected.
+WARNING: cannot verify <droplet IP="">'s certificate, issued by '/C=US/ST=Oregon/L=Portland/O=IT/CN=172.17.0.13':
+  Self-signed certificate encountered.
+    WARNING: certificate common name '172.17.0.13' doesn't match requested host name '<droplet IP="">'.
+HTTP request sent, awaiting response... 200 OK
+Length: 3 [text/html]
+Saving to: 'index.html'
+
+100%[====================================================================================================================================================&gt;] 3           --.-K/s   in 0s      
+
+2014-06-27 11:48:20 (109 KB/s) - 'index.html' saved [3/3]
+
+curtis$ cat index.html 
+hi&lt;/code&gt;
+&lt;/pre&gt;
+
+Note that I just wanted to use that as a demonstration, not the actual use case for Swift. Swift stores unstructured data, which we, as a planet, have a lot of. It doesn't have to serve web pages.
+
+## Conclusion
+
+Now for $5 a month you have a little swift install. The storage on that instance is pretty limited, at 20GB, but at any rate you can put all kinds of [DevOps reactions](http://devopsreactions.tumblr.com/) gifs there if you want. Or, perhaps use it to create interesting, proof-of-concept scalable web systems.
+
+I should note as well that you could deploy OnlyOne in the same fashion on any Docker host, which is one of Docker's most interesting features.
+</droplet></droplet></droplet></droplet></droplet></code></pre></password></droplet></code></pre></droplet></droplet></code></pre></droplet></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

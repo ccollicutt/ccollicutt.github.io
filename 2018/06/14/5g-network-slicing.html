@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Introduction to 5G Network Slicing | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="An Introduction to 5G Network Slicing">
+
+    
+    <meta name="twitter:description" content="<p>A colleague and I gave a presentation entitled “<a href="https://www.youtube.com/watch?v=x_b4-w4Mrcg">5G Network Slicing and OpenStack</a>” at the 2018 Vancouver OpenStack summit. We did a lot of research, reading 70 to 100 papers (whitepapers, standards body papers, academic papers, you name it–so many we <a href="https://github.com/idx-labs/openstack-network-slicing/blob/master/BIBLIOGRAPHY.md_">published a bibliography</a>) to try to determine what network slicing is and how OpenStack can participate.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>A colleague and I gave a presentation entitled “<a href="https://www.youtube.com/watch?v=x_b4-w4Mrcg">5G Network Slicing and OpenStack</a>” at the 2018 Vancouver OpenStack summit. We did a lot of research, reading 70 to 100 papers (whitepapers, standards body papers, academic papers, you name it–so many we <a href="https://github.com/idx-labs/openstack-network-slicing/blob/master/BIBLIOGRAPHY.md_">published a bibliography</a>) to try to determine what network slicing is and how OpenStack can participate.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/5g-network-slicing.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/5g-network-slicing.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="An Introduction to 5G Network Slicing" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/06/14/5g-network-slicing.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">An Introduction to 5G Network Slicing</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-06-14T00:00:00-04:00">
+                June 14, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>A colleague and I gave a presentation entitled “<a href="https://www.youtube.com/watch?v=x_b4-w4Mrcg">5G Network Slicing and OpenStack</a>” at the 2018 Vancouver OpenStack summit. We did a lot of research, reading 70 to 100 papers (whitepapers, standards body papers, academic papers, you name it–so many we <a href="https://github.com/idx-labs/openstack-network-slicing/blob/master/BIBLIOGRAPHY.md_">published a bibliography</a>) to try to determine what network slicing is and how OpenStack can participate.</p>
+
+<h2 id="what-is-network-slicing">What is Network Slicing?</h2>
+
+<p>After reading all of those documents, I ended up with a set of quotes that I particularly liked. Here are a couple of them.</p>
+
+<blockquote>
+  <p>“We define network slices as end-to-end(E2E) logical networks running on a common underlying (physical or virtual) network, mutually isolated, with independent control and management, and which can be created on demand.”- Network Slicing for 5G with SDN/NFV</p>
+</blockquote>
+
+<blockquote>
+  <p>“Network slicing is a key feature for the next generation network. It is about transforming the network/system from a static “one size fits all” paradigm, to a new paradigm where logical networks/partitions are created, with appropriate isolation, resources and optimized topology to serve a particular purpose or service category…” - 3GPP 28.801</p>
+</blockquote>
+
+<blockquote>
+  <p>“Slicing allows to concurrently support a large variety of use cases with diverging requirements on a common infrastructure platform…Examples of resources to be partitioned or shared, understanding they can be physical or virtual, would be: bandwidth on a network link, forwarding tables in a network element (switch, router), processing capacity of servers, processing capacity of network elements.” - Applying SDN Architecture to 5G Slicing</p>
+</blockquote>
+
+<p>Whether or not network slicing truly comes into existence, it’s fascinating to see how much change people think <em>could happen</em>. NS is nothing more than a total transformation of the network.</p>
+
+<h2 id="what-is-network-slicing-1">What is Network Slicing?</h2>
+
+<p>The main reason Network Slicing (NS) is required is to meet the need to support diverse 5G use cases. Typically the following use cases are provided as examples:</p>
+
+<ul>
+  <li>Enhanced mobile broadband</li>
+  <li>Massive machine type communications</li>
+  <li>Ultra reliable and low latency connections</li>
+</ul>
+
+<p>The requirements of these networks are quite different. Some focusing on (much higher) bandwidth, and others latency. There is also a need to provide network access to 3rd parties and support MVNOs-like (Mobile Virtual Network Operator) business models. Safe, secure, and reliable critical communications also plays an important role. Slices could even exist across multiple operators.</p>
+
+<p>Simply stated, Network Slicing is the ability to provide APIs that, through the use of virtualization and quality of service, partition a network into diversified sections (AKA slices) across a set of heterogeneous domains. Effectively, the same concepts used in Infrastructure as a Service are applied to the network. By creating network slices we can make physical networks capable of carrying diverse traffic in a secure, multi-tenant fashion.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p><img src="/img/ns.jpg" alt="network slicing" /></p>
+
+<p><em>(One of my favorite diagrams, care of <a href="https://www.netmanias.com/en/post/blog/8325/5g-iot-network-slicing-sdn-nfv/e2e-network-slicing-key-5g-technology-what-is-it-why-do-we-need-it-how-do-we-implement-it">Netmanias</a>)</em></p>
+
+<p>Once all of these papers have been read, a set of common requirements starts to develop.</p>
+
+<ul>
+  <li>End to End - RAN, CN, Transport, edge clouds, core clouds–all of it :)</li>
+  <li>Orchestration - Manage heterogeneous network resources</li>
+  <li>On Demand - CRUD actions at any time</li>
+  <li>Elastic -  Grow/shrink network services resources based on need</li>
+  <li>Extensible - Expand network slice with additional functionality and characteristics</li>
+  <li>Safety - Failures in one slice not causing failures in others</li>
+  <li>Protection - Events in one slice do not have a negative impact on other slices</li>
+  <li>Recursion - Ability to build a new network slice out of other slices</li>
+  <li>Isolation - Guaranteed isolation and non-interference between network slices in data and control plane</li>
+  <li>Flexible -  Simultaneously accommodate diverse use cases</li>
+  <li>Exposure - Provide secure access to 3rd parties</li>
+  <li>Network Functions - Not just switches and routers</li>
+</ul>
+
+<h2 id="ns-with-sdn-and-nfv">NS with SDN and NFV</h2>
+
+<p><img src="/img/slice2.jpg" alt="slice" /></p>
+
+<p><em>(image care of <a href="https://www.metaswitch.com/blog/5g-network-slicing-separating-the-internet-of-things-from-the-internet-of-talk">metaswitch</a>)</em></p>
+
+<p>SDN and NFV aren’t strictly required to perform NS, but it would be surprising if they were not involved.</p>
+
+<p>An important part of the definition of a slice is that it can include network functions. A slice isn’t just a partition, but also a series or chain of network functions. Sometimes these functions are part of multiple slices.</p>
+
+<p>SDN is also key because it provides the ability to program the network, and with functionality like Service Function Chaining (SFC) packets don’t necessarily have to follow a standard layer 3 path. (Note that I don’t define SDN as a centralized OpenFlow controller–it’s much more than that.)</p>
+
+<h2 id="how-does-openstack-fit-in">How does OpenStack fit in?</h2>
+
+<p>Simply: it’s just a domain. By end-to-end I mean multiple domains are crossed, such as the Radio Access Network (RAN), edge clouds, MPLS core, data center networks (and intra-DC), WAN, etc. That said, as a domain OpenStack will have to support the required features to enable network slicing. The good news is that by supporting virtualized networks and having an API OpenStack already meets a large portion of the aforementioned requirements. However, some work, a discussion of which would not fit into this post, still needs to be done.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Network Slicing is a fascinating topic. Like any new, complex, paradigm shifting technology it’s easy to push back on (see NFV), but from my perspective the same value in IaaS would be gained from NS, and IaaS has shown to have considerable return on investment, especially in the area of automation. To what extent NS requirements are met remains to be seen, but overall NS in some fashion makes so much sense its likely unavoidable.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

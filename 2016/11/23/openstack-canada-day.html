@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The First OpenStack Days Canada | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="The First OpenStack Days Canada">
+
+    
+    <meta name="twitter:description" content="<p>On November 22nd, 2016 the first <a href="http://openstackca.org/">OpenStack Days Canada</a> (OSDCA) was held in Montreal. <a href="https://www.openstack.org/community/events/openstackdays">OpenStack Days</a> are regional events that bring together people using and operating OpenStack clouds. They are slightly bigger in size and geographic pull than your typical meetup, but not nearly as big as the OpenStack Summits. I believe the attendance at the first OpenStack Days Canada was around 190, which is very good. You can find a few tweets about the event with the <a href="https://twitter.com/search?q=osdca&amp;src=typd">#OSDCA hashtag</a>.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>On November 22nd, 2016 the first <a href="http://openstackca.org/">OpenStack Days Canada</a> (OSDCA) was held in Montreal. <a href="https://www.openstack.org/community/events/openstackdays">OpenStack Days</a> are regional events that bring together people using and operating OpenStack clouds. They are slightly bigger in size and geographic pull than your typical meetup, but not nearly as big as the OpenStack Summits. I believe the attendance at the first OpenStack Days Canada was around 190, which is very good. You can find a few tweets about the event with the <a href="https://twitter.com/search?q=osdca&amp;src=typd">#OSDCA hashtag</a>.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-canada-day.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-canada-day.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="The First OpenStack Days Canada" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/11/23/openstack-canada-day.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">The First OpenStack Days Canada</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-11-23T00:00:00-05:00">
+                November 23, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>On November 22nd, 2016 the first <a href="http://openstackca.org/">OpenStack Days Canada</a> (OSDCA) was held in Montreal. <a href="https://www.openstack.org/community/events/openstackdays">OpenStack Days</a> are regional events that bring together people using and operating OpenStack clouds. They are slightly bigger in size and geographic pull than your typical meetup, but not nearly as big as the OpenStack Summits. I believe the attendance at the first OpenStack Days Canada was around 190, which is very good. You can find a few tweets about the event with the <a href="https://twitter.com/search?q=osdca&amp;src=typd">#OSDCA hashtag</a>.</p>
+
+<p>Basically they are a small, one or two day conference. There are speakers, panels, and some of them do workshops and such, and perhaps some kind of social evening event.</p>
+
+<h2 id="montreal-a-hotbed-of-openstack">Montreal a Hotbed of OpenStack</h2>
+
+<p>There is a ton of OpenStack related activity in Montreal. Actually, <a href="http://www.cbc.ca/news/canada/montreal/montreal-institute-learning-algorithms-1.3859460">technology in general</a>. Montreal is an extremely wired city. There are many data centers, service providers, and service providers for service providers. There are great schools here, relatively low cost of living, and many interesting companies. It’s probably the only place a boring anglophone like myself could live in Quebec, as English is pretty common, though I still feel like an doofus even ordering a coffee.</p>
+
+<p>Some of the companies that were at OpenStack days and which are based in the Montreal area:</p>
+
+<ul>
+  <li>Vexxhost</li>
+  <li>Inocybe</li>
+  <li>Internap</li>
+  <li>Ormuco</li>
+  <li>CloudOps</li>
+  <li>and more I’m sure</li>
+</ul>
+
+<h2 id="the-talks">The Talks</h2>
+
+<p>There were two tracks of talks at OSDCA, a “user” track and a “fan” track. I jumped around a lot between the two tracks.</p>
+
+<p>Below are the talks I attended. I can’t remember what company everyone was from, but I remember a few.</p>
+
+<p><strong>1 - Running Production Ready Kubernetes Cluster on Openstack</strong> by Ayrat Khayretdinov</p>
+
+<p>It’s impossible to attend any kind of OpenStack technical event without hearing about Kubernetes from either the standpoint of 1) running the OpenStack control plane in k8s, or 2) running k8s in OpenStack on instances as part of a project. This talk was regarding option #2 (and I assure you the two models are completely different and almost not related at all).</p>
+
+<p>One of his main points is that currently k8s does not do multi-tenancy well, so one way to do that would be to deploy multiple k8s in different OpenStack projects.</p>
+
+<p>He also reminded me of the <a href="https://wiki.openstack.org/wiki/Murano">Murano</a> application catalog system which I should look into again, as it does manage TOSCA templates (I believe), which is related to the work I do in Network Function Virtualization (NFV).</p>
+
+<p><strong>2 - Ceph OSD hardware – a pragmatic guide</strong> by Piotr Wachowicz of <a href="http://www.brightcomputing.com/">Bright Computing</a></p>
+
+<p>This talk gave real examples of what kind of hardware and configuration is best for a Ceph cluster. There are real considerations to make in terms of the sizing of the Ceph nodes, especially in regards to the number and size of disks, the amount of SSD caching, and finally the size and utilization of the networking components. NUMA is also a concern, and frankly it seemed that one socket systems match up very well for Ceph storage nodes. It also sounded like PCIe SSDs would make a lot of sense in Ceph nodes as they can cache for a larger number of spinning disks.</p>
+
+<p><strong>3 - Tales From OpenStack’s Gate: How Debugging the Gate Helps Your Enterprise</strong> by Matthew Treinish</p>
+
+<p>This was part of a talk that was done at the <a href="https://www.openstack.org/summit/vancouver-2015/summit-videos/presentation/tales-from-the-gate-how-debugging-the-gate-helps-your-enterprise">Vancouver summit</a>. I was quite interested in their use of Elastic Search, specifically their elastic-recheck setup. Hunting for bugs using Elastic Search is a pretty interesting subject.</p>
+
+<p><strong>4 - InfraCloud, a Community Cloud Managed by the Project Infrastructure Team</strong> - by Paul Belanger</p>
+
+<p>The OpenStack foundation is now running its own OpenStack cloud, called <a href="http://docs.openstack.org/infra/system-config/infra-cloud.html">infracloud</a>. The OpenStack CI system uses many, mostly public, OpenStack-based clouds to run millions of tests. Now they can also rely on their own internal cloud as one of those regions. Infracloud does not need to be highly available because if it is down they can just use one of their other clouds. But they are learning what it is like to actually run an OpenStack cloud, other than DevStack, which I think is very valuable to operators such as myself, as they will likely find bugs that other testing may not.</p>
+
+<p>Paul also reminded me of <a href="https://github.com/openstack/bifrost">bifrost</a> which is a way to deploy a stand alone Ironic system to manage baremetal servers. Basically you could use this instead of something like Cobbler.</p>
+
+<p>Finally, Paul went through their configuration management tooling which is a combination of Puppet and Ansible. They no longer use a true “puppet master” system, and instead run Puppet via Ansible, which is surprisingly quite common.</p>
+
+<p><strong>5 - OpenStack and Opendaylight integration</strong> by Rashmi Pujar and Mohamed Elserngawy from <a href="http://www.inocybe.com/">Inocybe</a></p>
+
+<p>I’m a big fan of OpenDaylight. I’m hoping to add OpenDaylight to my OpenStack lab environment, which is currently running “vanilla” OpenStack networking, and only using provider networks.</p>
+
+<p>The talk was quite dense, and they had a demo as well, and frankly they just ran out of time. It’s great to see a Canadian company, Inocybe, trying to lead the way in an important open source technology like OpenDaylight.</p>
+
+<p>Many of the advanced networking features being worked in the OpenStack ecosystem are first developed using OpenDaylight, so if you want to be on the cutting edge of things like “service function chaining” then running OpenDaylight can be important.</p>
+
+<p><strong>6 -Store All the Things: Storage options for your OpenStack Cloud</strong> by Sean McGinnis</p>
+
+<p>Sean is the Primary Technical Lead (PTL) of Cinder. He discussed Cinder (block storage), Manila (shared file systems) and Swift (object storage). I often forget about Manila, and it would be an important and useful system for applications that need shared storage.</p>
+
+<p>His talk would be useful to people who aren’t sure how to use storage in an OpenStack cloud.</p>
+
+<p><strong>7 - OpenStack adoption stories: Linux Foundation &amp; Opta Insurance Services</strong> a panel with with Konstantin Ryabitsev (Linux Foundation) and Jin Lee (Opta Insurance, a division of SCM insurance) moderated by Mohammed Nasser (<a href="https://vexxhost.com/">Vexx Host</a>).</p>
+
+<p>This was probably the most interesting discussion for me as Jin Lee from Opta is a mathematician with the company and they do machine learning. He was very positive about their use of OpenStack and how easy it was for him to start writing basic code to spin up hundreds of instances to run their machine learning algorithms. The OpenStack foundation would have been very happy to hear his comments. If I remember correctly they use a combination of in-house OpenStack and Vexxhost to obtain computing resources.</p>
+
+<p>He also mentioned speed as being important, in terms of their ability to run algorithms, discover information, and then create microservices that can provide that information. If they can provide services to their customers faster than their competitors, that is an advantage.</p>
+
+<h2 id="toronto-is-next">Toronto is Next</h2>
+
+<p>The 2017 OpenStack Days Canada will be in Toronto. I look forward to attending and perhaps next year I will submit a talk.</p>
+
+<h2 id="thanks-to-the-organizers">Thanks to the organizers</h2>
+
+<p>I’m sure a lot of work went into this event. Thanks to the sponsors and organizers of the event, and I look forward to the 2017 OpenStack Days Canada.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

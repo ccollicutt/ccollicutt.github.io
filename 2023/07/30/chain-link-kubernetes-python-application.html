@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chain-Link - A Chain of Services in Kubernetes | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Chain-Link - A Chain of Services in Kubernetes">
+
+    
+    <meta name="twitter:description" content="<h2 id="tldr">tl;dr</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="tldr">tl;dr</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/chain-link-kubernetes-python-application.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/chain-link-kubernetes-python-application.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Chain-Link - A Chain of Services in Kubernetes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/07/30/chain-link-kubernetes-python-application.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Chain-Link - A Chain of Services in Kubernetes</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-07-30T00:00:00-04:00">
+                July 30, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="tldr">tl;dr</h2>
+
+<p>I built an app called <a href="https://github.com/ccollicutt/chain-link">chain-link</a> that will create a “chain” of apps in Kubernetes of an arbitrary length. It’s written in Python.</p>
+
+<p>While the point of this all is the app, what I learned most about what writing the CLI portion: the <code>chain-link-cli</code>. There’s actually way more code there (for better or worse) to deploy and manage the app than there is in the app itself.</p>
+
+<h2 id="what-is-it">What is it?</h2>
+
+<p>I wanted to do some work with a simple Python application that could allow creating a set of services that would form a chain that could be visualized in some kind of program (in this case it ended up being Zipkin, but it could be anything that can show traces).</p>
+
+<p>I wanted it to do a few things:</p>
+
+<ul>
+  <li>Support traces</li>
+  <li>Create a “chain” of services of an arbitrary length</li>
+  <li>Randomly insert some sleep time into the chain</li>
+  <li>Write a CLI that could be used to create and manage the chain</li>
+  <li>Deploy a loadgenerator to activate the chain</li>
+  <li>Deploy a tool that can visualize the chain through the traces it generates</li>
+</ul>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>The app is written in Python and uses Flask. The app itself is pretty basic. It just looks at the generated list of services and forwards the request to the next service in the chain. It also adds some headers to the request to help with tracing.</p>
+
+<p>This is what the pods look like in the cluster once they’re deployed:</p>
+
+<pre><code>$ k get pods
+NAME                                       READY   STATUS    RESTARTS        AGE
+chain-link-deployment-0-855875c8d5-rz8wd   1/1     Running   2 (47d ago)     96d
+chain-link-deployment-1-6cc5965f45-ch8cj   1/1     Running   6 (5d5h ago)    96d
+chain-link-deployment-2-65dd5b4878-tnq2r   1/1     Running   6 (5d5h ago)    96d
+chain-link-deployment-3-7bf888dddb-lwwdr   1/1     Running   6 (5d5h ago)    96d
+chain-link-deployment-4-6c47c7dcb5-4sf4v   1/1     Running   2 (47d ago)     96d
+chain-link-deployment-5-85655c8d4f-2z2r6   1/1     Running   6 (5d5h ago)    96d
+loadgenerator                              1/1     Running   0               23m
+zipkin-deployment-69c4598df6-js95l         1/1     Running   209 (16m ago)   99d
+</code></pre>
+
+<p>Each deployment is a separate “app” that the overall service chain is composed of. (Now that I write “service chain” this reminds me of my telecom days.)</p>
+
+<h2 id="what-does-it-look-like-in-zipkin">What does it look like in Zipkin?</h2>
+
+<p><img src="/img/chain-link-zipkin1.png" alt="Zipkin" />
+<img src="/img/chain-link-zipkin2.png" alt="Zipkin" /></p>
+
+<h2 id="the-cli">The CLI</h2>
+
+<p>Here’s the CLI help:</p>
+
+<pre><code>$ ./chain-link-cli 
+WARNING Using existing config file: /home/curtis/.config/chain-link/chain-link-cli.conf
+usage: chain-link-cli [-h] [--instances NUM_INSTANCES]
+                      [--namespace NAMESPACE]
+                      [--chain-link-image IMAGE_NAME]
+                      [--sleep-time SLEEP_TIME] [-d] [-v]
+                      [--config-file CONFIG_FILE]
+                      {deploy,validate,generate,dry-run} ...
+
+Deploy the chain-link application to a Kubernetes cluster
+
+positional arguments:
+  {deploy,validate,generate,dry-run}
+    deploy              Deploy chain-link to Kubernetes
+    validate            Validate chain-link configuration
+    generate            Generate chain-link kubernetes yaml
+    dry-run             Generate chain-link kubernetes yaml
+
+options:
+  -h, --help            show this help message and exit
+  --instances NUM_INSTANCES
+                        Number of instances to deploy
+  --namespace NAMESPACE
+                        Namespace to deploy to
+  --chain-link-image IMAGE_NAME
+                        ChainLink image to deploy
+  --sleep-time SLEEP_TIME
+                        Time to sleep between loadgenerator requests
+  -d, --info            Print lots of infoging statements
+  -v, --verbose         Be verbose
+  --config-file CONFIG_FILE
+                        Specify the path to the config file
+</code></pre>
+
+<p>As you can see there are a few subcommands, like deploy, validate, etc.</p>
+
+<p>Here’s validate:</p>
+
+<pre><code>$ ./chain-link-cli validate
+WARNING Using existing config file: /home/curtis/.config/chain-link/chain-link-cli.conf
+INFO    Using the following configuration...
+INFO    Number of instances: 6
+INFO    Namespace: chain-link-2
+INFO    ChainLink image: ghcr.io/ccollicutt/chain-link:latest
+INFO    Loadgenerator sleep time: 60
+INFO    Validating chain-link configuration...
+INFO    Validating deployments...
+INFO    Deployments ready
+INFO    Validating pods...
+INFO    Pods ready
+INFO    All objects ready
+</code></pre>
+
+<p>All the config files are generated and placed in <code>~/.config/chain-link/manifests</code>:</p>
+
+<pre><code>$ ls ~/.config/chain-link/manifests/
+chain-link-2-namespace.yaml
+chain-link-deployment-0-deployment.yaml
+chain-link-deployment-1-deployment.yaml
+chain-link-deployment-2-deployment.yaml
+chain-link-deployment-3-deployment.yaml
+chain-link-deployment-4-deployment.yaml
+chain-link-deployment-5-deployment.yaml
+chain-link-service-0-service.yaml
+chain-link-service-1-service.yaml
+chain-link-service-2-service.yaml
+chain-link-service-3-service.yaml
+chain-link-service-4-service.yaml
+chain-link-service-5-service.yaml
+chain-link-services-configmap.yaml
+loadgenerator-pod.yaml
+zipkin-deployment-deployment.yaml
+zipkin-service-service.yaml
+</code></pre>
+
+<p>There’s a config file there too:</p>
+
+<pre><code>$ cat ~/.config/chain-link/chain-link-cli.conf 
+[DEFAULT]
+instances = 6
+namespace = chain-link-2
+chain_link_image = ghcr.io/ccollicutt/chain-link:latest
+sleep_time = 60
+</code></pre>
+
+<p>There’s about 800 lines of Python for the CLI:</p>
+
+<pre><code>$ wc -l *.py
+   95 arg_parser.py
+  569 chainlink.py
+   80 cli_manager.py
+   82 config.py
+    0 __init__.py
+   25 log_utils.py
+   36 utils.py
+  887 total
+</code></pre>
+
+<p>Versus 170 or so for the app itself.</p>
+
+<pre><code>$ wc -l app.py 
+169 app.py
+</code></pre>
+
+<p>I need to do some research and see if there are some higher level abstractions in Python that can help reduce the number of lines in the CLI.</p>
+
+<h2 id="why-a-python-cli-and-not-helm">Why a Python CLI and not Helm?</h2>
+
+<p>YAML isn’t a programming language. Obviously you can do a lot “more” with Kubernetes using a real programming language. But of course, no one writes a Python CLI for every app they deploy to Kubernetes–that would make no sense.</p>
+
+<p>I mean, it would make more sense to do this in Helm if I thought other people would actually use it. But I don’t expect anyone ever would. This app was really just a learning experience for me, and part of the learning experience I wanted was to create a CLI that could manage the app for me in Kubernetes.</p>
+
+<p>Ultimately, I might prefer to use Python to manage Kubernetes environments. Then again, Helm’s ability to manage upgrades would be required in production. This is something I need to look into–how tools like Helm are looking at the state of a k8s app. Plus whatever other tooling exists–for example Pulumi (which I have never used).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I learned a lot about Python and Kubernetes writing this application and the associated CLI. I’m sure there are tons of bugs, and there is, embarrassingly, little testing. That’s something I learned I need to improve on: testing.</p>
+
+<p>For this app I just started writing, and this is what I ended up with. Is the end result perfect? No. Was the process of learning great? It sure was.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thoughts on "no reliable cloud" | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Thoughts on "no reliable cloud"">
+
+    
+    <meta name="twitter:description" content="<p>Recently <a href="http://blog.hendrikvolkmer.de/about/">Hendrik Volkmer</a> put up a blog post entitled <a href="http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/">There will be no reliable cloud</a>. Part of it was based on a <a href="http://engineering.cloudscaling.com/2013/03/service-resiliency-doesnt-always-mean-ha-or-cluster/">presentation</a> I watched at the last OpenStack summit (wish I was going to the Portland summit, but alas is not to be).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently <a href="http://blog.hendrikvolkmer.de/about/">Hendrik Volkmer</a> put up a blog post entitled <a href="http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/">There will be no reliable cloud</a>. Part of it was based on a <a href="http://engineering.cloudscaling.com/2013/03/service-resiliency-doesnt-always-mean-ha-or-cluster/">presentation</a> I watched at the last OpenStack summit (wish I was going to the Portland summit, but alas is not to be).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/no-reliable-cloud.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/no-reliable-cloud.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Thoughts on "no reliable cloud"" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/04/10/no-reliable-cloud.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Thoughts on "no reliable cloud"</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-04-10T00:00:00-04:00">
+                April 10, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently <a href="http://blog.hendrikvolkmer.de/about/">Hendrik Volkmer</a> put up a blog post entitled <a href="http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/">There will be no reliable cloud</a>. Part of it was based on a <a href="http://engineering.cloudscaling.com/2013/03/service-resiliency-doesnt-always-mean-ha-or-cluster/">presentation</a> I watched at the last OpenStack summit (wish I was going to the Portland summit, but alas is not to be).</p>
+
+<p>The Cloud Scaling presentation was one I enjoyed and considered thought provoking. I wrote a <a href="http://serverascode.com/2012/10/17/openstack-summit-day-3.html">few notes</a> on that presentation last year.</p>
+
+<h2 id="no-reliable-cloud">No reliable cloud</h2>
+
+<p>Here’s a quote from the top of the <a href="http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/:">first post</a></p>
+
+<blockquote>
+  <p>Stop wasting your time trying to [find a reliable cloud]. Stop wasting your time (and money) trying to build one. If you find a service provider that claims that they have it: Maybe question their understanding of cloud - and business.</p>
+</blockquote>
+
+<p>I put that there to remind me of the point of the series of posts, and because it essentially defines the attention grabbing headline. :)</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<p>My thoughts on these posts come down to this:</p>
+
+<ul>
+  <li>He’s mostly talking web-scale applications</li>
+  <li>A single zone will not be reliable</li>
+  <li>But still have to make zones as reasonably reliable as possible (where’s the line?)</li>
+  <li>We should design reliable applications on top of unreliable zones (but how?)</li>
+  <li>Contain failure!</li>
+  <li>HA pairs are probably not the direction to go in to gain reliability</li>
+  <li>Clustering software often brings in complexity that can destroy reliability gains</li>
+  <li>Stateless systems are a lot more fun :)</li>
+  <li>Keep the stateful part of an application or system small</li>
+</ul>
+
+<p>Thinking about reliability in a cloud, especially an OpenStack cloud, is an interesting thought experiment. Fortunately, the OpenStack cloud I help to run, which is the back-end for a single application, is actually mostly stateless–except for machine images, the OpenStack database, and the application database. Not a lot of stateful information, except those darn windows images that are many tens of times the size of a standard Linux cloud image.</p>
+
+<h2 id="notes-from-the-part-one-post">Notes from the part one post</h2>
+
+<p>For a <a href="http://blog.hendrikvolkmer.de/2013/04/03/there-will-be-no-reliable-cloud-part-1/">short post</a> it sure goes over a lot of information and links!</p>
+
+<ul>
+  <li>HA pairs fail catastrophically</li>
+  <li>HA pairs don’t scale</li>
+  <li>Classic HA example: NFS + DRBD and clustering, such as Pacemaker…then problems?</li>
+  <li>HA pairs often end up cheating CAP theorem</li>
+  <li>Cluster software causes more system outages than hardware failures of software bugs (this I can attend to having used clustered LVM)</li>
+  <li>Distributed systems
+** Eg. Percona Xtradb Cluster</li>
+  <li>
+    <p>Availability vs reliability
+** HA systems that need to go down for maintenance are a joke</p>
+  </li>
+  <li>How to build a reliable cloud</li>
+  <li>A cloud is a distributed system</li>
+  <li>Use the stateless (from <a href="http://www.cloudscaling.com/">Cloud Scaling</a> presentation) approach for stateless parts</li>
+  <li>Distributed data stores for the stateful parts (eg. distributed mysql, distributed file systems such as ceph)</li>
+  <li>But the distributed stateful part is often what fails (eg. EBS in Amazon)</li>
+  <li>Notes from blog post comments (notably Randy Bias of Cloud Scaling)</li>
+  <li>On OpenStack</li>
+  <li>Move to MySQL Cluster with the NBDEngine running 2-4 mysql instances, and load balancing across them</li>
+  <li>Or perhaps OpenStack will get rid of the RDBMS and replace with K/V store</li>
+  <li>Even with 1000s of nodes, metadata use is still low in OpenStack, could be put in memory and persist data using any appropriate back-end</li>
+  <li>No point in having highly redundant hardware for stateless services</li>
+  <li>Build reliable applications on unreliable clouds</li>
+</ul>
+
+<p>Ok, now on to part two.</p>
+
+<h2 id="notes-from-part-two">Notes from part two</h2>
+
+<p>The <a href="http://blog.hendrikvolkmer.de/2013/04/09/there-will-be-no-reliable-cloud-part-2/">second post</a> builds on the basic information provided in the first.</p>
+
+<blockquote>
+  <p>Complexity + Scale =&gt; Reduced Reliability + Increased Chance of catastrophic failures</p>
+</blockquote>
+
+<ul>
+  <li>Complexity</li>
+  <li>Complex system fail catastrophically</li>
+  <li>Failure domains</li>
+  <li>OpenStack example</li>
+  <li>Single controller, single cloud (or zone)</li>
+  <li>HA setup – two controllers in an HA mode of some kind</li>
+  <li>Single controller, multiple cloud (or multiple zones)</li>
+  <li>A single zone is unreliable</li>
+  <li>If both HA nodes fail, still unreliable, and HA is more complex</li>
+  <li>Two zones is two failure domains, which is more reliable than a single HA-enabled zone</li>
+  <li>(But of course you should make each zone as reliable as possible)</li>
+  <li>Reliability engineering (aka math)</li>
+  <li><a href="http://www.infoq.com/presentations/Reliability-Engineering-Matters-Except-When-It-Doesnt">Reliability engineering matters except when it doesn’t</a></li>
+  <li>“The higher the number of dependent components =&gt; the lower the overall availability and the bigger the impact of failure”</li>
+  <li>In a cloud with many nodes, adding the ability for live migration will actually decrease reliability, because all nodes are now tied together</li>
+  <li>Many reliability calculations come from mechanical engineering, which is much different than software engineering</li>
+  <li>Many complex systems fail by cascading, failure starts small and grows big, until it engulfs the entire system</li>
+  <li>General approach is to make failure local and contained</li>
+  <li>Partial failure is desirable</li>
+  <li>Business side</li>
+  <li>Software reliability is cheaper</li>
+  <li>Most web scale applications consist of a large stateless part and a small stateful piece</li>
+  <li>It does not make business sense to  provide a super-reliable cloud</li>
+  <li>A single compute node or even zone will never be reliable</li>
+  <li>Best not to consider virtual machines, such as those in EC2, <a href="http://www.jamiebegin.com/why-an-ec2-instance-isnt-a-server/">as servers</a></li>
+</ul>
+
+<p>NOTE: There will eventually be a part three post, but as of this writing it’s not up yet.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>To me, it boils down to building reliable applications on unreliable clouds, which I think is what a lot of people are doing, and is what seems to come out every time AWS fails.</p>
+
+<p>The first issue that pops into my mind though is RDBMS systems, and how to replicate data between zones, which is often a network concern. Actually, replicating any data between zones could be a problem, which is why, I’m guessing, that he’s (perhaps) suggesting to keep stateful pieces small.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

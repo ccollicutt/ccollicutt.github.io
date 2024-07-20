@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenkins and Kubernetes: Getting the plugin working | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Jenkins and Kubernetes: Getting the plugin working">
+
+    
+    <meta name="twitter:description" content="<p>I wanted to try out using Kubernetes from Jenkins, and that is what this post is about.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I wanted to try out using Kubernetes from Jenkins, and that is what this post is about.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/jenkins-kubernetes-plugin-agent.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/jenkins-kubernetes-plugin-agent.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Jenkins and Kubernetes: Getting the plugin working" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2022/12/22/jenkins-kubernetes-plugin-agent.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Jenkins and Kubernetes: Getting the plugin working</h1>
+        <p class="text-gray-600">
+            <time datetime="2022-12-22T00:00:00-05:00">
+                December 22, 2022
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I wanted to try out using Kubernetes from Jenkins, and that is what this post is about.</p>
+
+<p>I have a Jenkins instance running on a host, specifically it is NOT running in Kubernetes. But I want that instance of Jenkins to talk to a Kubernetes cluster and use it as a “cloud”, where I’m using the term “cloud” in Jenkins parlance.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<ol>
+  <li>Install the <a href="https://plugins.jenkins.io/kubernetes/">Jenkins Kubernetes plugin</a></li>
+  <li>Set up the Kubernetes namespace, service account, and roles/bindings</li>
+  <li>Create a long lived token for the service account</li>
+  <li>Add a “cloud” to Jenkins pointing to the Kubernetes cluster, using the token as authentication</li>
+</ol>
+
+<h2 id="caveat">Caveat</h2>
+
+<p>This is all just running in my homelab, where security isn’t as big an issue as it would be in a real world situation. Keep that in mind! There’s likely a lot that could be improved here from a security perspective.</p>
+
+<h2 id="install-the-kubernetes-plugin">Install the Kubernetes Plugin</h2>
+
+<p>Given this Jenkins instance is just in my homelab, I just click buttons. If I want a plugin, I just install it from the GUI. It’s fun to just click around for once. :)</p>
+
+<p><img src="/img/jenkins-k8s-plugin1.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<h2 id="set-up-kubernetes-for-use-by-jenkins">Set up Kubernetes for use by Jenkins</h2>
+
+<blockquote>
+  <p>NOTE: Here I assume you have a Kubernetes cluster available.</p>
+</blockquote>
+
+<p>First, create a namespace for Jenkins to use.</p>
+
+<pre><code>$ kubectl create ns jenkins-agent
+</code></pre>
+
+<p>Then create a service account in that namespace with the proper role and rolebinding.</p>
+
+<pre><code>apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins-admin
+  namespace: jenkins-agent
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jenkins
+  namespace: jenkins-agent
+  labels:
+  "app.kubernetes.io/name": 'jenkins'
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get","list","watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-role-binding
+  namespace: jenkins-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jenkins
+subjects:
+- kind: ServiceAccount
+  name: jenkins-admin
+  namespace: jenkins-agent
+</code></pre>
+
+<p>Now create a token.</p>
+
+<blockquote>
+  <p>NOTE, from the Kubernetes docs: If you want to obtain an API token for a ServiceAccount, you create a new Secret with a special annotation, kubernetes.io/service-account.name.</p>
+</blockquote>
+
+<p>Apply this YAML.</p>
+
+<pre><code>apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: jenkins-admin-token
+  annotations:
+    kubernetes.io/service-account.name: "jenkins-admin"
+</code></pre>
+
+<p>Get the token from the secret that was created and decode it from base64. It will be used to configure the Kubernetes cloud in Jenkins as a “secret text” credential type.</p>
+
+<h2 id="add-a-kubernetes-cloud">Add a Kubernetes “cloud”</h2>
+
+<p>Go to “Dashboard -&gt; Manage Jenkins -&gt; Configure Clouds” and add a new Kubernetes cloud.</p>
+
+<p><img src="/img/jenkins-k8s-plugin2.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<p>Now configure that cloud instance.</p>
+
+<p>Set the URL of the Kubernetes API endpoint.</p>
+
+<p>Create the credential from here as well. Use the token we set up in Kubernetes and create a “secret text” credential.</p>
+
+<p><img src="/img/jenkins-k8s-plugin3.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<h2 id="create-a-pipeline">Create a Pipeline</h2>
+
+<p>Create a new pipeline of “freestyle” type.</p>
+
+<p><img src="/img/jenkins-k8s-plugin4.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<p>Restrict where it can be run to the name you gave the Kubernetes cloud instance in Jenkins. In this case I called my “c2-kubernetes.”</p>
+
+<p>Here’s the cloud configuration where I’ve configured the name “c2-kubernetes.”</p>
+
+<p><img src="/img/jenkins-k8s-plugin5.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<p>Here’s the job configuration. Note that it says “1 cloud” which refers to the Kubernetes cloud we just added.</p>
+
+<p><img src="/img/jenkins-k8s-plugin6.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<p>I created a simple job that just echos some output.</p>
+
+<p><img src="/img/jenkins-k8s-plugin7.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+<p>If you run that job now you’ll see a container get built in the Kubernetes cluster. It won’t take long to run.</p>
+
+<pre><code>$ k get pods
+NAME                  READY   STATUS        RESTARTS   AGE
+c2-kubernetes-58rlp   1/1     Terminating   0          11s
+</code></pre>
+
+<p>Here’s the console output of that Jenkins job.</p>
+
+<pre><code>Started by user admin
+Running as SYSTEM
+Agent c2-kubernetes-58rlp is provisioned from template c2-kubernetes
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  labels:
+    jenkins: "slave"
+    jenkins/label-digest: "396f736cb86bcc043738aedb977de7d31c574611"
+    jenkins/label: "c2-kubernetes"
+  name: "c2-kubernetes-58rlp"
+  namespace: "jenkins-agent"
+spec:
+  containers:
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_AGENT_NAME"
+      value: "c2-kubernetes-58rlp"
+    - name: "JENKINS_NAME"
+      value: "c2-kubernetes-58rlp"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins.example.com:8080/"
+    image: "jenkins/inbound-agent:4.11-1-jdk11"
+    name: "jnlp"
+    resources:
+      limits: {}
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  hostNetwork: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  volumes:
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+
+Building remotely on c2-kubernetes-58rlp (c2-kubernetes) in workspace /home/jenkins/agent/workspace/test-kubernetes-cloud
+[test-kubernetes-cloud] $ /bin/sh -xe /tmp/jenkins17424164001143670183.sh
++ echo hi c2-kubernetes
+hi c2-kubernetes
+Finished: SUCCESS
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This took a bit of testing to get right, but not that much work. I kinda like Jenkins in my homelab because I can just poke around at it and not worry too much about how replicable it all is. Jenkins is pretty good from that perspective, just install plugins, configure things manually, update plugins. Sometimes it’s nice just to do ClickOps.</p>
+
+<p>I’ve got a fair bit more to understand about this plugin though. There’s a lot more work to be done around Pod Templates…but that’s for another day. At least at this point Jenkins can create jobs in the Kubernetes cluster.</p>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+  <li><a href="https://devopscube.com/jenkins-build-agents-kubernetes/">How to Setup Jenkins Build Agents on Kubernetes Pods</a></li>
+</ul>
+
+<h2 id="issue---tcpslaveagentlistener">ISSUE - tcpSlaveAgentListener</h2>
+
+<p>I had one issue with the container not completing properly because it couldn’t connect to Jenkins. Note the “tcpSlaveAgentListener” issue.</p>
+
+<pre><code>$ k logs c2-kubernetes-xnb6n
+Dec 21, 2022 11:28:49 PM hudson.remoting.jnlp.Main createEngine
+INFO: Setting up agent: c2-kubernetes-xnb6n
+Dec 21, 2022 11:28:49 PM hudson.remoting.jnlp.Main$CuiListener &lt;init&gt;
+INFO: Jenkins agent is running in headless mode.
+Dec 21, 2022 11:28:50 PM hudson.remoting.Engine startEngine
+INFO: Using Remoting version: 4.11
+Dec 21, 2022 11:28:50 PM org.jenkinsci.remoting.engine.WorkDirManager initializeWorkDir
+INFO: Using /home/jenkins/agent/remoting as a remoting work directory
+Dec 21, 2022 11:28:50 PM org.jenkinsci.remoting.engine.WorkDirManager setupLogging
+INFO: Both error and output logs will be printed to /home/jenkins/agent/remoting
+Dec 21, 2022 11:28:50 PM hudson.remoting.jnlp.Main$CuiListener status
+INFO: Locating server among [http://jenkins.example.com:8080/]
+Dec 21, 2022 11:28:50 PM hudson.remoting.jnlp.Main$CuiListener error
+SEVERE: http://jenkins.example.com:8080/tcpSlaveAgentListener/ is invalid: 404 Not Found
+java.io.IOException: http://jenkins.example.com:8080/tcpSlaveAgentListener/ is invalid: 404 Not Found
+    at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve(JnlpAgentEndpointResolver.java:219)
+    at hudson.remoting.Engine.innerRun(Engine.java:724)
+    at hudson.remoting.Engine.run(Engine.java:540)
+</code></pre>
+
+<p>I had to go into the Jenkin’s configuration and give the agent a port. As soon as I set that the containers were able to connect.</p>
+
+<p><img src="/img/jenkins-k8s-plugin8.jpg" alt="Jenkins Kubernetes plugin install" /></p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

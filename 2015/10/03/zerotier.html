@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First look at ZeroTier | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="First look at ZeroTier">
+
+    
+    <meta name="twitter:description" content="<p>ZeroTier is:</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>ZeroTier is:</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/zerotier.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/zerotier.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="First look at ZeroTier" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/10/03/zerotier.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">First look at ZeroTier</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-10-03T00:00:00-04:00">
+                October 03, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>ZeroTier is:</p>
+
+<blockquote>
+  <p>…an imaginary Ethernet switch or a WiFi network with unlimited range. Actual traffic is carried by your local LAN or the Internet, but the network virtualization engine takes care of encrypting, authenticating, and routing it.</p>
+</blockquote>
+
+<p>It’s (I think anyways) an ad-hoc virtual private network, and apparently it uses its own VXLAN-like encapsulation and includes encryption. The two use cases they espouse on their website are 1) hybrid cloud connections and 2) peer to peer VPNs.</p>
+
+<p>I decided to take a look into what this is, or at least try it out, because I have recently been doing some work with OpenVPN and other VPN solutions, of which there are few, and none of them make me very happy. This zerotier essentially sounds like a simple to use VPN with a “joiner” concept.</p>
+
+<h2 id="install">Install</h2>
+
+<p>I tested this out on two Ubuntu Trusty boxes. I downloaded the deb from zerotier, installed it and started the service.</p>
+
+<pre>
+<code>zclient1:~$ wget https://download.zerotier.com/dist/zerotier-one_1.0.5_amd64.deb
+--2015-10-03 14:47:15--  https://download.zerotier.com/dist/zerotier-one_1.0.5_amd64.deb
+Resolving download.zerotier.com (download.zerotier.com)... 104.207.155.202, 2001:19f0:6000:91c7:5400:ff:fe10:2421
+Connecting to download.zerotier.com (download.zerotier.com)|104.207.155.202|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 326330 (319K) [application/octet-stream]
+Saving to: ‘zerotier-one_1.0.5_amd64.deb’
+
+100%[=====================================================================================================================&gt;] 326,330     1.96MB/s   in 0.2s   
+
+2015-10-03 14:47:15 (1.96 MB/s) - ‘zerotier-one_1.0.5_amd64.deb’ saved [326330/326330]
+
+zclient1:~$ sudo dpkg -i zerotier-one_1.0.5_amd64.deb 
+sudo: unable to resolve host openvpn1
+Selecting previously unselected package zerotier-one.
+(Reading database ... 51354 files and directories currently installed.)
+Preparing to unpack zerotier-one_1.0.5_amd64.deb ...
+Unpacking zerotier-one (1.0.5) ...
+Setting up zerotier-one (1.0.5) ...
+*** ZeroTier One install/update ***
+
+Getting version of existing install... NONE
+Extracting files...
+tmp/
+tmp/systemd_zerotier-one.service
+tmp/init.d_zerotier-one
+var/
+var/lib/
+var/lib/zerotier-one/
+var/lib/zerotier-one/zerotier-one
+var/lib/zerotier-one/ui/
+var/lib/zerotier-one/ui/main.js
+var/lib/zerotier-one/ui/ZeroTierNetwork.jsx
+var/lib/zerotier-one/ui/ztui.min.js
+var/lib/zerotier-one/ui/index.html
+var/lib/zerotier-one/ui/ZeroTierNode.jsx
+var/lib/zerotier-one/ui/react.min.js
+var/lib/zerotier-one/ui/simpleajax.min.js
+var/lib/zerotier-one/ui/zerotier.css
+var/lib/zerotier-one/uninstall.sh
+Getting version of new install... 1.0.5
+Creating symlinks...
+Installing zerotier-one service...
+
+Done! Installed and service configured to start at system boot.
+
+To start now or restart the service if it's already running:
+  sudo service zerotier-one restart
+</code>
+</pre>
+
+<p>Now to start it up…</p>
+
+<pre>
+zclient1# service zerotier-one start
+Starting ZeroTier One...
+&lt;/code&gt;
+</pre>
+
+<p>Nice, that was super easy.</p>
+
+<p>Then I joined the “earth” network, a test network provided by zerotier.</p>
+
+<pre>
+<code>zclient2# zerotier-cli join e5cd7a9e1ce71cff 
+200 join OK
+zclient2# ip ad sh
+SNIP!
+6: zt0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 2800 qdisc pfifo_fast state UNKNOWN group default qlen 500
+    link/ether 02:63:6c:ab:02:48 brd ff:ff:ff:ff:ff:ff
+    inet 28.183.225.45/7 brd 29.255.255.255 scope global zt0
+       valid_lft forever preferred_lft forever
+    inet6 fd80:56c2:e21c:0:199:9363:6cb7:e08a/88 scope global 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::63:6cff:feab:248/64 scope link 
+       valid_lft forever preferred_lft forever
+SNIP!
+</code>
+</pre>
+
+<p>After doing so I have a zt0 network interface with an IP from the 28.0.0.0/7 network.</p>
+
+<pre>
+<code>zclient2# zerotier-cli listnetworks
+200 listnetworks <nwid> <name> <mac> <status> <type> <dev> <ZT assigned="" ips="">
+200 listnetworks 8056c2e21c000001 earth.zerotier.net 02:63:6c:ab:02:48 OK PUBLIC zt0 28.183.225.45/7,fd80:56c2:e21c:0000:0199:9363:6cb7:e08a/88
+&lt;/code&gt;
+&lt;/pre&gt;
+
+## Creating your own private network
+
+Unfortunately it seems that you have to create an account, login to the zerotier web interface (ie. it's a saas service), and create private networks from there. There are a few options, and the interface is a litle unpolished but it's straight forward enough. Once you've created a private network (which is default, and can only have a max of 10 devices or you are required to pay $4 a month which is fine) you can have systems/devices join that private network. One of the choices you'll have to make is what network IP space to give it, or to manage it yourself. By default zerotier will manage who gets what IP.
+
+<pre>
+<code>zclient1# zerotier-cli join <private net="">
+200 join OK
+&lt;/code&gt;
+&lt;/pre&gt;
+
+And then in the interface set the device to be allowed and it'll get an IP.
+
+<pre>
+<code>zclient1# zerotier-cli listnetworks
+200 listnetworks <nwid> <name> <mac> <status> <type> <dev> <ZT assigned="" ips="">
+200 listnetworks <redacted> testnet fe:42:1f:5d:f2:7d OK PRIVATE zt0 10.147.17.23/24
+&lt;/code&gt;
+&lt;/pre&gt;
+
+## Quick performance test
+
+I ran a quick iperf test against the two nodes. So first I should note that I'm running these tests on virtual machines inside an OpenStack system and the network between them is also "virtualized", ie. is based on a VXLAN overlay, which is then running on VLANS underneath. So there is a lot of encapsulation going on here. :) 
+
+
+Performance over the zerotier VPN:
+
+<pre>
+<code>zclient2# iperf -c 10.147.17.23
+------------------------------------------------------------
+Client connecting to 10.147.17.23, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 10.147.17.61 port 59802 connected with 10.147.17.23 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   509 MBytes   426 Mbits/sec
+</code>
+</pre>
+
+Performance over the regular network:
+
+<pre>
+<code>zclient2# iperf -c 192.168.44.35
+------------------------------------------------------------
+Client connecting to 192.168.44.35, TCP port 5001
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.44.2 port 39575 connected with 192.168.44.35 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.06 GBytes   911 Mbits/sec
+</code>
+</pre>
+
+So you can see we get almost wirespeed without zerotier and then about half that with zerotier. So there is a performance hit. And, as I mentioned, the "normal network" is based on VXLAN, so it's already encapsulated. Perhaps the performance hit comes from the encryption. That is most likely. I haven't looked into the encryption provided by zerotier at all yet.
+
+## Conclusion
+
+I'm a big fan of software defined networking, whatever it actually means. I am not a big fan of the current state of virtual private networking. It seems OpenVPN is the best we have right now, and it's quite complicated and unwieldy. I think it's fairly obvious that one of the best things about SDN is going to be easier creation of secure virtual private networks, and I think they will either look something like zerotier, or even easier.
+
+While I like how easy zerotier is, I'm not sure I like that it is essentially software as a service (saas), which means centralized. They say their system hasn't gone down, but it will. Then again they mention that existing devices will be able to communicate if their central system is down, but new devices can't be added and new networks can't be created. However, I'm a proponent of the public cloud (at least IaaS) so it'd be hypocritical of me to say that a centralized "cloud" network controller is not a good idea when I think using compute and storage in a public cloud is. That said, I'm not sure what performance issues there might be in having a cloud based controller. I would imagine that zerotier will eventually provide a controller that can be installed on premise. That'd be interesting, and if they made encryption optional then maybe performance would come up. Then again, it would be interesting to encrypt all network communication on premise too.
+
+I quite like the idea of servers joining networks. Recently I have been installing a lot of Linux boxes, sure, using an automated process based on Cobbler, but I find the networking component to be extremely time consuming and frustrating, even just in terms of setting up templates. I'd really like to have the networks on servers setup by pulling from some kind of data center level source of truth (CMDB?) and just automatically being allowed to join specific networks based on their function. Can I hack that kind of process up, yes, but I don't want to do that work myself all the time. I want to just "happen" based on some tags pulled from the SST.
+</redacted></ZT></dev></type></status></mac></name></nwid></code></pre></private></code></pre></ZT></dev></type></status></mac></name></nwid></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

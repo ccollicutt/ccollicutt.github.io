@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Georgia Tech Coursera SDN MOOC | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Georgia Tech Coursera SDN MOOC">
+
+    
+    <meta name="twitter:description" content="<p>Recently I completed the <a href="https://class.coursera.org/sdn-001/wiki/view?page=syllabus">Software Defined Networking</a> (SDN) course presented by Dr. Nick Feamster of the Georgia Institute of Technology. The course was a massive open online course, otherwise known as a MOOC. (Some of the <a href="http://en.wikipedia.org/wiki/Massive_open_online_course#Early_MOOCs">earliest MOOCs</a> were put on by researchers associated with <a href="http://www.athabascau.ca">Athabasca University</a>, an Alberta based post secondary institution specializing in distance learning.)</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently I completed the <a href="https://class.coursera.org/sdn-001/wiki/view?page=syllabus">Software Defined Networking</a> (SDN) course presented by Dr. Nick Feamster of the Georgia Institute of Technology. The course was a massive open online course, otherwise known as a MOOC. (Some of the <a href="http://en.wikipedia.org/wiki/Massive_open_online_course#Early_MOOCs">earliest MOOCs</a> were put on by researchers associated with <a href="http://www.athabascau.ca">Athabasca University</a>, an Alberta based post secondary institution specializing in distance learning.)</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/sdn-mooc.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/sdn-mooc.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Georgia Tech Coursera SDN MOOC" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2013/08/12/sdn-mooc.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Georgia Tech Coursera SDN MOOC</h1>
+        <p class="text-gray-600">
+            <time datetime="2013-08-12T00:00:00-04:00">
+                August 12, 2013
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently I completed the <a href="https://class.coursera.org/sdn-001/wiki/view?page=syllabus">Software Defined Networking</a> (SDN) course presented by Dr. Nick Feamster of the Georgia Institute of Technology. The course was a massive open online course, otherwise known as a MOOC. (Some of the <a href="http://en.wikipedia.org/wiki/Massive_open_online_course#Early_MOOCs">earliest MOOCs</a> were put on by researchers associated with <a href="http://www.athabascau.ca">Athabasca University</a>, an Alberta based post secondary institution specializing in distance learning.)</p>
+
+<h1 id="moocs">MOOCs</h1>
+
+<p>I have a Bachelor of Education which means I could have been a teacher in Alberta. However I went in another direction and have a career in information technology, but one that has been almost entirely spent either working at a university as support staff, or at organizations that support universities in one form or another. Therefore I’m aware–perhaps more than the average person–of MOOCs and how they are affecting, or not affecting, post secondary education. Interestingly, the University of Alberta has just began offering their first class using the Coursera platform: <a href="https://www.coursera.org/course/dino101">DINO 101</a>.</p>
+
+<h2 id="sdn-course">SDN Course</h2>
+
+<p>But what I want to talk about here is the Dr. Feamster’s SDN course. One of the people helping to teach the course wrote <a href="https://class.coursera.org/sdn-001/class/index">this</a> thank you note to the students, and mentioned that it’s a good idea to document <em>the learning</em> in some fashion, so that is what I’m attempting to do in this post.</p>
+
+<blockquote>
+  <p>I encourage you to document your learning, which is a more insightful way of providing evidence to your learning….I hope you all will try and apply your new knowledge in SDN at work or in your studies.</p>
+</blockquote>
+
+<h2 id="what-i-liked">What I liked</h2>
+
+<p>In general, I like the idea of MOOCs. While getting a masters degree of some kind has always been in the back of my mind, I really feel like I am done with school, but being in technology I can never be done with learning. I don’t think I am an <a href="http://en.wikipedia.org/wiki/Autodidacticism">autodidact</a> but learning on my own is something that I do all the time (mostly via articles or blog posts on the Internet), have to do in order to be employable, and enjoy doing, so MOOCs fit in with that style of learning well.</p>
+
+<p>A couple other people at work also took the course at the same time, and we had some discussions about it. I think we all felt that overall the course was a good introduction to SDN, but that it wasn’t in-depth enough for our tastes. Having said that, I don’t see how the team behind the course could have done it differently, as there were so many different people taking the MOOC, from people with little or no networking experience or programming experience, to highly experience networking and programming professionals.</p>
+
+<p>Here are a few things I liked about the class:</p>
+
+<ul>
+  <li>Learning about new SDN tools</li>
+  <li>Having a bit of structure around learning a new technology</li>
+  <li>The professor’s positive attitude</li>
+  <li>The MOOC being a good overview of SDN, where it came from and (maybe) where it’s going</li>
+</ul>
+
+<p>I also enjoyed the interviews though didn’t quite have time to watch all of them. Perhaps at some point I can go back and watch them.</p>
+
+<h2 id="what-i-didnt-like">What I didn’t like</h2>
+
+<p>The most unusual thing, I felt, was the quiz system. Essentially you could take each quiz at least 3 times, most of them more, and you could review your answers, and mistakes, from the previous attempts, and retake the quiz. I’m not sure what the value of doing quizzes in this fashion is, unless you were to take an average of the first quiz and subsequent quizzes, because the easiest thing to do with the quiz is to take it once and even if you score poorly you can simply review your answers and pass the next attempt. Sometimes the question’s changed answers in each attempt, but mostly they did not. I don’t think the quizzes tested students knowledge very well.</p>
+
+<p>Another thing was that the instructions for the assignments were occasionally incorrect, at least in terms of cutting and pasting commands. Because I’ve been using the command line for a long time it was no problem to adjust, but if I was a student with little command line experience, I would imagine cutting and pasting commands would have been frustrating…possibly as difficult as the programming assignments themselves.</p>
+
+<p>If you did cut and paste exactly what was shown, you would still end up having to futz around because you would find yourself in the wrong working directory, and command examples would not execute. I think part of the reason for this was the the assignments would change as the course was ongoing, but the documentation couldn’t keep up.</p>
+
+<p>Also I was never quite sure what mark was required to pass the tests. At least one had to be 100% to pass, I believe, but even now I’m not sure. I think it’s 70% on each quiz to pass. It may very well turn out that I didn’t pass the course. No idea.</p>
+
+<p>Finally, unless I’m mistaken, it wasn’t possible to download the slides used in the video lectures. I would have been great to have access to the slides, and notes as well. Given this is the first MOOC I’ve taken I’m not sure if this is part of the general MOOC design or not. I didn’t enjoy the lectures themselves, mostly because I just don’t like the video-over-slides approach.</p>
+
+<h2 id="what-i-learned">What I learned</h2>
+
+<p>The course covered 6 weeks and 8 modules. There were 10 quizzes and 4 programming assignments.</p>
+
+<p>The modules were:</p>
+
+<ul>
+  <li>Module 1: History and Evolution of Software Defined Networking</li>
+  <li>Module 2: Control and Data Plane Separation</li>
+  <li>Module 3: Virtual Networking</li>
+  <li>Module 4: SDN Nuts and Bolts - Control Plane</li>
+  <li>Module 5: SDN Nuts and Bolts - Data Plane</li>
+  <li>Module 6: Programming SDNs</li>
+  <li>Module 7: SDN in The Wild</li>
+  <li>Module 8: The Future of SDN (and Wrap-Up)</li>
+</ul>
+
+<p>Mostly I learned about some new and interesting SDN tools. I had used Mininet and Pox, and knew of Nox (related to Pox) and Floodlight, but everything else was new to me.</p>
+
+<ul>
+  <li><a href="http://osrg.github.io/ryu/">Ryu</a> seems very interesting, is written in Python (my favorite programming language) and is supported in OpenStack. The small OpenStack cloud I run is based on Essex, so there is no Quantum/Neutron networking, but someday we will upgrade and it will be interesting to try out some SDN capabilities. I suppose I should try some out in test, just toss up Devstack and see what I can find out.</li>
+  <li>One of the people I work with is working on <a href="http://www.opendaylight.org/">Open Daylight</a>. Again, not part of the course, but something that I stumbled on while doing some extra reading.</li>
+  <li>While <a href="http://trema.github.io/trema/">Trema</a> wasn’t used in the course, one of my co-workers came across it. It’s not in Python, so that is likely why it wasn’t in the course. Instead it’s written in Ruby and some C.</li>
+</ul>
+
+<p><a href="https://github.com/trema/trema/wiki/Quick-start:">Interestingly</a></p>
+
+<blockquote>
+  <p>Don’t be surprised that Trema has an integrated OpenFlow network emulator and you do not need to prepare OpenFlow switches and end-hosts for testing controller applications!</p>
+</blockquote>
+
+<p>The above is useful because most of the others work in combination with Mininet, which is an extra step.</p>
+
+<ul>
+  <li><a href="http://www.read.cs.ucla.edu/click/click">Click</a> modular router project: I’m not clear on what this actually is.</li>
+  <li><a href="http://netfpga.org/:">NetFGPA project</a> I had come across this before–hardware data plane.</li>
+  <li><a href="http://frenetic-lang.org/pyretic/:">Pyretic</a> A SDN programming language, or more specifically a domain specific language, aka DSL.</li>
+  <li><a href="http://resonance.noise.gatech.edu/">Resonance</a></li>
+  <li><a href="https://class.coursera.org/sdn-001/lecture/53:">Interview with Jennifer Rexford</a> I thought this was a great interview.</li>
+</ul>
+
+<h2 id="what-now">What now?</h2>
+
+<p>So, the question is: Now that I have had a good introduction to SDN, where do I go from here?</p>
+
+<p>I don’t really know. It’s unlikely that I will be handed a real network to experiment with, other than perhaps one associated with a small OpenStack cluster, so this means I will have to work with virtualized networks, perhaps using Mininet. Trema is interesting to me because it (apparently) doesn’t require something like Mininet, and can create virtualized networks on its own.</p>
+
+<p>One area I’m interested in doing some more research on is creating broken networks and seeing how that affects systems, especially distributed networking systems.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providing gems as debs using fpm and Package Cloud | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Providing gems as debs using fpm and Package Cloud">
+
+    
+    <meta name="twitter:description" content="<p>There are a lot of package managers.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>There are a lot of package managers.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/building-debs-from-gems.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/building-debs-from-gems.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Providing gems as debs using fpm and Package Cloud" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2014/12/13/building-debs-from-gems.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Providing gems as debs using fpm and Package Cloud</h1>
+        <p class="text-gray-600">
+            <time datetime="2014-12-13T00:00:00-05:00">
+                December 13, 2014
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>There are a lot of package managers.</p>
+
+<p>Some of them provide binary packages, which are pre-compiled. But others don’t, especially ones around programming language packages such as pip (python) and rubygems (ruby). Basically if you want to install a pip or gem package you have to have a build environment (ie. compilers, make, etc) installed on each instance or container in order to install the packages. That increases the size of images, and magnifies the attack surface of the instance/container, among other things.</p>
+
+<h2 id="before-i-get-too-far">Before I get too far…</h2>
+
+<p>Many of the pip and gem packages are available already as OS packages. Usually pip packages start with “python-“ and ruby gems with “ruby-“. But not all of them are packaged. Most of the common packages can be installed with apt/yum, but not all. I did a brief search and <a href="http://askubuntu.com/questions/431780/apt-get-install-vs-pip-install">this page</a> listed a few good differences between getting python libraries via pip and apt-get.</p>
+
+<h2 id="sensu">Sensu</h2>
+
+<p>Recently I went to install sensu. Sensu provides a repository that provides the base sensu install. (It gets installed in /opt, as an “omnibus” package.)</p>
+
+<p>However, if you want to use plugins, many of them use the “sensu-plugins” gem, so that needs to be installed. The instructions say that you don’t need to install the sensu-plugins gem if you’re using the omnibus package.</p>
+
+<blockquote>
+  <p>If you have installed Sensu from the omnibus packages you can continue to installing the check-procs.rb plugin. Otherwise we need to install the sensu-plugin gem which has various helper classes used by many of the community plugins.</p>
+</blockquote>
+
+<p>Unfortunately, I believe that would mean ensuring plugins are called using the “embedded” ruby.</p>
+
+<p>Example:</p>
+
+<pre>
+<code>ubuntu@curtis-sensu:/etc/sensu/plugins$ /opt/sensu/embedded/bin/ruby check-procs.rb
+CheckProcs OK: Found 83 matching processes
+</code>
+</pre>
+
+<p>But without the sensu-plugin gem…</p>
+
+<pre>
+<code>ubuntu@curtis-build:/etc/sensu/plugins$ ./check-procs.rb
+/usr/lib/ruby/1.9.1/rubygems/custom_require.rb:36:in `require': cannot load such file -- sensu-plugin/check/cli (LoadError)
+	from /usr/lib/ruby/1.9.1/rubygems/custom_require.rb:36:in `require'
+	from ./check-procs.rb:29:in `<main>'
+&lt;/code&gt;
+&lt;/pre&gt;
+
+Most plugins will use the ruby pointed to by env.
+
+<pre>
+<code>ubuntu@curtis-sensu:/etc/sensu/plugins$ head -1 check-procs.rb
+#!/usr/bin/env ruby
+</code>
+</pre>
+
+I guess one question would be as to what environment plugin developers are writing plugins for--a base OS ruby or the embedded ruby in Sensu's omnibus. Probably the OS ruby would be specified, but that would depend on your developers and organization. The plugin files could be altered to use the embedded ruby.
+
+Thus, I decided to package up that gem.
+
+## Packaging gems with fpm
+
+[fpm](https://github.com/jordansissel/fpm) to the rescue!
+
+One of the first things I do at any job is setup a packaging server. Typically I'm the only one that uses it, but I still do it. :)
+
+For my build/packaging server I installed:
+
+ * ruby-dev
+ * gcc
+ * make
+
+from the OS packages, and:
+
+ * fpm
+ * package_cloud
+
+from rubygems.
+
+I've been using [packagecloud](http://packagecloud.io) for a while now, nd it's a very handy and easy way to setup your own custom repository. Once you build a pacakge you can just use the package cloud CLI to push that package up to your own "cloudy" repo. But I'm getting ahead of myself...
+
+[fpm](https://github.com/jordansissel/fpm) is a great tool to easily build packages. You can tell the developer of fpm takes this very seriously by his all caps usage. :)
+
+&gt; It helps you build packages quickly and easily (Packages like RPM and DEB formats). FUNDAMENTAL PRINCIPLE: IF FPM IS NOT HELPING YOU MAKE PACKAGES EASILY, THEN THERE IS A BUG IN FPM.
+
+Using fpm we can build debian packages from gems.
+
+First, install the gems.
+
+<pre>
+<code>ubuntu@curtis-build:~$ gem install --no-ri --no-rdoc --install-dir /tmp/gems sensu-plugin
+</code>
+</pre>
+
+Next, build the debs using fpm.
+
+<pre>
+<code>ubuntu@curtis-build:~$ mkdir debs; cd debs
+ubuntu@curtis-build:~/debs$ find /tmp/gems/cache -name '*.gem' | xargs -rn1 fpm -d ruby -s gem -t deb
+</code>
+</pre>
+
+That will build all the dependencies of sensu-plugin as well.
+
+<pre>
+<code>ubuntu@curtis-build:~/debs$ ls
+rubygem-json_1.8.1_amd64.deb      rubygem-sensu-plugin_1.1.0_all.deb
+rubygem-mixlib-cli_1.5.0_all.deb
+</code>
+</pre>
+
+## Package cloud
+
+Next we can push those debs to package cloud.
+
+<pre>
+<code>ubuntu@curtis-build:~/debs$ package_cloud push serverascode/custom/ubuntu/trusty rubygem-mixlib-cli_1.5.0_all.deb
+</code>
+</pre>
+
+I do that will all the gems in that dir. Now they show up in my [package cloud repo](https://packagecloud.io/serverascode/custom).
+
+Package cloud has some examples as to how configure your custom repos on your server, but for me it basically looks like this:
+
+<pre>
+<code>ubuntu@curtis-sensu:/etc/apt/sources.list.d$ cat packagecloud_io_serverascode_custom_ubuntu.list
+deb https://packagecloud.io/serverascode/custom/ubuntu/ trusty main
+</code>
+</pre>
+
+(Don't forget the package cloud GPG key too.)
+
+I usually use Ansible to setup my servers, including configuring this repository. Below is a snippet from a playbook.
+
+<pre>
+<code>- name: install the serverascode custom repository
+  apt_repository: &gt;
+    repo='deb https://packagecloud.io/serverascode/custom/ubuntu/ trusty main'
+    state=present
+
+- name: ensure the packagecloud reposity gpg key is installed
+  apt_key: &gt;
+    url=https://packagecloud.io/gpg.key
+    state=present
+</code>
+</pre>
+
+Now that the repo is setup, I can install my custom built packages.
+
+<pre>
+<code>ubuntu@curtis-build:~/debs$ apt-cache policy rubygem-sensu-plugin
+rubygem-sensu-plugin:
+  Installed: 1.1.0
+  Candidate: 1.1.0
+  Version table:
+ *** 1.1.0 0
+        500 https://packagecloud.io/serverascode/custom/ubuntu/ trusty/main amd64 Packages
+        100 /var/lib/dpkg/status
+</code>
+</pre>
+
+And, the ultimate goal, run the sensu plugin.
+
+<pre>
+<code>ubuntu@curtis-build:/etc/sensu/plugins$ ./check-procs.rb
+CheckProcs OK: Found 68 matching processes
+</code>
+</pre>
+
+## Conclusion
+
+So, certainly there are still some issues here. I haven't used this process a lot yet, but I plan on doing a lot more with it because I don't want to be installing compilers and other build tools in every virtual machine or (especially) containers. Containers, as an example, should be as small as is reasonably possible, which I think is going to preclude any build tools. Also there are some security concerns with having build tools in the OS, and a few other infosec issues that I should refamiliarize myself with.
+
+At any rate, at some point most systems administrators will need to package their own debs or rpms, and using fpm and [Package Cloud](http://packagecloud.io) to package and provide repositories is quick and painless.
+</main></code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

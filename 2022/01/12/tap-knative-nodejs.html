@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanzu Application Platform, knative, and a NodeJS App | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Tanzu Application Platform, knative, and a NodeJS App">
+
+    
+    <meta name="twitter:description" content="<h2 id="previously">Previously…</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="previously">Previously…</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/tap-knative-nodejs.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/tap-knative-nodejs.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Tanzu Application Platform, knative, and a NodeJS App" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2022/01/12/tap-knative-nodejs.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Tanzu Application Platform, knative, and a NodeJS App</h1>
+        <p class="text-gray-600">
+            <time datetime="2022-01-12T00:00:00-05:00">
+                January 12, 2022
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="previously">Previously…</h2>
+
+<p>In an <a href="https://serverascode.com/2022/01/11/tap-knative.html">earlier post</a> I deployed a simple demo container image into Kubernetes via knative, and knative itself was installed as part of VMware Tanzu’s Cloud Native Runtimes, which is also Part of the Tanzu Application Platform. If that sounds like a lot, that’s OK, it is a lot.</p>
+
+<pre><code>Tanzu Application Platform (provides -&gt;) Cloud Native Runtimes (provides -&gt;) knative
+</code></pre>
+
+<p>All of this is using the Tanzu Application Platform and in this example is running on a GKE cluster.</p>
+
+<h2 id="deploy-a-nodejs-application">Deploy a NodeJS application</h2>
+
+<p>In this post I’ll deploy a NodeJS application into knative.</p>
+
+<p>Again, the same as the previous post, I have a GKE cluster with TAP installed.</p>
+
+<p>I’ve got no pods running.</p>
+
+<pre><code>$ k get pods
+No resources found in cnr-demo namespace.
+</code></pre>
+
+<p>Though I still have the knative service I deployed in the last post running.</p>
+
+<pre><code>$ /usr/local/bin/kn service list
+NAME         URL                                      LATEST             AGE   CONDITIONS   READY   REASON
+hello-yeti   http://hello-yeti.cnr-demo.example.com   hello-yeti-00001   17h   3 OK / 3     True
+</code></pre>
+
+<p>Now I want to add a new knative service, but this time in an image that I build, and the app is running NodeJS.</p>
+
+<p>Here’s an <a href="https://github.com/knative/docs/tree/main/code-samples/serving/hello-world/helloworld-nodejs">example knative NodeJS app</a>.</p>
+
+<p>First grab the code.</p>
+
+<pre><code>$ git clone https://github.com/knative/docs.git knative-docs
+$ cd knative-docs/code-samples/serving/hello-world/helloworld-nodejs
+</code></pre>
+
+<p>There’s an index.js file. There’s really nothing to it.</p>
+
+<pre><code>$ cat index.js
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) =&gt; {
+  console.log('Hello world received a request.');
+
+  const target = process.env.TARGET || 'World';
+  res.send(`Hello ${target}!\n`);
+});
+
+const port = process.env.PORT || 8080;
+app.listen(port, () =&gt; {
+  console.log('Hello world listening on port', port);
+});
+</code></pre>
+
+<p>Add npm packages.</p>
+
+<pre><code>$ npm install
+</code></pre>
+
+<p>I’m using this version of node.</p>
+
+<pre><code>$ node --version
+v16.13.0
+</code></pre>
+
+<p>I’m going to update the Dockerfile to use 16-slim.</p>
+
+<pre><code>$ git diff Dockerfile
+diff --git a/code-samples/serving/hello-world/helloworld-nodejs/Dockerfile b/code-samples/serving/hello-world/helloworld-nodejs/Dockerfile
+index 14fc5a7f..5593df68 100644
+--- a/code-samples/serving/hello-world/helloworld-nodejs/Dockerfile
++++ b/code-samples/serving/hello-world/helloworld-nodejs/Dockerfile
+@@ -1,6 +1,6 @@
+ # Use the official lightweight Node.js 12 image.
+ # https://hub.docker.com/_/node
+-FROM node:12-slim
++FROM node:16-slim
+ 
+ # Create and change to the app directory.
+ WORKDIR /usr/src/app
+</code></pre>
+
+<p>Build the image.</p>
+
+<pre><code>$ docker build -t knative-hello-world-nodejs .
+Sending build context to Docker daemon  37.38kB
+SNIP!
+found 0 vulnerabilities
+npm notice
+npm notice New minor version of npm available! 8.1.2 -&gt; 8.3.0
+npm notice Changelog: &lt;https://github.com/npm/cli/releases/tag/v8.3.0&gt;
+npm notice Run `npm install -g npm@8.3.0` to update!
+npm notice
+Removing intermediate container 05788fe68bda
+ ---&gt; 0d87e2185381
+Step 5/6 : COPY . ./
+ ---&gt; e799b6c92ec9
+Step 6/6 : CMD [ "npm", "start" ]
+ ---&gt; Running in 28f3c37d21e2
+Removing intermediate container 28f3c37d21e2
+ ---&gt; 4fc708b92f84
+Successfully built 4fc708b92f84
+Successfully tagged knative-hello-world-nodejs:latest
+</code></pre>
+
+<p>Tag and push the image to the registry.</p>
+
+<pre><code>$ docker tag knative-hello-world-nodejs &lt;registry&gt;/random-builds/knative-hello-world-nodejs
+$ docker push &lt;registry&gt;/random-builds/knative-hello-world-nodejs
+Using default tag: latest
+The push refers to repository [&lt;registry&gt;/random-builds/knative-hello-world-nodejs]
+bd83fded2ed1: Pushed
+888c1936e335: Pushed
+602368557b6e: Pushed
+a58aa2b5afe6: Pushed
+2c1769b8f2cd: Pushed
+b5e79c5c6912: Pushed
+18be021c4ec0: Pushed
+4a67e24013ff: Pushed
+ad6b69b54919: Pushed
+latest: digest: sha256:ffe4ba5bed5e9e692d8ca8f441a9209f2d20ab7adef927f0128c027364d1a3e9 size: 2201
+</code></pre>
+
+<p>Aply some knative Kubernetes YAML. (Could use the knative CLI as well, but hey, this time let’s write some YAML.)</p>
+
+<pre><code>cat &lt;&lt; EOF | kubectl create -f -
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: knative-helloworld-nodejs
+  namespace: cnr-demo
+spec:
+  template:
+    spec:
+      containers:
+        - image: &lt;registry&gt;/random-builds/knative-hello-world-nodejs
+          env:
+            - name: TARGET
+              value: "Node.js Sample v1"
+EOF
+</code></pre>
+
+<p>Now I’ve got both my knative services running, one of which is the NodeJS hello world app.</p>
+
+<pre><code>$ /usr/local/bin/kn service list
+NAME                        URL                                                                 LATEST                            AGE     CONDITIONS   READY   REASON
+hello-yeti                  http://hello-yeti-cnr-demo.cnrs.gke.&lt;redacted&gt;                  hello-yeti-00001                  3d12h   3 OK / 3     True    
+knative-helloworld-nodejs   http://knative-helloworld-nodejs-cnr-demo.cnrs.gke.&lt;redacted&gt;   knative-helloworld-nodejs-00001   2d19h   3 OK / 3     True   
+</code></pre>
+
+<p>Once that’s up and running we can curl the app.</p>
+
+<blockquote>
+  <p>NOTE: The LB variable is my load balancer fronting the Kubernetes ingress service provided by the Tanzu Application Platform.</p>
+</blockquote>
+
+<pre><code>$ http http://knative-helloworld-nodejs-cnr-demo.cnrs.gke.&lt;redacted&gt;
+HTTP/1.1 200 OK
+content-length: 25
+content-type: text/html; charset=utf-8
+date: Sat, 15 Jan 2022 10:54:45 GMT
+etag: W/"19-9t2w57sw0IX9vcOiByda5bvW2a4"
+server: envoy
+x-envoy-upstream-service-time: 2195
+x-powered-by: Express
+
+Hello Node.js Sample v1!
+</code></pre>
+
+<p>Hello NodeJS World indeed.</p>
+
+<h2 id="building-container-imagesknative-used-to-do-this">Building container Images…knative used to do this</h2>
+
+<p>As you can see from this post and the previous one, the container image used to run the knative service has to come from somewhere.</p>
+
+<p>When the knative project originated, building images was part of its mandate.</p>
+
+<blockquote>
+  <p>First version of Knative came with three parts: Serving, Eventing, and Build. These may sound like they are three orthogonal concerns, because they really were. Knative Build was the first part to get separated (and became the Tekton project). - <a href="https://ahmet.im/blog/knative-positioning/">Did we market Knative wrong?</a></p>
+</blockquote>
+
+<p>But, as can be read in the above paragraph, people felt that having build be part of knative was confusing, so a proposal to move build out into Tekton was made:</p>
+
+<blockquote>
+  <p>This removes Serving optional dependency on Knative Build, making Knative Build fully decoupled from the rest of the Knative components and only responsible to build images that will be using in services later on. This responsibility is shared with any projects capable of building images in Kubernetes. - <a href="https://github.com/knative/build/issues/614">
+Proposal: Knative Build deprecation in favor of Tekton Pipelines</a></p>
+</blockquote>
+
+<p>And “knative build” moved out into Tekton.</p>
+
+<blockquote>
+  <p>Tekton Pipelines is the technological successor to Knative Build. Tekton entities are based on Knative Build’s entities but provide additional flexibility and reusability. This page explains how to convert your Knative Build entities to Tekton entities of equivalent functionality. - <a href="https://tekton.dev/docs/pipelines/migrating-from-knative-build/">Migrating from Knative Build</a></p>
+</blockquote>
+
+<p>Obviously having a container image is key to using knative, so we’ve got to build one somehow. From a knative project perspective, they moved the build from out of knative and into Tekton. But, is Tekton the best way to build images?</p>
+
+<p>What I can say for sure is that from the perspective of the Tanzu Application Platform, the way we (optionally, but by default) build container images is via the Tanzu Build Service (TBS), which is based on the open source projects <a href="https://github.com/pivotal/kpack">kpack</a> and <a href="https://paketo.io/">Paketo</a>.</p>
+
+<p>That said, Tekton Pipelines are also installed and used in the Tanzu Application Service (more on that in some other future post) but they are not used to directly <em>build</em> images, that’s done by TBS, at least by default. To run a container you have to have a container image, and thus to help in simplifying and securing Kubernetes TAP provides that capability. It’s a must have feature.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So there’s not much more to this post than the previous one, the one difference being that in this post I build the container image (using docker build) and pushed it to a registry myself, as opposed to using an image that someone, or something, else has built. To build my image I needed to <em>write/maintain/borrow/steal</em> a Dockerfile, which is not a small amount of additional work. Maybe instead of using a Dockerfile I could somehow use Tekton, or, I can absolutely use the Tanzu Build Service through TAP and have zero Dockerfiles (like none).</p>
+
+<p>While I’m using knative to help simplify using Kubernetes, which is great, I still have a lot of work to do as a developer to participate in a container deployment workflow…again, for example, having to build and maintain (forever) a container image.</p>
+
+<p>Another developer concern: how do I test all this? What if I change the code? Now I need to manually build the container image? Well, of course, no one would want to do that every time so there are several different ways to solve that problem, but it’s still work.</p>
+
+<p>Plus we have all the other fun stuff like how do we observe our app while it’s running in production, how do we debug, etc, etc. More to think about!</p>
+
+<h2 id="a-note-on-tap">A Note on TAP</h2>
+
+<p>I want to be clear here, the full Tanzu Application Platform takes on all these challenges and more. In these two posts I’ve simply been exploring the knative component of TAP, which is only a subset of TAP’s capabilities, and in fact, when all of TAP is utilized the power is more than the sum of its parts.</p>
+
+<p>What I’m doing with these posts is building up piece by piece the modular components of TAP to explore why they are important and what value they add.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

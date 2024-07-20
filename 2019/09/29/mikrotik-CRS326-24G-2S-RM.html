@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikrotik CRS326-24G-2S+RM | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Mikrotik CRS326-24G-2S+RM">
+
+    
+    <meta name="twitter:description" content="<p>I have a bunch of loud noisy switches…<em>cough</em> Juniper EX4200s <em>cough</em>. I recently moved and haven’t had the time yet to setup proper sound proofing for all my homelab gear and thus I need to be quieter where I can be. Lower power consumption would help too.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I have a bunch of loud noisy switches…<em>cough</em> Juniper EX4200s <em>cough</em>. I recently moved and haven’t had the time yet to setup proper sound proofing for all my homelab gear and thus I need to be quieter where I can be. Lower power consumption would help too.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/mikrotik-CRS326-24G-2S-RM.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/mikrotik-CRS326-24G-2S-RM.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Mikrotik CRS326-24G-2S+RM" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/09/29/mikrotik-CRS326-24G-2S-RM.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Mikrotik CRS326-24G-2S+RM</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-09-29T00:00:00-04:00">
+                September 29, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I have a bunch of loud noisy switches…<em>cough</em> Juniper EX4200s <em>cough</em>. I recently moved and haven’t had the time yet to setup proper sound proofing for all my homelab gear and thus I need to be quieter where I can be. Lower power consumption would help too.</p>
+
+<p>So I bought a <a href="https://mikrotik.com/product/CRS326-24G-2SplusRM">Mikrotik CRS326-24G-2S+RM</a> to be my main 1GB switch. I purchased the switch from <a href="https://solimedia.net/">Solimedia</a> and it was about $250 CDN.</p>
+
+<h2 id="power-consumption-and-volume">Power Consumption and Volume</h2>
+
+<p>Right now the switch has about 20 ports populated and is doing a fair amount of work. It’s pulling only 17 watts. My EX4200 pull about 135 watts; that’s a substantial difference. Based on my calculations, running an EX4200 24/7 would cost about $8.70/month in Ontario and the CRS326 about $1.50.</p>
+
+<p>The switch also has no fans, so it’s virtually silent.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>The challenging part of this switch is that Mikrotik has many different products, and they use many different CPUs and ASICs.</p>
+
+<p>In their C3XX line you configure VLANs differently than their other switches, as they do hardware VLANS. They have some <a href="https://wiki.mikrotik.com/wiki/Manual:Interface/Bridge#VLAN_Example_.231_.28Trunk_and_Access_Ports.29">docs</a> on configuration. These short docs are not detailed, but they are accurate in my experience.</p>
+
+<p>Example 3 is probably the one most people would use…“VLAN Example #3 (InterVLAN Routing by Bridge)”:</p>
+
+<pre><code>/interface bridge
+add name=bridge1 vlan-filtering=yes
+
+/interface bridge port
+add bridge=bridge1 interface=ether6 pvid=200
+add bridge=bridge1 interface=ether7 pvid=300
+add bridge=bridge1 interface=ether8 pvid=400
+
+/interface bridge vlan
+add bridge=bridge1 tagged=bridge1 untagged=ether6 vlan-ids=200
+add bridge=bridge1 tagged=bridge1 untagged=ether7 vlan-ids=300
+add bridge=bridge1 tagged=bridge1 untagged=ether8 vlan-ids=400
+
+/interface vlan
+add interface=bridge1 name=VLAN200 vlan-id=200
+add interface=bridge1 name=VLAN300 vlan-id=300
+add interface=bridge1 name=VLAN400 vlan-id=400
+
+/ip address
+add address=20.0.0.1/24 interface=VLAN200
+add address=30.0.0.1/24 interface=VLAN300
+add address=40.0.0.1/24 interface=VLAN400
+</code></pre>
+
+<p>A few notes:</p>
+
+<ul>
+  <li>The bridge concept is an abstraction you don’t see in a lot of other network gear, so it will take a few minutes to get used to it</li>
+  <li>Make sure you are reading configuration examples for the C3XX line of products as other products are configured differently</li>
+  <li>For access ports set the PVID (as shown and documented), otherwise they will get dynamically added to PVID 1, for trunk ports leaving off the PVID seems the proper config</li>
+  <li>Notice how the bridge “bridge1” is being added as a tagged port; don’t forget that if you want to route inter-VLAN</li>
+  <li>Set each VLAN ID separately so you can edit them easier later</li>
+  <li><code>/interface bridge port</code> and <code>/interface bridge vlan</code> will be your friend</li>
+  <li>RouterOS reports “current tagged” and “current untagged” which can be confusing, use “print detail” to see what is actually tagged and untagged</li>
+  <li>Note “vlan-filtering=yes” during bridge creation. Many of the docs show starting with “vlan-filtering=no” while building the configuration because they don’t want you to lock yourself out of the switch (if you are connected over the network) before you are done. So their examples are create the bridge, configure the switch, then finally turn vlan filtering on once you are done. But it would be easy to forget to turn it on. I changed the example above to set it to yes at the start.</li>
+</ul>
+
+<p>Also note that if you don’t have an “H” beside a port then it’s not being managed in hardware and will be slow.</p>
+
+<pre><code>[admin@MikroTik] &gt; /interface bridge port print 
+Flags: X - disabled, I - inactive, D - dynamic, H - hw-offload 
+ #     INTERFACE                                           BRIDGE                                          HW  PVID PRIORITY  PATH-COST INTERNAL-PATH-COST    HORIZON
+ 0   H ether1                                              bridge1                                         yes  102     0x80         10                 10       none
+ 1   H ether2                                              bridge1                                         yes  103     0x80         10                 10       none
+ 2   H ether3                                              bridge1                                         yes  104     0x80         10                 10       none
+ 3   H ether4                                              bridge1                                         yes    1     0x80         10                 10       none
+ 4   H ether5                                              bridge1                                         yes  106     0x80         10                 10       none
+ SNIP!
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>For some reason I like Mikrotik gear. I have quite a bit of it, including some wireless (don’t get me started on the whole capsman thing). What I don’t like about Mikrotik is that the documentation is somewhat lacking. Configuring a Juniper switch can be done easily with some surface level googling as pretty much every Juniper question has been answered succinctly and search engine indexed. Not so with Mikrotik. Their large and changing product line, part of their value proposition, makes this even more difficult.</p>
+
+<p>One thing I do like about Mikrotik is that the OS comes with many features, even MPLS. This system is not just a dumb switch, it is a full featured router.</p>
+
+<p>Finally, the switch is only 24 ports. Technically I’d have to have two of them to match the 48 ports of the EX4200. When you have many boxes ports will run out quickly.</p>
+
+<p>You can certainly find cheaper, older used switches, but they will likely be loud and power hungry.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

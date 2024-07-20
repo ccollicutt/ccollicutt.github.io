@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic infrastructure to support production linux servers | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Basic infrastructure to support production linux servers">
+
+    
+    <meta name="twitter:description" content="<p>Every IT group providing Linux servers will require some infrastructure services. What I mean by that is that there are services that Linux sysadmins need that help them to run their servers in a efficient, scalable way.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Every IT group providing Linux servers will require some infrastructure services. What I mean by that is that there are services that Linux sysadmins need that help them to run their servers in a efficient, scalable way.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/basic-linux-infrastructure.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/basic-linux-infrastructure.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Basic infrastructure to support production linux servers" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2011/07/20/basic-linux-infrastructure.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Basic infrastructure to support production linux servers</h1>
+        <p class="text-gray-600">
+            <time datetime="2011-07-20T00:00:00-04:00">
+                July 20, 2011
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Every IT group providing Linux servers will require some infrastructure services. What I mean by that is that there are services that Linux sysadmins need that help them to run their servers in a efficient, scalable way.</p>
+
+<p>Production services need support from <strong>infrastructure services</strong>.</p>
+
+<p>This post lists a basic collection of services that a Linux sysadmin might require. For me, this would be the <em>minimum</em> services required to run a group of Linux servers, be it 10 or 1000.</p>
+
+<p>Notes:</p>
+<h1 id="i-mention-specific-solutions-but-there-are-many-different-ways-to-obtain-the-same-basic-infrastructure">I mention specific solutions, but there are many different ways to obtain the same basic infrastructure.</h1>
+<h1 id="most-of-what-i-discuss-below-is-geared-towards-redhat-servers-but-is-also-completely-applicable-to-any-linux-disto-that-has-a-packaging-system-which-is-pretty-much-all-of-them">Most of what I discuss below is geared towards Redhat servers, but is also completely applicable to any Linux disto that has a packaging system, which is pretty much all of them.</h1>
+
+<p><em>1. Write documentation with mediawiki</em></p>
+
+<p>One of the most important things a sysadmin does is document what they did so that they can take a relaxing, rejuvenating vacation. By this I mean that they have documented their systems so that the other admins taking over can use it to fix things, to understand what is installed, where it is, what it does, who owns it, ect, when the primary sysadmin is unavailable because he/she is in downtown Tokyo and is having a hard time connecting to the local wireless because they can’t read Japanese.</p>
+
+<p>Documentation is also important so you can remember what you did six months ago to get iscsi working, or how to configure a xen dom0 to use a bridge that comes from a vlan, or that command to dd a logical volume from one server to another over ssh without having to figure it out all over again. I suppose you could <a href="http://serverascode.com">blog</a> about it too. <em>:)</em></p>
+
+<p>Regardless of what is being documented, usually the system I will use is a <a href="http://www.mediawiki.org">Mediawiki</a> instance. Mediawiki supports searching (also full text searching if you use <a href="http://sphinxsearch.com/">sphinx</a> and the <a href="http://www.mediawiki.org/wiki/Extension:SphinxSearch">sphinx search plugin</a> so that you can search in pre tags too), file uploads, categories, and many, many other features, especially via the diverse plugin/extension community.</p>
+
+<p>When people don’t want to use mediawiki I ask them what they want to do, how they want to work, and inevitably mediawiki can do it.</p>
+
+<p><em>2. Serve packages using mrepo</em></p>
+
+<p>Most Linux distros use <em>some</em> form of package management to install software. For example, in Debian/Ubuntu a deb file and in Redhat it’s an rpm.</p>
+
+<p>These packages, somewhat akin to an advanced zip file, contain all the files, requirements, metadata, ect, for a particular piece of software or service. The @./configure; make; make install@ dance is only done on the build servers.</p>
+
+<p>In most of the environments I work in, we strive to <em>package all code</em>. This means that all software and applications are installed on a server in a package. Configuration can be done by hand, or via a centralized configuration management system, but the code is actually installed via a package. This goes for Perl CPAN modules too. :) <em>EVERYTHING</em>.</p>
+
+<p>The <em>package server</em> provides a central spot that the servers obtain packages from, eg. a <a href="http://dag.wieers.com/home-made/mrepo/">mrepo</a> server.</p>
+
+<p>The packages server will do three major things:</p>
+
+<p>** Download RPM packages from external repositories, eg. the official Redhat repositories, EPEL, RPMForge, ect.
+Also it will allow us to store our own <em>custom packages</em>.
+This means our servers don’t go to the internet to get updates, they go to the packages server.</p>
+
+<p>** Serve those packages to all of our Linux servers.</p>
+
+<p>** Allow for the ability to  “freeze” the repositories so that we can install software updates in test environments, test them, and then install the exact same version of the packages/software in production, thus being a <em>somewhat</em> more sure that everything is going to work OK after the update.</p>
+
+<p><em>3. Centralize syslogging with rsyslog</em></p>
+
+<p>There should be a central syslog server somewhere in your infrastucture, and all production servers should send syslog packets to that server.</p>
+
+<p>This will allow for a central spot for gathering syslog messages from all servers. We can then run scripts/processes to analyze these logs looking for issues.</p>
+
+<p>Also, should a server get <em>hacked</em> the first thing <em>malicious users</em> usually do is (try) to delete logs. But, if the logs have been sent to a central log server then they (probably) can’t do that.</p>
+
+<p>I usually replace, when possible, syslog with <a href="http://www.rsyslog.com/">rsyslog</a> and at minimum use TCP delivery instead of UDP.</p>
+
+<p><em>4. Centralize root email with sendmail or postfix and dovecot</em></p>
+
+<p>There are many scripts on servers that will send email to root if something breaks, eg. cron or logwatch. So all of these emails should be sent to a central email address that sysadmins have access to.</p>
+
+<p>I’m not a huge fan of what is essentially logging over email, but it’s nearly impossible to avoid.</p>
+
+<p>Currently I configure each server’s root alias to email a central address which is delivered to a Maildir and serve that up over IMAPS with <a href="http://www.dovecot.org">dovecot</a>. Dovecot is pretty great.</p>
+
+<p>(Note that while sendmail is default on RHEL5, postfix is default on RHEL6!)</p>
+
+<p><em>5. Serve kickstarts over http</em></p>
+
+<p>The kickstart server is simply a plain http server that serves kickstart files, and in conjunction with the packaging server allows for rapid, repeatable installation of Redhat/CentOS. Or you could do it over nfs, or pop it on the USB key. I always use a web server to serve up the kickstarts.</p>
+
+<p><code>ks=http://example.com/ks/newserver.ks</code> if you know what I mean. :)</p>
+
+<p><em>6. Centralize configuration management</em></p>
+
+<p>This is a central server that can be used to access all the Linux/Unix servers via ssh and to try automate with custom scripts or things like <a href="https://code.google.com/p/pdsh/">pdsh</a>, <a href="http://www.opscode.com/chef/">chef</a>, <a href="http://www.puppetlabs.com/">puppet</a>, <a href="http://www.fabfile.org">fabric</a>, ect.</p>
+
+<p>Also stores a copy of every Linux servers RPM database so that if a server gets hacked you can check what files have changed, if any, on the hacked server. (Though that should be in backups too.)</p>
+
+<p><em>7. Build packages with rpmbuild</em></p>
+
+<p>To create custom RPM packages a build server for each OS and architecture is required.  So if you run RHEL5 and RHEL 6 on x86_64 then you’ll need two build servers, one for each OS and arch.</p>
+
+<p>This is where @rpmbuild -ba some.spec@ will be run to build a RPM. Then the RPM will be copied to the packaging server.</p>
+
+<p><em>8. Login from anywhere securely with ssh</em></p>
+
+<p>(Of course with ssh!)</p>
+
+<p>Linux/Unix admins should be able to access a ssh gateway from the Internet to be able to access servers and possibly their workstations or just the central management server.</p>
+
+<p>Only public key authentication would be allowed to this server (meaning no password based authentication) which makes it very secure in terms of auth.</p>
+
+<p>Some workplaces will want to put this behind a commercial VPN. Try to avoid this…IMHO ssh is one of the, if <em>not the</em>, most secure network applications on the planet–certainly better than some million <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Source_lines_of_code">SLOC</a> ssl “vpn”.</p>
+
+<p>PS. Did you know you can create a ssh-based vpn with something like <a href="https://github.com/apenwarr/sshuttle?">sshuttle</a> If you did sysadmin 2pts for you! <em>:)</em></p>
+
+<p><em>9. Monitor uptime with nagios</em></p>
+
+<p>Essentially a <a href="http://www.nagios.org">Nagios</a> server, or similar, that monitors production services and servers and will let you know when they go down. I have also used hobbit, which is apparently called <a href="http://sourceforge.net/projects/xymon/">Xymon</a> now.</p>
+
+<p>(But they won’t go down, right? In fact, the monitoring system will go down more than the production serivces, won’t it. <em>:)</em> I’ve always thought that was the hard part of uptime monitoring.)</p>
+
+<p><em>10. Manage code with version control systems</em></p>
+
+<p>Every IT workplace should have a central code repository. Sure, hg and git are distributed, but I still think it’s nice to have a central location. “Github”:github.com seems to be successful at centralizing distributed revision control, so I think centralizing a local git or hg instance (with hgweb.cgi for example) will work for most workplaces as well. :)</p>
+
+<p>I have a github account and have used svn and hg at work. Use whatever you want–just do it now!</p>
+
+<p><em>11. Backup with rdiff-backup</em></p>
+
+<p>This would be a server used to rsync snapshot-type backups over ssh to disk for rapid restores. I like <a href="http://www.nongnu.org/rdiff-backup/">rdiff-backup</a></p>
+
+<p>It would likely compliment that huge Netbackup, or Commvault (calmvault?), or other backup system you have that doesn’t work half the time and requires the installation of a gigantic root-running tarball or monolithic 600MB RPM which doubles the size of your 500MB minimal Redhat OS install. Good times in commercial backup land.</p>
+
+<p><em>12. Test with jmeter</em></p>
+
+<p>If you have dev, test, production environments then you should also automate testing. This would be the service that helps you do that, running Jmeter and/or Selenium for example; do everything from one location, perhaps when a RPM/package is built then it’s automatically tested from here. Wouldn’t that be nice!?</p>
+
+<p><em>13. Monitor performance with cacti</em></p>
+
+<p>Everyone wants performance. Or do they? How does one know how much performance one needs? You have to do performance testing, and you have to monitor performance. You can’t just buy performance, you have to put some work in.</p>
+
+<p>That said, for monitoring performance I usually use either <a href="http://www.nagios.org">Nagios</a> or something like <a href="http://www.cacti.net">Cacti</a> using snmp with some custom scripts.</p>
+
+<p><em>14. Secure remote bios level access via a remote KVM or IPMI</em></p>
+
+<p>By this I mean the secure network you attach your remote KVM to the hardware dom0 servers, and/or to the IPMI interfaces that most teir 1 servers come with (not that I endorse only tier 1 vendors) so that you don’t have to hang out in that cold, loud, unfriendly server room.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

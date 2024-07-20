@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Tanzu Kubernetes Grid Multicloud 1.1.3 to 1.2 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Upgrade Tanzu Kubernetes Grid Multicloud 1.1.3 to 1.2">
+
+    
+    <meta name="twitter:description" content="<p>This is just a quick example of upgrading <a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/index.html">Tanzu Kubernetes Grid (multicloud)</a> 1.1.3 to 1.2. In this example, TKGm is running on vSphere.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>This is just a quick example of upgrading <a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/index.html">Tanzu Kubernetes Grid (multicloud)</a> 1.1.3 to 1.2. In this example, TKGm is running on vSphere.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/upgrade-tkg-multicloud.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/upgrade-tkg-multicloud.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Upgrade Tanzu Kubernetes Grid Multicloud 1.1.3 to 1.2" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/11/04/upgrade-tkg-multicloud.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Upgrade Tanzu Kubernetes Grid Multicloud 1.1.3 to 1.2</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-11-04T00:00:00-05:00">
+                November 04, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>This is just a quick example of upgrading <a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/index.html">Tanzu Kubernetes Grid (multicloud)</a> 1.1.3 to 1.2. In this example, TKGm is running on vSphere.</p>
+
+<p>For those not familiar, TKG:</p>
+
+<blockquote>
+  <p>provides a consistent, upstream-compatible implementation of Kubernetes, that is tested, signed, and supported by VMware. Tanzu Kubernetes Grid is central to many of the offerings in the VMware Tanzu portfolio.</p>
+</blockquote>
+
+<p>TKGm, as I call it, can be deployed into various public clouds, more all the time, and provides the same Kubernetes no matter where it is deployed. 1.2 supports vSphere, Azure, and AWS as host infrastructure, and more will be added over time.</p>
+
+<h2 id="whats-new-in-12">What’s new in 1.2?</h2>
+
+<ul>
+  <li>Moving from a separate loadbalancer to kube-vip</li>
+  <li>New default CNI: Antrea</li>
+  <li>Addition of Harbor as a shared service</li>
+  <li>Backup and restore management clusters with Velero</li>
+</ul>
+
+<p>And more!</p>
+
+<h2 id="upgrade-from-113-to-12-on-vsphere">Upgrade from 1.1.3 to 1.2 (on vSphere)</h2>
+
+<p>The <a href="https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.2/vmware-tanzu-kubernetes-grid-12/GUID-upgrade-tkg-management-cluster.html">documentation</a> for this process is great, and I’m mostly just repeating what it shows. Best to follow those docs, but sometimes having an example is nice.</p>
+
+<p>Initially I have the tkg 1.1.3 CLI.</p>
+
+<pre><code>$ tkg version
+Client:
+	Version: v1.1.3
+	Git commit: 0e8e58f3363a1d4b4063b9641f44a3172f6ff406
+</code></pre>
+
+<p>I’m just running one management and one workload cluster.</p>
+
+<pre><code>$ tkg get cluster --include-management-cluster
+ NAME        NAMESPACE   STATUS   CONTROLPLANE  WORKERS  KUBERNETES        ROLES  
+ my-cluster  default     running  1/1           2/2      v1.18.6+vmware.1  &lt;none&gt; 
+ tkg-mgmt    tkg-system  running  1/1           1/1      v1.18.6+vmware.1  &lt;none&gt; 
+</code></pre>
+
+<p>So the first step is to download the new 1.2 CLI as well as three OVAs. These artifacts are all downloaded from <a href="https://my.vmware.com">VMware</a>.</p>
+
+<ul>
+  <li>
+    <p>Install the new CLI first.</p>
+  </li>
+  <li>
+    <p>Next, upload the three OVAs into vSphere and mark them as templates.</p>
+  </li>
+</ul>
+
+<pre><code>Kubernetes v1.19.1: Photon v3 Kubernetes v1.19.1 OVA
+Kubernetes v1.18.8: Photon v3 Kubernetes v1.18.8 OVA
+Kubernetes v1.17.11: Photon v3 Kubernetes v1.17.11 OVA
+</code></pre>
+
+<p>First we upgrade the management cluster.</p>
+
+<ul>
+  <li>I’m conservative so I copied the old config files first.</li>
+</ul>
+
+<pre><code>$ cp -rp ~/.tkg/ ~/.tkg-pre-1.2-upgrade
+</code></pre>
+
+<ul>
+  <li>List the management cluster.</li>
+</ul>
+
+<pre><code>$ tkg get management-cluster
+It seems that the TKG settings on this system are out-of-date. Proceeding on this command will cause them to be backed up and overwritten by the latest settings.
+Do you want to continue? [y/N]: y
+the old providers folder /home/ubuntu/.tkg/providers is backed up to /home/ubuntu/.tkg/providers-20201102220133-xryjaxet
+The old bom folder /home/ubuntu/.tkg/bom is backed up to /home/ubuntu/.tkg/bom-20201102220133-sk8je1f4
+ MANAGEMENT-CLUSTER-NAME  CONTEXT-NAME             STATUS  
+ tkg-mgmt *               tkg-mgmt-admin@tkg-mgmt  Success 
+</code></pre>
+
+<ul>
+  <li>Make sure to be using the mgmt cluster context.</li>
+</ul>
+
+<pre><code>$ kubectl config use-context tkg-mgmt-admin@tkg-mgmt 
+Switched to context "tkg-mgmt-admin@tkg-mgmt".
+</code></pre>
+
+<ul>
+  <li>Add labels (new in 1.2):</li>
+</ul>
+
+<pre><code>$ kubectl label -n tkg-system cluster.cluster.x-k8s.io/tkg-mgmt cluster-role.tkg.tanzu.vmware.com/management="" --overwrite=true
+cluster.cluster.x-k8s.io/tkg-mgmt labeled
+</code></pre>
+
+<ul>
+  <li>Run the upgrade of the mgmt cluster.</li>
+</ul>
+
+<pre><code>$ tkg upgrade management-cluster tkg-mgmt
+SNIP!
+Patching MachineDeployment with the kubernetes version v1.19.1+vmware.2...
+Waiting for kubernetes version to be updated for worker nodes...
+Management cluster 'tkg-mgmt' successfully upgraded to TKG version 'v1.2.0' with kubernetes version 'v1.19.1+vmware.2'
+</code></pre>
+
+<ul>
+  <li>Now the mgmt cluster has been upgraded.</li>
+</ul>
+
+<pre><code>$ tkg get cluster --include-management-cluster
+ NAME        NAMESPACE   STATUS   CONTROLPLANE  WORKERS  KUBERNETES        ROLES      
+ my-cluster  default     running  1/1           2/2      v1.18.6+vmware.1  &lt;none&gt;     
+ tkg-mgmt    tkg-system  running  1/1           1/1      v1.19.1+vmware.2  management 
+</code></pre>
+
+<ul>
+  <li>Can list the k8s versions. Note 1.19! Nice.</li>
+</ul>
+
+<pre><code>$ tkg get kubernetesversions
+ VERSIONS          
+ v1.17.11+vmware.1 
+ v1.17.3+vmware.2  
+ v1.17.6+vmware.1  
+ v1.17.9+vmware.1  
+ v1.18.2+vmware.1  
+ v1.18.3+vmware.1  
+ v1.18.6+vmware.1  
+ v1.18.8+vmware.1  
+ v1.19.1+vmware.2  
+</code></pre>
+
+<ul>
+  <li>Finally, upgrade the workload cluster.</li>
+</ul>
+
+<pre><code>$ tkg upgrade cluster my-cluster
+Logs of the command execution can also be found at: /tmp/tkg-20201102T223108680260342.log
+Upgrading workload cluster 'my-cluster' to kubernetes version 'v1.19.1+vmware.2'. Are you sure? [y/N]: y
+Validating configuration...
+Verifying kubernetes version...
+Retrieving configuration for upgrade cluster...
+Create InfrastructureTemplate for upgrade...
+Upgrading control plane nodes...
+Patching KubeadmControlPlane with the kubernetes version v1.19.1+vmware.2...
+Waiting for kubernetes version to be updated for control plane nodes
+Upgrading worker nodes...
+Patching MachineDeployment with the kubernetes version v1.19.1+vmware.2...
+Waiting for kubernetes version to be updated for worker nodes...
+Cluster 'my-cluster' successfully upgraded to kubernetes version 'v1.19.1+vmware.2'
+</code></pre>
+
+<p>Well, that was pretty easy.</p>
+
+<h2 id="optional-create-a-new-cluster">OPTIONAL: Create a New Cluster</h2>
+
+<p>Here I create a new cluster. Note the use of the <code>--vsphere-controlplane-endpoint-ip</code> which is available in 1.2 so you can set the k8s API IP address and presumably pre-set the DNS entry for your end users.</p>
+
+<pre><code>tkg create cluster --plan dev 1-2-cluster --vsphere-controlplane-endpoint-ip 10.0.6.10
+Logs of the command execution can also be found at: /tmp/tkg-20201103T173324591159647.log
+Validating configuration...
+Creating workload cluster '1-2-cluster'...
+Waiting for cluster to be initialized...
+Waiting for cluster nodes to be available...
+Waiting for addons installation...
+
+Workload cluster '1-2-cluster' created
+</code></pre>
+
+<p>That’s it!</p>
+
+<h2 id="vsphere_template-issue">VSPHERE_TEMPLATE Issue</h2>
+
+<p>Due to the way I had originally deployed TKGm, I had set the <code>VSPHERE_TEMPLATE</code> in the TKG config file and to deploy a new 1.2 cluster I needed to comment that out. Most users won’t have this set AFAIK, and it’s a simple config file change.</p>
+
+<pre><code>$ tkg create cluster --plan dev 1-2-cluster --vsphere-controlplane-endpoint-ip 10.0.6.10
+Logs of the command execution can also be found at: /tmp/tkg-20201103T172950440339415.log
+Validating configuration...
+
+Error: : workload cluster configuration validation failed: vSphere config validation failed: vSphere template kubernetes version validation failed: unable to get or validate VSPHERE_TEMPLATE for given k8s version: incorrect VSPHERE_TEMPLATE (/Datacenter/vm/photon-3-kube-v1.18.6_vmware.1) specified for Kubernetes version (v1.19.1+vmware.2). TKG CLI will autodetect the correct VM template to use, so VSPHERE_TEMPLATE should be removed unless required to disambiguate among multiple matching templates
+
+Detailed log about the failure can be found at: /tmp/tkg-20201103T172950440339415.log
+</code></pre>
+
+<p>Commented out the option:</p>
+
+<pre><code>$ grep -i template ~/.tkg/config.yaml 
+VSPHERE_HAPROXY_TEMPLATE: /Datacenter/vm/photon-3-haproxy-v1.2.4-vmware.1
+# VSPHERE_TEMPLATE will be autodetected based on the kubernetes version. Please use VSPHERE_TEMPLATE only to override this behavior
+#VSPHERE_TEMPLATE: /Datacenter/vm/photon-3-kube-v1.18.6_vmware.1
+</code></pre>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

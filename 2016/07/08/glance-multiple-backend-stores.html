@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glance with Multiple Backend Stores | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Glance with Multiple Backend Stores">
+
+    
+    <meta name="twitter:description" content="<p>Every OpenStack cloud needs a Glance deployment. Thus, I’ve deployed it many times–but every time I’ve only put one backend into use: either simple file based storage or object storage using Swift.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Every OpenStack cloud needs a Glance deployment. Thus, I’ve deployed it many times–but every time I’ve only put one backend into use: either simple file based storage or object storage using Swift.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/glance-multiple-backend-stores.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/glance-multiple-backend-stores.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Glance with Multiple Backend Stores" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/07/08/glance-multiple-backend-stores.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Glance with Multiple Backend Stores</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-07-08T00:00:00-04:00">
+                July 08, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Every OpenStack cloud needs a Glance deployment. Thus, I’ve deployed it many times–but every time I’ve only put one backend into use: either simple file based storage or object storage using Swift.</p>
+
+<p>Recently I was surprised to learn that you can have multiple backends, or stores as Glance calls it, and can upload images into whichever store you prefer using an option on the Glance command line.</p>
+
+<h2 id="devstack">Devstack</h2>
+
+<p>If you want to test it out it’s very easy–just deploy a <a href="http://docs.openstack.org/developer/devstack/">DevStack</a> instance. All you need is vm with a few gigs of ram.</p>
+
+<p>Here is the local.conf I used. It enables Swift.</p>
+
+<pre><code class="language-bash">ubuntu@devstack:~/devstack$ cat local.conf 
+[[local|localrc]]
+# Credentials
+ADMIN_PASSWORD=password
+DATABASE_PASSWORD=password
+RABBIT_PASSWORD=password
+SERVICE_PASSWORD=password
+SERVICE_TOKEN=password
+SWIFT_HASH=password
+SWIFT_TEMPURL_KEY=password
+
+# Enable Neutron
+disable_service n-net
+disable_service n-novnc
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service neutron
+
+# Enable Swift
+enable_service s-proxy
+enable_service s-object
+enable_service s-container
+enable_service s-account
+
+# Disable Horizon
+disable_service horizon
+
+# Disable Heat
+disable_service heat h-api h-api-cfn h-api-cw h-eng
+
+# Disable Cinder
+disable_service cinder c-sch c-api c-vol
+
+# Swift temp URL's are required for agent_* drivers.
+SWIFT_ENABLE_TEMPURLS=True
+
+# By default, DevStack creates a 10.0.0.0/24 network for instances.
+# If this overlaps with the hosts network, you may adjust with the
+# following.
+NETWORK_GATEWAY=10.1.0.1
+FIXED_RANGE=10.1.0.0/24
+FIXED_NETWORK_SIZE=256
+
+# Log all output to files
+LOGFILE=$HOME/devstack.log
+LOGDIR=$HOME/logs
+</code></pre>
+
+<p>Ah, good old DevStack.</p>
+
+<h2 id="glance-config">Glance config</h2>
+
+<p>Once DevStack is done, the <em>/etc/glance/glance-api.conf</em> file will contain this section:</p>
+
+<pre><code class="language-bash">[glance_store]
+stores = file, http, swift
+default_swift_reference = ref1
+swift_store_config_file = /etc/glance/glance-swift-store.conf
+swift_store_create_container_on_put = True
+default_store = swift
+filesystem_store_datadir = /opt/stack/data/glance/images/
+</code></pre>
+
+<p>Note the “stores” option, and that “file, http, swift” are configured.</p>
+
+<h2 id="glance-api-v1">Glance API V1</h2>
+
+<p>One caveat at this time is that the Glance V2 API does not seem to allow for setting an option when uploading an image as to which backend to use. Thus, with Glance V2 you will always be using the default_store, which in this example is Swift.</p>
+
+<p>But, if you use V1, you can set the “–store” option and choose a backend.</p>
+
+<pre><code class="language-bash">ubuntu@uc-osclient-01:~$ glance --os-image-api 2 help image-create | grep "\-\-store" 
+# No option
+ubuntu@uc-osclient-01:~$ glance --os-image-api 1 help image-create | grep "\-\-store" 
+usage: glance image-create [--id &lt;IMAGE_ID&gt;] [--name &lt;NAME&gt;] [--store &lt;STORE&gt;]
+  --store &lt;STORE&gt;       Store to upload image to.
+</code></pre>
+
+<p>Perhaps in the future V2 will also have a backend store option.</p>
+
+<h2 id="uploading-images-to-multiple-backend-stores">Uploading images to multiple backend stores</h2>
+
+<p>Ok, lets use the Glance CLI to upload images to the file and Swift backends.</p>
+
+<p>First, I downloaded the Cirros image.</p>
+
+<pre><code class="language-bash">ubuntu@devstack:~$ wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+--2016-07-09 03:04:11--  http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+Resolving download.cirros-cloud.net (download.cirros-cloud.net)... 64.90.42.85
+Connecting to download.cirros-cloud.net (download.cirros-cloud.net)|64.90.42.85|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 13287936 (13M) [text/plain]
+Saving to: ‘cirros-0.3.4-x86_64-disk.img’
+
+100%[==================================================================================================================================&gt;] 13,287,936  3.61MB/s   in 4.2s   
+
+2016-07-09 03:04:15 (3.04 MB/s) - ‘cirros-0.3.4-x86_64-disk.img’ saved [13287936/13287936]
+</code></pre>
+
+<p>Cubswin:).</p>
+
+<p>As a note, I’m using the Glance CLI version 2.1.0.</p>
+
+<pre><code class="language-bash">ubuntu@devstack:~$ glance --version
+2.1.0
+</code></pre>
+
+<p>Next, upload an image to the Swift backend.</p>
+
+<pre><code class="language-bash">ubuntu@devstack:~$ glance --os-image-api-version 1 image-create --store swift --name swift-cirros --disk-format qcow2 --container-format bare --is-public True --file cirros-0.3.4-x86_64-disk.img 
++------------------+--------------------------------------+
+| Property         | Value                                |
++------------------+--------------------------------------+
+| checksum         | ee1eca47dc88f4879d8a229cc70a07c6     |
+| container_format | bare                                 |
+| created_at       | 2016-07-09T03:07:09.000000           |
+| deleted          | False                                |
+| deleted_at       | None                                 |
+| disk_format      | qcow2                                |
+| id               | a8dc5259-9579-4cff-be0a-f175278f60f3 |
+| is_public        | True                                 |
+| min_disk         | 0                                    |
+| min_ram          | 0                                    |
+| name             | swift-cirros                         |
+| owner            | fc42df31d6c84c04b55cf116e06c2b38     |
+| protected        | False                                |
+| size             | 13287936                             |
+| status           | active                               |
+| updated_at       | 2016-07-09T03:07:11.000000           |
+| virtual_size     | None                                 |
++------------------+--------------------------------------+
+</code></pre>
+
+<p>Now upload another image, this time using the file backend.</p>
+
+<pre><code class="language-bash">ubuntu@devstack:~$ glance --os-image-api-version 1 image-create --store file --name file-cirros --disk-format qcow2 --container-format bare --is-public True --file cirros-0.3.4-x86_64-disk.img 
++------------------+--------------------------------------+
+| Property         | Value                                |
++------------------+--------------------------------------+
+| checksum         | ee1eca47dc88f4879d8a229cc70a07c6     |
+| container_format | bare                                 |
+| created_at       | 2016-07-09T03:07:55.000000           |
+| deleted          | False                                |
+| deleted_at       | None                                 |
+| disk_format      | qcow2                                |
+| id               | e361ad97-6336-45d9-9c6a-e461ed91126d |
+| is_public        | True                                 |
+| min_disk         | 0                                    |
+| min_ram          | 0                                    |
+| name             | file-cirros                          |
+| owner            | fc42df31d6c84c04b55cf116e06c2b38     |
+| protected        | False                                |
+| size             | 13287936                             |
+| status           | active                               |
+| updated_at       | 2016-07-09T03:07:55.000000           |
+| virtual_size     | None                                 |
++------------------+--------------------------------------+
+</code></pre>
+
+<p>We can peek into the Glance database to see where the image_location is.</p>
+
+<pre><code class="language-bash">mysql&gt; select value from image_locations where image_id = "e361ad97-6336-45d9-9c6a-e461ed91126d";
++---------------------------------------------------------------------------+
+| value                                                                     |
++---------------------------------------------------------------------------+
+| file:///opt/stack/data/glance/images/e361ad97-6336-45d9-9c6a-e461ed91126d |
++---------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; select value from image_locations where image_id = "a8dc5259-9579-4cff-be0a-f175278f60f3";
++-----------------------------------------------------------------+
+| value                                                           |
++-----------------------------------------------------------------+
+| swift+config://ref1/glance/a8dc5259-9579-4cff-be0a-f175278f60f3 |
++-----------------------------------------------------------------+
+1 row in set (0.01 sec)
+</code></pre>
+
+<p>As can be seen above, the swift-cirros image is stored in the Swift backend, and the file-cirros image is stored in the file based backend. I was quite surprised to learn this was possible, and even more surprised to see that the option does not seem to be in the Glance V2 API…and even more surprised that the Glance CLI has different options based on the API used.</p>
+
+<p>There’s always something to learn about OpenStack. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

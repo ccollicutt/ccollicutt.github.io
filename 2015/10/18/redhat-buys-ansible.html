@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thoughts on Redhat buying Ansible | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Thoughts on Redhat buying Ansible">
+
+    
+    <meta name="twitter:description" content="<p>Recently Redhat bought Ansible. Most people went “yay!”, but I, as the curmundgeonly sysadmin, said “that sucks…for me.”</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Recently Redhat bought Ansible. Most people went “yay!”, but I, as the curmundgeonly sysadmin, said “that sucks…for me.”</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/redhat-buys-ansible.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/redhat-buys-ansible.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Thoughts on Redhat buying Ansible" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/10/18/redhat-buys-ansible.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Thoughts on Redhat buying Ansible</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-10-18T00:00:00-04:00">
+                October 18, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Recently Redhat bought Ansible. Most people went “yay!”, but I, as the curmundgeonly sysadmin, said “that sucks…for me.”</p>
+
+<h2 id="the-exit">The “exit”</h2>
+
+<p>People seem happy that Redhat bought Ansible–there were many congratulatory tweets. It appeared that, at least on the surface, most thought it was a good exit for Ansible. $150 million. Pay back those VCs, and slip back into the comforting arms of old softy Redhat.</p>
+
+<p>However, I don’t think it’s good for me, and I think that’s an Ok position to take–as a long time user I think I should get some kind of pass. The company I work for also purchased Ansible Tower so we weren’t just using it for free either. Also I think it’s the only open source project that I can actually say I contributed some code to (even if that code was only used by myself).</p>
+
+<p>There are different views on how companies exit. I think most people would consider me contrarian. To that point, I don’t know if companies should exit. What does that even mean? In startup terms, I think exit usually means either go IPO, or get bought out–both so that you can repay the venture capitalists. However, those are not the only options for a company. In fact, despite not being an economist by any stretch of the imagination, I feel like there is a lot of value in our economies that is made up of small or medium sized businesses–companies that aren’t part of some conglomerate “ecosystem,” ie. sales machine.</p>
+
+<p>Puppet and Chef are still individual organizations. However, it seems like at some point they too will be bought up by a larger conglomerate like, I guess, EMC/Dell, uh, IBM?, Cisco–companies that many people think are <a href="http://www.wired.com/2015/10/meet-walking-dead-hp-cisco-dell-emc-ibm-oracle/">doomed</a>. Or I suppose their real goal is to IPO. Ugh.</p>
+
+<blockquote>
+  <p>HP. CISCO. DELL. EMC. IBM. Oracle. Think of them as the walking dead. Oh, sure, they’ll shuffle along for some time. They’ll sell some stuff. They’ll make some money. They’ll command some headlines. They may even do some new things. But as tech giants, they’re dead. (<a href="http://www.wired.com/2015/10/meet-walking-dead-hp-cisco-dell-emc-ibm-oracle/">wired</a>)</p>
+</blockquote>
+
+<p>Does Redhat fit into that list as well? If not, why not? Is Redhat a niche company or is it the open-source EMC? Or is it something completely different? (Unlikely.)</p>
+
+<p>As of this moment, Redhat has a market cap of about 14 billion. Their PE is about 74. I think they are over-valued, otherwise I’d actually own their stock. This <a href="http://techcrunch.com/2014/02/13/please-dont-tell-me-you-want-to-be-the-next-red-hat/">article</a> talks a bit about the problems with open source companies. Redhat is a one-off situation. I don’t know if we’ll see something like Redhat again for some time. For whatever reason, the business/finance world is much different than the innovation world. So we end up with companies like EMC and Redhat kind of fuddling along, extracting boring cash for newish systems from enterprise companies, who for the most part are moving to AWS, or other public clouds. (Great, now I’ve confused myself.)</p>
+
+<h2 id="redhat-acquisitions">Redhat acquisitions</h2>
+
+<p>There’s a nice list of acquisitions made by Redhat <a href="https://en.wikipedia.org/wiki/Red_Hat#Mergers_and_acquisitions">here</a>. Their model seems to be to pick up small companies that produce valuable open source systems, and to do so for about 100 million. In that respect I don’t see them picking up anything else I use, other than perhaps haproxy. MariaDB would probably be too expensive for them. OpenStack is run by a foundation so you can’t really buy it, though you can buy expertise, just like Redhat did with eNovance. Codership, who I believe makes the galera component of MySQL/MariaDB (I may be wrong) might be something good to look into.</p>
+
+<p>Examples:</p>
+
+<ul>
+  <li>JBoss - Which they bought for $420 million in 2006 (I’ve never used it)</li>
+  <li>KVM</li>
+  <li>Gluster</li>
+  <li>Ceph/Inktank</li>
+  <li>eNovance (OpenStack consultants)</li>
+  <li>Ansible</li>
+</ul>
+
+<p>KVM is probably the most important piece of software they’ve “picked up” and I have to admit it seems to be doing fine. It’s what I use with Ubuntu. Gluster and Ceph also seem to be doing fine too. eNovance I only added because it is OpenStack related. So just based on that list perhaps I shouldn’t be too concerned.</p>
+
+<h2 id="configuration-management-tools">Configuration management tools</h2>
+
+<p>I’ve used Chef and Puppet enough to know that I don’t enjoy using them. I have preferred Ansible and run a large OpenStack system exclusively with it. However, it certainly has limitations, as does every other configuration management (or automation? or orchestration?) system. I’m not super happy with any of them, though I definitely feel like Day 1 (ie. the installation) is easy, but what about day 40? Or day 200? Ansible seems a better fit for actually operating a system over time. For example, I’m not clear on how one would migrate a bunch of databases from one cluster to another using Puppet, but then again I haven’t looked too hard. Puppet seems like the Java of configuration management. But I digress…</p>
+
+<h2 id="inability-to-compete">Inability to compete</h2>
+
+<p>As a company, Ansible is quite small. I believe about 50 people. I’m sure Puppet has more than 300. (Aside: I was in the Puppet office once. It’s the nicest office I have ever been in. Full kitchen. Beer. Presentation space. It was way too nice. It was spooky.) Presumably Chef is similar in size and funding to Puppet. They are bigger than Ansible and better funded (to what end, I don’t know). They have sales teams with white boards and quotas; perhaps dreams of an IPO.</p>
+
+<p>Funding (pulled from <a href="http://crunchbase.com">Crunchbase</a>:)</p>
+
+<ul>
+  <li>Chef - $137 million in 6 rounds</li>
+  <li>Puppet - $85 million in 5 rounds</li>
+  <li>Ansible - $6 million in 1 round, then bought for about $150 million</li>
+  <li>SaltStack - $685K in a seed round (probably a good deal–someone buy them)</li>
+</ul>
+
+<p>So Puppet and Chef are big. Puppet is probably working on another round of funding. They are both putting out features like nobody’s business, with Puppet releasing some kind of orchestration engine and Chef with a continuous delivery system.</p>
+
+<p>Basically, I’m sure Ansible felt much too small and underfunded to “take on” Puppet and Chef. Or perhaps they didn’t feel like they had the staff to keep up with all the changes coming into Ansible from the public, ie. they couldn’t merge all the pull requests in a timely fashion. Either way, too small. Not enough cash to burn on hiring for the short term as Ansible matures as a CM. Which is too bad, because I think they should have found a way to stay small, but that may not be possible with an open source license.</p>
+
+<h2 id="the-future-of-cm">The future of CM</h2>
+
+<p>My feeling is that CM products aren’t doing a great job. That we need something different, and that it might be at the OS layer. But we’re so entrenched with the OS that it will take a long, long time before anything changes there. Perhaps AWS’ Lambda is closest to something really new, something really different. Even though I’ve been managing servers for over a decade, I don’t think all these servers is a good thing–it seems like a waste of resources, not only to run them but also to manage them with a CM. Sure, we have all these new container scheduler systems, but I don’t think that’s the endgame. Containers are great but virtual machines are only 2% overhead anyways, so where’s the gain? Boot up time? Who knows.</p>
+
+<h2 id="in-the-end">In the end</h2>
+
+<p>I do think Redhat managed to obtain a great company for a reasonable amount of money (considerably less than what VCs will be trying to extract from Puppet/Chef). So it will be good for Redhat. However, I don’t think it will be good for me, as a long time Ansible user. I’m sure Redhat will put more resources (especially sales, lol) towards Ansible, but I imagine a lot of those resources will be going towards integrating Ansible into the Redhat stable of products, and not necessarily towards making Ansible better for people like myself, who, right now anyways, don’t use any Redhat products.</p>
+
+<p>Further more, if Redhat is such an unusual company, and with AWS absorbing enterprise IT like a black hole, and huge sales organizations like EMC failing, soon Redhat itself will crumble. Which is scary.</p>
+
+<p>Finally, one has to wonder how open source makes money. I need to do some research into smaller, private companies that provide open source software. I have a feeling there are quite a few software-as-a-service companies that are doing Ok, but otherwise…it’s complicated. Just based on my current investigation, I don’t think I would start a company that completely open sources its product, nor would I aim for exiting to pay back venture capitalists. Frankly I don’t see the issue with small, non-public companies, and perhaps I’m projecting that onto Ansible. Hashicorp will be one to watch, though they may be an aberration.</p>
+
+<p>Anyways, looking forward to Cloudforms (whatever that is) integrating with Ansible, and also looking forward to exploring other methods of system automation.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

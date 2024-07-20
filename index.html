@@ -1,15 +1,624 @@
----
-layout: default
-title: Serverascode - Kubernetes, SDN, Distributed Systems, and more...
----
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
 
-<!-- version 3 (just for updating) -->
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="">
 
-       <div id="home">
-          <h1>Blog Posts</h1>
-          <ul class="posts">
-            {% for post in site.posts %}
-              <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-            {% endfor %}
-          </ul>
+    
+    <meta name="twitter:description" content="A blog about technology">
+    <meta property="og:description" content="A blog about technology" />
+    
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="flex flex-col items-center">
+    
+
+    
+</div>
+
+<!-- Latest Issues section -->
+<div id="latest-issues" class="mt-16">
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold mb-2">Latest Issues</h2>
+        <a href="/archive.html" class="text-sm text-gray-600 hover:text-gray-900 transition duration-300 underline">ARCHIVE</a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        
+        <a href="/2024/05/16/fine-tuning-llms-part-one-getting-started.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/fine-tuning-llms-200w.png" alt="Fine Tuning LLMs: Part 1 - Just Getting Started" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">Fine Tuning LLMs: Part 1 - Just Getting Started</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/2024/04/23/ollama-running-locally.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/ollama-llama-200w.png" alt="Ollama & Llama 3:8b Running Locally" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">Ollama & Llama 3:8b Running Locally</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/2023/12/18/cyberpunk-weekend-3.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/cyberpunk-weekend-3-200w.png" alt="My Cyberpunk Weekend - Part 3: Using Docker and GPUs" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">My Cyberpunk Weekend - Part 3: Using Docker and GPUs</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/2023/12/10/cyberpunk-weekend-2.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/cyberpunk-weekend-2-200w.png" alt="My Cyberpunk Weekend - Part 2: The Llama" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">My Cyberpunk Weekend - Part 2: The Llama</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/2023/12/04/cyberpunk-weekend.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/cyberpunk-weekend-1-200w.png" alt="My Cyberpunk Weekend - Part 1: The Video Card (Or Neural Core, Take Your Pick)" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">My Cyberpunk Weekend - Part 1: The Video Card (Or Neural Core, Take Your Pick)</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/2023/11/23/reloader-kubernetes.html" class="block">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl aspect-[2/3] relative group">
+                
+                <img src="/img/magazine-cards/reloader-200w.png" alt="Restarting Kubernetes Pods When There Are New Secrets With Reloader" class="object-cover w-full h-full">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <h3 class="bubbly-font text-xl font-bold text-white text-center px-4">Restarting Kubernetes Pods When There Are New Secrets With Reloader</h3>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+</div>
+
+<hr class="my-16">
+
+<!-- Tidal Series section -->
+<div id="tidal-series" class="mt-16">
+    
+    <h2 class="text-2xl font-bold mb-6 text-center">Latest From Our Sister Publication Tidal Series</h2>
+    <div class="w-full">
+        <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-[1.02] hover:shadow-xl">
+            <a href="https://tidalseries.com/the-software-crisis-continues/" class="block">
+                <div class="aspect-[1920/1080] bg-gray-200">
+                    <img src="/img/tidalseries/software-crisis-software-glut-and-software-plop.png" alt="Software Crisis, Software Glut, and Software Plop" class="object-cover w-full h-full">
+                </div>
+            </a>
+            <div class="p-6">
+                <p class="text-gray-300 text-lg mb-4">Discussion of the increasing complexity facing humanity is unavoidable. We've been in a "software crisis" since at least 1968. Will AI programming, which we might call "plop," make things better...or worse? Are we doomed to 500+ generations of unsafe computers? </p>
+                <a href="https://tidalseries.com/the-software-crisis-continues/" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+                    Read More
+                </a>
+                <a href="https://tidalseries.com/#/portal/signup" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition duration-300">
+                    Subscribe
+                </a>
+            </div>
         </div>
+    </div>
+    
+</div>
+
+<hr class="my-16">
+
+<!-- Connect with me section -->
+<div id="connect-with-me" class="mt-16">
+    <h2 class="text-2xl font-bold mb-6 text-center">Connect With Me</h2>
+    <div class="space-y-4"> 
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://serverascode.com" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/author/curtis.jpg');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">Curtis Collicutt</h3>
+                    <p class="text-sm text-gray-600">I wrote all this, such as it is. Let me know what you think! Today, I work to help organizations determine what cybersecurity outcomes they need to be a truly successful business, and then I work with them to build a plan to achieve those outcomes. That can mean enabling certain technologies or understanding how to become more human-centric in the application of tools.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/tidalseries.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">TIDAL SERIES Newsletter</h3>
+                    <p class="text-sm text-gray-600">I also write a weekly newsletter called TIDAL SERIES that deals with artificial intelligence, cybersecurity, and how we can work to make technology more human centric. Please sign up and tell your friends.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/linkedin.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">LinkedIn</h3>
+                    <p class="text-sm text-gray-600">Is LinkedIn the only social media platform that actually kinda works? I use it a lot, so connect with me there.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://taico.ca" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/taico.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/taico.png" alt="TAICO - The Toronto AI and Cybersecurity Organization" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">TAICO - The Toronto AI and Cybersecurity Organization</h3>
+                    <p class="text-sm text-gray-600">I've been working with my fellow TAICO organizers to build a community of AI and cybersecurity professionals in Toronto. We have meetups, workshops, and we get together to talk about the latest trends in AI and cybersecurity and to build cool stuff.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/github.jpg');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/github.jpg" alt="GitHub" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">GitHub</h3>
+                    <p class="text-sm text-gray-600">Check out my open source projects. There are a lot of them there. I cleaned them up once. Once.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class="hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg shadow-md overflow-hidden">
+            
+                <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer" class="block">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/huggingface.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/huggingface.png" alt="Hugging Face" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">Hugging Face</h3>
+                    <p class="text-sm text-gray-600">Explore my AI models and datasets as I explore AI models and datasets.</p>
+                </div>
+            </div>
+            
+                </a>
+            
+        </div>
+        
+        <div class=" bg-white rounded-lg shadow-md overflow-hidden">
+            
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/img/cards/ryker.png');"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-white transform skew-x-12 translate-x-full md:translate-x-1/2"></div>
+                    <img src="/img/cards/ryker.png" alt="Ryker" class="w-full h-20 md:h-40 object-cover invisible">
+                </div>
+                <div class="md:w-3/4 p-3 flex flex-col justify-center">
+                    <h3 class="text-lg font-semibold mb-1">Ryker</h3>
+                    <p class="text-sm text-gray-600">We finished our first sensor sweep of the neutral zone. Yesterday I did not know how to eat gagh. And blowing into maximum warp speed, you appeared for an instant to be in two places at once. Congratulations - you just destroyed the Enterprise. They were just sucked into space. Did you come here for something in particular or just general Riker-bashing? Mr. Worf, you do remember how to fire phasers? Sure.</p>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<hr class="my-16">
+
+<!-- Recent Posts section -->
+<div id="recent-posts" class="mt-16 max-w-4xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6 text-center">More Recent Issues and Blog Posts</h2>
+
+    
+    
+    <ul class="space-y-4 font-mono">
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍎</span>
+            <div class="flex-grow">
+                <a href="/2024/05/16/fine-tuning-llms-part-one-getting-started.html" class="text-lg font-semibold hover:underline">Fine Tuning LLMs: Part 1 - Just Getting Started</a>
+                <p class="text-sm text-gray-600">May 16, 2024</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍐</span>
+            <div class="flex-grow">
+                <a href="/2024/04/23/ollama-running-locally.html" class="text-lg font-semibold hover:underline">Ollama & Llama 3:8b Running Locally</a>
+                <p class="text-sm text-gray-600">April 23, 2024</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍊</span>
+            <div class="flex-grow">
+                <a href="/2023/12/18/cyberpunk-weekend-3.html" class="text-lg font-semibold hover:underline">My Cyberpunk Weekend - Part 3: Using Docker and GPUs</a>
+                <p class="text-sm text-gray-600">December 18, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍋</span>
+            <div class="flex-grow">
+                <a href="/2023/12/10/cyberpunk-weekend-2.html" class="text-lg font-semibold hover:underline">My Cyberpunk Weekend - Part 2: The Llama</a>
+                <p class="text-sm text-gray-600">December 10, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍌</span>
+            <div class="flex-grow">
+                <a href="/2023/12/04/cyberpunk-weekend.html" class="text-lg font-semibold hover:underline">My Cyberpunk Weekend - Part 1: The Video Card (Or Neural Core, Take Your Pick)</a>
+                <p class="text-sm text-gray-600">December 04, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍉</span>
+            <div class="flex-grow">
+                <a href="/2023/11/23/reloader-kubernetes.html" class="text-lg font-semibold hover:underline">Restarting Kubernetes Pods When There Are New Secrets With Reloader</a>
+                <p class="text-sm text-gray-600">November 23, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍇</span>
+            <div class="flex-grow">
+                <a href="/2023/09/02/runasnonroot-vs-runasuser.html" class="text-lg font-semibold hover:underline">Understanding Kubernetes Pod Security: runAsNonRoot and runAsUser</a>
+                <p class="text-sm text-gray-600">September 02, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍓</span>
+            <div class="flex-grow">
+                <a href="/2023/09/02/pid-one-gunicorn-kubernetes.html" class="text-lg font-semibold hover:underline">Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes</a>
+                <p class="text-sm text-gray-600">September 02, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🫐</span>
+            <div class="flex-grow">
+                <a href="/2023/08/12/three-steps-to-a-default-secure-kubernetes.html" class="text-lg font-semibold hover:underline">Three Steps to a Default Secure Kubernetes</a>
+                <p class="text-sm text-gray-600">August 12, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍒</span>
+            <div class="flex-grow">
+                <a href="/2023/08/02/making-pod-security-standards-default.html" class="text-lg font-semibold hover:underline">Making Pod Security Standards the Default in Kubernetes</a>
+                <p class="text-sm text-gray-600">August 02, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍎</span>
+            <div class="flex-grow">
+                <a href="/2023/07/30/chain-link-kubernetes-python-application.html" class="text-lg font-semibold hover:underline">Chain-Link - A Chain of Services in Kubernetes</a>
+                <p class="text-sm text-gray-600">July 30, 2023</p>
+            </div>
+        </li>
+        
+        
+        <li class="flex items-center border-b pb-4">
+            <span class="large-fruit mr-4 text-2xl">🍐</span>
+            <div class="flex-grow">
+                <a href="/2023/07/29/blockfriday-kubernetes-admission-controller.html" class="text-lg font-semibold hover:underline">blockfriday - Blocking Kubernetes Deployments with an Admission Controller</a>
+                <p class="text-sm text-gray-600">July 29, 2023</p>
+            </div>
+        </li>
+        
+    </ul>
+</div>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes on MySQL, MariaDB, and Galera | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Notes on MySQL, MariaDB, and Galera">
+
+    
+    <meta name="twitter:description" content="<p>This is just a set of random notes on MySQL, MariaDB, Galera, other database related thoughts, and googling results for test databases and performance testing MySQL/MariaDB as I work towards getting a better understanding of my MariaDB galera cluster.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>This is just a set of random notes on MySQL, MariaDB, Galera, other database related thoughts, and googling results for test databases and performance testing MySQL/MariaDB as I work towards getting a better understanding of my MariaDB galera cluster.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/notes-on-mysql-galera-mariadb.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/notes-on-mysql-galera-mariadb.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Notes on MySQL, MariaDB, and Galera" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/09/25/notes-on-mysql-galera-mariadb.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Notes on MySQL, MariaDB, and Galera</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-09-25T00:00:00-04:00">
+                September 25, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>This is just a set of random notes on MySQL, MariaDB, Galera, other database related thoughts, and googling results for test databases and performance testing MySQL/MariaDB as I work towards getting a better understanding of my MariaDB galera cluster.</p>
+
+<h2 id="mariadb-cluster">MariaDB Cluster</h2>
+
+<p>I’ve got a MariaDB cluster made up (well, as of right this moment) 3 nodes on one network and a garbd on another. This is not the right way to do this, but again, this is just a set of notes. Eventually I’ll have 3 networks (in test) that are meant to represent 3 data centers. Two networks will have 3 nodes on each (for a total of 6) and another network a single garbd server. What I’m aiming for is for any of the DCs to go down and to still have a working cluster in the remaining DC. The nodes are all virtual machines.</p>
+
+<p>I’m a bit behind on my MariaDB version, so I’m still back on 5.5, but that is what is in production right now so that is what I need to test with.</p>
+
+<pre>
+<code>root@mariadb-1:/home/ubuntu# dpkg --list | grep mariadb
+ii  libmariadbclient18                5.5.45+maria-1~trusty            amd64        MariaDB database client library
+ii  mariadb-client                    5.5.45+maria-1~trusty            all          MariaDB database client (metapackage depending on the latest version)
+ii  mariadb-client-5.5                5.5.45+maria-1~trusty            amd64        MariaDB database client binaries
+ii  mariadb-client-core-5.5           5.5.45+maria-1~trusty            amd64        MariaDB database core client binaries
+ii  mariadb-common                    5.5.45+maria-1~trusty            all          MariaDB database common files (e.g. /etc/mysql/conf.d/mariadb.cnf)
+ii  mariadb-galera-server-5.5         5.5.45+maria-1~trusty            amd64        MariaDB database server with Galera cluster binaries
+</code>
+</pre>
+
+<h2 id="openstack-ansible-galera-playbooks">OpenStack Ansible Galera playbooks</h2>
+
+<p>I (internally) forked the OpenStack Ansible Galera playbooks some time ago. They are a good way to get a MariaDB Galera cluster up and running quickly. The roles can easily be found on the <a href="https://github.com/openstack/openstack-ansible/tree/master/playbooks/roles">github site</a>.</p>
+
+<h2 id="galera-arbitrator-arbiter">Galera-arbitrator (arbiter?)</h2>
+
+<p>Galera-arbitrator (garb or garbd) is a useful service that can help a Galera cluster with maintaining quorum, but doesn’t take up as many resources to run it as it would a full-fledged database server. Usually people who only have two good database servers use garbd on a lower-end server to help with quorum because you shouldn’t have a cluster of two nodes or you’ll end up in split-brain, and split-brain is as bad as it sounds. So if you have MariaDB + Galera on two good servers and garbd on a third (less good) server, then you should be able to avoid split-brain.</p>
+
+<p>In my case I have two datacenters with multiple galera nodes in a large cluster, and I want a garbd running in a third datacenter so that if I lose an entire DC, or the interconnect between them, I don’t end up in split-brain at the datacenter level.</p>
+
+<pre>
+<code>ubuntu@garb-1:~$ dpkg --list | grep galera
+ii  galera-arbitrator-3               25.3.9-trusty                    amd64        Galera arbitrator daemon
+</code>
+</pre>
+
+<p>This is what my /etc/default/garb looks like. Again there are four nodes, which isn’t quite correct, but I’m in testing mode. :)</p>
+
+<pre>
+<code>ubuntu@garb-1:/etc/default$ cat garb 
+# Copyright (C) 2012 Codership Oy
+# This config file is to be sourced by garb service script.
+
+# A space-separated list of node addresses (address[:port]) in the cluster
+GALERA_NODES="192.168.77.6:4567 192.168.44.34:4567 192.168.44.33:4567 192.168.44.32:4567"
+
+# Galera cluster name, should be the same as on the rest of the nodes.
+GALERA_GROUP="rpc_galera_cluster"
+
+# Optional Galera internal options string (e.g. SSL settings)
+# see http://www.codership.com/wiki/doku.php?id=galera_parameters
+# GALERA_OPTIONS=""
+
+# Log file for garbd. Optional, by default logs to syslog
+# LOG_FILE=""
+</code>
+</pre>
+
+<p>This is what the wsrep_incoming_addresses looks like on one of the mariadb nodes.</p>
+
+<pre>
+<code>MariaDB [(none)]&gt; show status like 'wsrep_incoming_addresses';
++--------------------------+-----------------------------------------------------------+
+| Variable_name            | Value                                                     |
++--------------------------+-----------------------------------------------------------+
+| wsrep_incoming_addresses | 192.168.44.33:3306,,192.168.44.34:3306,192.168.44.32:3306 |
++--------------------------+-----------------------------------------------------------+
+1 row in set (0.00 sec)
+</code>
+</pre>
+
+<p>Lots of interesting information. :)</p>
+
+<h2 id="test-fake-databases">Test (fake) databases</h2>
+
+<p>One that I found is the <a href="https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2">employees</a> database. I believe I stumbled upon the existence of the employees test database through <a href="https://www.digitalocean.com/community/tutorials/how-to-measure-mysql-query-performance-with-mysqlslap">this post</a>.</p>
+
+<p>Once you download that and unbzip it, you’ll have these files.</p>
+
+<pre>
+<code>ubuntu@mariadb-1:~/employees_db$ ls
+Changelog                   employees_partitioned.sql  load_dept_emp.dump      load_salaries.dump  README
+employees_partitioned2.sql  employees.sql              load_dept_manager.dump  load_titles.dump    test_employees_md5.sql
+employees_partitioned3.sql  load_departments.dump      load_employees.dump     objects.sql         test_employees_sha.sql
+</code>
+</pre>
+
+<p>Then you can simply import the database using:</p>
+
+<pre>
+<code>$ mysql &lt; employees.sql
+</code>
+</pre>
+
+<p>For example, the salaries table has quite a few entries.</p>
+
+<pre>
+<code>MariaDB [employees]&gt; select count(*) from salaries;
++----------+
+| count(*) |
++----------+
+|  2844047 |
++----------+
+1 row in set (0.70 sec)
+</code>
+</pre>
+
+<h2 id="mysql-procedures">MySQL Procedures</h2>
+
+<p>While I was looking for test databases, I stumbled on <a href="https://stackoverflow.com/questions/3766282/fill-database-tables-with-a-large-amount-of-test-data">this stackoverflow post</a> that had an example prepared statement in it. I figured why not give it a try, I’d never used a prepared statement in MySQL before. Another technology to look into…</p>
+
+<pre>
+<code>root@mariadb-1:/home/ubuntu# cat fake_data.sql 
+CREATE TABLE your_table (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, val int);
+DELIMITER $$
+CREATE PROCEDURE prepare_data()
+BEGIN
+  DECLARE i INT DEFAULT 100;
+
+  WHILE i &lt; 100000 DO
+    INSERT INTO your_table (val) VALUES (i);
+    SET i = i + 1;
+  END WHILE;
+END$$
+DELIMITER ;
+-- CALL prepare_data()
+</code>
+</pre>
+
+<p>All it’s going to do is create a table called “your_table” and load ~100000 entries into it.</p>
+
+<p>I ran it a few times to try it out.</p>
+
+<pre>
+<code>MariaDB [fake_data]&gt; select count(*) from your_table;
++----------+
+| count(*) |
++----------+
+|   299700 |
++----------+
+1 row in set (0.16 sec)
+</code>
+</pre>
+
+<p>Here’s how to list the procedures.</p>
+
+<pre>
+<code>MariaDB [fake_data]&gt; SHOW PROCEDURE STATUS;
++-----------+--------------+-----------+---------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db        | Name         | Type      | Definer | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-----------+--------------+-----------+---------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| fake_data | prepare_data | PROCEDURE | root@%  | 2015-09-25 22:27:16 | 2015-09-25 22:27:16 | DEFINER       |         | utf8                 | utf8_general_ci      | utf8_unicode_ci    |
++-----------+--------------+-----------+---------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.02 sec)
+</code>
+</pre>
+
+<h2 id="size-of-databases">Size of databases</h2>
+
+<p>Here’s one way to get the size of the databases in your MySQL/MariaDB cluster. This was borrowed from <a href="https://stackoverflow.com/questions/1733507/how-to-get-size-of-mysql-database">this stackoverflow post</a>. (I guess I use stackoverflow questions/answers more than I thought.)</p>
+
+<pre>
+<code>MariaDB [(none)]&gt; SELECT table_schema "table name", sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB" 
+    -&gt; FROM information_schema.TABLES GROUP BY table_schema ; 
++--------------------+----------------------+
+| table name         | Data Base Size in MB |
++--------------------+----------------------+
+| employees          |         197.43750000 |
+| fake_data          |           8.51562500 |
+| information_schema |           0.15625000 |
+| mysql              |           0.62678719 |
+| performance_schema |           0.00000000 |
+| sysbench           |        4752.00000000 |
++--------------------+----------------------+
+6 rows in set (0.14 sec)
+</code>
+</pre>
+
+<h2 id="sysbench">sysbench</h2>
+
+<p>I put up a quick Ansible playbook that installs the lastest sysbench <a href="https://gist.github.com/ccollicutt/2a96ca4f03a7f18b9da9">here</a>. Currently that is version 0.5. Apparently 0.5 adds the ability to use lua scripts, and in fact comes with some example scripts which I use below.</p>
+
+<p>Following <a href="http://blog.secaserver.com/2014/07/sysbench-0-5-ubuntu-14-04-trusty-percona-server-xtradb-cluster/">this post</a> I setup and ran tests using the below commands (where all the right databases and users and permissions and such were put into place).</p>
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ cat sysbench-prepare-test.sh 
+#!/bin/bash
+
+sysbench \
+--db-driver=mysql \
+--mysql-table-engine=innodb \
+--oltp-table-size=20000000 \
+--mysql-host=192.168.44.34 \
+--mysql-db=sysbench \
+--mysql-port=3306 \
+--mysql-user=sysbench \
+--mysql-password=syb3nch \
+--test=/usr/local/src/sysbench/sysbench/tests/db/oltp.lua \
+prepare
+</code>
+</pre>
+
+<p>20000000 records is probably way to many for the size of servers I’m using now (which is about 4 gigs of memory per MariaDB node).</p>
+
+<p>This is the test run script:</p>
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ cat sysbench-run-test.sh 
+#!/bin/bash
+
+sysbench \
+--db-driver=mysql \
+--num-threads=8 \
+--max-requests=50000 \
+--oltp-table-size=20000000 \
+--oltp-test-mode=complex \
+--test=/usr/local/src/sysbench/sysbench/tests/db/oltp.lua \
+--mysql-host=192.168.44.34 \
+--mysql-db=sysbench \
+--mysql-port=3306 \
+--mysql-user=sysbench \
+--mysql-password=syb3nch \
+run
+</code>
+</pre>
+
+<p>And the results of running that test:</p>
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ ./sysbench-run-test.sh 
+sysbench 0.5:  multi-threaded system evaluation benchmark
+
+Running the test with following options:
+Number of threads: 8
+Random number generator seed is 0 and will be ignored
+
+
+Threads started!
+
+OLTP test statistics:
+    queries performed:
+        read:                            700000
+        write:                           200000
+        other:                           100000
+        total:                           1000000
+    transactions:                        50000  (309.68 per sec.)
+    read/write requests:                 900000 (5574.19 per sec.)
+    other operations:                    100000 (619.35 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          161.4584s
+    total number of events:              50000
+    total time taken by event execution: 1291.3610s
+    response time:
+         min:                                  7.33ms
+         avg:                                 25.83ms
+         max:                                172.26ms
+         approx.  95 percentile:              43.51ms
+
+Threads fairness:
+    events (avg/stddev):           6250.0000/118.29
+    execution time (avg/stddev):   161.4201/0.01
+
+</code>
+</pre>
+
+<p>When I dropped the number of entries to 50000, these are my results.</p>
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ ./sysbench-run-test.sh 
+sysbench 0.5:  multi-threaded system evaluation benchmark
+
+Running the test with following options:
+Number of threads: 8
+Random number generator seed is 0 and will be ignored
+
+
+Threads started!
+
+^[9OLTP test statistics:
+    queries performed:
+        read:                            700000
+        write:                           200000
+        other:                           100000
+        total:                           1000000
+    transactions:                        50000  (270.09 per sec.)
+    read/write requests:                 900000 (4861.63 per sec.)
+    other operations:                    100000 (540.18 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          185.1233s
+    total number of events:              50000
+    total time taken by event execution: 1480.6339s
+    response time:
+         min:                                  7.53ms
+         avg:                                 29.61ms
+         max:                                269.02ms
+         approx.  95 percentile:              50.34ms
+
+Threads fairness:
+    events (avg/stddev):           6250.0000/158.26
+    execution time (avg/stddev):   185.0792/0.01
+</code>
+</pre>
+
+<p>For some kind of comparison, good or bad, here’s the same test run on a single instance of the default mysql server you get when you install it on Ubuntu trusty. Same instance type as the above tests were run on.</p>
+
+<pre>
+<code>ubuntu@mysql-client-1:/usr/local/bin$ ./sysbench-run-test.sh 
+sysbench 0.5:  multi-threaded system evaluation benchmark
+
+Running the test with following options:
+Number of threads: 8
+Random number generator seed is 0 and will be ignored
+
+
+Threads started!
+
+OLTP test statistics:
+    queries performed:
+        read:                            700000
+        write:                           200000
+        other:                           100000
+        total:                           1000000
+    transactions:                        50000  (511.80 per sec.)
+    read/write requests:                 900000 (9212.48 per sec.)
+    other operations:                    100000 (1023.61 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          97.6936s
+    total number of events:              50000
+    total time taken by event execution: 781.2354s
+    response time:
+         min:                                  5.55ms
+         avg:                                 15.62ms
+         max:                                234.14ms
+         approx.  95 percentile:              24.31ms
+
+Threads fairness:
+    events (avg/stddev):           6250.0000/163.33
+    execution time (avg/stddev):   97.6544/0.01
+
+</code>
+</pre>
+
+<h2 id="more-work-to-do">More work to do</h2>
+
+<p>So, like I said, these are just a bunch of notes I took when messing around with a virtual Galera cluster and doing some basic research into performance testing. I’ll update this post as I continue on. Now that I have a virtualized test cluster that I can destroy and rebuild at will I can really get into understanding how it works and what the failure domains are, as well as how it performs. Eventually I would like to get <a href="https://mariadb.com/products/mariadb-maxscale">MariaDB MaxScale</a> into the loop as well, and send writes to one host and reads to all.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStack 2012 Summit Day &#35;3 | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenStack 2012 Summit Day &#35;3">
+
+    
+    <meta name="twitter:description" content="<h2 id="keynotes">Keynotes</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="keynotes">Keynotes</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/openstack-summit-day-3.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/openstack-summit-day-3.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenStack 2012 Summit Day &#35;3" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/10/17/openstack-summit-day-3.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenStack 2012 Summit Day &#35;3</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-10-17T00:00:00-04:00">
+                October 17, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="keynotes">Keynotes</h2>
+
+<p>HP says something enterprise business-like. Not too sure. 100s of billions of “spend” available. Capex -&gt; Opex. Many, many slides with business pictographs.</p>
+
+<p><a href="https://twitter.com/troytoman">Troy Toman</a> from Rackspace talks about how proud they are of OpenStack. Brags about how Rackspace’s contribution percentage has actually reduced from 54% in Essex and 30% in Folsom and how that is a good thing, which it is. :)</p>
+
+<p>Notes from Rackspace’s production usage of OpenStack:</p>
+<ul>
+  <li>They have Quantum and <a href="http://wiki.openstack.org/Melange">Melange</a> in production</li>
+  <li>Glance is backed by Swift</li>
+  <li>They have deployed the Cells code; at least three cells in each regon</li>
+  <li>Three regions worldwide</li>
+  <li>All of the “control” pieces, eg. API servers, are running on a private OpenStack cloud; an internal infrastructure called <em>inova</em></li>
+  <li>Continuous delivery model for building and deploying to cloud–they pull from trunk at least once a day, and do this in under and hour, and have been deploying this once a week or so.</li>
+  <li>Fail fast fix fast</li>
+  <li>Coming soon: block storage and network products</li>
+  <li>Releasing PHP and Java cloud SDKs</li>
+</ul>
+
+<p>Cisco Webex talks about what they do. Lots of open source technologies…puppet, salt, cobbler, etc to run a private cloud so they have “one throat to choke”.</p>
+
+<h2 id="service-resiliency-doesnt-always-mean-ha-or-cluster">Service Resiliency Doesn’t Always mean “HA” or “Cluster”</h2>
+
+<p>The guys from CloudScaling talk about redundancy patterns. This was actually pretty fascinating, and looks like they have taken care of a lot of scale-out redundancy, specifically not “HA-mmer” pairs, all the way up to the DB level, at which part they fall back to MMR MySQL.</p>
+
+<h1 id="ha-pairs-are-not-the-only-type-of-redundancy">“HA” pairs are not the only type of redundancy</h1>
+<ul>
+  <li>Airplanes require seven catastrophic failures to fall out of the sky, whereas with HA pairs you just need one layer to fail</li>
+  <li>Create small failure domains that don’t propagate = scale up
+    <h1 id="alternative-redundancy-patterns">Alternative redundancy patterns</h1>
+    <h1 id="redundancy-patterns-in-open-source-cloud-software">Redundancy patterns in Open Source Cloud Software</h1>
+  </li>
+</ul>
+
+<p>CloudScaling have come up with a methodology for “HA” they call Service Distribution.</p>
+
+<p>Service Distribution</p>
+<ul>
+  <li>Resilient</li>
+  <li>Stateless</li>
+  <li>Scale-out</li>
+  <li>Implementation</li>
+  <li>OSPF (quagga), Anycast (zebra), Load-balancing proxy (pound)</li>
+  <li>Perfect for site resiliency</li>
+  <li>Traditional HA pairs don’t support this</li>
+  <li>Use ZeroMQ (peer-to-peer) vs RabittMQ and CloudScaling contributed the code back to OpenStack for ZeroMQ</li>
+  <li>Making data centers look like ISP backbones</li>
+</ul>
+<p></p>
+
+<h2 id="cirros-cloud-init-the-future-of-cloud-guests">CirrOS, cloud-init: the future of cloud guests</h2>
+
+<p>I think the dev sessions are really about starting conversations that will be finished elsewhere, and if you aren’t fairly deep into the topic there’s not a lot of ways to get your head into the session. I’ve felt the pain of the lack of Cloud-init in Redhat. I’m surprised that there is just one person creating Cirros.</p>
+
+<p>Topics Covered</p>
+<ul>
+  <li>Cirros</li>
+  <li>Cloud-init</li>
+  <li>Config drive 2</li>
+  <li>Execute code from metadata in various ways</li>
+</ul>
+
+<h2 id="adding-openvz-support-to-nova">Adding OpenVZ support to Nova</h2>
+
+<p>Rackspace has code that will eventually make it’s way into trunk for using OpenVZ in OpenStack. The session leader, Devananda van der Veen,  has created a way to build an OpenVZ kernel on Ubuntu. Rackspace uses OpenVZ to run their cloud database system because they get better performance than using something like KVM for virtualization.</p>
+
+<ul>
+  <li><a href="https://github.com/openstack-ci/devstack-gate">devstack-gate</a></li>
+  <li><a href="http://etherpad.openstack.org/grizzly-nova-openvz">Etherpad for this session</a></li>
+</ul>
+
+<p>Most of the discussion was about how to get the OpenVZ driver into the OpenStack continuous integration system.</p>
+
+<h2 id="cloud-hosted-desktops-and-openstack">Cloud Hosted Desktops and OpenStack</h2>
+
+<p>Ken Ringdahl, Vice President Engineering, Desktone discusses Desktop as a Service. I’m interested in this topic not because I’m interested in the topic, but because the project I’m currently working on is essentially desktop in the cloud via <a href="https://cwiki.apache.org/VCL/apache-vcl.html">Apache VCL</a> and I’m constantly thinking about how to get off VCL and away from it’s 40k lines of perl, and just use OpenStack with a thin layer on top of it. The reality is that OpenStack has 95% of the code required to implement a service similar to VCL.</p>
+
+<p>So Ken goes through his slides. Mentions VDI and that VDI is hard! Capex, buy more hardware, can’t fit it in their data center, SAN administrators, etc. VDI is tough. But DaaS is not VDI.</p>
+
+<p>The point of the session is that DaaS is a three billion dollar market and is a new business area that OpenStack can access. Further he talks about the fact that running a desktop resource manager/broker on top of OpenStack can create operational and other cost savings. It also allows and organization like Desktone to focus on user experience versus running infrastructure.</p>
+
+<p>Desktops are Different:</p>
+
+<ul>
+  <li>Storage is key</li>
+  <li>Random IO</li>
+  <li>Write intensive IO</li>
+  <li>Scale: 500 servers is a lot, 500 desktops is not</li>
+  <li>Optimize OpenStack for DaaS</li>
+  <li>HA for desktops is different from servers</li>
+  <li>The future of VDI is non-persistence…nothing stored in VMs</li>
+  <li>
+    <h1 id="of-vms-under-management-requires-a-different-approach">of VMs under management requires a different approach</h1>
+  </li>
+  <li>Eg. VM and guest state changes</li>
+  <li>Monitoring is critically important</li>
+  <li>DaaS encompasses all parts of OpenStack</li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

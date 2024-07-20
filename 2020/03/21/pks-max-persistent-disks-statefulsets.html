@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKS and Persistent Volumes | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="PKS and Persistent Volumes">
+
+    
+    <meta name="twitter:description" content="<p>I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> as a Solutions Engineer. Occasionally customers ask me numbers questions, by that I mean they ask about so called “speeds and feeds” like “How many of this can you do?” and “How fast is that?”. The answers to these change all the time, and overall exact numbers aren’t typically important to the business outcomes. That said, sometimes it’s good to explore what the limitation are, and perhaps more importantly <em>where</em> the limitations exist.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> as a Solutions Engineer. Occasionally customers ask me numbers questions, by that I mean they ask about so called “speeds and feeds” like “How many of this can you do?” and “How fast is that?”. The answers to these change all the time, and overall exact numbers aren’t typically important to the business outcomes. That said, sometimes it’s good to explore what the limitation are, and perhaps more importantly <em>where</em> the limitations exist.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/pks-max-persistent-disks-statefulsets.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/pks-max-persistent-disks-statefulsets.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="PKS and Persistent Volumes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2020/03/21/pks-max-persistent-disks-statefulsets.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">PKS and Persistent Volumes</h1>
+        <p class="text-gray-600">
+            <time datetime="2020-03-21T00:00:00-04:00">
+                March 21, 2020
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I work at <a href="https://tanzu.vmware.com/">VMware in the Tanzu group</a> as a Solutions Engineer. Occasionally customers ask me numbers questions, by that I mean they ask about so called “speeds and feeds” like “How many of this can you do?” and “How fast is that?”. The answers to these change all the time, and overall exact numbers aren’t typically important to the business outcomes. That said, sometimes it’s good to explore what the limitation are, and perhaps more importantly <em>where</em> the limitations exist.</p>
+
+<p>Actually, as I write this, I don’t think <em>limitations</em> is the right word, as it’s really about how systems and products work together to create constraints. Yes, I like that better. Constraints.</p>
+
+<h2 id="statefulset">StatefulSet</h2>
+
+<p>In this lab I have:</p>
+
+<ul>
+  <li>vSphere 6.7u3 - Single physical host</li>
+  <li>NSX-t 2.5</li>
+  <li>Harbor 1.10</li>
+  <li>PKS 1.6 and 1.7</li>
+</ul>
+
+<p>PKS has kindly created a small cluster, called small-pks. Actually this cluster is 1.7, but that doesn’t have any bearing on this quick test.</p>
+
+<pre><code>$ pks cluster small-pks
+
+PKS Version:              1.7.0-build.19
+Name:                     small-pks
+K8s Version:              1.16.7
+Plan Name:                small
+UUID:                     f5879fcf-46ec-4a7e-b2cb-7a74004aed87
+Last Action:              UPGRADE
+Last Action State:        succeeded
+Last Action Description:  Instance update completed
+Kubernetes Master Host:   small.example.com
+Kubernetes Master Port:   8443
+Worker Nodes:             3
+Kubernetes Master IP(s):  10.197.123.128
+Network Profile Name:
+</code></pre>
+
+<p>The cluster has 3 worker nodes, so we should be able to get a max of stateful sets that is 3x…something.  But what is that something? I’m making a guess the limitation is not more than 64, so let’s try 200. (This example is <a href="https://github.com/kubernetes/examples/blob/master/staging/volumes/vsphere/simple-statefulset.yaml">from here</a>.)</p>
+
+<pre><code>$ cat simple-statefulset.yaml 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: StatefulSet
+metadata:
+  name: web
+  labels:
+    app: nginx
+spec:
+  serviceName: "nginx"
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 200
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: ci-storage
+</code></pre>
+
+<p>After that runs for a while, I end up stuck with 132 replicas.</p>
+
+<pre><code>$ k get statefulsets
+NAME   READY     AGE
+web    132/200   5h12m
+</code></pre>
+
+<p>Why is that?</p>
+
+<p>Well, it turns out, and <a href="https://orchestration.io/2018/06/13/storage-classes-in-pivotal-container-service-pks/">this post</a> does a better job of discussing it, that vSphere allows for 4 SCSI adapters per virtual machine, and PKS will use 3 of them. Each of those 3 adapters can have 15 disks. Thus we end up with a constraint of 45 disks per vm for use with persistent volumes.</p>
+
+<p>In the image below you can see the vm has 48 disks. 3 disks are for the OS and managing the vm itself via bosh, and are attached to the first SCSI adapter, the other 45 are persistent volumes attached to the remaining 3 adapters. (<a href="https://configmax.vmware.com/guest?vmwareproduct=vSphere&amp;release=vSphere%206.7&amp;categories=1-0.">Here are the maximums for vSphere 6.7</a>.)</p>
+
+<p><img src="/img/vm-disks.jpg" alt="vm disks" /></p>
+
+<p>In the end the constraint is around the number of SCSI adapters possible, how PKS uses them, and how many virtual drives can be attached. With those all in play, we get a constraint of 45 persistent volumes per virtual machine in PKS. Is 45 a lot, a little, or just right? Hard to say. Sounds about right.</p>
+
+<hr />
+
+<p><em>PS. Note that numbers like this change all the time. By the time you read this, maybe it will be higher than 45 PVs per node.</em></p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trying OSPF with Quagga and OpenBGP | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Trying OSPF with Quagga and OpenBGP">
+
+    
+    <meta name="twitter:description" content="<p>I’ve recently being doing some research into Equal Cost Multipath Routing (ECMP) as well as Open Shortest Path First (OSPF).</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I’ve recently being doing some research into Equal Cost Multipath Routing (ECMP) as well as Open Shortest Path First (OSPF).</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/quagga-openospfd.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/quagga-openospfd.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Trying OSPF with Quagga and OpenBGP" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/02/02/quagga-openospfd.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Trying OSPF with Quagga and OpenBGP</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-02-02T00:00:00-05:00">
+                February 02, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’ve recently being doing some research into Equal Cost Multipath Routing (ECMP) as well as Open Shortest Path First (OSPF).</p>
+
+<p>The first thing that I should note is that I have no idea really what I’m doing…I’m just messing around with OSPF really.</p>
+
+<p>I put together a quick <a href="https://github.com/ccollicutt/ansible-ospf-test">Vagrant + Ansible</a> test setup that uses a single OpenBSD router, two Ubuntu Trusty servers and a Trusty client instance. That means the Vagrantfile I created will setup four virtual machines. I used OpenBSD’s ospfd (part of <a href="http://www.openbgpd.org/">OpenBGP</a>) and <a href="http://www.nongnu.org/quagga/">Quagga</a> on the Ubuntu hosts.</p>
+
+<h2 id="get-started">Get started</h2>
+
+<pre>
+<code>you@workstation$ git clone https://github.com/ccollicutt/ansible-ospf-test
+you@workstation$ cd ansible-ospf-test
+you@workstation$ vagrant up
+SNIP!
+you@workstation$ $ ansible -m ping all
+router | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+client | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+zone0 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+
+zone1 | success &gt;&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+you@workstation$ ansible-playbook site.yml
+SNIP!
+PLAY RECAP ********************************************************************
+client                     : ok=3    changed=1    unreachable=0    failed=0
+router                     : ok=11   changed=8    unreachable=0    failed=0
+zone0                      : ok=9    changed=7    unreachable=0    failed=0
+zone1                      : ok=9    changed=7    unreachable=0    failed=0
+</code>
+</pre>
+
+<h2 id="routes">Routes</h2>
+
+<p>Once that is done we should be able to login to the client and see the default route has changed to 10.0.10.2.</p>
+
+<pre>
+<code>curtis# vagrant ssh client
+SNIP!
+vagrant@client:~$ ip ro sh
+default via 10.0.10.2 dev eth1
+10.0.2.0/24 dev eth0  proto kernel  scope link  src 10.0.2.15
+10.0.10.0/24 dev eth1  proto kernel  scope link  src 10.0.10.10
+</code>
+</pre>
+
+<p>We should be able to ping 172.0.3.10 from the client, and it’ll go through the OpenBSD router, which is at 10.0.10.2.</p>
+
+<pre>
+<code>vagrant@client:~$ ping -c 1 -w 1 172.0.3.10
+PING 172.0.3.10 (172.0.3.10) 56(84) bytes of data.
+64 bytes from 172.0.3.10: icmp_seq=1 ttl=63 time=0.696 ms
+
+--- 172.0.3.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.696/0.696/0.696/0.000 ms
+</code>
+</pre>
+
+<p>The zone servers should have their default gateway set to the internal IP of the OpenBSD router.</p>
+
+<pre>
+<code>vagrant@zone0:~$ ip ro sh
+default via 172.0.1.2 dev eth1
+10.0.2.0/24 dev eth0  proto kernel  scope link  src 10.0.2.15
+172.0.1.0/24 dev eth1  proto kernel  scope link  src 172.0.1.10
+</code>
+</pre>
+
+<p>The router’s table ends up looking like this:</p>
+
+<pre>
+<code>$ route -nv show -inet
+Routing tables
+
+Internet:
+Destination        Gateway            Flags   Refs      Use   Mtu  Prio Iface Label
+default            10.0.2.2           UGS        0     6499     -     8 em0   DHCLIENT 16899
+10.0.2/24          link#1             UC         1        0     -     4 em0
+10.0.2.2           52:54:00:12:35:02  UHLc       2     1060     -     4 em0
+10.0.2.15          08:00:27:53:fe:30  UHLl       0        0     -     1 lo0
+10.0.10/24         link#2             UC         0        0     -     4 em1
+10.0.10.2          08:00:27:b5:8a:87  UHLl       0        0     -     1 lo0
+127/8              127.0.0.1          UGRS       0        4 32768     8 lo0
+127.0.0.1          127.0.0.1          UH         1        0 32768     4 lo0
+172.0.1/24         link#3             UC         2        0     -     4 em2
+172.0.1/24         172.0.1.2          UG         0        0     -    32 em2
+172.0.1.2          08:00:27:99:55:cd  UHLl       1        0     -     1 lo0
+172.0.1.10         08:00:27:e0:98:1b  UHLc       1       12     -     4 em2
+172.0.1.11         08:00:27:b6:ef:74  UHLc       1        9     -     4 em2
+172.0.3.10/32      172.0.1.10         UGP        0       27     -    32 em2
+172.0.3.10/32      172.0.1.11         UGP        0        0     -    32 em2
+224/4              127.0.0.1          URS        0        0 32768     8 lo0
+</code>
+</pre>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Once Ansible has finished, the quagga ospfd.conf file looks like this on both zone servers:</p>
+
+<pre>
+<code>$ vagrant ssh zone1
+SNIP!
+vagrant@zone1:~$ sudo cat /etc/quagga/ospfd.conf
+! -*- ospf v10 -*-
+![]()
+hostname zone1
+password zebra
+enable password zebra
+![]()
+interface eth1
+![]()
+router ospf
+  router-id 172.0.1.11
+  network 172.0.1.11/24 area 0.0.0.0
+  network 172.0.3.0/24 area 0.0.0.0
+log file /var/log/quagga/ospfd.log
+
+</code>
+</pre>
+
+<p>The ospfd.conf file on the OpenBSD box looks like this:</p>
+
+<pre>
+<code>$ sudo cat /etc/ospfd.conf
+router-id 5.5.5.5
+
+area 0.0.0.0 {
+  interface em2 {
+  }
+}
+</code>
+</pre>
+
+<h2 id="ospf-neighbors">ospf neighbors</h2>
+
+<pre>
+<code>$ sudo ospfctl show neighbor
+ID              Pri State        DeadTime Address         Iface     Uptime
+172.0.1.11      1   FULL/BCKUP   00:00:33 172.0.1.11      em2       02:19:25
+172.0.1.10      1   FULL/OTHER   00:00:33 172.0.1.10      em2       02:19:25
+</code>
+</pre>
+
+<h2 id="the-fun-part">The fun part</h2>
+
+<p>Now with all that setup I can start pinging 172.0.3.11, an IP that is on both of the zone servers, then delete it from one and pings will switchover to the other zone server.</p>
+
+<pre>
+<code>vagrant@client:~$ cat ping.sh
+#!/bin/bash
+COUNTER=0
+while true; do
+  if ping -c 1 -w 1 172.0.3.10 &gt; /dev/null; then
+  echo "$COUNTER - 172.0.3.10 is alive"
+  else
+  echo "$COUNTER - 172.0.3.10 is dead"
+  fi
+  let COUNTER=COUNTER+1
+  sleep 1
+done
+vagrant@client:~$ ./ping.sh
+0 - 172.0.3.10 is alive
+1 - 172.0.3.10 is alive
+2 - 172.0.3.10 is alive
+3 - 172.0.3.10 is alive
+4 - 172.0.3.10 is alive
+5 - 172.0.3.10 is alive
+6 - 172.0.3.10 is alive
+7 - 172.0.3.10 is alive
+8 - 172.0.3.10 is dead
+9 - 172.0.3.10 is alive
+10 - 172.0.3.10 is alive
+11 - 172.0.3.10 is alive
+12 - 172.0.3.10 is alive
+13 - 172.0.3.10 is alive
+^C
+</code>
+</pre>
+
+<p>The part where we cat 172.0.3.10 being dead is when I drop it on the zone server currently being used by the OpenBSD router table.</p>
+
+<pre>
+<code>vagrant@zone1:~$ sudo ip add del 172.0.3.10/32 dev eth1
+</code>
+</pre>
+
+<p>Routing table looks like this now:</p>
+
+<pre>
+<code># route -nv show -inet | grep "172.0.3.10"
+172.0.3.10/32      172.0.1.10         UGP        0        9     -    32 em2
+</code>
+</pre>
+
+<h2 id="tcpdump-and-ospf">tcpdump and ospf</h2>
+
+<p>Dumping OSPF is pretty easy…</p>
+
+<pre>
+<code># tcpdump -n -e -ttt -i em2 proto ospf
+tcpdump: listening on em2, link-type EN10MB
+tcpdump: WARNING: compensating for unaligned libpcap packets
+Feb 02 23:22:47.527622 08:00:27:b6:ef:74 01:00:5e:00:00:05 0800 78: 172.0.1.11 &gt; 224.0.0.5: OSPFv2-hello  44: rtrid 172.0.1.11 backbone [tos 0xc0] [ttl 1]
+Feb 02 23:22:47.527988 08:00:27:99:55:cd 01:00:5e:00:00:05 0800 86: 172.0.1.2 &gt; 224.0.0.5: OSPFv2-hello  52: rtrid 5.5.5.5 backbone dr 172.0.1.2 bdr 172.0.1.10 [tos 0xc0] [ttl 1]
+Feb 02 23:22:47.528136 08:00:27:99:55:cd 01:00:5e:00:00:05 0800 94: 172.0.1.2 &gt; 224.0.0.5: OSPFv2-ls_upd  60: rtrid 5.5.5.5 backbone [tos 0xc0] [ttl 1]
+SNIP!
+</code>
+</pre>
+
+<h2 id="issues">Issues</h2>
+
+<ul>
+  <li>I could not get md5/crypt authentication working between the OpenBSD server running ospfd (part of <a href="http://www.openbgpd.org/">OpenBGP</a>) and <a href="http://www.nongnu.org/quagga/">Quagga</a>. Not sure what the problem was, there are no examples I could find of getting this working. Ran out of time to test, so for now there is no authentication.</li>
+</ul>
+
+<h2 id="ping-fun">Ping fun</h2>
+
+<p>So that was a lot of work to do a simple ping. Kinda fun though. I haven’t done a lot with networking, but as I work more with systems such as OpenStack and containers and such I realize how important it is and how much I’m missing out by not knowing more. This was a nice, quick little foray into OSPF.</p>
+
+<p>I don’t know how much anyone will get from reading this post, but I did learn a few things myself, and perhaps at least it’ll show that getting a quick OSPF environment up for playing around with isn’t that difficult. (Though perhaps interacting between Linux and Quagga and OpenBSD and OpenBGP isn’t that easy, maybe I should have just gone 100% Ubuntu for this example.)</p>
+
+<p>I had hoped to learn a bit about ECMP as well, but that didn’t quite materialize. OpenBSD does support ECMP, but I’m not sure how it would work in this example. Certainly with OpenBSD it’s possible to route over multiple equal interfaces; most of the examples are for when you have multiple uplinks, eg. more than one Internet provider.</p>
+
+<p>Hopefully I don’t lead anyone down the wrong path with this blog post, but I like to write up little projects like this to help me determine what I learned and what I did not. Sometimes you get into something to find out how much you don’t know. :)</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenDaylight Boron, OpenStack, and Networking-ODL | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="OpenDaylight Boron, OpenStack, and Networking-ODL">
+
+    
+    <meta name="twitter:description" content="<p>Software Defined Networking (SDN), like many other technical terms (<em>cough</em> devops <em>cough</em>) is often considered a panacea, but is also fraught with peril, etc, etc…you can see where I’m going, feel free to complete this thought on your own.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Software Defined Networking (SDN), like many other technical terms (<em>cough</em> devops <em>cough</em>) is often considered a panacea, but is also fraught with peril, etc, etc…you can see where I’m going, feel free to complete this thought on your own.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/opendaylight-boron-openstack-networking-odl.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/opendaylight-boron-openstack-networking-odl.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="OpenDaylight Boron, OpenStack, and Networking-ODL" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/01/09/opendaylight-boron-openstack-networking-odl.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">OpenDaylight Boron, OpenStack, and Networking-ODL</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-01-09T00:00:00-05:00">
+                January 09, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Software Defined Networking (SDN), like many other technical terms (<em>cough</em> devops <em>cough</em>) is often considered a panacea, but is also fraught with peril, etc, etc…you can see where I’m going, feel free to complete this thought on your own.</p>
+
+<p>Anyways, the point of this post is that I have recently been able to spend some time getting the OpenDaylight Boron release to work as the SDN controller for an OpenStack cloud, and I thought I would relay some of the issues I encountered as well as some of the required software and steps to complete the integration.</p>
+
+<h2 id="tldr---official-documentation">tl;dr - Official Documentation</h2>
+
+<p>As I write this there is a <a href="http://docs.opendaylight.org/en/latest/opendaylight-with-openstack/openstack-with-netvirt.html">page</a> that details how to integrate ODL Boron with OpenStack.</p>
+
+<p>I only encountered two issues with this documentation, the first is that the DLUX web GUI feature/plugin mentioned is incorrect and you would want the DLUX-core plugin. But that wouldn’t affect actually using ODL, just access to a simple GUI.</p>
+
+<p>Next, due to a bug in OpenStack which was fixed in master and <a href="https://review.openstack.org/#/c/403672/">back-ported</a> to Newton, I needed to deploy Newton Neutron from the stable branch. I would imagine that that back-port will now be in most OS packaging though, so you probably won’t have to worry about it, unless you are deploying a pre-Newton OpenStack. Not sure if it was back ported to release before Newton.</p>
+
+<p>Otherwise, besides showing first deploying OpenStack and then deleting all the neutron state (not sure why all the examples do that), the documentation is pretty good and I’m sure will improve.</p>
+
+<h2 id="this-is-boron">This is Boron</h2>
+
+<p>Most of the blog posts and documentation you will find on the Internet are related to previous releases of OpenDaylight, and most of these instructions will only be about 75% correct.</p>
+
+<p>Boron has a new ODL feature, <a href="https://wiki.opendaylight.org/view/NetVirt">Netvirt</a> which has taken over some of the functionality for supporting an OpenStack cloud. Essentially, instead of using the <em>odl-ovsdb-openstack</em> feature/plugin, you will use the <em>odl-netvirt-openstack</em> plugin.</p>
+
+<p>Other than Netvirt and requiring Java 8, Boron seems to be quite similar from a systems administration perspective.</p>
+
+<h2 id="networking-odl">Networking-ODL</h2>
+
+<p><a href="http://docs.openstack.org/developer/networking-odl/readme.html">Networking-ODL</a> is required code, perhaps driver is the right term, to allow the Neutron API to work with and OpenDaylight controller.</p>
+
+<blockquote>
+  <p>OpenStack networking-odl is a library of drivers and plugins that integrates OpenStack Neutron API with OpenDaylight Backend. For example it has ML2 driver and L3 plugin to enable communication of OpenStack Neutron L2 and L3 resources API to OpenDayLight Backend.</p>
+</blockquote>
+
+<p>It does not come with Neutron packaging at this time, and needs to be installed separately, either via Pip as most examples show or via source. Typically I will install from source using <em>stable/&lt;openstack version&gt;</em> just to get the latest code.</p>
+
+<h2 id="configuration-management-of-open-vswitch">Configuration Management of Open vSwitch</h2>
+
+<p>There are a couple of settings that need to be made to each Open vSwitch before it can be used by ODL. Typically this will be done with your configuration management tooling, ie. what ever is managing OpenStack’s configuration.</p>
+
+<p>The first is the “manager”. Most documentation will show how to set that.</p>
+
+<pre><code class="language-bash">$ sudo ovs-vsctl show | head
+7f7084b9-f0d8-449a-97fa-06476303d3cf
+    Manager "tcp:10.15.0.190:6640"
+        is_connected: true
+    Bridge br-int
+        Controller "tcp:10.15.0.190:6653"
+            is_connected: true
+        fail_mode: secure
+        Port "tap35617dae-c8"
+            Interface "tap35617dae-c8"
+        Port "tun18897aa9c4e"
+</code></pre>
+
+<p>Above the manager is connected to the ODL controller.</p>
+
+<p>Next is the <em>local_ip</em>.</p>
+
+<pre><code class="language-bash">$ sudo ovs-vsctl list Open_vSwitch | grep other_config
+other_config        : {local_ip="10.15.0.11", provider_mappings="provider:bond1"}
+</code></pre>
+
+<p>That IP will become the endpoint for VXLAN tunnels.</p>
+
+<p>Finally, as can be seen above as well, there is a <em>provider_mappings</em> key/value pair. This will list out the various Neutron networks and the physical interfaces they are supposed to use. This will be what floating IP or provider networks (ie. “external networks”) will use. ODL will use the value to setup OVS on each node.</p>
+
+<p>All three of these settings would be put in place by your config mgmt tool, eg. Ansible. :)</p>
+
+<p><img src="/img/odl_netvirt_pipeline.jpg" alt="ODL Netvirt Pipeline" /></p>
+
+<p>(Example of <a href="https://docs.google.com/presentation/d/15h4ZjPxblI5Pz9VWIYnzfyRcQrXYxA1uUoqJsgA53KM/edit#slide=id.p">ODL Netvirt Pipeline</a>)</p>
+
+<h2 id="issues">Issues</h2>
+
+<ul>
+  <li>The NATP component, currently at least, does not support ICMP. So if you have an instance on VXLAN and there is a router with an external gateway on on external network, ping, for example, won’t work, but UDP and TCP will. I recieved the errors below on the ODL controller when pinging from an instance. Apparently it is because OpenFlow doesn’t support ICMP on flows. This can be confusing while testing…it certainly confused me for a while.</li>
+</ul>
+
+<pre><code class="language-bash">2017-01-10 19:13:03,772 | ERROR | pool-21-thread-1 |
+NaptPacketInHandler              | 345 -
+org.opendaylight.netvirt.natservice-impl - 0.3.2.Boron-SR2 | Incoming
+Packet is neither TCP or UDP packet
+2017-01-10 19:13:03,772 | ERROR | pool-21-thread-1 |
+NaptPacketInHandler              | 345 -
+org.opendaylight.netvirt.natservice-impl - 0.3.2.Boron-SR2 | Incoming
+Packet is neither TCP or UDP packet
+</code></pre>
+
+<ul>
+  <li>I wonder about having a tunnel from each host to every other host. Not sure how well that will scale. Something to look into.</li>
+  <li>Like many other SDN systems, sometimes the initial setup of an unknown flow can be slow, but once it is in place on the OVS switch obviously it’s faster. I’ve experienced this with Midokura’s Midonet as well.</li>
+</ul>
+
+<p>Otherwise everything seemed to work fine.</p>
+
+<h2 id="why-opendaylight">Why OpenDaylight?</h2>
+
+<p>What does one get from deploying ODL?</p>
+
+<p>My opinion is that it provides the potential to perform fairly advanced network configurations that without an SDN controller would be difficult or impossible. Frankly at this state ODL + OpenStack is still being worked on. Most of the basic features are there, but where it really starts to get interesting is once we are past that stage, and want to do things like connecting tenants across multiple clouds, connecting to hardware VTEPs, things like that. It is going to take a while for all of this to become ready for production use.</p>
+
+<p>There were a fair number of features delivered in ODL Boron (3):</p>
+
+<ul>
+  <li>Merge of NetVirt and VPNService projects</li>
+  <li>L2, L3</li>
+  <li>Auto-bridge creation</li>
+  <li>Auto-tunnel creation</li>
+  <li>Floating IP’s</li>
+  <li>VLAN and Flat provider network support for multiple internal and external networks</li>
+  <li>Security Groups: Stateful using conntrack, Stateless, Learn (for OVS-DPDK)</li>
+  <li>NAPT, SNAT</li>
+  <li>IPv6</li>
+  <li>Layer 2 Gateway</li>
+</ul>
+
+<p>My thoughts on the above, as well as additional capability not mentioned:</p>
+
+<ul>
+  <li>No more br-int/iptables. Ok, br-int still exists, but security groups are NOT done by iptables. This was something that always bugged me, and a lot of people, but it was a good solution. However, now, with ODL, iptables is taken out of the stack and security groups are done with OVS rules. This is very powerful and important, as it will “remove the many layers of bridges/ports required in iptable implementation.” (1)</li>
+  <li>ODL takes care of layer 3 with a “distributed virtual router” that is on par with Neutron DVR (2), though no ICMP with NATP.</li>
+  <li>Ability to do Service Function Chaining (SFC). This functionality may come to “vanilla” Neutron, but most existing software that supports deploying SF chains will support ODL.</li>
+</ul>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<ul>
+  <li>Troubleshooting ODL - This is not easy, as the paths through tables are somewhat convoluted, but the flow map above certainly helps.</li>
+  <li>High Availability - ODL can be clustered, but I have not ventured into that area as of yet. Distributed systems are tough.</li>
+  <li><a href="https://wiki.openstack.org/wiki/Neutron/L2-GW">L2 Gateway</a> - Wanting to get your VXLAN based workloads out into a physical network is an oft requested feature. It seems ODL Boron has the ability to use L2 Gateway. This needs to be explored.</li>
+  <li>Service Function Chaining - This might not be as useful for organizations who are not interested in Network Function Virtualization (NFV), but that said, this is still quite powerful and useful in many “cloudy” situations. :)</li>
+  <li>OVS-DPDK</li>
+</ul>
+
+<h2 id="footnotes">Footnotes</h2>
+
+<ol>
+  <li><a href="http://docs.opendaylight.org/en/stable-boron/user-guide/ovsdb-netvirt.html">OVSDB Netvirt</a></li>
+  <li><a href="https://media.readthedocs.org/pdf/opendaylight/1.0.0/opendaylight.pdf">OpenDaylight PDF</a></li>
+  <li><a href="https://docs.google.com/presentation/d/1VLzRIOEptSOY1b0w4PezRIQ0gF5vx7GyLKECWXRV5mE/edit#slide=id.g13650d2e5d_0_15">NetVirt Basic Tutorial</a></li>
+</ol>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palo Alto OpenStack Operators Meetup | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Palo Alto OpenStack Operators Meetup">
+
+    
+    <meta name="twitter:description" content="<p>I am really early for my flight home to Edmonton from the San Franciso airport. Maybe I didn’t need to be as concerned about traffic as I was. I bought <a href="https://en.wikipedia.org/wiki/The_Martian_%28Weir_novel%29">The Martian</a> book so I should be reading it, but I’m not, instead I’m writing this blog post about the Palo Alto OpenStack Operators mid-cycle meetup that I attended.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I am really early for my flight home to Edmonton from the San Franciso airport. Maybe I didn’t need to be as concerned about traffic as I was. I bought <a href="https://en.wikipedia.org/wiki/The_Martian_%28Weir_novel%29">The Martian</a> book so I should be reading it, but I’m not, instead I’m writing this blog post about the Palo Alto OpenStack Operators mid-cycle meetup that I attended.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/pao-openstack-operators-meetup.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/pao-openstack-operators-meetup.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Palo Alto OpenStack Operators Meetup" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2015/08/19/pao-openstack-operators-meetup.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Palo Alto OpenStack Operators Meetup</h1>
+        <p class="text-gray-600">
+            <time datetime="2015-08-19T00:00:00-04:00">
+                August 19, 2015
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I am really early for my flight home to Edmonton from the San Franciso airport. Maybe I didn’t need to be as concerned about traffic as I was. I bought <a href="https://en.wikipedia.org/wiki/The_Martian_%28Weir_novel%29">The Martian</a> book so I should be reading it, but I’m not, instead I’m writing this blog post about the Palo Alto OpenStack Operators mid-cycle meetup that I attended.</p>
+
+<p>If you want to see the full, official notes from each session, you can find links to them from <a href="https://etherpad.openstack.org/p/PAO-ops-meetup">this etherpad page</a>.</p>
+
+<h2 id="my-notes-from-the-meetup">My notes from the meetup</h2>
+
+<p>Here are some general notes I made from the sessions. Sorry the below is rambling, but that’s how I think. Also these are my interpretations of what was said, and I’ve been wrong before. If you notice something incorrect, just let me know in the comments and I’ll change it.</p>
+
+<ul>
+  <li>The vast, vast majority of operators have moved off of nova-network and are on Neutron now. Only one person had their hand up for running nova-network, though I’m sure there are more, they just didn’t respond to the informal poll. I think it’s good that Neutron is now the standard. Neutron is more complicated than nova-network and doesn’t necessarily meet everyones needs, but I think having a common base will help get things moving forward. The large deployments team is working on helping the Neutron team create a model that works for them, and I think once that happens everyone will be happy. For the record my neutron “model” is to use Midonet with VXLAN. I really like Midonet and the overlay model fits our customer base well. Several large deployments prefer straight up L3 based networks, and I’m sure Neutron will provide that model soon. That said, it will be hard for Neutron to meet the requirements of every single network model.</li>
+  <li>RabbitMQ isn’t as much of a burning issue as it used to be. Seems like people still have no idea whether to run it behind a load balancer or not, or to list all the rabbit’s in the config, or what. Still quite confusing. However, a definite consensus is that Kilo is much better with rabbit. I’d like to backport some of the things that make it better as we are still on Juno, but I’m not sure we’ll have time for that. Soon we will upgrade from Juno to Kilo anyways. Another point made was that you probably have issues whether you use a loadbalancer or not, so either way…</li>
+  <li>Also–someone from RabbitMQ was at the meeting and gave an update. They are working on making RabbitMQ easier to operate. They are also keenly aware of how much it is used in OpenStack, and may provide OpenStack-specific documentation on using RabbitMQ. That would be great.</li>
+  <li>CMDB was a big topic at this meetup. Lots of people want a good CMDB so that they can start to do capacity planning. Obviously this means there are many large OpenStack installations out there.</li>
+  <li>HP talked about their billing solution. It’s fairly complex…as far as I can remember it pulls information off of various sources, such as rabbit, sticks them into Hadoop, there are jobs that crunch that data and store it into an SQL database which is fronted by an API that internal systems can query for billing. They intend to opensource this system in some fashion, or maybe just parts of it. Not sure.</li>
+  <li>Burning issues: The etherpad can be found <a href="https://etherpad.openstack.org/p/PAO-ops-burning-issues">here</a>.</li>
+  <li>Many, many hands were put up for Neutron as a “burning issue,” but when the time came around to actually complain about it, no one really said anything, or perhaps I just missed it. My impression is that Neutron is working pretty well for most.</li>
+  <li>Ceilometer is still an issue, but people are also still using it, and many are investing heavily in getting it working. I think Ceilometer is an important project and I feel like eventually it’ll be production worthy. I keep forgetting Heat can use it for autoscaling. We stopped using it due to performance issues on the backend (like many others) but we also didn’t put that much effort into it. Many other metrics gathering systems are resource intensive, and also use backends like Mongo. If you throw too much data at a backend it stops working, no matter what technology you’re using. One provider mentioned using Influxdb and ceilometer, I believe with statsd as an intermediary.</li>
+  <li>Keystone was also listed fairly high in terms of burning issues. Many clouds would like to flexible roles, as basically there are only three right now: admin, member, and no role. As usual the policy json files were mentioned as being complex and somewhat undocumented. I’m personally not sure how much effort to put into the policy files if there are only three roles. Something to look into. The important thing to know is that the Keystone project is well aware of these requirements and they are working on them. Also, many clouds have added an extra layer on top of Keystone to allow some tenants to do admin-like functions, such as add users to their project and things like that. But that functionality is “hacked” in, so to speak by the providers.</li>
+  <li>I didn’t get to ask my question about putting Keystone tokens in memcached. I read a bug a while ago where it was mentioned that the memcached driver being used is not that great, and that using memcached isn’t recommended, even though it’s part of the official install docs (or was the last time I looked). Darned if I can find that bug listing again. Several providers have moved to Fernet tokens which don’t need to be stored, though are slower. I would imagine that once we get to Kilo that we will use Fernet tokens as well and just avoid the whole caching/storage issue.</li>
+  <li>Containers: There was some discussion about containers. It seemed forced. Some people use containers in their OpenStack infrastructure…LXC, Docker. I will probably use so-called “fat” containers, ie. LXC, for some infrastructure. Yeah, containers are still hot. Docker is cool. Multi-tenancy is hard, etc, etc.</li>
+  <li>Install guide: There was at least one mention of how a particular technology was used in someones OpenStack cloud because it was a step in the install guide. I think the install guide is a lot more important than people know in terms of how people deploy OpenStack. If memcached is listed as an install step then people will use it. If OVS is mentioned in the install guide then people will use it (as opposed to Linux bridge, which large operators seem to prefer, at least at this time).</li>
+  <li>Many operators use MySQL/MariaDB and Galera. Most using this combination, if not all, only write to one node. Usually a virtual IP points to one node and clients read and write to it. I think one operator had managed to get read-only APIs up and running and those work against the read nodes of a Galera cluster. That would be something I would like to do, at least send all reads out to any node, but writes to one node. It was noted that CERN does this for Ceilometer to make sure it doesn’t overload the write APIs. I’ve been looking at some MySQL proxies that can do this, but maybe it’s just extra complexity that I don’t need.</li>
+  <li>Everyone loves haproxy. I quite like haproxy myself. Some ops prefer it over the $$$ commercial solution they are also using. It’s very powerful and is working well for me, and I, like others, terminate SSL with it.</li>
+  <li>Most operators have to do some database cleanup. I’m not clear on all the things that need to be cleaned up. There is at least one project, <a href="https://github.com/stackforge/ospurge">ospurge</a>, that might help get some of the way towards all the cleanup jobs that need to happen. 80% of the time it’ll get you 60% of the way.</li>
+  <li>Every summit and operator meetup has a call for a place to share tools. Every summit and meetup <a href="https://github.com/osops">osops</a> is mentioned and that is where the conversation ends. osops has been around for quite some time but there aren’t many contributions to it. One of the great things about openstack is how you can run it in almost any way you want, but that also means that every openstack install is different, and it makes it somewhat hard to share tools…which is why I think this repo doesn’t get much love.</li>
+  <li>There was talk about sharing Grafana configs. Then there was the mention that the new Kibana (not Grafana, Kibana) makes it difficult to import/export configs. I’m doing some testing with Grafana and Influxdb for metrics, so that would be great to at least see what others are graphing, if not actually use those graphs.</li>
+  <li><a href="https://github.com/openstack/dragonflow">Dragonflow</a> was mentioned as a very new project. I don’t know anything about it other than what is says on at the github repo: “Dragonflow - SDN based Distributed Virtual Router for OpenStack Neutron.” Even though I’m not an expert at networking, I am fascinated by SDN.</li>
+</ul>
+
+<h2 id="public-cloud">Public cloud</h2>
+
+<p>There were also some concrete steps towards getting a public cloud group going in/around OpenStack. I think this is great and hope to participate as much as possible. There may not be many public clouds based on OpenStack, and some are much larger than others, but I think this is an important sub-group of operators, and is not necessarily the same as the large deployments team. Public clouds definitely have some specific requirements.</p>
+
+<h2 id="short-trip">Short trip</h2>
+
+<p>For me it was a short trip. We were in late Monday night and had to leave about 3PM on the Wednesday, so we missed some of the tail end of the meetup, mostly around Tokyo planning, which was unfortunate but unavoidable due to California traffic and flight times.</p>
+
+<p>Thanks to HP and Godaddy as sponsors and for all the work put into the meetup by the foundation and volunteers. While I’m not a big fan of the Palo Alto [1] location, the meetup certainly met its goal of enabling the exchange of ideas and practical OpenStack experiences.</p>
+
+<p>If you’re wondering, my flight back was great because there was an extra seat beside me, and it’s only a 2.5 hour trip back to sunny Edmonton from overcast SF0. :) Also I read almost all of “The Martian.” If you like NASA then you will read this book in one sitting, it’s a fascinating and thrilling read with tons of science.</p>
+
+<hr />
+
+<p>1: Palo Alto hotels are expensive and you pretty much have to rent a car. It’s great that companies are willing to sponsor the meetup with a location and food and such, but it seemed to me like the costs were just transfered to hotels and rental cars. Then again, a large number of attendees were from California, so maybe it all evens out.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

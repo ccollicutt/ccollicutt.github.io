@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restarting Kubernetes Pods When There Are New Secrets With Reloader | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader">
+
+    
+    <meta name="twitter:description" content="<p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/reloader-kubernetes.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/reloader-kubernetes.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Restarting Kubernetes Pods When There Are New Secrets With Reloader" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/11/23/reloader-kubernetes.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Restarting Kubernetes Pods When There Are New Secrets With Reloader</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-11-23T00:00:00-05:00">
+                November 23, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with <a href="https://github.com/stakater/Reloader">Reloader</a>.</p>
+
+<h2 id="reloader">Reloader</h2>
+
+<blockquote>
+  <p><em>Reloader can watch changes in ConfigMap and Secret and do rolling upgrades on Pods with their associated DeploymentConfigs, Deployments, Daemonsets Statefulsets and Rollouts.</em> - <a href="https://github.com/stakater/Reloader">Reloader</a></p>
+</blockquote>
+
+<h2 id="install-reloader">Install Reloader</h2>
+
+<p>First add the repo.</p>
+
+<pre><code>$ helm repo add stakater https://stakater.github.io/stakater-charts
+$ helm repo update
+</code></pre>
+
+<p>Create a namespace.</p>
+
+<pre><code>$ k create ns reloader
+namespace/reloader created
+$ kn reloader 
+✔ Active namespace is "reloader"
+</code></pre>
+
+<p>Install reloader.</p>
+
+<pre><code>$ helm install reloader stakater/reloader
+NAME: reloader
+LAST DEPLOYED: Thu Nov 23 09:36:22 2023
+NAMESPACE: reloader
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+- For a `Deployment` called `foo` have a `ConfigMap` called `foo-configmap`. Then add this annotation to main metadata of your `Deployment`
+  configmap.reloader.stakater.com/reload: "foo-configmap"
+
+- For a `Deployment` called `foo` have a `Secret` called `foo-secret`. Then add this annotation to main metadata of your `Deployment`
+  secret.reloader.stakater.com/reload: "foo-secret"
+
+- After successful installation, your pods will get rolling updates when a change in data of configmap or secret will happen.
+</code></pre>
+
+<p>Now we’ve got pods.</p>
+
+<pre><code>$ k get pods
+NAME                                 READY   STATUS    RESTARTS   AGE
+reloader-reloader-64df699b8d-tm5rn   1/1     Running   0          3m4s
+</code></pre>
+
+<p>Nice and easy. Thanks Helm!</p>
+
+<h2 id="simple-test">Simple Test</h2>
+
+<p>Create a secret.</p>
+
+<pre><code>kubectl create secret generic foo-secret --from-literal=key1=bar
+</code></pre>
+
+<p>Create a cert-manager certificate. (Of course you need cert-manager installed.)</p>
+
+<pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: foo-certs
+  namespace: foo
+spec:
+  secretName: foo-certs
+  issuerRef:
+    name: kubeadm-ca
+    kind: ClusterIssuer
+  duration: 24h  # Validity period of the certificate
+  renewBefore: 12h 
+  commonName: foo.foo.svc.cluster.local
+  dnsNames:
+    - foo.foo.svc.cluster.local
+    - foo.foo.svc
+EOF
+</code></pre>
+
+<p>Use that secret in a deployment. Note the annotation for Reloader. We’re mounting the secret in <code>/etc/foo</code> and certificates <code>/etc/certs</code>.</p>
+
+<pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  labels:
+    app: foo
+  annotations:
+    secret.reloader.stakater.com/reload: "foo-secret,foo-certs"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: my-container
+        image: nginx
+        volumeMounts:
+        - name: secret-volume
+          mountPath: "/etc/foo"
+          readOnly: true
+        - name: certs
+          mountPath: "/etc/certs"
+          readOnly: true
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: foo-secret
+      - name: certs
+        secret:
+          secretName: foo-certs
+EOF
+</code></pre>
+
+<p>Recreate the secret and check the logs of reloader.</p>
+
+<pre><code>$ kubectl create secret generic foo-secret --from-literal=key1=foo --dry-run=client -o yaml | kubectl apply -f -
+Warning: resource secrets/foo-secret is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+secret/foo-secret configured
+</code></pre>
+
+<p>Reloader logs. It has noticed the secret update and restarted the pod.</p>
+
+<pre><code>$ k logs -n reloader reloader-reloader-64df699b8d-tm5rn 
+time="2023-11-23T14:36:25Z" level=info msg="Environment: Kubernetes"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Reloader"
+time="2023-11-23T14:36:25Z" level=warning msg="KUBERNETES_NAMESPACE is unset, will detect changes in all namespaces."
+time="2023-11-23T14:36:25Z" level=info msg="created controller for: configMaps"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Controller to watch resource type: configMaps"
+time="2023-11-23T14:36:25Z" level=info msg="created controller for: secrets"
+time="2023-11-23T14:36:25Z" level=info msg="Starting Controller to watch resource type: secrets"
+time="2023-11-23T15:18:53Z" level=info msg="Changes detected in 'foo-secret' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+</code></pre>
+
+<p>New pod should be starting.</p>
+
+<pre><code>$ k get pods
+NAME                   READY   STATUS        RESTARTS   AGE
+foo-5c67d96557-s6cj2   1/1     Running       0          18s
+foo-75cb458f7d-xcszx   1/1     Terminating   0          2m30s
+</code></pre>
+
+<p>Now it’s got the new secret.</p>
+
+<pre><code>$ k exec -it foo-5c67d96557-s6cj2 -- cat /etc/foo/key1
+foo
+</code></pre>
+
+<p>Boom.</p>
+
+<h2 id="certificates">Certificates</h2>
+
+<p>Above we crated a certificate with only 24 hours of validity that should renew after 12 hours. So when it’s renewed, there will be a new version of the secret, and reloader will restart the pod. Let’s see.</p>
+
+<pre><code>$ k logs -n reloader reloader-reloader-7f4859f649-6cvqt 
+time="2023-11-23T16:03:57Z" level=info msg="Environment: Kubernetes"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Reloader"
+time="2023-11-23T16:03:57Z" level=warning msg="KUBERNETES_NAMESPACE is unset, will detect changes in all namespaces."
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: configMaps"
+time="2023-11-23T16:03:57Z" level=info msg="created controller for: secrets"
+time="2023-11-23T16:03:57Z" level=info msg="Starting Controller to watch resource type: secrets"
+time="2023-11-23T16:06:18Z" level=info msg="Changes detected in 'foo-secret' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+time="2023-11-24T04:44:56Z" level=info msg="Changes detected in 'foo-certs' of type 'SECRET' in namespace 'foo', Updated 'foo' of type 'Deployment' in namespace 'foo'"
+</code></pre>
+
+<p>Looking at cert-manager logs we see:</p>
+
+<pre><code>I1124 04:44:56.006536       1 trigger_controller.go:194] "cert-manager/certificates-trigger: Certificate must be re-issued" key="foo/foo-certs" reason="Renewing" message="Renewing certificate as renewal was scheduled at 2023-11-24 04:44:56 +0000 UTC"
+SNIP!
+I1124 04:44:56.636293       1 conditions.go:263] Setting lastTransitionTime for CertificateRequest "foo-certs-jk5sq" condition "Ready" to 2023-11-24 04:44:56.636261134 +0000 UTC m=+4380108.430326366
+</code></pre>
+
+<p>Right, so the secret was updated. Let’s see if the pod was restarted.</p>
+
+<pre><code>$ k get pods
+NAME                  READY   STATUS    RESTARTS   AGE
+foo-746699dd7-kr99d   1/1     Running   0          6h43m
+$ k describe pod foo-746699dd7-kr99d | grep -i started
+      Started:      Thu, 23 Nov 2023 23:44:59 -0500
+</code></pre>
+
+<p>That time converts to 04:44:59 UTC, which is when the secret was updated. So it was restarted. This is great, so when a new certificate is issued, the pod will be restarted and mount the new secret and have access to the new certificate and key.</p>
+
+<p>There’s a reloader annotation as well.</p>
+
+<pre><code>$ k get pods -oyaml | grep reloader
+      reloader.stakater.com/last-reloaded-from: '{"type":"SECRET","name":"foo-certs","namespace":"foo","hash":"94af434fda756e922affdd1c43d723b26f196f3e","containerRefs":["my-container"],"observedAt":1700801096}'
+</code></pre>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Personally, I would think that this kind of thing would be automatic, but it’s not. So this is a good way to make sure that your pods are restarted when there are new secrets.</p>
+
+<p>Kubernetes is a framework, and you have to pull in a lot of “libraries,” such as Reloader.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

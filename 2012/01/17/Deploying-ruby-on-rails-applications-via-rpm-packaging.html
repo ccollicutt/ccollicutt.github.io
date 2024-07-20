@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploying Ruby-on-Rails applications using RPM packaging | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Deploying Ruby-on-Rails applications using RPM packaging">
+
+    
+    <meta name="twitter:description" content="<p>It’s been a long time between posts but the time has come!</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>It’s been a long time between posts but the time has come!</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/Deploying-ruby-on-rails-applications-via-rpm-packaging.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/Deploying-ruby-on-rails-applications-via-rpm-packaging.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Deploying Ruby-on-Rails applications using RPM packaging" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2012/01/17/Deploying-ruby-on-rails-applications-via-rpm-packaging.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Deploying Ruby-on-Rails applications using RPM packaging</h1>
+        <p class="text-gray-600">
+            <time datetime="2012-01-17T00:00:00-05:00">
+                January 17, 2012
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>It’s been a long time between posts but the time has come!</p>
+
+<p>In this post I hope to take a good look at one way to deploy a working ruby on rails (RoR) application by packaging it in an RPM.</p>
+
+<p>In this example all of the gems the application requires are downloaded and built/compiled at the same time the RPM is, and thus the RPM contains all the required gems (100+ in this example). The best way to deploy an application, in my opinion, would be to standardize on a set of gems that is available at the OS level–so the RPM would not contain <em>any</em> gems, rather would require the general OS level gems.</p>
+
+<p>Unfortunately, for many reasons, which I won’t get into, that is just not possible for me at this time. Maybe in the future when all gems can easily be built into RPMs, and also when internal developers can agree on a set of gems. Someday…</p>
+
+<h2 id="environment">Environment</h2>
+
+<p>We’re deploying to a specific RHEL6 server environment.</p>
+
+<h3 id="ruby-version">Ruby version</h3>
+
+<p>We’ll be deploying the RoR application to <a href="http://distrowatch.com/table.php?distribution=redhat">Redhat Enterprise 6</a> (RHEL6) virtual machine which has, <em>and likely always will have</em>, @ruby 1.8.7@ (with backported security patches of course!).</p>
+
+<pre>
+<code>[root@RoR-TEST ~]# ruby -v
+ruby 1.8.7 (2010-06-23 patchlevel 299) [x86_64-linux]
+[root@RoR-TEST ~]# cat /etc/redhat-release 
+Red Hat Enterprise Linux Server release 6.1 (Santiago)
+</code>
+</pre>
+
+<p>This will likely be a problem in the future, as it seems that Rails 3.2 will be the last version that supports ruby 1.8.X (where X seems to be 7+ as 1.8.6 is specifially not supported). At some point the dev team may want to go to a Rails version that will not run on Ruby 1.8.7.</p>
+
+<h3 id="apache-and-passenger">Apache and passenger</h3>
+
+<p>We’ll also be deploying the RoR app using apache and passenger.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>A few things are required to build and deploy an RPM.</p>
+
+<h1 id="the-application-code-in-some-kind-of-version-control-system-and-hopefully-that-vcs-supports-taggingsvn-mercurial-and-git-all-support-tags">The application code in some kind of version control system and hopefully that VCS supports tagging…svn, mercurial, and git all support tags.</h1>
+<h1 id="a-build-server-that-is-the-same-as-os-and-arch-as-the-production-server-being-deployed-to-in-this-case-rhel6-and-x86_64">A build server that is the same as OS and arch as the production server being deployed to. In this case, RHEL6 and X86_64.</h1>
+<p>** A spec file for the application.
+** This build server needs <code>bundle</code> and <code>gem</code> available in the binary PATH because currently the example spec file needs it to be there.
+** A working rpmbuild environment, configured as appropriate.</p>
+<h1 id="a-test-server-to-test-the-rpm-deployment-ie-a-place-to-actually-install-the-rpm-into">A test server to test the RPM deployment, ie. a place to actually install the RPM into.</h1>
+
+<h2 id="the-spec-file">The spec file</h2>
+
+<p>Building a RPM requires, among other things, a spec file. This file is the heart of a RoR RPM deployment.</p>
+
+<p>I have put an example spec file up on <a href="https://github.com/ccollicutt/Ruby-on-Rails-Example-RPM-Deployment-spec-file">github</a> to peruse and abuse. Again, it’s not going to work out of the box, but it’s a good example, or will be at some point. :)</p>
+
+<p>The build portion of the spec file is what is interesting in terms of deploying a RoR app with RPM.</p>
+
+<p>Prior to the build section the code has been pulled out of a git repository into a local build directory by the rpmbuild process.</p>
+
+<p>In the build section, which I’m cutting and pasting examples out of, we are going to cd into that checked out repository and use bundle to <em>compile and install</em> all the gems into <code>./vendor/bundle</code>.</p>
+
+<pre>
+<code>%build
+pushd %{name}
+
+# Install all required gems into ./vendor/bundle using the handy bundle commmand
+bundle install --deployment
+</code>
+</pre>
+
+<p>Once that has completed, which could be quite a long process depending on the number and complexity of the gems required, we remove the assets and recompile them.</p>
+
+<pre>
+<code># Compile assets, this only has to be done once AFAIK, so in the RPM is fine
+rm -rf ./public/assets/*
+bundle exec rake assets:precompile
+
+</code>
+</pre>
+
+<p>Then we need to also build bundler into the RPM as well, which requires a smidge of trickery:</p>
+
+<pre>
+<code># For some reason bundler doesn't install itself, this is probably right,
+# but I guess it expects bundler to be on the server being deployed to
+# already. But the rails-helloworld app crashes on passenger looking for
+# bundler, so it would seem to me to be required. So, I used gem to install
+# bundler after bundle deployment. :) And the app then works under passenger.
+
+PWD=`pwd`
+cat &gt; gemrc &lt;&lt;EOGEMRC
+gemhome: $PWD/vendor/bundle/ruby/1.8
+gempath:
+- $PWD/vendor/bundle/ruby/1.8
+EOGEMRC
+        #gem --source %{gem_source} --config-file ./gemrc install bundler
+        gem --config-file ./gemrc install bundler
+# Don't need the gemrc any more...
+rm ./gemrc
+
+</code>
+</pre>
+
+<p>Finally, it seems that some of the gems have a funny location for ruby set, which we need to change because the rpmbuild process will mark that as a requirement. This issue may be fixed now.</p>
+
+<pre>
+<code># Some of the files in here have /usr/local/bin/ruby set as the bang
+# but that won't work, and makes the rpmbuild process add /usr/local/bin/ruby
+# to the dependencies. So I'm changing that here. Either way it prob won't
+# work. But at least this rids us of the dependencie that we can never meet.
+for f in `grep -ril "\/usr\/local\/bin\/ruby" ./vendor`; do
+         sed -i "s|/usr/local/bin/ruby|/usr/bin/ruby|g" $f
+         head -1 $f
+done
+
+popd
+</code>
+</pre>
+
+<p>Basically, three major things happen in the build section:</p>
+
+<h1 id="use-the-handy-bundler-application-to-install-all-the-required-gems">Use the handy bundler application to install all the required gems</h1>
+<h1 id="also-install-bundler-itself">Also install bundler itself</h1>
+<h1 id="work-around-other-issues-as-found">Work around other issues as found</h1>
+
+<p>Once that is done, we have a nice spec file that can be built and then installed!</p>
+
+<h2 id="rpmbuild">rpmbuild</h2>
+
+<p>Now we build our RPM. In this example I’m building a RoR application called <code>special_collections</code>. <code>rhel6b</code> is my RHEL6 build server/environment.</p>
+
+<pre>
+<code>[curtis@rhel6b SPECS]$ rpmbuild -ba special_collections.spec 
+Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.J1hbLc
++ umask 022
++ cd /home/curtis/rpmbuild/BUILD
++ rm -rf ./special_collections
++ git clone https://code.example.com/git/special_collections
+Initialized empty Git repository in /home/curtis/rpmbuild/BUILD/special_collections/.git/
+SNIP!
+Checking for unpackaged file(s): /usr/lib/rpm/check-files /home/curtis/rpmbuild/BUILDROOT/special_collections-0.1.4-1.el6.ualib.x86_64
+Wrote: /home/curtis/rpmbuild/SRPMS/special_collections-0.1.4-1.el6.ualib.src.rpm
+Wrote: /home/curtis/rpmbuild/RPMS/x86_64/special_collections-0.1.4-1.el6.ualib.x86_64.rpm
+Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.VOkPMU
++ umask 022
++ cd /home/curtis/rpmbuild/BUILD
++ rm -rf /home/curtis/rpmbuild/BUILDROOT/special_collections-0.1.4-1.el6.ualib.x86_64
++ exit 0
+</code>
+</pre>
+
+<p><em>NOTES:</em></p>
+
+<ul>
+  <li>The above rpmbuild could take a long time depending on the number of gems that the application requires. It’s important to rembember that in this process all the gems are being downloaded from <a href="http://rubygems.org">rubygems.org</a> and then also <em>compiled</em> on the build server, each and every time the rpm is built. So it’s slow. There are some things I’m looking at doing to reduce the time it takes to build the RPM, but that’s where it is right now. Maybe someone will read this blog and give me some comments on what I can be doing better!</li>
+  <li>The resulting RPM is quite large…in this case about 80MB <em>compressed</em>. This is because it has 100+ gems in it.</li>
+</ul>
+
+<h2 id="installing-the-rpm-on-a-brand-new-server">Installing the RPM on a brand new server</h2>
+
+<p>I have a brand new server all ready for this ruby application to be deployed. It’s a minimal install.</p>
+
+<pre>
+<code>[root@RoR-TEST ~]# rpm -qa | grep -i "apache\|ruby\|passenger"
+[root@RoR-TEST ~]# 
+# Nothing! No ruby, passenger, or apache currently installed.
+[root@RoR-TEST ~]# rpm -qa | wc -l
+293
+# And only 293 RPMs!
+</code>
+</pre>
+
+<p>Normally I install a RPM from a custom yum repository, but in this example I will use @yum localinstall@ so I copy the RPM from the build server to the new server.</p>
+
+<p>Note that I have several 3rd party repositories configured on this server, including epel, rpmforge, and the passenger repository. Obviously one has to trust a 3rd party repository to use it. Configuring yum priorities might be a good idea as well to try to avoid unwanted collisions.</p>
+
+<p>So, to install:</p>
+
+<pre>
+<code>[root@RoR-TEST tmp]# yum localinstall special_collections-0.1.4-1.el6.ualib.x86_64.rpm 
+SNIP!
+ rubygem-passenger-native-libs  x86_64  1:3.0.11-1.el6_1.8.7.352   passenger                                       29 k
+ rubygem-rack                   noarch  1:1.1.0-2.el6              epel                                           446 k
+ rubygem-rake                   noarch  0.8.7-2.1.el6              optional                                       403 k
+ rubygems                       noarch  1.3.7-1.el6                optional                                       206 k
+ sgml-common                    noarch  0.6.3-32.el6               base                                            43 k
+
+Transaction Summary
+========================================================================================================================
+Install      73 Package(s)
+
+Total size: 234 M
+Total download size: 74 M
+Installed size: 413 M
+Is this ok [y/N]: y
+SNIP!
+  rubygem-daemon_controller.noarch 0:0.2.6-1.el6                   rubygem-fastthread.x86_64 0:1.0.7-2.el6             
+  rubygem-passenger.x86_64 1:3.0.11-1.el6                          rubygem-passenger-native.x86_64 1:3.0.11-1.el6      
+  rubygem-passenger-native-libs.x86_64 1:3.0.11-1.el6_1.8.7.352    rubygem-rack.noarch 1:1.1.0-2.el6                   
+  rubygem-rake.noarch 0:0.8.7-2.1.el6                              rubygems.noarch 0:1.3.7-1.el6                       
+  sgml-common.noarch 0:0.6.3-32.el6                               
+
+Complete!
+</code>
+</pre>
+
+<h2 id="configure-the-application">Configure the application</h2>
+
+<p>Currently the RPM will create a directory in <code>/etc/</code> that contains the <code>database.yml</code> file for the rails app:</p>
+
+<pre>
+<code>[root@RoR-TEST special_collections]# pwd
+/etc/railsapps/special_collections
+[root@RoR-TEST special_collections]# ls
+database.yml
+</code>
+</pre>
+
+<p>Edit that to set the proper database information.</p>
+
+<h2 id="configure-apache">Configure apache</h2>
+
+<p>Now that apache has been installed because it is required by the custom RPM it needs to be configured.</p>
+
+<p>First let’s make sure it’ll start on a reboot. Don’t want to have to login on the weekend three months from now after a spontaneous reboot now do we? :)</p>
+
+<pre>
+<code>[root@RoR-TEST yum.repos.d]# chkconfig httpd on
+</code>
+</pre>
+
+<p>Now to setup the apache rails environment for this particular application. Note that in this case, we’re doing one RoR app per virtual host. It’s just easier for me because there are some variables that need to be set in the virtual host config file.</p>
+
+<p>I also always configure a <code>/etc/httpd/conf.d/vhost.d</code> directory for virtual host files, and tell httpd to check there for <code>*.conf</code> files.</p>
+
+<pre>
+<code>[root@RoR-TEST vhost.d]# grep vhost.d /etc/httpd/conf/httpd.conf 
+Include conf.d/vhost.d/*.conf
+</code>
+</pre>
+
+<p>The vhost config file looks like this:</p>
+
+<pre>
+<code>[root@RoR-TEST vhost.d]# cat specialcollections.example.com.conf 
+&lt;VirtualHost *:80&gt;
+   ServerName specialcollections.example.com
+   DocumentRoot /usr/share/railsapps/special_collections/public
+
+   # Because of the way we're deploying rails apps, ie. by using bundler during the rpm
+   # build process to install all the required gems into $RAILSAPP/$NAME/vendor/bundle/ruby/1.8
+   # this has to be set here. Otherwise the app will not have the required gems to run.
+   SetEnv GEM_HOME /usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8/
+   &lt;Directory /usr/share/railsapps/special_collections/public&gt;
+        Options -MultiViews
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code>
+</pre>
+
+<p>Startup apache:</p>
+
+<pre>
+<code>[root@RoR-TEST vhost.d]# service httpd configtest
+[root@RoR-TEST vhost.d]# service httpd start
+</code>
+</pre>
+
+<p>Done with apache.</p>
+
+<h2 id="rake">Rake</h2>
+
+<p>Now to configure the initial database.</p>
+
+<p>First, the paths need to be setup. I create a file called <code>special_collectionsrc</code> that has path information setup. Note that this rc file is someting I created specifically for this application because each rails app will have it’s own paths <em>and</em> gems. Then, when wanting to use rake with the specific application that file is sourced to ensure the correct rake and other gems are used.</p>
+
+<pre>
+<code>[root@RoR-TEST ~]# which rake
+/usr/bin/rake
+# oops not the right one!
+[root@RoR-TEST ~]# which bundle
+/usr/bin/which: no bundle in (/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin)
+# oops isn't on the path!
+[root@RoR-TEST ~]# cat special_collectionsrc 
+#!/bin/bash
+export GEM_HOME=/usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8
+PATH=/usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8/bin:$PATH
+export RAILS_ENV=production
+</code>
+</pre>
+
+<p>Once that file is sourced, we should be able to find rake on the path:</p>
+
+<pre>
+<code>[root@RoR-TEST ~]# source special_collectionsrc 
+[root@RoR-TEST ~]# which rake
+/usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8/bin/rake
+[root@RoR-TEST ~]# which bundle
+/usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8/bin/bundle
+</code>
+</pre>
+
+<p>cd to <code>/usr/share/railsapps/special_collections/</code> and load the db:</p>
+
+<pre>
+<code>[root@RoR-TEST special_collections]# rake db:load
+/usr/share/railsapps/special_collections/vendor/bundle/ruby/1.8/gems/curb-0.7.16/lib/curb_core.so: warning: already initialized constant CURL_SSLVERSION_DEFAULT
+-- create_table("collections", {:force=&gt;true})
+   -&gt; 0.4194s
+-- create_table("gallery_images", {:force=&gt;true})
+   -&gt; 0.0040s
+-- initialize_schema_migrations_table()
+   -&gt; 0.0077s
+-- assume_migrated_upto_version(20111104163654, ["db/migrate"])
+   -&gt; 0.0048s
+</code>
+</pre>
+
+<p>Whenever working with this particular RoR app the rc file should be sourced.</p>
+
+<p>Done raking.</p>
+
+<h2 id="thatsit">That’s…it</h2>
+
+<p>At this point the rails app should be available at the virtual host URL that was configured in the vhost. :)</p>
+
+<p>While it’s a long process to get that intial spec file and rpmbuild working, once it’s done the application can be deployed in a few minutes, and now the developers can simply worry about commiting and tagging code, and let the sysadmin deal with deploying the actual application in a replicable manner. Of course there will be some back and forth, new gems might not compile, etc, but the general structure is in place. Further, the deployment is quite automatable–a new tag could mean a new RPM build and deployment to test.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

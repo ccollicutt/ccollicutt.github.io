@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanzu Application Platform and knative | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Tanzu Application Platform and knative">
+
+    
+    <meta name="twitter:description" content="<h2 id="tldr">tl;dr</h2>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<h2 id="tldr">tl;dr</h2>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/tap-knative.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/tap-knative.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Tanzu Application Platform and knative" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2022/01/11/tap-knative.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Tanzu Application Platform and knative</h1>
+        <p class="text-gray-600">
+            <time datetime="2022-01-11T00:00:00-05:00">
+                January 11, 2022
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="tldr">tl;dr</h2>
+
+<p>The point of this post is to show that knative is part of The <a href="https://tanzu.vmware.com/application-platform">Tanzu Application Platform</a>, AKA TAP, and one can use knative outside of TAP, directly with the kn CLI, if desired. (Though, in the real world you would probably use the rest of TAP as well, but it’s modular so you don’t <em>have</em> to.)</p>
+
+<p>In this post TAP has been deployed into a GKE cluster (yep, a GKE cluster). TAP includes knative, so in this post I’ll deploy a simple demo app into the GKE cluster and that deployment will be done via the knative CLI. Serverless here we come!</p>
+
+<h2 id="gke-cluster">GKE Cluster</h2>
+
+<p>First, as I mentioned, I’ve got a Google Kubernetes Cluster.</p>
+
+<pre><code>$ k get nodes
+NAME                                       STATUS   ROLES    AGE    VERSION
+gke-gke-tap-1-default-pool-4e593ad2-9dk4   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+gke-gke-tap-1-default-pool-4e593ad2-m8qs   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+gke-gke-tap-1-default-pool-8dc7b056-8g1l   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+gke-gke-tap-1-default-pool-8dc7b056-drtd   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+gke-gke-tap-1-default-pool-bb825ba8-3pgz   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+gke-gke-tap-1-default-pool-bb825ba8-6v55   Ready    &lt;none&gt;   4d2h   v1.22.3-gke.700
+</code></pre>
+
+<p>It has a bunch of nodes and is running the “full” TAP profile.</p>
+
+<h2 id="what-is-the-tanzu-application-platform">What is the Tanzu Application Platform?</h2>
+
+<blockquote>
+  <p>VMware Tanzu Application Platform is a modular, application-aware platform that provides a rich set of developer tooling and a prepaved path to production to build and deploy software quickly and securely on any compliant public cloud or on-premises Kubernetes cluster.</p>
+</blockquote>
+
+<p>TAP is a set of modular components which extend Kubernetes, making it easier and more secure to use. It’s important to understand that underlying TAP is still Kubernetes–all the pieces of TAP are “native” Kubernetes which means they become part of the Kubernetes API. The way we interact with TAP is through the Kubernetes API, though that will often be hidden away by pipelines and developer inner loop tooling. (No one should have to use kubectl, but you can of course.)</p>
+
+<p>For an example of extending Kubernetes, once you’ve deployed TAP you have an image resource, which, in plain old vanilla Kubernetes, doesn’t exist. (NOTE: I believe the power of Kubernetes is not so much in orchestrating containers, instead the fact that it is a platform to <em>build other platforms on top of</em>, which is precisely what TAP is…it’s even in the name!).</p>
+
+<p>Below I have a couple of container images represented in Kubernetes for a demo application for Spring called Pet Clinic, which can be deployed via knative through TAP. knative is part of what VMware Tanzu calls <a href="https://docs.vmware.com/en/Cloud-Native-Runtimes-for-VMware-Tanzu/1.0/tanzu-cloud-native-runtimes-1-0/GUID-cnr-overview.html">Cloud Native Runtimes</a></p>
+
+<p>Here I ask what Kubernetes knows about container images.</p>
+
+<pre><code>$ k get images
+NAME                              IMAGE
+pet-clinic-00001-cache-workload   &lt;registry&gt;/tap-beta-4/supply-chain/pet-clinic-default@sha256:3b4ef38a43d464750d63ca0226c67ae59fdf990efe01c37ae88e8e10d2f574e8
+pet-clinic-00002-cache-workload   &lt;registry&gt;/tap-beta-4/supply-chain/pet-clinic-default@sha256:edfeabd87ee782f06510a0f1bc984a6134ae923121a6437cd5f401c59ff815de
+</code></pre>
+
+<blockquote>
+  <p>NOTE: The images resource is provided by the Tanzu Build Service (also part of TAP), which itself is built on the open source projects <a href="https://github.com/pivotal/kpack">kpack</a> and <a href="https://paketo.io/">Paketo</a> and years of history and experience with Cloud Foundry and Buildpacks.</p>
+</blockquote>
+
+<p>But that’s just an example of how we build a platform on Kubernetes, in this post I’ll try to stay focussed on knative.</p>
+
+<h2 id="cloud-native-runtimes-and-knative">Cloud Native Runtimes and knative</h2>
+
+<p><a href="https://docs.vmware.com/en/Cloud-Native-Runtimes-for-VMware-Tanzu/1.0/tanzu-cloud-native-runtimes-1-0/GUID-cnr-overview.html">Cloud Native Runtimes</a> is VMware’s product to provide various ways of running applications in Kubernetes. Currently there is only the single runtime, knative, but more will be added over time.</p>
+
+<p>So what’s knative? It’s an open source project that makes developers more productive by abstracting away some of the complexity of Kubernetes.</p>
+
+<blockquote>
+  <p>Knative components build on top of Kubernetes…by codifying the best practices shared by successful real-world implementations, Knative solves the “boring but difficult” parts of deploying and managing cloud native services so you don’t have to. - <a href="https://knative.dev/docs/">knative website</a></p>
+</blockquote>
+
+<p>knative provides:</p>
+
+<ol>
+  <li>Serverless - “Run serverless containers on Kubernetes with ease, Knative takes care of the details of networking, autoscaling (even to zero), and revision tracking. You just have to focus on your core logic.”</li>
+  <li>Eventing - “Universal subscription, delivery, and management of events. Build modern apps by attaching compute to a data stream with declarative event connectivity and developer-friendly object model.”</li>
+</ol>
+
+<p>I’d like to look specifically at just running a serverless app in knative, which in this case is easily provided/installed into Kubernetes by TAP. (That said, eventing is clearly important to modern applications, so it’s important to keep in mind that knative satisfies that need as well.)</p>
+
+<h2 id="deploying-an-app-into-knative">Deploying an App into knative</h2>
+
+<p>In our GKE cluster we have many packages from TAP installed, including knative, aka Cloud Native Runtimes. That means we can run serverless workloads!</p>
+
+<pre><code>$ tanzu package installed list --namespace tap-install
+\ Retrieving installed packages...
+  NAME                      PACKAGE-NAME                                        PACKAGE-VERSION  STATUS               
+  accelerator               accelerator.apps.tanzu.vmware.com                   1.0.0            Reconcile succeeded  
+  api-portal                api-portal.tanzu.vmware.com                         1.0.8            Reconcile succeeded  
+  appliveview               run.appliveview.tanzu.vmware.com                    1.0.1            Reconcile succeeded  
+  appliveview-conventions   build.appliveview.tanzu.vmware.com                  1.0.1            Reconcile succeeded  
+  buildservice              buildservice.tanzu.vmware.com                       1.4.2            Reconcile succeeded  
+  cartographer              cartographer.tanzu.vmware.com                       0.1.0            Reconcile succeeded  
+  cert-manager              cert-manager.tanzu.vmware.com                       1.5.3+tap.1      Reconcile succeeded  
+  cnrs                      cnrs.tanzu.vmware.com                               1.1.0            Reconcile succeeded  
+  contour                   contour.tanzu.vmware.com                            1.18.2+tap.1     Reconcile succeeded  
+  conventions-controller    controller.conventions.apps.tanzu.vmware.com        0.5.0            Reconcile succeeded  
+  developer-conventions     developer-conventions.tanzu.vmware.com              0.5.0-build.1    Reconcile succeeded  
+  fluxcd-source-controller  fluxcd.source.controller.tanzu.vmware.com           0.16.0           Reconcile succeeded  
+  grype                     grype.scanning.apps.tanzu.vmware.com                1.0.0            Reconcile succeeded  
+  image-policy-webhook      image-policy-webhook.signing.apps.tanzu.vmware.com  1.0.0            Reconcile succeeded  
+  learningcenter            learningcenter.tanzu.vmware.com                     0.1.0            Reconcile succeeded  
+  learningcenter-workshops  workshops.learningcenter.tanzu.vmware.com           0.1.0            Reconcile succeeded  
+  metadata-store            metadata-store.apps.tanzu.vmware.com                1.0.1            Reconcile succeeded  
+  ootb-delivery-basic       ootb-delivery-basic.tanzu.vmware.com                0.5.1            Reconcile succeeded  
+  ootb-supply-chain-basic   ootb-supply-chain-basic.tanzu.vmware.com            0.5.1            Reconcile succeeded  
+  ootb-templates            ootb-templates.tanzu.vmware.com                     0.5.1            Reconcile succeeded  
+  scanning                  scanning.apps.tanzu.vmware.com                      1.0.0            Reconcile succeeded  
+  service-bindings          service-bindings.labs.vmware.com                    0.6.0            Reconcile succeeded  
+  services-toolkit          services-toolkit.tanzu.vmware.com                   0.5.0            Reconcile succeeded  
+  source-controller         controller.source.apps.tanzu.vmware.com             0.2.0            Reconcile succeeded  
+  spring-boot-conventions   spring-boot-conventions.tanzu.vmware.com            0.3.0            Reconcile succeeded  
+  tap                       tap.tanzu.vmware.com                                1.0.0            Reconcile succeeded  
+  tap-gui                   tap-gui.tanzu.vmware.com                            1.0.1            Reconcile succeeded  
+  tap-telemetry             tap-telemetry.tanzu.vmware.com                      0.1.2            Reconcile succeeded  
+  tekton-pipelines          tekton.tanzu.vmware.com                             0.30.0           Reconcile succeeded
+</code></pre>
+
+<p>That’s a lot of stuff. Those pieces are currently part of the Tanzu Application Platform. But lets just use a single piece: knative.</p>
+
+<p>First I’ve got the <code>kn</code> CLI.</p>
+
+<pre><code>$ which kn
+/usr/local/bin/kn
+</code></pre>
+
+<p>Next I’ll create a namespace (and switch to it).</p>
+
+<pre><code>$ kubectl create namespace cnr-demo
+</code></pre>
+
+<p>Then I’ll setup a reg secret because my registry requires authentication.</p>
+
+<pre><code>$ kubectl create secret docker-registry registry-credentials \
+  --docker-server=&lt;redacted&gt; \
+  --docker-email=&lt;redacted&gt; \
+  --docker-username=&lt;redacted&gt; \
+  --docker-password=&lt;redacted&gt;
+</code></pre>
+
+<p>Allow the namespace’s default SA to use it…</p>
+
+<pre><code>$ kubectl patch serviceaccount default -p "{\"imagePullSecrets\": [{\"name\": \"registry-credentials\"}]}"
+</code></pre>
+
+<p>Now deploy a workload, pointing to an image that resides in the registry I previously setup secret credentials for.</p>
+
+<pre><code>$ kn service create hello-yeti -n cnr-demo \
+  --image &lt;registry&gt;/hello-yeti --env TARGET='hello-yeti'
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>$ kn service create hello-yeti -n cnr-demo --image &lt;registry&gt;/hello-yeti --env TARGET='hello-yeti'
+Creating service 'hello-yeti' in namespace 'cnr-demo':
+
+  0.043s The Route is still working to reflect the latest desired specification.
+  0.091s ...
+  0.148s Configuration "hello-yeti" is waiting for a Revision to become ready.
+  5.639s ...
+  5.712s Ingress has not yet been reconciled.
+  5.756s Waiting for Envoys to receive Endpoints data.
+  6.108s Waiting for load balancer to be ready
+  6.329s Ready to serve.
+
+Service 'hello-yeti' created to latest revision 'hello-yeti-00001' is available at URL:
+http://hello-yeti.cnr-demo.example.com
+</code></pre>
+
+<p>Once that deploys there will be a pod running.</p>
+
+<blockquote>
+  <p>NOTE: The deployment will scale to zero if it’s not being used, something to remember.</p>
+</blockquote>
+
+<pre><code>$ k get pods
+NAME                                          READY   STATUS    RESTARTS   AGE
+hello-yeti-00001-deployment-6f49f84f5-z6lgq   2/2     Running   0          13s
+</code></pre>
+
+<p>List the knative deployments/services.</p>
+
+<pre><code>$ kn service list
+NAME         URL                                      LATEST             AGE     CONDITIONS   READY   REASON
+hello-yeti   http://hello-yeti.cnr-demo.example.com   hello-yeti-00001   3m48s   3 OK / 3     True   
+</code></pre>
+
+<p>Curl the app.</p>
+
+<blockquote>
+  <p>NOTE: TAP also deploys an ingress controller for you. To connect to the knative service we’ll need the IP of the Kubernetes loadbalancer for the ingress service.</p>
+</blockquote>
+
+<pre><code>$ export LB=`kubectl get services -n tanzu-system-ingress envoy -o jsonpath="{.status.loadBalancer.ingress[0].ip}"`
+$ curl -H "Host: hello-yeti.cnr-demo.example.com" $LB
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>$ curl -H "Host: hello-yeti.cnr-demo.example.com" $LB
+              ______________
+            /               \
+           |   hello from    |
+           |  cloud native   |
+           |    runtimes     |     .xMWxw.
+            \______________\ |   wY     Ym.
+                            \|  C  ,  ,   O
+                                 \  ww   /.
+                               ..x       x..
+                              .x   wwwww    x.
+                             .x               x.
+                             x   \         /   x
+                             Y   Y         Y   Y
+                              wwv    x      vww
+                                \    /\    /
+                                :www:  :www:
+
+</code></pre>
+
+<p>If the application isn’t accessed for a while it’ll scale to zero.</p>
+
+<pre><code>$ k get pods
+No resources found in cnr-demo namespace.
+</code></pre>
+
+<p>If we try to hit the URL again, the pods will be restarted automatically by knative.</p>
+
+<p>So, that was pretty easy. Of course it’s a simple demo application which lives in an existing container image, but the point of this post was to illustrate that by deploying TAP we have access to knative, and we can even use knative outside of the TAP workflow if we want, or deploy it outside of TAP as well. knative is a major part of VMware Tanzu.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The Tanzu Application Platform gives you cutting edge tools like serverless via knative. Now, the point of TAP isn’t necessarily to just directly use knative like this, but I wanted to show that knative is indeed part, an integral part, of TAP, that you can use if you want to (by default most TAP demos will use knative) but you don’t have to use it.</p>
+
+<p>Another thing to keep in mind in the context of this post, is exactly where did that hello-yeti container image come from? What if we want to deploy our own code? Not surprisingly, I’ll look into that in the next post in this series.</p>
+
+<p>Thanks for reading!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

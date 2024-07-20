@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using AWS Nuke | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Using AWS Nuke">
+
+    
+    <meta name="twitter:description" content="<p>I recently set up a second AWS account just to use for testing. I have a primary account, but I want one that I can easily wipe out absolutely everything in, specifically using AWS Nuke.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>I recently set up a second AWS account just to use for testing. I have a primary account, but I want one that I can easily wipe out absolutely everything in, specifically using AWS Nuke.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/using-aws-nuke.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/using-aws-nuke.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Using AWS Nuke" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2023/01/16/using-aws-nuke.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Using AWS Nuke</h1>
+        <p class="text-gray-600">
+            <time datetime="2023-01-16T00:00:00-05:00">
+                January 16, 2023
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I recently set up a second AWS account just to use for testing. I have a primary account, but I want one that I can easily wipe out absolutely everything in, specifically using AWS Nuke.</p>
+
+<h1 id="what-is-aws-nuke">What is AWS Nuke?</h1>
+
+<p><a href="https://github.com/rebuy-de/aws-nuke">AWS Nuke</a> is a CLI applicaiton that can wipe out everything in an AWS account, if you want it to.</p>
+
+<p>What does it do? It removes everything from your AWS account. And I quote:</p>
+
+<blockquote>
+  <p>Remove all resources from an AWS account.</p>
+</blockquote>
+
+<p>Big red warning light:</p>
+
+<blockquote>
+  <p>NOTE: Of course, using AWS Nuke can be extremely…dangerous. You could wipe out everything in your account. AWS Nuke tries to be as safe as possible, but the point is to use it to delete everything.</p>
+</blockquote>
+
+<h2 id="installation">Installation</h2>
+
+<p>I downloaded the <a href="https://github.com/rebuy-de/aws-nuke/releases">latest release</a>, untarred it and insatlled the binary in my local bin.</p>
+
+<pre><code>$ which aws-nuke
+/home/curtis/bin/aws-nuke
+</code></pre>
+
+<p>Help:</p>
+
+<pre><code>$ aws-nuke -h
+A tool which removes every resource from an AWS account.  Use it with caution, since it cannot distinguish between production and non-production.
+
+Usage:
+  aws-nuke [flags]
+  aws-nuke [command]
+
+Available Commands:
+  completion     Generate the autocompletion script for the specified shell
+  help           Help about any command
+  resource-types lists all available resource types
+  version        shows version of this application
+SNIP!!
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+
+<p>The most important thing is the config file and below is a configuration file I’ve used.</p>
+
+<p>Notes on the configuration file example:</p>
+
+<ul>
+  <li>I’m just looking at us-east-1 for now (and global, i.e. IAM)</li>
+  <li>I don’t want AWS Nuke to remove the “curtis” user, or their key</li>
+  <li>Also filter out the MFA configuration for that user (though I don’t believe Nuke can remove it)</li>
+</ul>
+
+<pre><code>regions:
+- us-east-1
+- global
+
+account-blocklist:
+- "REDACTEDID_ACCOUNT_NOT_TO_NUKE" # personal i.e. prod account
+
+accounts:
+  # awstesting account to run nuke in
+  "REDACTEDID_ACCOUNT_TO_NUKE":
+    filters:
+      IAMUser:
+      - "curtis"
+      IAMUserPolicyAttachment:
+      - "curtis -&gt; AdministratorAccess"
+      IAMUserAccessKey:
+      - "curtis -&gt; REDACTEDKEY1"
+      IAMVirtualMFADevice:
+      - "arn:aws:iam::REDACTEDID2:mfa/googleauth"
+</code></pre>
+
+<p>Otherwise, we’re going to remove everything from that account that we can, except the “curtis” user.</p>
+
+<h2 id="alias-accounts">Alias Accounts</h2>
+
+<p>AWS Nuke wants you to alias accounts. It’s going to try to save you from deleting production by looking for the letters “prod” in the account alias.</p>
+
+<blockquote>
+  <p>“To avoid just displaying a account ID, which might gladly be ignored by humans, it is required to actually set an Account Alias for your account. Otherwise aws-nuke will abort.” - AWS Nuke documentation</p>
+</blockquote>
+
+<ul>
+  <li>For my testing account, I gave it this alias.</li>
+</ul>
+
+<pre><code>aws iam create-account-alias --profile awstesting --account-alias awstesting
+</code></pre>
+
+<ul>
+  <li>To validate…</li>
+</ul>
+
+<pre><code>$ aws iam list-account-aliases --profile awstesting
+{
+    "AccountAliases": [
+        "awstesting"
+    ]
+}
+</code></pre>
+
+<p>Now I can use AWS Nuke.</p>
+
+<h2 id="example-use">Example Use</h2>
+
+<p>Let’s create a user in the AWS Account I want to run Nuke in, i.e. I want this new account to be <em>removed</em> by AWS Nuke.</p>
+
+<p>First, validate I’m using my testing account.</p>
+
+<pre><code>$ export AWS_PROFILE=awstesting
+$ aws sts get-caller-identity
+{
+    "UserId": "REDACTED",
+    "Account": "REDACTED",
+    "Arn": "arn:aws:iam::REDACTED:user/curtis"
+}
+</code></pre>
+
+<ul>
+  <li>Next, create a user that will be removed by AWS nuke</li>
+</ul>
+
+<pre><code>aws iam create-user --user-name nukeme
+</code></pre>
+
+<ul>
+  <li>Now list users in the account, there should be only two…</li>
+</ul>
+
+<pre><code>aws iam list-users
+</code></pre>
+
+<p>E.g. output:</p>
+
+<pre><code>$ aws iam list-users
+{
+    "Users": [
+        {
+            "Path": "/",
+            "UserName": "curtis",
+            "UserId": "REDACTED",
+            "Arn": "arn:aws:iam::REDACTED:user/curtis",
+            "CreateDate": "2023-01-13T15:14:00Z"
+        },
+        {
+            "Path": "/",
+            "UserName": "nukeme",
+            "UserId": "REDACTED",
+            "Arn": "arn:aws:iam::REDACTED:user/nukeme",
+            "CreateDate": "2023-01-16T16:28:15Z"
+        }
+    ]
+}
+</code></pre>
+
+<ul>
+  <li>Run AWS Nuke in <strong>dry-run</strong> mode</li>
+</ul>
+
+<blockquote>
+  <p>NOTE: Without a specific option, which I won’t show here, AWS Nuke will always run in <strong>dry-run</strong> mode.</p>
+</blockquote>
+
+<pre><code>aws-nuke -c aws-nuke.yaml --profile awstesting
+</code></pre>
+
+<p>It will ask you to type in the alias of the account.</p>
+
+<p>If you want to actually <strong>for real</strong> delete everything, you will need to add the no dry run option, and you’ll be asked to type in the account profile name twice.</p>
+
+<pre><code>$ aws-nuke -c aws-nuke.yaml --profile awstesting -q
+aws-nuke version v2.21.2 - Fri Dec  9 20:36:12 UTC 2022 - e76d21c263477ebd6648fae19f9e539049ad2b51
+
+Do you really want to nuke the account with the ID REDACTED and the alias 'awstesting'?
+Do you want to continue? Enter account alias to continue.
+&gt; awstesting
+SNIP!!
+2023/01/16 13:19:18 This operation, ListFleets, has been deprecated
+global - IAMUser - nukeme - [Name: "nukeme"] - would remove
+Scan complete: 67 total, 1 nukeable, 66 filtered.
+
+The above resources would be deleted with the supplied configuration. Provide --no-dry-run to actually destroy resources.
+</code></pre>
+
+<ul>
+  <li>Run it again, but with the option to <em>really delete everything</em></li>
+</ul>
+
+<pre><code>$ aws-nuke -c aws-nuke.yaml --profile awstesting -q --no-dry-run
+aws-nuke version v2.21.2 - Fri Dec  9 20:36:12 UTC 2022 - e76d21c263477ebd6648fae19f9e539049ad2b51
+
+Do you really want to nuke the account with the ID REDACTED_ACCOUNT_TO_NUKE and the alias 'awstesting'?
+Do you want to continue? Enter account alias to continue.
+&gt; awstesting
+SNIP!!
+Do you really want to nuke these resources on the account with the ID REDACTED_ACCOUNT_TO_NUKE and the alias 'awstesting'?
+Do you want to continue? Enter account alias to continue.
+&gt; awstesting
+
+global - IAMUser - nukeme - [Name: "nukeme"] - triggered remove
+
+Removal requested: 1 waiting, 0 failed, 66 skipped, 0 finished
+
+global - IAMUser - nukeme - [Name: "nukeme"] - waiting
+
+Removal requested: 1 waiting, 0 failed, 66 skipped, 0 finished
+
+global - IAMUser - nukeme - [Name: "nukeme"] - removed
+
+Removal requested: 0 waiting, 0 failed, 66 skipped, 1 finished
+
+Nuke complete: 0 failed, 66 skipped, 1 finished.
+</code></pre>
+
+<p>Goodbye new account!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So far I like AWS Nuke. I had tested out some Fargate workloads and removed them, but they had left a NAT Gateway running, which AWS Nuke found. As we all know, those NAT gateways cost a lot of money. I’m really thankful tools like this exist.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

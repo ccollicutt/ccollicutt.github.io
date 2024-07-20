@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edgecore 5712 Switch | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Edgecore 5712 Switch">
+
+    
+    <meta name="twitter:description" content="<p><em>Slightly blurry picture of our 5712s in our lab</em></p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p><em>Slightly blurry picture of our 5712s in our lab</em></p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/edgecore-5712.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/edgecore-5712.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Edgecore 5712 Switch" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/03/25/edgecore-5712.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Edgecore 5712 Switch</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-03-25T00:00:00-04:00">
+                March 25, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p><em>Slightly blurry picture of our 5712s in our lab</em></p>
+
+<p>By now most people in IT, especially if involved in networking, have heard the term “whitebox,” mostly in relation to switches. Whitebox switches are essentially commodity network devices that come without an operating system. For various reasons it’s now possible to purchase a fast, relatively low-cost switch based on merchant silicon <a id="merchan">[1]</a> and run any of several (usually Linux based) network operating systems on it. This is quite powerful in terms of commoditization as well as providing access to a large open source ecosystem (again, Linux).</p>
+
+<h2 id="my-use-case">My use case</h2>
+
+<p>Currently my use case if fairly small or simplistic at this point. Basically our two 5712s will be used to provide the underlying physical network for an OpenStack lab. While I hope to get into larger network designs, our basic case will be to run Cumulus Linux on the switches and use their <a href="https://docs.cumulusnetworks.com/display/CL25/Multi-Chassis+Link+Aggregation+-+CLAG+-+MLAG">CLAG</a> feature,ie. multi-chassis link aggregation, to provide network high availability to our hosts. Nothing too fancy, and in fact keeping it simple is one of the “features” I like about whitebox switching. Sometimes less is more. Further, because Cumulus Linux is Linux, it lends itself well to automation. I’ll be able to manage all our OpenStack lab network infrastructure using Ansible, which is the same tool I use to manage OpenStack itself.</p>
+
+<h2 id="specs">Specs</h2>
+
+<p><img src="/img/edgecore2.jpg" alt="Edgecore 5712" /></p>
+
+<p><em>The unboxening</em></p>
+
+<p>The <a href="http://www.edge-core.com/ProdDtl.asp?sno=457&amp;AS5712-54X">Edgecore 5712</a> is a 10GB switch with 6 40GB uplink ports.</p>
+
+<ul>
+  <li>48 x SFP+ switch ports, supporting 10GbE (DAC, 10GBASE-SR/LR) or 1GbE (1000BASE-T/SX/LX).</li>
+  <li>Switch Silicon: Broadcom BCM56854 Trident II 720 Gbps.</li>
+  <li>CPU: Intel Rangeley C2538.</li>
+  <li>Network design approved by Open Compute Project (OCP)</li>
+</ul>
+
+<p>The Intel Rangeley CPU is an <a href="http://ark.intel.com/products/77988/Intel-Atom-Processor-C2758-4M-Cache-2_40-GHz">Atom chip</a>. The switch also comes with 8GB of memory.</p>
+
+<h2 id="trident-ii">Trident II</h2>
+
+<p>From my layperson perspective the important part is the <a href="https://www.broadcom.com/products/Switching/Data-Center/BCM56850-Series">Trident II</a> chip. This would be the “merchant silicon” that is the engine of this device, and it is a very powerful engine. A large number of switches will use this silicon so you will see the features that it provides in many whitebox switches.</p>
+
+<p>From the Broadcom site;</p>
+
+<ul>
+  <li>First switch to support VMWare VXLAN and Microsoft NVGRE tunneling protocols supported by SmartNV technology</li>
+  <li>Enables spanning-tree-free and CLOS-style network topologies through TRILL, SPB and ECMP with SmartHash technology</li>
+  <li>SmartTable and SmartBuffer technologies enable large-scale data centers with 10,000+ end user nodes</li>
+  <li>Up to 128x 10G integrated SerDes with Energy Efficient Ethernet for maximum port density per RU</li>
+  <li>Standards-compliant 10GbE/40GbE switch with support for up to 32 ports of 40GbE or up to 100+ ports 1GbE/10GbE</li>
+</ul>
+
+<p>The same chip is used in Edgecore’s 32 port 40GB switch, which I would have preferred to purchase because you can split out each 40GB port into four 10GB ports, and thus have 128 10GB ports from one switch! Most organizations could get away with only two switches in their data center. You could run a lot of virtual machines with 128x2 10GB ports. But I digress…</p>
+
+<p>The VXLAN feature will also be useful, as I have deployed software defined networking systems such as Midokura’s Midonet that rely heavily on VXLAN overlays.</p>
+
+<h2 id="available-network-operating-systems">Available Network Operating systems</h2>
+
+<p>Fortunately the 5712 is one of the best supported whitebox switches. That said there are only a handful of network operating systems available right now. These are the ones that I know of:</p>
+
+<ul>
+  <li>Cumulus Linux</li>
+  <li>Pico8</li>
+  <li>OpenSwitch (not the same as Open-V-Switch)</li>
+</ul>
+
+<p>Right now I have only installed OpenSwitch and Cumulus Linux. <a href="http://www.openswitch.net/">OpenSwitch</a> is open source and is mostly backed by HP (I believe). However it’s not quite ready for production, as far as I know. I’ve yet to try out Pica8’s PicOS so I can’t really comment on it. Both Cumulus and OpenSwitch installed perfectly on the 5712. <a id="install">[2]</a> I believe, as of right now, the only switch that OpenSwitch supports is the 5712, whereas Cumulus supports several makes and models.</p>
+
+<h2 id="purchasing">Purchasing</h2>
+
+<p>We fluked out and one of the resellers we deal with had two in stock. They didn’t even know what they were. It was weird. But were like “hey, can we get these two switches off you” and after a while they sold them to us. We also ordered a 1GB Edgecore switch that was not in stock, and it still hasn’t come in yet (this was several weeks ago). Being in Canada doesn’t help, as everything has to get imported from the US.</p>
+
+<p>This is part of why IaaS like AWS/Google/Azure is going to win a majority share: because it’s hard to even order physical equipment. Don’t even get me started on the process of buying licenses for Cumulus. The money wasn’t a problem, as we are getting good value, rather it’s the process…but that’s another blog post. A big part of open source software use is convenience–it’s only a download away. Certainly this convenience comes with its own set of issues, but location, location, location. I am on month three of waiting for hardware for my OpenStack/OPNFV lab, and still have another month or two to go.</p>
+
+<p>While I try not to focus on how much hardware costs in terms of commoditization, as I feel that companies tend to focus on that too much, I can say that these switches are very cost effective, even including a Cumulus Linux license. The 40GB versions are even better value.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In my opinion, merchant silicon has paved the way for disaggregation of the switch hardware from the operating system which has thus enabled commoditization. Whitebox switches plus an OS like Cumulus makes for a powerful network platform. The trickle down of technology from the “hyperscalers” has allowed people like myself and the organizations we work for access to advanced network systems. This shift is very similar to what happened, or is happening, with x86 commodity servers and Linux/*BSD. That said we are still in the early days but I expect it to unfold much like commodity x86. <a id="human">[3]</a></p>
+
+<p>Further, I believe that the somewhat limited feature set of the network operating systems is actually a feature in itself…when buying network gear from larger vendors you often pay for features you don’t need, so it allows some choice. That said, if you know exactly what you need and this whitebox model doesn’t provide it, then you’re still free to purchase from whatever vendor you would like. There will be many situations where that is the case, however, maybe I don’t need a huge network infrastructure, maybe all I need is two 32 port 40GB switches with MLAG to support 6000 virtual machines, or maybe I want to implement a relatively large-but-simple ECMP-based CLOS design. Choice is good.</p>
+
+<hr />
+
+<p><a name="merchant">1</a>: Merchant silicon is a fancy phrase for “off the shelf chips”, ie. the vendor doesn’t have to spend money on developing and making their own network device chips. Cisco, for example, spends a considerable amount of money developing their own switching silicon. 
+<a name="install">2</a>: Actually I did have one problem. I had OpenSwitch installed on one of the two switches, then I installed Cumulus over top. Something happened during the install that broke Cumulus, but it still completed the install and booted up. For some reason my ability to boot back into ONIE from the Cumulus operating system was broken. I had to use the console to boot into ONIE so I could continue testing my install automation setup. It was fairly unusual…as though the install had crashed part way through, just enough to boot the OS but break some functionality. I could not replicate the issue.
+<a name="human">3</a>: A recent <a href="http://us2.campaign-archive1.com/?u=5e5640dc2e2a939f35bf54df2&amp;id=b100cbe0d5#mctoc8">Human Infrastructure Magazine entry</a> briefly discussed merchant silicon, ECMP designs, etc.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

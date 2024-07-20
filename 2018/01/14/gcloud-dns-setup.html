@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up Google Cloud DNS with gcloud | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Setting Up Google Cloud DNS with gcloud">
+
+    
+    <meta name="twitter:description" content="<p>Of all the things to outsource, mail and DNS should be first. :)</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Of all the things to outsource, mail and DNS should be first. :)</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/gcloud-dns-setup.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/gcloud-dns-setup.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Setting Up Google Cloud DNS with gcloud" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2018/01/14/gcloud-dns-setup.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Setting Up Google Cloud DNS with gcloud</h1>
+        <p class="text-gray-600">
+            <time datetime="2018-01-14T00:00:00-05:00">
+                January 14, 2018
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Of all the things to outsource, mail and DNS should be first. :)</p>
+
+<p>I’m going to migrate my serverascode.com domain DNS from an old hosting company to Google Cloud DNS. Finally.</p>
+
+<p>I also have some DNS hosting done with AWS Route 53, but I am trying to learn more about gcloud. Also, I think hosting DNS at Google is slightly cheaper, in that each “zone” is $0.20/month vs $0.50/month at AWS. Each charges $0.40 for some huge number of DNS requests.</p>
+
+<p>One thing I find that is a problem with gcloud is that there is very little documentation outside of gclouds official docs. I am not really a fan of any of the official docs, be it for AWS or gcloud…they always read like autogenerated API docs. Also I find gclouds look, feel, and organization to be difficult to grasp.</p>
+
+<p>I’m only going to use the gcloud command line.</p>
+
+<h2 id="setting-up-the-dns-project">Setting Up the DNS Project</h2>
+
+<p>First, setup a new project. I’m not sure if the best way to use gcloud is to setup multiple projects, but I’m going to setup a DNS hosting project.</p>
+
+<p><em>NOTE:</em> Replace “some-uuid” with some kind of random string. Projects need to have a unique name.</p>
+
+<pre><code>$ gcloud projects create dns-hosting-&lt;some-uuid&gt; --name "DNS Hosting"
+</code></pre>
+
+<p>List your billing accounts. This assumes you have setup at least one account for billing.</p>
+
+<pre><code>$ gcloud alpha billing accounts list
+ID                    NAME                  OPEN
+&lt;billing account ID&gt;  My Billing Account
+</code></pre>
+
+<p>Switch to the DNS project.</p>
+
+<pre><code>$ gcloud config set project dns-hosting-&lt;some-uuid&gt;
+Updated property [core/project].
+</code></pre>
+
+<p>Assign a billing account to the DNS project.</p>
+
+<pre><code>$ gcloud alpha billing accounts projects link dns-hosting-&lt;some-uuid&gt; --account-id=&lt;billing account ID&gt;
+</code></pre>
+
+<p>Now the project can be billed.</p>
+
+<p>Enable the DNS API <em>on this project</em>.</p>
+
+<pre><code>$ gcloud services enable dns.googleapis.com
+</code></pre>
+
+<p>DNS should be in the list of available services for this project.</p>
+
+<pre><code>$ gcloud services list
+NAME                              TITLE
+bigquery-json.googleapis.com      BigQuery API
+cloudtrace.googleapis.com         Stackdriver Trace API
+servicemanagement.googleapis.com  Google Service Management API
+monitoring.googleapis.com         Stackdriver Monitoring API
+storage-api.googleapis.com        Google Cloud Storage JSON API
+dns.googleapis.com                Google Cloud DNS API
+logging.googleapis.com            Stackdriver Logging API
+clouddebugger.googleapis.com      Stackdriver Debugger API
+datastore.googleapis.com          Google Cloud Datastore API
+sql-component.googleapis.com      Google Cloud SQL
+cloudapis.googleapis.com          Google Cloud APIs
+storage-component.googleapis.com  Google Cloud Storage
+</code></pre>
+
+<p>Now for the actual DNS setup.</p>
+
+<h2 id="setting-up-dns-zone">Setting Up DNS Zone</h2>
+
+<p>Now that the project is created and has a billing account we can setup the DNS zone.</p>
+
+<pre><code>$ gcloud dns managed-zones create --dns-name="serverascode.com." --description="serverascode"
+</code></pre>
+
+<p>List zones.</p>
+
+<pre><code>$ gcloud dns  managed-zones list
+NAME          DNS_NAME           DESCRIPTION
+serverascode  serverascode.com.  serverascode
+</code></pre>
+
+<p>The process is:</p>
+
+<ol>
+  <li>Start the transaction</li>
+  <li>Make changes, add DNS records, etc</li>
+  <li>Execute the transaction</li>
+</ol>
+
+<p>Start a DNS zone editing transaction.</p>
+
+<pre><code>$ gcloud dns record-sets transaction start --zone=serverascode
+</code></pre>
+
+<p>A <code>transaction.yaml</code> file will be created where ever you run this command. Further commands will edit this file, and then finally we will execute this file to push the changes up to gcloud.</p>
+
+<p>Add an A record. In this example I am pointing <code>serverascode.com</code> to Github’s page servers.</p>
+
+<pre><code>$ gcloud dns record-sets transaction add --zone=serverascode --name="serverascode.com" --ttl 3600 --type A 192.30.252.153 192.30.252.154
+</code></pre>
+
+<p>Add a CNAME for www.</p>
+
+<pre><code>$ gcloud dns record-sets transaction add -z=serverascode --type=CNAME --name="www.serverascode.com" --ttl 3600 "serverascode.com."
+</code></pre>
+
+<p>If you host your mail somewhere for this domain, add MX records. Here I enter two mail hosts.</p>
+
+<pre><code>gcloud dns record-sets transaction add --zone=serverascode --name="serverascode.com" --ttl 3600 --type MX "10 mail1.somemailhost.com." "20 mail2.somemailhost.com."
+</code></pre>
+
+<p>Finally execute those changes.</p>
+
+<pre><code>$ gcloud dns record-sets transaction execute --zone serverascode
+</code></pre>
+
+<p>And once they have been pushed we can list them.</p>
+
+<pre><code>$ gcloud dns record-sets list --zone=serverascode
+NAME                   TYPE   TTL    DATA
+serverascode.com.      A      3600   192.30.252.153,192.30.252.154
+serverascode.com.      MX     3600   10 mail1.somemailhost.com.,20 mail2.somemailhost.com.
+serverascode.com.      NS     21600  ns-cloud-d1.googledomains.com.,ns-cloud-d2.googledomains.com.,ns-cloud-d3.googledomains.com.,ns-cloud-d4.googledomains.com.
+serverascode.com.      SOA    21600  ns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 6 21600 3600 259200 300
+www.serverascode.com.  CNAME  3600   serverascode.com.
+</code></pre>
+
+<p>If that looks good then go to your registar and change the nameservers to Google’s, which is what I did.</p>
+
+<p>If you are reading this post then it must have worked!</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

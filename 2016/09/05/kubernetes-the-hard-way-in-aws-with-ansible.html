@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes the Hard Way in AWS with Ansible | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Kubernetes the Hard Way in AWS with Ansible">
+
+    
+    <meta name="twitter:description" content="<p>Even though I mostly work with OpenStack, I also quite like Amazon Web Services (AWS). Further I am doing a lot of work with containers, and have been doing so for a while–I was messing around with <a href="https://github.com/ccollicutt/ansible-mesos-playbook">Mesos</a> two years ago.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>Even though I mostly work with OpenStack, I also quite like Amazon Web Services (AWS). Further I am doing a lot of work with containers, and have been doing so for a while–I was messing around with <a href="https://github.com/ccollicutt/ansible-mesos-playbook">Mesos</a> two years ago.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/kubernetes-the-hard-way-in-aws-with-ansible.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/kubernetes-the-hard-way-in-aws-with-ansible.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Kubernetes the Hard Way in AWS with Ansible" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2016/09/05/kubernetes-the-hard-way-in-aws-with-ansible.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Kubernetes the Hard Way in AWS with Ansible</h1>
+        <p class="text-gray-600">
+            <time datetime="2016-09-05T00:00:00-04:00">
+                September 05, 2016
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>Even though I mostly work with OpenStack, I also quite like Amazon Web Services (AWS). Further I am doing a lot of work with containers, and have been doing so for a while–I was messing around with <a href="https://github.com/ccollicutt/ansible-mesos-playbook">Mesos</a> two years ago.</p>
+
+<p>Kubernetes has a lot of attention right now. Docker has slightly cooled off, but is moving rapidly forwards <a href="https://blog.docker.com/2016/06/docker-1-12-built-in-orchestration/">technology-wise</a>. Kubernetes has recently reached some kind of front-runner status in terms of container management systems, though I should note that Docker is being used as the container runtime in all the examples discussed in this blog post. Kubernetes does not provide containers directly, and instead uses an underlying system such as Docker, or more recently, <a href="https://coreos.com/rkt/">rkt</a> for that layer. Kubernetes focuses on managing the deployment of containerized applications.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<p>I’ve released some <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">Ansible playbooks</a> and documents that will deploy Kubernetes into AWS, and configure Kubernetes to manage some AWS features like route tables and elastic load balancers.</p>
+
+<h2 id="kubernetes-the-hard-way">Kubernetes the Hard Way</h2>
+
+<p>A couple months ago <a href="https://twitter.com/kelseyhightower">Kelsey Hightower</a> released a set of documents entitled <a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes the Hard Way</a> (KtHW) which details how to manually deploy k8s. k8s comes with a <em>kube-up.sh</em> script that will deploy it to several IaaS providers, but it hides much of the deployment complexity, which is considerable. I don’t see how you could run k8s in production with just the <em>kube-up.sh</em> script.</p>
+
+<p>I took the example that Mr. Hightower had provided and altered it to use AWS (instead of Google Compute Engine) and also use Ansible instead of running individual commands. But I still kept the “one step at a time” mentality, which combines perfectly with Ansible when using multiple playbooks for each infrastructure layer.</p>
+
+<p>If you’d like to try out <em>Kubernetes the Hard Way in AWS with Ansible</em> (KtHWAA) then you can take a look at <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">this Github repository</a>. If you run into any errors, please don’t hesitate to submit an issue via Github and I will work on getting it fixed right away.</p>
+
+<h2 id="k8s-in-aws">k8s in AWS</h2>
+
+<p>k8s integrates well with AWS. For example, using the networking methodology that is shown in KtHW, route tables need to be setup in the VPC to point the node networks to particular nodes. k8s can do this automatically.</p>
+
+<p>Further, when you create a service in k8s, it can automatically configure an AWS EC2 load balancer to expose the service externally. This includes creating appropriate security groups.</p>
+
+<p>There are a few other integrations that I have yet to configure in my KtHWAA repository, but the two important ones, 1) pod routes and 2) ELB are completed and work great.</p>
+
+<p>The ability of k8s to configure the IaaS around it is quite amazing. I’m sure seasoned AWS users understand that IAM roles and policies are powerful, but to me it means something special because the infrastructure I create in AWS, such as k8s, can also configure AWS features. It seems obvious, but that is extremely dynamic. This capability is something that is lacking in OpenStack–the ability to create roles and policies and provide components, such as a virtual machine, the ability to alter the tenant infrastructure around it.</p>
+
+<p>I’m also impressed that the k8s project has put so much work in AWS integration. Given k8s is a Google led project, I’m happy to see them supporting other IaaS providers. So kudos to Google and the other members of the k8s project team.</p>
+
+<h2 id="using-aws-with-ansible">Using AWS with Ansible</h2>
+
+<p>I ran into a few funny issues with Ansible modules and AWS, but overall I’m happy with how things turned out. I could do everything I needed to with Ansible, though certainly there are some improvements to be made. Even though Ansible has been around for a while the modules are constantly improving and as AWS continues to grow at an unprecedented pace I’m sure the Ansible will get better and better in terms of managing AWS, as will my ability to properly use both.</p>
+
+<p>One example is that, at this time, is not an ec2_group_facts module, so you can only get information about a security group if you create it with the ec2_group module. But that will be easily fixed.</p>
+
+<h2 id="forward-looking-statement">Forward Looking Statement</h2>
+
+<p>I plan on doing a lot more work with k8s in AWS. There are at least of couple of areas, 1) volumes and 2) auto scaling, that I would like to investigate. k8s is powerful but complicated, and the real goal isn’t to be someone running k8s infrastructure, but rather to use k8s to run <em>actual</em> applications.</p>
+
+<p>AWS is extremely powerful and granular. Through creating KtHWAA I learned a lot about AWS Virtual Private Cloud (ie. networking) as well as the load balancer service. I’ve always been a big fan of AWS spot instances, so I use those as well (though I wouldn’t use them as much in a production instance). As mentioned, IAM roles and policies are a huge feature and differentiator, though I haven’t used other IaaS systems as extensively.</p>
+
+<p>Regarding networking in k8s, I don’t completely understand the <a href="https://github.com/containernetworking/cni">Container Networking Interface</a> (CNI) setup, so there is some reading and experimentation to do in that area as well.</p>
+
+<h2 id="thanks">Thanks!</h2>
+
+<p>Thanks to <a href="https://twitter.com/kelseyhightower">Kelsey Hightower</a> for releasing KtHW, as well as the team that put together <a href="https://github.com/ivx/kubernetes-the-hard-way-aws">KtHW with AWs</a>, which replaces GCE commands with similar AWS ones.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

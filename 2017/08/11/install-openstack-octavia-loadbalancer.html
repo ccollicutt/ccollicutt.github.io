@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install the Ocatvia Loadbalancing System into an OpenStack Cloud | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Install the Ocatvia Loadbalancing System into an OpenStack Cloud">
+
+    
+    <meta name="twitter:description" content="<p>This post discusses OpenStack as Infrastructure as a Service (IaaS) and–although not completely–how to deploy the Octavia load balancing system into an OpenStack cloud. To be forthcoming, I don’t think you could get Octavia running just by reading this post, and it wasn’t necessarily the reason for it, but there might be some helpful notes and links somewhere in this text.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>This post discusses OpenStack as Infrastructure as a Service (IaaS) and–although not completely–how to deploy the Octavia load balancing system into an OpenStack cloud. To be forthcoming, I don’t think you could get Octavia running just by reading this post, and it wasn’t necessarily the reason for it, but there might be some helpful notes and links somewhere in this text.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/install-openstack-octavia-loadbalancer.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/install-openstack-octavia-loadbalancer.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Install the Ocatvia Loadbalancing System into an OpenStack Cloud" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2017/08/11/install-openstack-octavia-loadbalancer.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Install the Ocatvia Loadbalancing System into an OpenStack Cloud</h1>
+        <p class="text-gray-600">
+            <time datetime="2017-08-11T00:00:00-04:00">
+                August 11, 2017
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>This post discusses OpenStack as Infrastructure as a Service (IaaS) and–although not completely–how to deploy the Octavia load balancing system into an OpenStack cloud. To be forthcoming, I don’t think you could get Octavia running just by reading this post, and it wasn’t necessarily the reason for it, but there might be some helpful notes and links somewhere in this text.</p>
+
+<h2 id="the-usefulness-of-load-balancers-in-iaas">The Usefulness of Load Balancers in IaaS</h2>
+
+<p>Most public clouds have a load balancing service. In Amazon Web Services (AWS) it’s the Elastic Load Balancer service. In Google’s Cloud, it’s the Google Cloud Load Balancer. Azure also has a load balancer. Fortunatley so does OpenStack.</p>
+
+<p>Technically a load balancer service is not necessary to run an OpenStack cloud, but for all intents and purposes in order to deploy applications on top of OpenStack in a “cloud native” fashion, load balancers are a practical requirement.</p>
+
+<h2 id="openstack-and-load-balancer-as-a-service">OpenStack and Load Balancer as a Service</h2>
+
+<p>People who run OpenStack clouds have some choices they can make in terms of how the LBaaS operates within their cloud. One of the newer methods for providing LBaaS in an OpenStack cloud is the <a href="https://docs.openstack.org/octavia/latest/reference/introduction.html">Octavia</a> project.</p>
+
+<blockquote>
+  <p>Octavia accomplishes its delivery of load balancing services by managing a fleet of virtual machines, containers, or bare metal servers—collectively known as amphorae—which it spins up on demand. This on-demand, horizontal scaling feature differentiates Octavia from other load balancing solutions, thereby making Octavia truly suited “for the cloud.”</p>
+</blockquote>
+
+<p><strong>Service Tenant / Service VM Model</strong></p>
+
+<p>One of the things that I like most about Octavia is the concept of the “service tenant” or “service virtual machine.” It’s important that the systems underpinning an OpenStack cloud be scalable. The way that Octavia approaches this is to create a specific virtual machine (or machines) for each load balancer that is created, and this VM is only used by a specific tenant. Essentially, hidden behind the scenes is a service tenant that is used to create virtual machines for end-user services.</p>
+
+<p>For example, if LBaaS + Octavia has already been deployed and we create a load balancer, we can see the virtual machine running in the Octavia service tenant. (This VM is not visible or accessible by the actual end user, other than as a load balancer endpoint.)</p>
+
+<pre><code># NOTE: As the octavia service tenant user...
+$ openstack server list
++--------------------------------------+----------------------------------------------+--------+--------------------------------------------------+------------+
+| ID                                   | Name                                         | Status | Networks                                         | Image Name |
++--------------------------------------+----------------------------------------------+--------+--------------------------------------------------+------------+
+| 9135a037-d67d-450e-b809-5a28a26b8b74 | amphora-3521b6fa-1824-448d-85d0-5f0cf1e87f67 | ACTIVE | test-vxlan=10.50.0.30; octavia-mgmt=172.16.31.20 |            |
++--------------------------------------+----------------------------------------------+--------+--------------------------------------------------+------------+
+</code></pre>
+
+<h2 id="environment">Environment</h2>
+
+<p>The environment I’m working in is an OpenStack deployment based on Ubuntu Xenial/16.04 and the Ubuntu cloud archive packages (all though Octavia is not yet packaged and Octavia is installed from pip), and the version of OpenStack deployed is Ocata.</p>
+
+<h2 id="octavia-and-lbaas--documentation">Octavia and LBaaS  Documentation</h2>
+
+<p>At the time I’m writing this blog post, the documentation for Octavia is not that detailed. In order to deploy Neutron LBaaS one would probably have to read the code for some deployment tools such as the devstack plugin for Octavia or the OpenStack Ansible projects role for Octavia. I would suggest that the Ansible role provides the most detailed information, especially their configuration file template.</p>
+
+<ul>
+  <li><a href="https://docs.openstack.org/ocata/networking-guide/config-LBaaS.html">Neutron documentation</a></li>
+  <li><a href="https://docs.openstack.org/octavia/latest/">Octavia Documentation</a></li>
+  <li><a href="https://github.com/openstack/octavia/blob/master/devstack/plugin.sh">Devstack Octavia Plugin Script</a></li>
+  <li><a href="https://docs.openstack.org/openstack-ansible-os_octavia/latest/configure-octavia.html">OpenStack Ansible Octavia Role</a></li>
+</ul>
+
+<h2 id="pre-deployment-steps">Pre-deployment Steps</h2>
+
+<p>To use Octavia and Neutron a few things have to exist. Of course these could (and should) be provisioned through your automation system.</p>
+
+<p>The following needs to be done:</p>
+
+<ol>
+  <li>Create Octavia Neutron management network</li>
+  <li>Create Octavia service user</li>
+  <li>Create an Amphora image</li>
+  <li>Upload the Amphora image into Glance</li>
+  <li>Create Octavia security group</li>
+  <li>Create certificates</li>
+  <li>(Optional) Create SSH keys for admin level troubleshooting Amphora images</li>
+</ol>
+
+<p>Once these tasks have been completed, Octavia and Neutron LBaaS can be deployed.</p>
+
+<h2 id="neutron-configuration">Neutron Configuration</h2>
+
+<p>Basically the process is to configure Neutron to provide the load balancing API, and then setup Octavia to be the back end for that API.</p>
+
+<p>There are three files that I have altered from a standard deployment. I believe some of them could be converged, but I kind of like the separation.</p>
+
+<ul>
+  <li>neutron.conf</li>
+  <li>neutron_lbaas.conf</li>
+  <li>services_lbaas.conf</li>
+</ul>
+
+<p>I’ve also altered <code>/etc/default/neutron-server</code> to start <code>neutron-server</code> with the additional config files.</p>
+
+<pre><code>neutron-api:/etc/neutron# cat /etc/default/neutron-server
+# defaults for neutron-server
+
+# path to config file corresponding to the core_plugin specified in
+# neutron.conf
+NEUTRON_PLUGIN_CONFIG="/etc/neutron/plugins/ml2/ml2_conf.ini"
+
+DAEMON_ARGS="$DAEMON_ARGS --config-file=/etc/neutron/neutron_lbaas.conf --config-file=/etc/neutron/services_lbaas.conf"
+neutron-api:/etc/neutron# ps ax | grep neutron-server | head -1
+  538 ?        Ss     1:16 /usr/bin/python /usr/bin/neutron-server --config-file=/etc/neutron/neutron.conf --config-file=/etc/neutron/plugins/ml2/ml2_conf.ini --config-file=/etc/neutron/neutron_lbaas.conf --config-file=/etc/neutron/services_lbaas.conf --log-file=/var/log/neutron/neutron-server.log
+</code></pre>
+
+<p><strong>neutron.conf</strong></p>
+
+<p>The first is to add the LBaaS service plugin to <code>neutron.conf</code>.</p>
+
+<pre><code>service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+</code></pre>
+
+<p><strong>neutron_lbaas.conf</strong></p>
+
+<p>Also there is the addition of the <code>neutron_lbaas.conf</code> configuration file.</p>
+
+<pre><code>[service_providers]
+service_provider = service_provider = LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver:default
+
+
+[service_auth]
+auth_url = http://&lt;internal keystone endpoint&gt;:5000/v3
+admin_user = octavia
+admin_tenant_name = service
+admin_password = &lt;octavia password&gt;
+admin_user_domain = default
+admin_project_domain = default
+region = tor1
+auth_version = 3
+endpoint_type = internalURL
+
+# NOTE(curtis): not sure of service name???
+#service_name = LBaaS
+
+# Disable server certificate verification (boolean value)
+#insecure = false
+</code></pre>
+
+<p><strong>services_lbaas.conf</strong></p>
+
+<pre><code>neutron-api:/etc/neutron# grep -v "^#\|^$" services_lbaas.conf
+[DEFAULT]
+[haproxy]
+[octavia]
+base_url = http://&lt;Octavia API or internal VIP&gt;:9876
+[radwarev2]
+[radwarev2_debug]
+</code></pre>
+
+<p><strong>Update the Neutron Database</strong></p>
+
+<p>Once Neutron has been configured to provide the LBaaS API, the database needs some “migrations.”</p>
+
+<pre><code>neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+</code></pre>
+
+<p><strong>Ensure neutron-lbaasv2-agent is Stopped and Disabled</strong></p>
+
+<p>It’s not used with Octavia and must not be running.</p>
+
+<h2 id="setup-octavia">Setup Octavia</h2>
+
+<p>Besides Neutron changes, Octavia also needs to be installed and configured.</p>
+
+<p>Ubuntu does not have packages for Octavia yet, so Octavia code will be installed via Pip. I’m using 0.10.0. (One can find all the release versions for OpenStack projects <a href="https://releases.openstack.org/teams/octavia.html">here</a>.)</p>
+
+<pre><code># pip install ocatavia==0.10.0
+</code></pre>
+
+<p>Pip installs Octavia services in <code>/usr/local/bin/</code>:</p>
+
+<pre><code># ls -1 /usr/local/bin/octavia-*
+/usr/local/bin/octavia-api
+/usr/local/bin/octavia-db-manage
+/usr/local/bin/octavia-health-manager
+/usr/local/bin/octavia-housekeeping
+/usr/local/bin/octavia-worker
+</code></pre>
+
+<p>Running those services would require some sort of init mechanism, such as systemd but that’s beyond the scope of this blog post. Suffice it to say, octavia-api, octavia-health-manager, octavia-housekeeping, and octavia-worker need to be running somewhere.</p>
+
+<p><strong>Configure octavia.conf</strong></p>
+
+<p>The octavia conifguration file is fairly complex. One of the best examples is the <a href="https://git.openstack.org/cgit/openstack/openstack-ansible-os_octavia/tree/templates/octavia.conf.j2">OpenStack Ansible Octavia Role’s octavia.conf template</a>. Unfortunately it’s beyond the scope of this blog post to completely detail the Octavia config file, and it will take some consideration to get correct for your particular environment.</p>
+
+<p>As another example, I deployed a devstack instance based on the Pike release and put up the resulting octavia.conf in a <a href="https://gist.github.com/ccollicutt/3f9f5d2cf0d34b55034aef2241106071">Github gist</a>.</p>
+
+<p><strong>Create Certificates</strong></p>
+
+<p>In the <a href="git clone https://github.com/openstack/octavia.git">Octavia git repository</a> there is a <code>create_certificates.sh</code> script which can be used to generate (example, non-prod) certificates. Production deployments would probably require some consideration in terms of certificate management.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully this blog post has provided some useful information, and can get you on your way towards implementing Octavia and OpenStack LBaaS.</p>
+
+<p>Please feel free to email me (curtis at serverascode.com ) or perhaps add a comment to the post if you have any questions, notice any mistakes, or have improvements that could be made.</p>
+
+<p>Thanks for reading.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

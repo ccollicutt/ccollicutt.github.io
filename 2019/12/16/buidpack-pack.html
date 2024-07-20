@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Native Buildpacks | Server As Code Dot Com</title>
+    <meta name="description" content="A blog about technology">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    <meta name="twitter:title" content="Cloud Native Buildpacks">
+
+    
+    <meta name="twitter:description" content="<p>How does code turn into an application running on Kubernetes? Good question. Many things have to happen: Dockerfiles written and rewritten, base images picked, builds pushed to repositories, and, of course, much k8s YAML wrangled. These simple phrases, e.g. “Dockerfile written,” represent considerable complexity.</p>
+
+">
+    <!-- LinkedIn -->
+    <meta property="og:description" content="<p>How does code turn into an application running on Kubernetes? Good question. Many things have to happen: Dockerfiles written and rewritten, base images picked, builds pushed to repositories, and, of course, much k8s YAML wrangled. These simple phrases, e.g. “Dockerfile written,” represent considerable complexity.</p>
+
+" />
+    
+
+    
+    
+    
+    
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://serverascode.com/img/social/posts/buidpack-pack.png">
+        <!-- LinkedIn -->
+        <meta property="og:image" content="https://serverascode.com/img/social/posts/buidpack-pack.png" />
+        
+
+    
+    <!-- end of Twitter cards -->
+
+    <!-- Additional Open Graph tags for better LinkedIn sharing -->
+    <meta property="og:title" content="Cloud Native Buildpacks" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://serverascode.com/2019/12/16/buidpack-pack.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 248
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 JUNE</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Cloud Native Buildpacks</h1>
+        <p class="text-gray-600">
+            <time datetime="2019-12-16T00:00:00-05:00">
+                December 16, 2019
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>How does code turn into an application running on Kubernetes? Good question. Many things have to happen: Dockerfiles written and rewritten, base images picked, builds pushed to repositories, and, of course, much k8s YAML wrangled. These simple phrases, e.g. “Dockerfile written,” represent considerable complexity.</p>
+
+<p>How can we make getting code into production simpler for everyone?</p>
+
+<p>One way is to use <a href="https://buildpacks.io">buildpacks</a>, which help to make the generation of <a href="https://www.opencontainers.org/">OCI images</a> easier. What if I told you that with buildpacks you don’t even <em>NEED</em> a Dockerfile?</p>
+
+<h2 id="building-container-images-is-hard---use-buildpacks">Building Container Images is Hard - Use Buildpacks</h2>
+
+<p>For quite a while Docker was the only easy way to build container images. It’s still responsible for building the vast majority container images. However, with the creation of the <a href="https://github.com/opencontainers/image-spec">OCI image spec</a> other tools have been developed.</p>
+
+<p>It can’t be denied that giving development teams the ability to create their own runtime images improved the developer experience. They could run the same image locally as what would, in theory, go into production. They knew the apps dependencies and could add them to the Dockerfile.</p>
+
+<p>However, in the socio-technical realm of enterprise organizations, operations typically does not allow arbitrary container images in production, for various reasons, some valid, some not. Further to that, many ops organizations will try to manage container images exactly like they manage virtual machine templates (<em>if</em> they manage them at all) which is an anti-pattern.</p>
+
+<p>Ultimately Dockerfiles make building operationally resilient images <strong>look</strong> easy, but it’s not.</p>
+
+<p>Here are a few considerations one has to make when building container images:</p>
+
+<ul>
+  <li>Keeping image sizes small</li>
+  <li>Dealing with dependencies</li>
+  <li>Picking the right base image</li>
+  <li>Ensuring appropriate application memory settings</li>
+  <li>Day 2 ops - e.g. How to update the JDK without breaking the image cache or rebasing on a new base image</li>
+  <li>Defining who is responsible for the images - Ops, Dev, or DevOps?</li>
+  <li>Dealing with CVEs</li>
+</ul>
+
+<p>Issues with typical container images:</p>
+
+<ul>
+  <li>Lack of app awareness</li>
+  <li>Not composable - How do we combine images? (Only have multistage builds in Dockerfiles)</li>
+  <li>Leaky abstraction - e.g. Container images mix operational concerns with application development concerns</li>
+  <li>Non-reproducible/untestable builds</li>
+  <li>Security - e.g. many Dockerfiles assume running as root</li>
+  <li>Treating containers images as VMs</li>
+</ul>
+
+<h2 id="enter-buildpacksio">Enter Buildpacks.io</h2>
+
+<blockquote>
+  <p>Buildpacks are pluggable, modular tools that translate source code into OCI images.</p>
+</blockquote>
+
+<p>Buildpacks are currently a CNCF Sandbox project supported by companies like Pivotal and Heroku.</p>
+
+<blockquote>
+  <p><a href="https://medium.com/buildpacks/cloud-native-buildpacks-hit-beta-4d9f2c85dd22s">Buildpacks</a> have always been about the developer experience. We want buildpacks to make your job easier by eliminating operational and platform concerns that you might otherwise need to consider when using containers.</p>
+</blockquote>
+
+<p>Buildpacks are a higher level abstraction than Dockerfiles and are really meant for developers.</p>
+
+<p>What do you <a href="https://buildpacks.io/#learn-more">get</a>?</p>
+
+<blockquote>
+  <ul>
+    <li>Provide a balance of control that reduces the operational burden on developers and supports enterprise operators who manage apps at scale</li>
+    <li>Ensure that apps meet security and compliance requirements without developer intervention</li>
+    <li>Provide automated delivery of both OS-level and application-level dependency upgrades, efficiently handling day-2 app operations that are often difficult to manage with Dockerfiles</li>
+    <li>Rely on compatibility guarantees to safely apply patches without rebuilding artifacts and without unintentionally changing application behavior</li>
+  </ul>
+</blockquote>
+
+<h2 id="using-buildpacks">Using Buildpacks</h2>
+
+<p>I run on Linux so I just <a href="https://github.com/buildpacks/pack/releases">downloaded the binary</a> into my home bin directory and made it executable.</p>
+
+<pre><code>$ which pack
+~/bin/pack
+</code></pre>
+
+<p>Let’s clone a repo, <em>spring-music</em>, and build an image.</p>
+
+<pre><code>$ git clone https://github.com/cloudfoundry-samples/spring-music
+</code></pre>
+
+<p>Now cd into spring-music. Note no Dockerfiles exist. Just plain code and build files.</p>
+
+<pre><code>$ cd spring-music
+$ ls
+build.gradle  gradle  gradle.properties  gradlew  gradlew.bat  LICENSE  manifest.yml  README.md  src
+</code></pre>
+
+<p>Now, with one simple command, let’s build a hardened container image that has been run millions of times on the Pivotal Platform and Heroku.</p>
+
+<pre><code>$ pack build spring-music
+</code></pre>
+
+<p>Here’s the resulting image…264MB:</p>
+
+<pre><code>$ docker images spring-music
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+spring-music        latest              0ea601302547        15 minutes ago      264MB
+</code></pre>
+
+<p>Run it.</p>
+
+<pre><code>$ docker run --rm -d -p 8080:8080 spring-music
+</code></pre>
+
+<p>Curl localhost:8080 to test.</p>
+
+<pre><code> $ curl -s localhost:8080 | grep title
+    &lt;meta name="title" content="Spring Music"&gt;
+    &lt;title&gt;Spring Music&lt;/title&gt;
+</code></pre>
+
+<p>Well, that was pretty easy…and no Dockerfiles!</p>
+
+<h2 id="a-bit-more">A Bit More</h2>
+
+<p>While there is a lot to…er…“unpack,” here, I’d like to point out a couple of things that I think are interesting and important about buildpacks.</p>
+
+<ul>
+  <li>Disconnection of Operating System from Application</li>
+</ul>
+
+<p>With standard Docker images when a security issue is discovered in a operating system package many, if not all, of the image layers have to be rebuilt. This makes redeploying applications slow. It also handcuffs the OS requirements to the app requirements. With buildpacks these concerns are separated.</p>
+
+<ul>
+  <li>Java BuildPack Memory Calculator</li>
+</ul>
+
+<p>I find that it’s quite easy to ignore or forget JVM memory settings…especially in a container centric world. Buildpacks use the <a href="https://github.com/cloudfoundry/java-buildpack-memory-calculator">Java BuildPack Memory Calculator</a> to dynamically set requirements for memory. I have yet to see a Dockerfile that implements this or anything like it. *</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Building hardened, operationally reliable container images is difficult. Using Buildpacks not only makes Dockerfiles unnecessary, but provides access to images that have been in constant, heavy production use for years.</p>
+
+<p>Using pack and buildpacks you don’t need to:</p>
+
+<ul>
+  <li>Write your own Dockerfiles</li>
+  <li>Add individual files before app code to improve caching</li>
+  <li>Dance around for user permissions and root access</li>
+  <li>Force docker to rebuild all layers for a security patch</li>
+  <li>Understand the base operating system</li>
+  <li>Couple applications to the build pipeline</li>
+  <li>Burn in images over time to feel that they are trustworthy</li>
+</ul>
+
+<p>Running applications in production isn’t easy. Using buildpacks can help to reduce the operational burden, for everyone.</p>
+
+<p>I recommend watching a <a href="https://www.youtube.com/watch?v=spW9ZlJpobM&amp;t=407s">couple</a> of <a href="https://www.youtube.com/watch?v=KiDK5C0kzJs">videos</a> for more in-depth information on buildpacks.</p>
+
+<hr />
+
+<p>* Hat tip to my colleague Adib Saikali for information on the Java memory calculator. Watch his Toronto Java meetup talk on <a href="https://www.youtube.com/watch?v=meE888uPLyc">Spring and Kubernetes</a>.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                248
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+    
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+    
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+    
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link
+                if (href.startsWith('http') || href.startsWith('https')) {
+                    window.open(href, '_blank');
+                    return;
+                }
+    
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+    
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+    
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>
