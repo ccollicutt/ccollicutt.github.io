@@ -49,6 +49,7 @@
                             <h3>Navigation</h3>
                             <a href="/">Home</a>
                             <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
                         </div>
                         <div class="dropdown-section">
                             <h3>Sections</h3>
@@ -303,81 +304,81 @@ Uid:	10001	10001	10001	10001
     document.body.style.backgroundRepeat = 'repeat';
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const dropdownToggle = document.querySelector('.dropdown-toggle');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
-    
-        if (!dropdownToggle || !dropdownMenu) {
-            console.error('Dropdown elements not found');
-            return;
-        }
-    
-        dropdownToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
-        });
-    
-        // Close the dropdown if the user clicks outside of it
-        window.addEventListener('click', function(event) {
-            if (!event.target.matches('.dropdown-toggle')) {
-                if (dropdownMenu.classList.contains('show')) {
-                    dropdownMenu.classList.remove('show');
-                }
-            }
-        });
-    
-        // Handle all links in the dropdown menu
-        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+ document.addEventListener('DOMContentLoaded', (event) => {
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownToggle || !dropdownMenu) {
+        console.error('Dropdown elements not found');
+        return;
+    }
+
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
                 dropdownMenu.classList.remove('show');
-    
-                const href = this.getAttribute('href');
-                
-                // Check if it's an external link
-                if (href.startsWith('http') || href.startsWith('https')) {
-                    window.open(href, '_blank');
-                    return;
+            }
+        }
+    });
+
+    // Handle all links in the dropdown menu
+    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownMenu.classList.remove('show');
+
+            const href = this.getAttribute('href');
+            
+            // Check if it's an external link or the feed.xml
+            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                window.open(href, '_blank');
+                return;
+            }
+
+            // Check if it's the home or archive link
+            if (href === '/' || href === '/archive.html') {
+                window.location.href = href;
+                return;
+            }
+
+            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+            
+            if (isHomePage && href.includes('#')) {
+                // If on home page and it's a section link, smooth scroll
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
                 }
-    
-                // Check if it's the home or archive link
-                if (href === '/' || href === '/archive.html') {
-                    window.location.href = href;
-                    return;
-                }
-    
-                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
-                
-                if (isHomePage && href.includes('#')) {
-                    // If on home page and it's a section link, smooth scroll
-                    const targetId = href.split('#')[1];
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                } else {
-                    // If on another page or it's not a section link, navigate to the page
-                    window.location.href = href;
-                }
-            });
+            } else {
+                // If on another page or it's not a section link, navigate to the page
+                window.location.href = href;
+            }
         });
     });
-    
-    // Function to scroll to section after page load
-    function scrollToSection() {
-        const hash = window.location.hash;
-        if (hash) {
-            const targetElement = document.querySelector(hash);
-            if (targetElement) {
-                setTimeout(() => {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            }
+});
+
+// Function to scroll to section after page load
+function scrollToSection() {
+    const hash = window.location.hash;
+    if (hash) {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         }
     }
-    
-    // Call scrollToSection after page load
-    window.addEventListener('load', scrollToSection);
+}
+
+// Call scrollToSection after page load
+window.addEventListener('load', scrollToSection);
 </script>
 
 </body>
