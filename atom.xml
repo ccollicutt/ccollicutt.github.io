@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-08-12T20:49:59-04:00</updated>
+ <updated>2024-08-13T04:21:55-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -45,7 +45,7 @@
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td&gt;OpenAI ChatGPT&lt;/td&gt;
-      &lt;td&gt;Claude Sonnet 3.5&lt;/td&gt;
+      &lt;td&gt;Claude 3.5 Sonnet&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;GitHub Copilot&lt;/td&gt;
