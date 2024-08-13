@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor">
+        
+        <meta name="twitter:description" content="I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. T...">
+        <meta property="og:description" content="I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. T..." />
+        
+        <meta property="og:title" content="Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/switching-to-claude-and-cursor.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/switching-to-claude-and-cursor.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 249
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 AUGUST</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-08-12T00:00:00-04:00">
+                August 12, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.</p>
+
+<h2 id="leapfrogging">Leapfrogging</h2>
+
+<p>What I want to focus on here, for this post, is that vendors are getting better and better at building LLMs for decompressing code and, as well, better at building out the user experience for coaxing code out of LLMs. These LLMs, this GenAI, combined with a chatbot interface or an integrated development environment, can do so, so much. We can just ask them for the code, or about the code, or <em>how to code</em>, and they will provide the code or help you figure out how to write it. It’s not always great code, or perfect code, but it’s usually good enough.</p>
+
+<p>A few notes:</p>
+
+<ol>
+  <li>There are many companies that make LLMs. A few are building “frontier” LLMs, such as OpenAI and Claude.</li>
+  <li>These companies are working to make LLMs and their interfaces better at interacting with humans and creating code.</li>
+  <li>There are also companies working on how programmers can best use LLMs to write code. They are not building the LLMs directly, instead finding out how we can best use them.</li>
+</ol>
+
+<p>In each of the above situations, at some point, one company will leapfrog another. And that, as far as I’m concerned, is what has happened recently.</p>
+
+<p>For the last few months I’ve been using OpenAI’s ChatGPT and Github’s Copilot via VSCode. But now I have almost completely switched from ChatGPT and CoPilot to Claude and Cursor. I used to pay monthly for ChatGPT and CoPilot, and I stopped paying for them and started paying for Claude and Cursor.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>What I Used Before</th>
+      <th>What I Use Now</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OpenAI ChatGPT</td>
+      <td>Claude Sonnet 3.5</td>
+    </tr>
+    <tr>
+      <td>GitHub Copilot</td>
+      <td>Cursor</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The difference is amazing…for now!</p>
+
+<h2 id="claude">Claude</h2>
+
+<p>For a long time, OpenAI was great at coding. Over time, in my opinion, it started to slide. Maybe it got nerfed, I don’t know. Then Claude 3.5 Sonnet came out…and it blew me away. It’s just very, very good at spitting out the codez.</p>
+
+<p>But regurgitating code is one thing, doing it in an easy and intuitive way while programming is another. I don’t mind the chatbot style of interacting with LLMs, but it does get tedious. Claude 3.5 Sonnet has helped solve this UX/UI problem with a concept it calls artifacts.</p>
+
+<blockquote>
+  <p>…introducing Artifacts on Claude.ai, a new feature that expands how users can interact with Claude. When a user asks Claude to generate content like code snippets, text documents, or website designs, these Artifacts appear in a dedicated window alongside their conversation. This creates a dynamic workspace where they can see, edit, and build upon Claude’s creations in real-time, seamlessly integrating AI-generated content into their projects and workflows.</p>
+</blockquote>
+
+<p>Claud is absolutely the best LLM for coding right now. I pay for it. It will save you massive amounts of time.</p>
+
+<p>Find Claude at <a href="https://claude.ai/">https://claude.ai/</a>.</p>
+
+<h2 id="cursor">Cursor</h2>
+
+<p>But no matter how much we tweak the chatbot-style interface, it’s never going to be good enough. We need AI built right into the IDE–the Integrated Developer Environment–which is really just a fancy text editor. AI has to be built in, and totally er…integrated…into the IDE.</p>
+
+<p>This is what cursor is–AI built right into the IDE. It’s not perfect, but it’s certainly a good place to start. The best place right now.</p>
+
+<blockquote>
+  <p>Built to make you extraordinarily productive, Cursor is the best way to code with AI.</p>
+</blockquote>
+
+<p>Find Cursor at <a href="https://www.cursor.com/">https://www.cursor.com/</a>.</p>
+
+<h2 id="the-future-looks-fantastic">The Future Looks Fantastic</h2>
+
+<p>I can’t describe where I think things are going with GenAI/LLMs and code better than this video. I heavily suggest watching it all, and perhaps even taking the time to watch the three hour video from which it came.</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">On using Cursor + Claude 3.5 Sonnet + Tailwind to ship 20x faster (ft. <a href="https://twitter.com/Shpigford?ref_src=twsrc%5Etfw">@Shpigford</a>) <a href="https://t.co/lQ0yTjm8MF">pic.twitter.com/lQ0yTjm8MF</a></p>&mdash; Sahil Lavingia (@shl) <a href="https://twitter.com/shl/status/1821646287290110184?ref_src=twsrc%5Etfw">August 8, 2024</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                249
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownToggle || !dropdownMenu) {
+        console.error('Dropdown elements not found');
+        return;
+    }
+
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        }
+    });
+
+    // Handle all links in the dropdown menu
+    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownMenu.classList.remove('show');
+
+            const href = this.getAttribute('href');
+            
+            // Check if it's an external link or the feed.xml
+            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                window.open(href, '_blank');
+                return;
+            }
+
+            // Check if it's the home or archive link
+            if (href === '/' || href === '/archive.html') {
+                window.location.href = href;
+                return;
+            }
+
+            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+            
+            if (isHomePage && href.includes('#')) {
+                // If on home page and it's a section link, smooth scroll
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If on another page or it's not a section link, navigate to the page
+                window.location.href = href;
+            }
+        });
+    });
+});
+
+// Function to scroll to section after page load
+function scrollToSection() {
+    const hash = window.location.hash;
+    if (hash) {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }
+}
+
+// Call scrollToSection after page load
+window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

@@ -4,13 +4,93 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-07-27T09:55:03-04:00</updated>
+ <updated>2024-08-12T20:49:59-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</title>
+   <link href="http://serverascode.com//2024/08/12/switching-to-claude-and-cursor.html"/>
+   <updated>2024-08-12T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2024/08/12/switching-to-claude-and-cursor</id>
+   <content type="html">&lt;p&gt;I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.&lt;/p&gt;
+
+&lt;h2 id=&quot;leapfrogging&quot;&gt;Leapfrogging&lt;/h2&gt;
+
+&lt;p&gt;What I want to focus on here, for this post, is that vendors are getting better and better at building LLMs for decompressing code and, as well, better at building out the user experience for coaxing code out of LLMs. These LLMs, this GenAI, combined with a chatbot interface or an integrated development environment, can do so, so much. We can just ask them for the code, or about the code, or &lt;em&gt;how to code&lt;/em&gt;, and they will provide the code or help you figure out how to write it. It’s not always great code, or perfect code, but it’s usually good enough.&lt;/p&gt;
+
+&lt;p&gt;A few notes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There are many companies that make LLMs. A few are building “frontier” LLMs, such as OpenAI and Claude.&lt;/li&gt;
+  &lt;li&gt;These companies are working to make LLMs and their interfaces better at interacting with humans and creating code.&lt;/li&gt;
+  &lt;li&gt;There are also companies working on how programmers can best use LLMs to write code. They are not building the LLMs directly, instead finding out how we can best use them.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In each of the above situations, at some point, one company will leapfrog another. And that, as far as I’m concerned, is what has happened recently.&lt;/p&gt;
+
+&lt;p&gt;For the last few months I’ve been using OpenAI’s ChatGPT and Github’s Copilot via VSCode. But now I have almost completely switched from ChatGPT and CoPilot to Claude and Cursor. I used to pay monthly for ChatGPT and CoPilot, and I stopped paying for them and started paying for Claude and Cursor.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;What I Used Before&lt;/th&gt;
+      &lt;th&gt;What I Use Now&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;OpenAI ChatGPT&lt;/td&gt;
+      &lt;td&gt;Claude Sonnet 3.5&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GitHub Copilot&lt;/td&gt;
+      &lt;td&gt;Cursor&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The difference is amazing…for now!&lt;/p&gt;
+
+&lt;h2 id=&quot;claude&quot;&gt;Claude&lt;/h2&gt;
+
+&lt;p&gt;For a long time, OpenAI was great at coding. Over time, in my opinion, it started to slide. Maybe it got nerfed, I don’t know. Then Claude 3.5 Sonnet came out…and it blew me away. It’s just very, very good at spitting out the codez.&lt;/p&gt;
+
+&lt;p&gt;But regurgitating code is one thing, doing it in an easy and intuitive way while programming is another. I don’t mind the chatbot style of interacting with LLMs, but it does get tedious. Claude 3.5 Sonnet has helped solve this UX/UI problem with a concept it calls artifacts.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;…introducing Artifacts on Claude.ai, a new feature that expands how users can interact with Claude. When a user asks Claude to generate content like code snippets, text documents, or website designs, these Artifacts appear in a dedicated window alongside their conversation. This creates a dynamic workspace where they can see, edit, and build upon Claude’s creations in real-time, seamlessly integrating AI-generated content into their projects and workflows.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Claud is absolutely the best LLM for coding right now. I pay for it. It will save you massive amounts of time.&lt;/p&gt;
+
+&lt;p&gt;Find Claude at &lt;a href=&quot;https://claude.ai/&quot;&gt;https://claude.ai/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;cursor&quot;&gt;Cursor&lt;/h2&gt;
+
+&lt;p&gt;But no matter how much we tweak the chatbot-style interface, it’s never going to be good enough. We need AI built right into the IDE–the Integrated Developer Environment–which is really just a fancy text editor. AI has to be built in, and totally er…integrated…into the IDE.&lt;/p&gt;
+
+&lt;p&gt;This is what cursor is–AI built right into the IDE. It’s not perfect, but it’s certainly a good place to start. The best place right now.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Built to make you extraordinarily productive, Cursor is the best way to code with AI.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Find Cursor at &lt;a href=&quot;https://www.cursor.com/&quot;&gt;https://www.cursor.com/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-future-looks-fantastic&quot;&gt;The Future Looks Fantastic&lt;/h2&gt;
+
+&lt;p&gt;I can’t describe where I think things are going with GenAI/LLMs and code better than this video. I heavily suggest watching it all, and perhaps even taking the time to watch the three hour video from which it came.&lt;/p&gt;
+
+&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;On using Cursor + Claude 3.5 Sonnet + Tailwind to ship 20x faster (ft. &lt;a href=&quot;https://twitter.com/Shpigford?ref_src=twsrc%5Etfw&quot;&gt;@Shpigford&lt;/a&gt;) &lt;a href=&quot;https://t.co/lQ0yTjm8MF&quot;&gt;pic.twitter.com/lQ0yTjm8MF&lt;/a&gt;&lt;/p&gt;&amp;mdash; Sahil Lavingia (@shl) &lt;a href=&quot;https://twitter.com/shl/status/1821646287290110184?ref_src=twsrc%5Etfw&quot;&gt;August 8, 2024&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Fine Tuning LLMs: Part 1 - Just Getting Started</title>

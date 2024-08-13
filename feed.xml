@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-07-27T09:55:03-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Fine Tuning LLMs: Part 1 - Just Getting Started</title><link href="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html" rel="alternate" type="text/html" title="Fine Tuning LLMs: Part 1 - Just Getting Started" /><published>2024-05-16T00:00:00-04:00</published><updated>2024-05-16T00:00:00-04:00</updated><id>https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started</id><content type="html" xml:base="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html"><![CDATA[<p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-08-12T20:49:59-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</title><link href="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html" rel="alternate" type="text/html" title="Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor" /><published>2024-08-12T00:00:00-04:00</published><updated>2024-08-12T00:00:00-04:00</updated><id>https://serverascode.com/2024/08/12/switching-to-claude-and-cursor</id><content type="html" xml:base="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html"><![CDATA[<p>I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.</p>
+
+<h2 id="leapfrogging">Leapfrogging</h2>
+
+<p>What I want to focus on here, for this post, is that vendors are getting better and better at building LLMs for decompressing code and, as well, better at building out the user experience for coaxing code out of LLMs. These LLMs, this GenAI, combined with a chatbot interface or an integrated development environment, can do so, so much. We can just ask them for the code, or about the code, or <em>how to code</em>, and they will provide the code or help you figure out how to write it. It’s not always great code, or perfect code, but it’s usually good enough.</p>
+
+<p>A few notes:</p>
+
+<ol>
+  <li>There are many companies that make LLMs. A few are building “frontier” LLMs, such as OpenAI and Claude.</li>
+  <li>These companies are working to make LLMs and their interfaces better at interacting with humans and creating code.</li>
+  <li>There are also companies working on how programmers can best use LLMs to write code. They are not building the LLMs directly, instead finding out how we can best use them.</li>
+</ol>
+
+<p>In each of the above situations, at some point, one company will leapfrog another. And that, as far as I’m concerned, is what has happened recently.</p>
+
+<p>For the last few months I’ve been using OpenAI’s ChatGPT and Github’s Copilot via VSCode. But now I have almost completely switched from ChatGPT and CoPilot to Claude and Cursor. I used to pay monthly for ChatGPT and CoPilot, and I stopped paying for them and started paying for Claude and Cursor.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>What I Used Before</th>
+      <th>What I Use Now</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>OpenAI ChatGPT</td>
+      <td>Claude Sonnet 3.5</td>
+    </tr>
+    <tr>
+      <td>GitHub Copilot</td>
+      <td>Cursor</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The difference is amazing…for now!</p>
+
+<h2 id="claude">Claude</h2>
+
+<p>For a long time, OpenAI was great at coding. Over time, in my opinion, it started to slide. Maybe it got nerfed, I don’t know. Then Claude 3.5 Sonnet came out…and it blew me away. It’s just very, very good at spitting out the codez.</p>
+
+<p>But regurgitating code is one thing, doing it in an easy and intuitive way while programming is another. I don’t mind the chatbot style of interacting with LLMs, but it does get tedious. Claude 3.5 Sonnet has helped solve this UX/UI problem with a concept it calls artifacts.</p>
+
+<blockquote>
+  <p>…introducing Artifacts on Claude.ai, a new feature that expands how users can interact with Claude. When a user asks Claude to generate content like code snippets, text documents, or website designs, these Artifacts appear in a dedicated window alongside their conversation. This creates a dynamic workspace where they can see, edit, and build upon Claude’s creations in real-time, seamlessly integrating AI-generated content into their projects and workflows.</p>
+</blockquote>
+
+<p>Claud is absolutely the best LLM for coding right now. I pay for it. It will save you massive amounts of time.</p>
+
+<p>Find Claude at <a href="https://claude.ai/">https://claude.ai/</a>.</p>
+
+<h2 id="cursor">Cursor</h2>
+
+<p>But no matter how much we tweak the chatbot-style interface, it’s never going to be good enough. We need AI built right into the IDE–the Integrated Developer Environment–which is really just a fancy text editor. AI has to be built in, and totally er…integrated…into the IDE.</p>
+
+<p>This is what cursor is–AI built right into the IDE. It’s not perfect, but it’s certainly a good place to start. The best place right now.</p>
+
+<blockquote>
+  <p>Built to make you extraordinarily productive, Cursor is the best way to code with AI.</p>
+</blockquote>
+
+<p>Find Cursor at <a href="https://www.cursor.com/">https://www.cursor.com/</a>.</p>
+
+<h2 id="the-future-looks-fantastic">The Future Looks Fantastic</h2>
+
+<p>I can’t describe where I think things are going with GenAI/LLMs and code better than this video. I heavily suggest watching it all, and perhaps even taking the time to watch the three hour video from which it came.</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">On using Cursor + Claude 3.5 Sonnet + Tailwind to ship 20x faster (ft. <a href="https://twitter.com/Shpigford?ref_src=twsrc%5Etfw">@Shpigford</a>) <a href="https://t.co/lQ0yTjm8MF">pic.twitter.com/lQ0yTjm8MF</a></p>&mdash; Sahil Lavingia (@shl) <a href="https://twitter.com/shl/status/1821646287290110184?ref_src=twsrc%5Etfw">August 8, 2024</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>]]></content><author><name></name></author><summary type="html"><![CDATA[I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.]]></summary></entry><entry><title type="html">Fine Tuning LLMs: Part 1 - Just Getting Started</title><link href="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html" rel="alternate" type="text/html" title="Fine Tuning LLMs: Part 1 - Just Getting Started" /><published>2024-05-16T00:00:00-04:00</published><updated>2024-05-16T00:00:00-04:00</updated><id>https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started</id><content type="html" xml:base="https://serverascode.com/2024/05/16/fine-tuning-llms-part-one-getting-started.html"><![CDATA[<p>There are a few ways we can customise a Large Language Model (LLM), and one of those ways is to fine-tune it.</p>
 
 <p>But why fine-tune an LLM?</p>
 
@@ -1390,244 +1460,4 @@ web: gunicorn app:app
 Application is running as user: cnb
 </code></pre>
 
-<p>Above we can see the app, which is configured to return the user it’s running as, is reporting that it is running as user “cnb” aka not root, aka Cloud Native Buildpacks. Done by default. Nice.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.]]></summary></entry><entry><title type="html">Making Pod Security Standards the Default in Kubernetes</title><link href="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html" rel="alternate" type="text/html" title="Making Pod Security Standards the Default in Kubernetes" /><published>2023-08-02T00:00:00-04:00</published><updated>2023-08-02T00:00:00-04:00</updated><id>https://serverascode.com/2023/08/02/making-pod-security-standards-default</id><content type="html" xml:base="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html"><![CDATA[<p>In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.</p>
-
-<p>We used to have something called Pod Security Policies that we could use to increase the level of security, like reduce some exposure, but that model was <a href="https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/">deprecated</a>. Now we have something called Pod Security Standards. These are a set of recommendations for securing pods and are managed by the Pod Security Admission Controller which is part of Kubernetes. However, by default, no Pod Security Standards are configured, enforcing, etc…but what if we want them enforcing by default on a newly created namespace?</p>
-
-<h2 id="one-model-mutating-requests-using-kyverno">One Model: Mutating Requests Using Kyverno</h2>
-
-<p>One way to accomplish this is to use Kyverno, which, among its features, is the ability to mutate Kubernetes requests in, what I think, is a pretty straight forward fashion. For example, it can add a label to a namespace, such as specifying a Pod Security Standard. Thus, following this model, we can force every new namespace to require a certain security posture by default.</p>
-
-<p>Another way to do this would be to set up a mutating admission controller. Probably other methods as well. (Let me know!!!)</p>
-
-<p>I like “mutating” things because it really means having Kubernetes do the work for us. I like making Kubernetes do work for me instead of the other way around. :)</p>
-
-<h3 id="install-kyverno">Install Kyverno</h3>
-
-<ul>
-  <li>Install Kyverno</li>
-</ul>
-
-<pre><code>$ helm install kyverno kyverno/kyverno -n kyverno --create-namespace
-NAME: kyverno
-LAST DEPLOYED: Wed Aug  2 07:47:18 2023
-NAMESPACE: kyverno
-STATUS: deployed
-REVISION: 1
-NOTES:
-Chart version: 3.0.4
-Kyverno version: v1.10.2
-
-Thank you for installing kyverno! Your release is named kyverno.
-
-The following components have been installed in your cluster:
-- CRDs
-- Admission controller
-- Reports controller
-- Cleanup controller
-- Background controller
-
-
-⚠️  WARNING: Setting the admission controller replica count below 3 means Kyverno is not running in high availability mode.
-
-💡 Note: There is a trade-off when deciding which approach to take regarding Namespace exclusions. Please see the d
-</code></pre>
-
-<p>Done.</p>
-
-<h3 id="make-the-restricted-pod-security-standard-the-default">Make the Restricted Pod Security Standard the Default</h3>
-
-<p>Kyverno can mutate a request to create a namespace and add a label to it. In this case we’re telling it to add the label <code>pod-security.kubernetes.io/enforce: restricted</code> so that the pod security admission controller will enforce the Pod Security Standards on the namespace, in this case it will “enforce” the “restricted” profile.</p>
-
-<h3 id="configuring-kyverno-to-add-the-label-to-namespaces">Configuring Kyverno to Add the Label to Namespaces</h3>
-
-<ul>
-  <li>Add the ClusterPolicy to Kyverno</li>
-</ul>
-
-<blockquote>
-  <p>NOTE: In the “real world” we’d probably want to exclude some namespaces, but, again, only new namespaces will be affected by this policy.</p>
-</blockquote>
-
-<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: add-ns-label
-spec:
-  background: false
-  rules:
-  - name: add-ns-label
-    match:
-      resources:
-        kinds:
-        - Namespace
-    mutate:
-      patchStrategicMerge:
-        metadata:
-          labels:
-            pod-security.kubernetes.io/enforce: restricted
-EOF
-</code></pre>
-
-<p>Verify:</p>
-
-<pre><code>$ k get clusterpolicy add-ns-label
-NAME       	BACKGROUND   VALIDATE ACTION   READY   AGE	MESSAGE
-add-ns-label   true     	Audit         	True	7h1m   Ready
-</code></pre>
-
-<p>Good.</p>
-
-<h2 id="create-a-namespace-and-test">Create a Namespace and Test</h2>
-
-<ul>
-  <li>Create a new namespace (the name doesn’t matter)</li>
-</ul>
-
-<pre><code>kubectl create ns enforcing
-</code></pre>
-
-<ul>
-  <li>Review that the label was added by Kyverno mutating the request for a namespace</li>
-</ul>
-
-<pre><code>$ k get ns enforcing -oyaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-	policies.kyverno.io/last-applied-patches: |
-  	add-ns-label.add-ns-label.kyverno.io: added /metadata/labels/pod-security.kubernetes.io~1enforce
-  creationTimestamp: "2023-08-02T11:50:14Z"
-  labels:
-	kubernetes.io/metadata.name: enforcing
-	pod-security.kubernetes.io/enforce: restricted
-  name: enforcing
-  resourceVersion: "11055"
-  uid: ce552efc-172e-4aa6-bc6d-13179f73372c
-spec:
-  finalizers:
-  - kubernetes
-status:
-  phase: Active
-</code></pre>
-
-<p>This label was added by Kyverno. This means the pod security admission controller will enforce the restricted Pod Security Standard in this namespace.</p>
-
-<pre><code>pod-security.kubernetes.io/enforce: restricted
-</code></pre>
-
-<ul>
-  <li>Create an “insecure” pod in the namespace, just any old pod will do…</li>
-</ul>
-
-<pre><code>kubectl run nginx --image=nginx -n enforcing
-</code></pre>
-
-<p>E.g. output:</p>
-
-<pre><code>$ k run nginx --image=nginx -n enforcing
-Error from server (Forbidden): pods "nginx" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "nginx" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "nginx" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "nginx" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "nginx" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
-</code></pre>
-
-<p>The pod was not allowed to be created because it did not meet the Pod Security Standard.</p>
-
-<ul>
-  <li>Create a pod that meets the Pod Security Standard for the “restricted” profile</li>
-</ul>
-
-<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-meets-pod-security-standards
-  namespace: enforcing
-spec:
-  containers:
-  - image: nginxinc/nginx-unprivileged
-    name: nginx
-    securityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-        - ALL
-      runAsNonRoot: true
-      seccompProfile:
-        type: RuntimeDefault
-EOF
-</code></pre>
-
-<p>Ok, that worked.</p>
-
-<pre><code>$ k get pods
-NAME                             	READY   STATUS	RESTARTS   AGE
-nginx-meets-pod-security-standards   1/1 	Running   0      	6h26m
-</code></pre>
-
-<ul>
-  <li>Connect to nginx running in the pod by port forwarding</li>
-</ul>
-
-<pre><code>kubectl port-forward pod/nginx-meets-pod-security-standards 8080:8080 -n enforcing
-</code></pre>
-
-<ul>
-  <li>Curl it</li>
-</ul>
-
-<pre><code>$ curl localhost:8080
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-&lt;style&gt;
-html { color-scheme: light dark; }
-body { width: 35em; margin: 0 auto;
-font-family: Tahoma, Verdana, Arial, sans-serif; }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
-&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.&lt;/p&gt;
-
-&lt;p&gt;For online documentation and support please refer to
-&lt;a href="http://nginx.org/"&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
-Commercial support is available at
-&lt;a href="http://nginx.com/"&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>Works!</p>
-
-<h2 id="what-is-the-pod-security-standard-restricted-profile">What is the Pod Security Standard “Restricted” Profile?</h2>
-
-<p>The Pod Security Standard “restricted” profile is defined in the <a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Pod Security Standards</a> and is, er, the most restrictive profile.</p>
-
-<ul>
-  <li>Limit types of volumes</li>
-  <li>Don’t run as root user</li>
-  <li>No privilege escalation</li>
-  <li>Seccomp profile set to “RuntimeDefault” or “Localhost”</li>
-  <li>Drop all capabilities except perhaps add <code>NET_BIND_SERVICE</code></li>
-</ul>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>No one should run vanilla, default Kubernetes in production. No one should run root user pods. I mean we’re mostly running web services here, they can listen on port 8080 and don’t really need much in the way of permissions. Definitely our namespaces should have security limitations that are only reduced later on if they need to be.</p>
-
-<p>Using Kyverno to do this is one way, there are others.</p>
-
-<p>Ultimately, the way to secure general purpose CPUs is to limit what the workloads can do with them.</p>
-
-<h2 id="references">References</h2>
-
-<ul>
-  <li><a href="[https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/">https://www.jrcomplex.fi/securing-containers-in-kubernetes-with-seccomp/</a></li>
-  <li><a href="[https://kubernetes.io/docs/concepts/security/pod-security-standards/">https://kubernetes.io/docs/concepts/security/pod-security-standards/</a></li>
-  <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/">https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/</a></li>
-</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[In my opinion, the default level of security in Kubernetes is not enough. There’s some work that needs to be done to bring it up to some, perhaps arbitrary, level of security. This post is part of an exploration of that area.]]></summary></entry></feed>
+<p>Above we can see the app, which is configured to return the user it’s running as, is reporting that it is running as user “cnb” aka not root, aka Cloud Native Buildpacks. Done by default. Nice.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.]]></summary></entry></feed>
