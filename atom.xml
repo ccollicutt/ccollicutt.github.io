@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-08-23T06:31:04-04:00</updated>
+ <updated>2024-08-23T07:01:32-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -29,9 +29,12 @@
   &lt;li&gt;I have a 500 line bash script that installs Kubernetes on Ubuntu 22.04, usually a small VM, 8 gigs of ram, 2-4 CPUs, 40 gigs of disk.&lt;/li&gt;
   &lt;li&gt;The script can create a single node “cluster”&lt;/li&gt;
   &lt;li&gt;Or you can deploy a bunch of virtual machines and make one a control plane node and the other workers&lt;/li&gt;
-  &lt;li&gt;It only takes 2 or 3 minutes to get a k8s cluster&lt;/li&gt;
-  &lt;li&gt;There are other single node k8s tools, but I like mine, of course :)&lt;/li&gt;
+  &lt;li&gt;It only takes 2 or 3 minutes to get a k8s cluster. Below is a picture of the test I ran in a github action. Of course, github’s infrastructure is blazing fast–the speed of the installation will largely depend on how fast you can download packages to the host.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/install-k8s-action.png&quot; alt=&quot;quick install in a github action&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are other single node k8s tools, but I like mine, of course :)&lt;/p&gt;
 
 &lt;h2 id=&quot;install-kubernetes&quot;&gt;Install Kubernetes&lt;/h2&gt;
 
