@@ -4,13 +4,189 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-08-13T04:26:23-04:00</updated>
+ <updated>2024-08-23T06:31:04-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Easily Create a Single Node Kubernetes Cluster</title>
+   <link href="http://serverascode.com//2024/08/22/install-kubernetes-script.html"/>
+   <updated>2024-08-22T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2024/08/22/install-kubernetes-script</id>
+   <content type="html">&lt;p&gt;I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.&lt;/p&gt;
+
+&lt;p&gt;For quite a while, the last few years, I have had a bunch of Kubernetes clusters running in my basement. I have half a rack there that used to be filled with servers. Then that changed to just running one larger server with a couple hundred gigs of memory, and that one server was running a bunch of Kubernetes clusters. But recently I shut that down. Mainly because it’s summer here in Toronto and that one big server was heating up the basement, and I wasn’t using it that much. I may turn it on again in the winter. Not sure. Anyways…&lt;/p&gt;
+
+&lt;p&gt;Yesterday I needed a small k8s cluster. So I used my good old &lt;code&gt;install-kubernetes.sh&lt;/code&gt; script to install it onto a VM running on my local workstation.&lt;/p&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tl;dr&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I have a 500 line bash script that installs Kubernetes on Ubuntu 22.04, usually a small VM, 8 gigs of ram, 2-4 CPUs, 40 gigs of disk.&lt;/li&gt;
+  &lt;li&gt;The script can create a single node “cluster”&lt;/li&gt;
+  &lt;li&gt;Or you can deploy a bunch of virtual machines and make one a control plane node and the other workers&lt;/li&gt;
+  &lt;li&gt;It only takes 2 or 3 minutes to get a k8s cluster&lt;/li&gt;
+  &lt;li&gt;There are other single node k8s tools, but I like mine, of course :)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;install-kubernetes&quot;&gt;Install Kubernetes&lt;/h2&gt;
+
+&lt;p&gt;For a year and a half or so–first commit was March of 2023–I’ve had a script that will deploy a Kubernetes cluster into a virtual machine.&lt;/p&gt;
+
+&lt;p&gt;That script can be found here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ccollicutt/install-kubernetes&quot;&gt;https://github.com/ccollicutt/install-kubernetes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I haven’t used it for a while, and so it was actually broken for the last bit because the upstream Kubernetes project changed where the packages for Ubuntu are located. So I just updated the script, like bumped it to Kubernetes 1.31, fixed a few other things, and now it’s good to go again to create either a cluster of Kubernetes instances or, perhaps more useful, a full Kubernetes deployment running in a single virtual machine instance (where the single node is both a control plane node and a worker node).&lt;/p&gt;
+
+&lt;h2 id=&quot;building-a-single-node-kubernetescluster&quot;&gt;Building a Single Node Kubernetes…“Cluster”&lt;/h2&gt;
+
+&lt;p&gt;First, get yourself an Ubuntu 22.04 virtual machine with at least 8 gigs of ram and around 40 gigs of disk. I’d probably also give it 4 CPUs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~# source /etc/lsb-release; echo $DISTRIB_RELEASE
+22.04
+root@install-k8s-demo:~# nproc
+4
+root@install-k8s-demo:~# free -h
+           	total    	used    	free  	shared  buff/cache   available
+Mem:       	7.7Gi   	124Mi   	7.5Gi    	17Mi   	111Mi   	7.4Gi
+Swap:         	0B      	0B      	0B
+root@install-k8s-demo:~# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda  	8:0	0   40G  0 disk
+├─sda1   8:1	0  100M  0 part /boot/efi
+└─sda2   8:2	0 39.9G  0 part /
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, login to that VM and get a root shell.&lt;/p&gt;
+
+&lt;p&gt;Next, grab the install-kubernetes script.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: You’ll need git installed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~# git clone https://github.com/ccollicutt/install-kubernetes
+root@install-k8s-demo:~# cd install-kubernetes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There will be a few files there:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~/install-kubernetes# ls
+install-kubernetes.sh  makefile  manifests  README.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, we simply run the &lt;code&gt;install-kubernetes.sh &lt;/code&gt;script BUT using the “-s” option to set it so that it deploys a single node control plane + worker node.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: If you forget the “-s”, it is probably best to recreate the virtual machine and reinstall it. This is not idempotent, or at least it hasn’t been tested that way.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;./install-kubernetes.sh -s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The output of that will look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~/install-kubernetes# ./install-kubernetes.sh -s
+Starting install...
+==&amp;gt; Logging all output to /tmp/install-kubernetes-NMxK9WTKim/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+Installing required packages
+Installing Kubernetes packages
+Configuring system
+Configuring crictl
+Configuring kubelet
+Configuring containerd
+Installing containerd
+Starting services
+Configuring control plane node...
+Initialising the Kubernetes cluster via Kubeadm
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&amp;gt; Installing Calico tigera-operator
+==&amp;gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&amp;gt; Nodes are ready
+Checking Kubernetes version...
+==&amp;gt; Client version: v1.31.0
+==&amp;gt; Server Version: v1.31.0
+==&amp;gt; Requested KUBE_VERSION matches the server version.
+Installing metrics server
+Configuring as a single node cluster
+Configuring as a single node cluster
+Deploying test nginx pod
+Waiting for all pods to be running...
+Install complete!
+
+### Command to add a worker node ###
+kubeadm join localhost:6443 --token &amp;lt;redact&amp;gt; --discovery-token-ca-cert-hash sha256:&amp;lt;redact&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;now-you-have-a-kubernetes-cluster&quot;&gt;Now You Have a Kubernetes Cluster&lt;/h2&gt;
+
+&lt;p&gt;At this point, you can run kubectl and access the local cluster.&lt;/p&gt;
+
+&lt;p&gt;There’s a kubeconfig in:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~# ls ~/.kube/
+cache  config
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And, if there is an ubuntu user on the host, the config will be there too.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~# ls /home/ubuntu/.kube/
+config
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we can connect to the “cluster”.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@install-k8s-demo:~# kubectl get pods -A
+NAMESPACE      	NAME                                   	READY   STATUS	RESTARTS   AGE
+calico-apiserver   calico-apiserver-78d48b5579-j97lc      	1/1 	Running   0      	4m15s
+calico-apiserver   calico-apiserver-78d48b5579-kmcvr      	1/1 	Running   0      	4m15s
+calico-system  	calico-kube-controllers-7d868b8f66-fldb5   1/1 	Running   0      	4m45s
+calico-system  	calico-node-pqfdn                      	1/1 	Running   0      	4m45s
+calico-system  	calico-typha-899c7464d-9vqzg           	1/1 	Running   0      	4m45s
+calico-system  	csi-node-driver-vqvnx                  	2/2 	Running   0      	4m36s
+kube-system    	coredns-6f6b679f8f-tvtjs               	1/1 	Running   0      	4m49s
+kube-system    	coredns-6f6b679f8f-zvcdl               	1/1 	Running   0      	4m49s
+kube-system    	etcd-install-k8s-demo                  	1/1 	Running   0      	4m57s
+kube-system    	kube-apiserver-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	kube-controller-manager-install-k8s-demo   1/1 	Running   0      	4m57s
+kube-system    	kube-proxy-9snr9                       	1/1 	Running   0      	4m49s
+kube-system    	kube-scheduler-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	metrics-server-5f94f4d4fd-sg2gh        	1/1 	Running   0      	4m35s
+tigera-operator	tigera-operator-b974bcbbb-4sjjz        	1/1 	Running   0      	4m49s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;you-can-deploy-many-worker-nodes-if-you-want&quot;&gt;You Can Deploy Many Worker Nodes if You Want&lt;/h2&gt;
+
+&lt;p&gt;You could also use this script to deploy a single control plane only node, the standard model for deploying K8s where the control plane is separated, and then create and add as many worker nodes to that control plane as makes sense. However, this script does not orchestrate all of this. You would have to log in to each VM and run the script, set it up as a worker node or a control plane node, and then join the worker nodes to the control plane node using the kubeadm join command. So this is not meant to be some kind of high-level k8s cluster creation orchestration mechanism, no magic here. Of course you can create as large a cluster as you want, you just have to set up each node individually.&lt;/p&gt;
+
+&lt;h2 id=&quot;some-design-decisions&quot;&gt;Some Design Decisions&lt;/h2&gt;
+
+&lt;p&gt;If you look at the script, here are some design decisions. It’s using:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ubuntu Kubernetes packages&lt;/li&gt;
+  &lt;li&gt;containerd&lt;/li&gt;
+  &lt;li&gt;Calico as the CNI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;If you need a throwaway Kubernetes cluster that can be created in an Ubuntu 22.04 VM in a few minutes (like two!) I think this is a nice way to do that. Certainly it works for me.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</title>

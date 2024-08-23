@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easily Create a Single Node Kubernetes Cluster | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Easily Create a Single Node Kubernetes Cluster">
+        
+        <meta name="twitter:description" content="I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms...">
+        <meta property="og:description" content="I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms..." />
+        
+        <meta property="og:title" content="Easily Create a Single Node Kubernetes Cluster" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/install-kubernetes-script.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/install-kubernetes-script.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2024/08/22/install-kubernetes-script.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 250
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 AUGUST</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Easily Create a Single Node Kubernetes Cluster</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-08-22T00:00:00-04:00">
+                August 22, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <p>I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.</p>
+
+<p>For quite a while, the last few years, I have had a bunch of Kubernetes clusters running in my basement. I have half a rack there that used to be filled with servers. Then that changed to just running one larger server with a couple hundred gigs of memory, and that one server was running a bunch of Kubernetes clusters. But recently I shut that down. Mainly because it’s summer here in Toronto and that one big server was heating up the basement, and I wasn’t using it that much. I may turn it on again in the winter. Not sure. Anyways…</p>
+
+<p>Yesterday I needed a small k8s cluster. So I used my good old <code>install-kubernetes.sh</code> script to install it onto a VM running on my local workstation.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<ul>
+  <li>I have a 500 line bash script that installs Kubernetes on Ubuntu 22.04, usually a small VM, 8 gigs of ram, 2-4 CPUs, 40 gigs of disk.</li>
+  <li>The script can create a single node “cluster”</li>
+  <li>Or you can deploy a bunch of virtual machines and make one a control plane node and the other workers</li>
+  <li>It only takes 2 or 3 minutes to get a k8s cluster</li>
+  <li>There are other single node k8s tools, but I like mine, of course :)</li>
+</ul>
+
+<h2 id="install-kubernetes">Install Kubernetes</h2>
+
+<p>For a year and a half or so–first commit was March of 2023–I’ve had a script that will deploy a Kubernetes cluster into a virtual machine.</p>
+
+<p>That script can be found here:</p>
+
+<ul>
+  <li><a href="https://github.com/ccollicutt/install-kubernetes">https://github.com/ccollicutt/install-kubernetes</a></li>
+</ul>
+
+<p>I haven’t used it for a while, and so it was actually broken for the last bit because the upstream Kubernetes project changed where the packages for Ubuntu are located. So I just updated the script, like bumped it to Kubernetes 1.31, fixed a few other things, and now it’s good to go again to create either a cluster of Kubernetes instances or, perhaps more useful, a full Kubernetes deployment running in a single virtual machine instance (where the single node is both a control plane node and a worker node).</p>
+
+<h2 id="building-a-single-node-kubernetescluster">Building a Single Node Kubernetes…“Cluster”</h2>
+
+<p>First, get yourself an Ubuntu 22.04 virtual machine with at least 8 gigs of ram and around 40 gigs of disk. I’d probably also give it 4 CPUs.</p>
+
+<pre><code>root@install-k8s-demo:~# source /etc/lsb-release; echo $DISTRIB_RELEASE
+22.04
+root@install-k8s-demo:~# nproc
+4
+root@install-k8s-demo:~# free -h
+           	total    	used    	free  	shared  buff/cache   available
+Mem:       	7.7Gi   	124Mi   	7.5Gi    	17Mi   	111Mi   	7.4Gi
+Swap:         	0B      	0B      	0B
+root@install-k8s-demo:~# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda  	8:0	0   40G  0 disk
+├─sda1   8:1	0  100M  0 part /boot/efi
+└─sda2   8:2	0 39.9G  0 part /
+</code></pre>
+
+<p>Then, login to that VM and get a root shell.</p>
+
+<p>Next, grab the install-kubernetes script.</p>
+
+<blockquote>
+  <p>NOTE: You’ll need git installed.</p>
+</blockquote>
+
+<pre><code>root@install-k8s-demo:~# git clone https://github.com/ccollicutt/install-kubernetes
+root@install-k8s-demo:~# cd install-kubernetes
+</code></pre>
+
+<p>There will be a few files there:</p>
+
+<pre><code>root@install-k8s-demo:~/install-kubernetes# ls
+install-kubernetes.sh  makefile  manifests  README.md
+</code></pre>
+
+<p>Then, we simply run the <code>install-kubernetes.sh </code>script BUT using the “-s” option to set it so that it deploys a single node control plane + worker node.</p>
+
+<blockquote>
+  <p>NOTE: If you forget the “-s”, it is probably best to recreate the virtual machine and reinstall it. This is not idempotent, or at least it hasn’t been tested that way.</p>
+</blockquote>
+
+<pre><code>./install-kubernetes.sh -s
+</code></pre>
+
+<p>The output of that will look like:</p>
+
+<pre><code>root@install-k8s-demo:~/install-kubernetes# ./install-kubernetes.sh -s
+Starting install...
+==&gt; Logging all output to /tmp/install-kubernetes-NMxK9WTKim/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+Installing required packages
+Installing Kubernetes packages
+Configuring system
+Configuring crictl
+Configuring kubelet
+Configuring containerd
+Installing containerd
+Starting services
+Configuring control plane node...
+Initialising the Kubernetes cluster via Kubeadm
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&gt; Installing Calico tigera-operator
+==&gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&gt; Nodes are ready
+Checking Kubernetes version...
+==&gt; Client version: v1.31.0
+==&gt; Server Version: v1.31.0
+==&gt; Requested KUBE_VERSION matches the server version.
+Installing metrics server
+Configuring as a single node cluster
+Configuring as a single node cluster
+Deploying test nginx pod
+Waiting for all pods to be running...
+Install complete!
+
+### Command to add a worker node ###
+kubeadm join localhost:6443 --token &lt;redact&gt; --discovery-token-ca-cert-hash sha256:&lt;redact&gt;
+</code></pre>
+
+<h2 id="now-you-have-a-kubernetes-cluster">Now You Have a Kubernetes Cluster</h2>
+
+<p>At this point, you can run kubectl and access the local cluster.</p>
+
+<p>There’s a kubeconfig in:</p>
+
+<pre><code>root@install-k8s-demo:~# ls ~/.kube/
+cache  config
+</code></pre>
+
+<p>And, if there is an ubuntu user on the host, the config will be there too.</p>
+
+<pre><code>root@install-k8s-demo:~# ls /home/ubuntu/.kube/
+config
+</code></pre>
+
+<p>And we can connect to the “cluster”.</p>
+
+<pre><code>root@install-k8s-demo:~# kubectl get pods -A
+NAMESPACE      	NAME                                   	READY   STATUS	RESTARTS   AGE
+calico-apiserver   calico-apiserver-78d48b5579-j97lc      	1/1 	Running   0      	4m15s
+calico-apiserver   calico-apiserver-78d48b5579-kmcvr      	1/1 	Running   0      	4m15s
+calico-system  	calico-kube-controllers-7d868b8f66-fldb5   1/1 	Running   0      	4m45s
+calico-system  	calico-node-pqfdn                      	1/1 	Running   0      	4m45s
+calico-system  	calico-typha-899c7464d-9vqzg           	1/1 	Running   0      	4m45s
+calico-system  	csi-node-driver-vqvnx                  	2/2 	Running   0      	4m36s
+kube-system    	coredns-6f6b679f8f-tvtjs               	1/1 	Running   0      	4m49s
+kube-system    	coredns-6f6b679f8f-zvcdl               	1/1 	Running   0      	4m49s
+kube-system    	etcd-install-k8s-demo                  	1/1 	Running   0      	4m57s
+kube-system    	kube-apiserver-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	kube-controller-manager-install-k8s-demo   1/1 	Running   0      	4m57s
+kube-system    	kube-proxy-9snr9                       	1/1 	Running   0      	4m49s
+kube-system    	kube-scheduler-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	metrics-server-5f94f4d4fd-sg2gh        	1/1 	Running   0      	4m35s
+tigera-operator	tigera-operator-b974bcbbb-4sjjz        	1/1 	Running   0      	4m49s
+</code></pre>
+
+<h2 id="you-can-deploy-many-worker-nodes-if-you-want">You Can Deploy Many Worker Nodes if You Want</h2>
+
+<p>You could also use this script to deploy a single control plane only node, the standard model for deploying K8s where the control plane is separated, and then create and add as many worker nodes to that control plane as makes sense. However, this script does not orchestrate all of this. You would have to log in to each VM and run the script, set it up as a worker node or a control plane node, and then join the worker nodes to the control plane node using the kubeadm join command. So this is not meant to be some kind of high-level k8s cluster creation orchestration mechanism, no magic here. Of course you can create as large a cluster as you want, you just have to set up each node individually.</p>
+
+<h2 id="some-design-decisions">Some Design Decisions</h2>
+
+<p>If you look at the script, here are some design decisions. It’s using:</p>
+
+<ul>
+  <li>Ubuntu Kubernetes packages</li>
+  <li>containerd</li>
+  <li>Calico as the CNI</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you need a throwaway Kubernetes cluster that can be created in an Ubuntu 22.04 VM in a few minutes (like two!) I think this is a nice way to do that. Certainly it works for me.</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                250
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownToggle || !dropdownMenu) {
+        console.error('Dropdown elements not found');
+        return;
+    }
+
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        }
+    });
+
+    // Handle all links in the dropdown menu
+    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownMenu.classList.remove('show');
+
+            const href = this.getAttribute('href');
+            
+            // Check if it's an external link or the feed.xml
+            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                window.open(href, '_blank');
+                return;
+            }
+
+            // Check if it's the home or archive link
+            if (href === '/' || href === '/archive.html') {
+                window.location.href = href;
+                return;
+            }
+
+            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+            
+            if (isHomePage && href.includes('#')) {
+                // If on home page and it's a section link, smooth scroll
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If on another page or it's not a section link, navigate to the page
+                window.location.href = href;
+            }
+        });
+    });
+});
+
+// Function to scroll to section after page load
+function scrollToSection() {
+    const hash = window.location.hash;
+    if (hash) {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }
+}
+
+// Call scrollToSection after page load
+window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

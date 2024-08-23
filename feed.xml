@@ -1,4 +1,170 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-08-13T04:26:23-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</title><link href="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html" rel="alternate" type="text/html" title="Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor" /><published>2024-08-12T00:00:00-04:00</published><updated>2024-08-12T00:00:00-04:00</updated><id>https://serverascode.com/2024/08/12/switching-to-claude-and-cursor</id><content type="html" xml:base="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html"><![CDATA[<p>I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-08-23T06:31:04-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Easily Create a Single Node Kubernetes Cluster</title><link href="https://serverascode.com/2024/08/22/install-kubernetes-script.html" rel="alternate" type="text/html" title="Easily Create a Single Node Kubernetes Cluster" /><published>2024-08-22T00:00:00-04:00</published><updated>2024-08-22T00:00:00-04:00</updated><id>https://serverascode.com/2024/08/22/install-kubernetes-script</id><content type="html" xml:base="https://serverascode.com/2024/08/22/install-kubernetes-script.html"><![CDATA[<p>I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.</p>
+
+<p>For quite a while, the last few years, I have had a bunch of Kubernetes clusters running in my basement. I have half a rack there that used to be filled with servers. Then that changed to just running one larger server with a couple hundred gigs of memory, and that one server was running a bunch of Kubernetes clusters. But recently I shut that down. Mainly because it’s summer here in Toronto and that one big server was heating up the basement, and I wasn’t using it that much. I may turn it on again in the winter. Not sure. Anyways…</p>
+
+<p>Yesterday I needed a small k8s cluster. So I used my good old <code>install-kubernetes.sh</code> script to install it onto a VM running on my local workstation.</p>
+
+<h2 id="tldr">tl;dr</h2>
+
+<ul>
+  <li>I have a 500 line bash script that installs Kubernetes on Ubuntu 22.04, usually a small VM, 8 gigs of ram, 2-4 CPUs, 40 gigs of disk.</li>
+  <li>The script can create a single node “cluster”</li>
+  <li>Or you can deploy a bunch of virtual machines and make one a control plane node and the other workers</li>
+  <li>It only takes 2 or 3 minutes to get a k8s cluster</li>
+  <li>There are other single node k8s tools, but I like mine, of course :)</li>
+</ul>
+
+<h2 id="install-kubernetes">Install Kubernetes</h2>
+
+<p>For a year and a half or so–first commit was March of 2023–I’ve had a script that will deploy a Kubernetes cluster into a virtual machine.</p>
+
+<p>That script can be found here:</p>
+
+<ul>
+  <li><a href="https://github.com/ccollicutt/install-kubernetes">https://github.com/ccollicutt/install-kubernetes</a></li>
+</ul>
+
+<p>I haven’t used it for a while, and so it was actually broken for the last bit because the upstream Kubernetes project changed where the packages for Ubuntu are located. So I just updated the script, like bumped it to Kubernetes 1.31, fixed a few other things, and now it’s good to go again to create either a cluster of Kubernetes instances or, perhaps more useful, a full Kubernetes deployment running in a single virtual machine instance (where the single node is both a control plane node and a worker node).</p>
+
+<h2 id="building-a-single-node-kubernetescluster">Building a Single Node Kubernetes…“Cluster”</h2>
+
+<p>First, get yourself an Ubuntu 22.04 virtual machine with at least 8 gigs of ram and around 40 gigs of disk. I’d probably also give it 4 CPUs.</p>
+
+<pre><code>root@install-k8s-demo:~# source /etc/lsb-release; echo $DISTRIB_RELEASE
+22.04
+root@install-k8s-demo:~# nproc
+4
+root@install-k8s-demo:~# free -h
+           	total    	used    	free  	shared  buff/cache   available
+Mem:       	7.7Gi   	124Mi   	7.5Gi    	17Mi   	111Mi   	7.4Gi
+Swap:         	0B      	0B      	0B
+root@install-k8s-demo:~# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda  	8:0	0   40G  0 disk
+├─sda1   8:1	0  100M  0 part /boot/efi
+└─sda2   8:2	0 39.9G  0 part /
+</code></pre>
+
+<p>Then, login to that VM and get a root shell.</p>
+
+<p>Next, grab the install-kubernetes script.</p>
+
+<blockquote>
+  <p>NOTE: You’ll need git installed.</p>
+</blockquote>
+
+<pre><code>root@install-k8s-demo:~# git clone https://github.com/ccollicutt/install-kubernetes
+root@install-k8s-demo:~# cd install-kubernetes
+</code></pre>
+
+<p>There will be a few files there:</p>
+
+<pre><code>root@install-k8s-demo:~/install-kubernetes# ls
+install-kubernetes.sh  makefile  manifests  README.md
+</code></pre>
+
+<p>Then, we simply run the <code>install-kubernetes.sh </code>script BUT using the “-s” option to set it so that it deploys a single node control plane + worker node.</p>
+
+<blockquote>
+  <p>NOTE: If you forget the “-s”, it is probably best to recreate the virtual machine and reinstall it. This is not idempotent, or at least it hasn’t been tested that way.</p>
+</blockquote>
+
+<pre><code>./install-kubernetes.sh -s
+</code></pre>
+
+<p>The output of that will look like:</p>
+
+<pre><code>root@install-k8s-demo:~/install-kubernetes# ./install-kubernetes.sh -s
+Starting install...
+==&gt; Logging all output to /tmp/install-kubernetes-NMxK9WTKim/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+Installing required packages
+Installing Kubernetes packages
+Configuring system
+Configuring crictl
+Configuring kubelet
+Configuring containerd
+Installing containerd
+Starting services
+Configuring control plane node...
+Initialising the Kubernetes cluster via Kubeadm
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&gt; Installing Calico tigera-operator
+==&gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&gt; Nodes are ready
+Checking Kubernetes version...
+==&gt; Client version: v1.31.0
+==&gt; Server Version: v1.31.0
+==&gt; Requested KUBE_VERSION matches the server version.
+Installing metrics server
+Configuring as a single node cluster
+Configuring as a single node cluster
+Deploying test nginx pod
+Waiting for all pods to be running...
+Install complete!
+
+### Command to add a worker node ###
+kubeadm join localhost:6443 --token &lt;redact&gt; --discovery-token-ca-cert-hash sha256:&lt;redact&gt;
+</code></pre>
+
+<h2 id="now-you-have-a-kubernetes-cluster">Now You Have a Kubernetes Cluster</h2>
+
+<p>At this point, you can run kubectl and access the local cluster.</p>
+
+<p>There’s a kubeconfig in:</p>
+
+<pre><code>root@install-k8s-demo:~# ls ~/.kube/
+cache  config
+</code></pre>
+
+<p>And, if there is an ubuntu user on the host, the config will be there too.</p>
+
+<pre><code>root@install-k8s-demo:~# ls /home/ubuntu/.kube/
+config
+</code></pre>
+
+<p>And we can connect to the “cluster”.</p>
+
+<pre><code>root@install-k8s-demo:~# kubectl get pods -A
+NAMESPACE      	NAME                                   	READY   STATUS	RESTARTS   AGE
+calico-apiserver   calico-apiserver-78d48b5579-j97lc      	1/1 	Running   0      	4m15s
+calico-apiserver   calico-apiserver-78d48b5579-kmcvr      	1/1 	Running   0      	4m15s
+calico-system  	calico-kube-controllers-7d868b8f66-fldb5   1/1 	Running   0      	4m45s
+calico-system  	calico-node-pqfdn                      	1/1 	Running   0      	4m45s
+calico-system  	calico-typha-899c7464d-9vqzg           	1/1 	Running   0      	4m45s
+calico-system  	csi-node-driver-vqvnx                  	2/2 	Running   0      	4m36s
+kube-system    	coredns-6f6b679f8f-tvtjs               	1/1 	Running   0      	4m49s
+kube-system    	coredns-6f6b679f8f-zvcdl               	1/1 	Running   0      	4m49s
+kube-system    	etcd-install-k8s-demo                  	1/1 	Running   0      	4m57s
+kube-system    	kube-apiserver-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	kube-controller-manager-install-k8s-demo   1/1 	Running   0      	4m57s
+kube-system    	kube-proxy-9snr9                       	1/1 	Running   0      	4m49s
+kube-system    	kube-scheduler-install-k8s-demo        	1/1 	Running   0      	4m56s
+kube-system    	metrics-server-5f94f4d4fd-sg2gh        	1/1 	Running   0      	4m35s
+tigera-operator	tigera-operator-b974bcbbb-4sjjz        	1/1 	Running   0      	4m49s
+</code></pre>
+
+<h2 id="you-can-deploy-many-worker-nodes-if-you-want">You Can Deploy Many Worker Nodes if You Want</h2>
+
+<p>You could also use this script to deploy a single control plane only node, the standard model for deploying K8s where the control plane is separated, and then create and add as many worker nodes to that control plane as makes sense. However, this script does not orchestrate all of this. You would have to log in to each VM and run the script, set it up as a worker node or a control plane node, and then join the worker nodes to the control plane node using the kubeadm join command. So this is not meant to be some kind of high-level k8s cluster creation orchestration mechanism, no magic here. Of course you can create as large a cluster as you want, you just have to set up each node individually.</p>
+
+<h2 id="some-design-decisions">Some Design Decisions</h2>
+
+<p>If you look at the script, here are some design decisions. It’s using:</p>
+
+<ul>
+  <li>Ubuntu Kubernetes packages</li>
+  <li>containerd</li>
+  <li>Calico as the CNI</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you need a throwaway Kubernetes cluster that can be created in an Ubuntu 22.04 VM in a few minutes (like two!) I think this is a nice way to do that. Certainly it works for me.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.]]></summary></entry><entry><title type="html">Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor</title><link href="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html" rel="alternate" type="text/html" title="Leapfrogging: Switching From OpenAI to Claude, and Github Copilot to Cursor" /><published>2024-08-12T00:00:00-04:00</published><updated>2024-08-12T00:00:00-04:00</updated><id>https://serverascode.com/2024/08/12/switching-to-claude-and-cursor</id><content type="html" xml:base="https://serverascode.com/2024/08/12/switching-to-claude-and-cursor.html"><![CDATA[<p>I’m a fan of the recent wave of AI–specifically generative AI, or GenAI for short. I think of GenAI, these large language models, as a kind of compression. They take huge amounts of text–programming code, for example–and they are able to regurgitate it. So we take terrabytes of code, compress/feed it into an LLM that ends up being only a few gigabytes in size, and we can then talk to that LLM in natural language, and it can return code and other text…effectively uncompressing it.</p>
 
 <h2 id="leapfrogging">Leapfrogging</h2>
 
@@ -1258,210 +1424,4 @@ nginx-plain-runasnonroot-and-runasuser   0/1     CrashLoopBackOff   1 (7s ago)  
 
 <p>That said, both runAsUser and runAsNonRoot can co-exist. When they do, runAsUser specifies which UID to use, and runAsNonRoot ensures that UID is not root.</p>
 
-<p>In normal, production systems one would never run a container as root so the image would, based on your organizations policies and image build process, have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.]]></summary></entry><entry><title type="html">Three Steps to a Default Secure Kubernetes</title><link href="https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes.html" rel="alternate" type="text/html" title="Three Steps to a Default Secure Kubernetes" /><published>2023-08-12T00:00:00-04:00</published><updated>2023-08-12T00:00:00-04:00</updated><id>https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes</id><content type="html" xml:base="https://serverascode.com/2023/08/12/three-steps-to-a-default-secure-kubernetes.html"><![CDATA[<p>Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.</p>
-
-<p>Because it’s a basic framework, a set of lego blocks, it’s not designed to be secure “out of the box.” We’ve got to make it as secure as we need it to be.</p>
-
-<h2 id="note-not-a-panacea">NOTE: Not a Panacea</h2>
-
-<p>This post is an exploration of some things we could do to make Kubernetes more secure by default. Like what are a couple minimal steps we could take that have a large return on investment. It’s not meant to meet every organization’s requirements or be the end-all-be-all of security. It’s meant as an exploration of a secure starting point that could potentially work for everyone and every Kuberenetes.</p>
-
-<p>In fact I should say here that I’ve already had people give me diffrent opinions on these settings. For example for network policies here I’m thinking more of lateral movement, but many organizations would prefer to stop outbound access. It really depends on your organization’s requirements.</p>
-
-<h2 id="1---pod-security-standards">1 - Pod Security Standards</h2>
-
-<p>First, if you’re not familiar with Pod Security Standards, it’s not a bad idea to <a href="https://serverascode.com/2023/08/02/making-pod-security-standards-default.html">go read up on them</a>, but suffice it to say let’s make sure every namespace has the following label.</p>
-
-<pre><code>kubectl label namespace &lt;NAMESPACE&gt; pod-security.kubernetes.io/enforce=restricted
-</code></pre>
-
-<p>Which means:</p>
-
-<ul>
-  <li>Limit types of volumes</li>
-  <li>Don’t run as root user</li>
-  <li>No privilege escalation</li>
-  <li>Seccomp profile set to “RuntimeDefault” or “Localhost”</li>
-  <li>Drop all capabilities except perhaps add NET_BIND_SERVICE</li>
-</ul>
-
-<p>Here’s an example of running the nginx unprivileged container.</p>
-
-<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-meets-pod-security-standards
-  namespace: enforcing
-spec:
-  containers:
-  - image: nginxinc/nginx-unprivileged
-	name: nginx
-	securityContext:
-  	allowPrivilegeEscalation: false
-  	capabilities:
-    	drop:
-    	- ALL
-  	runAsNonRoot: true
-  	seccompProfile:
-    	type: RuntimeDefault
-EOF
-</code></pre>
-
-<p>That’s a pretty good start!</p>
-
-<h2 id="2---network-policies">2 - Network Policies</h2>
-
-<p>Historically, in Kubernetes, the connectivity was based on a giant, flat layer 3 network, which means every pod had an IP address and could talk to every other pod in the cluster. Obviously this doesn’t really work in enterprise environments, so Kubernetes added the ability to create <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">Network Policies</a>.</p>
-
-<p>Here let’s create a default policy to ensure that pods in a namespace can talk to one another, but cannot talk to pods OUTSIDE of their namespace. This is super basic, but I like it as a starting point. Note that services would still be accessible, just not pods directly.</p>
-
-<p>Here’s an example:</p>
-
-<pre><code>apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: namespace-only
-spec:
-  podSelector: {} # Selects all pods in the namespace
-  policyTypes:
-  - Ingress
-  - Egress
-  ingress:
-  - from:
-    - podSelector: {} # Allow pods in the same namespace to talk to one another
-  egress:
-  - to:
-    - ipBlock:
-   	 cidr: 0.0.0.0/0 # Allow egress to any destination
-</code></pre>
-
-<p>Obviously this can be taken a lot further, especially with a CNI that provides extra capabilities.</p>
-
-<h2 id="3-runtime-threat-detection">3: Runtime Threat Detection</h2>
-
-<p>The last step is to make sure that we’re monitoring our Kubernetes clusters for runtime threats. While we have a good baseline of security, something will always get through, no matter what we do. Any adversary worth their salt will find a way in, or mistakes will be made, etc. So we need to be able to detect them when they do. The only way to do that is to monitor the runtime environment.</p>
-
-<p>We can do that in a couple of ways, one is to use Sysdig Secure, which is a commercial <a href="https://sysdig.com/learn-cloud-native/cloud-security/cloud-native-application-protection-platform-cnapp-fundamentals/">CNAPP (Cloud Native Application Protection Platform)</a> that has a decade of history in runtime protection. The other is to use Falco, which is an open source project that is part of the CNCF. Sysdig as a company supports the Falco project.</p>
-
-<h3 id="3a---sysdig-secure">3a - Sysdig Secure</h3>
-
-<p>Sysdig Secure is a security platform which has a decade of history in runtime protection.</p>
-
-<p>It’s easy to sign up for a <a href="https://sysdig.com/start-free/">free trial</a> at Sysdig.</p>
-
-<p>Then, install the agent into Kubernetes clusters with Helm:</p>
-
-<pre><code>helm repo add sysdig https://charts.sysdig.com
-helm repo update
-helm install sysdig-agent --namespace sysdig-agent --create-namespace \
---set global.sysdig.accessKey=&lt;ACCESS_KEY&gt; \
---set global.sysdig.region=&lt;SAAS_REGION&gt; \
---set nodeAnalyzer.secure.vulnerabilityManagement.newEngineOnly=true \
---set global.kspm.deploy=true \
---set nodeAnalyzer.nodeAnalyzer.benchmarkRunner.deploy=false \
---set nodeAnalyzer.nodeAnalyzer.hostScanner.deploy=true
---set global.clusterConfig.name=&lt;CLUSTER_NAME&gt; \
-sysdig/sysdig-deploy
-</code></pre>
-
-<p>Done!</p>
-
-<h3 id="3b---falco">3b - Falco</h3>
-
-<p><a href="https://falco.org/">Falco</a> is an open source project that is part of the CNCF. It’s a runtime threat detection engine that can be used to detect threats in Kubernetes clusters. Sysdig as a company supports the Falco project.</p>
-
-<blockquote>
-  <p>Falco is a cloud native runtime security tool for Linux operating systems. It is designed to detect and alert on abnormal behavior and potential security threats in real-time.
-At its core, Falco is a kernel monitoring and detection agent that observes events, such as syscalls, based on custom rules. Falco can enhance these events by integrating metadata from the container runtime and Kubernetes. The collected events can be analyzed off-host in SIEM or data lake systems. - <a href="https://falco.org/">Falco</a></p>
-</blockquote>
-
-<p>Installing Falco into Kubernetes is easy, just use Helm:</p>
-
-<pre><code>helm repo add falcosecurity https://falcosecurity.github.io/charts
-helm repo update
-helm install falco falcosecurity/falco
-</code></pre>
-
-<p>Done!</p>
-
-<h2 id="automation">Automation</h2>
-
-<p>I would prefer that this all be done automatically. Because Kubernetes is a framework there are ways to make these kinds of security settings default, including the concepts of building operators and admission controllers. That would be my next step, to set up some tooling that would automatically apply these settings to every cluster, to every namespace, and to every pod.</p>
-
-<p>So, look forward to a future blog post on that!</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>I want to be clear that the point here is to create something that is simple and at the same time really improves the default security of Kubernetes–like what’s the best bang for the buck we can get in terms of security.</p>
-
-<p>In this blog post we’ve seen how to create a higher level of default security for Kubernetes, and we looked at how to use Sysdig Secure and Falco to monitor the runtime environment for threats.</p>
-
-<p>Ultimately, this post is an exploration of how to configure a Kubernetes cluster so that it is much more secure “by default.” There’s no need to have Kubernetes be so wide open.</p>
-
-<p>PS. I’ve included an optional section discussing Buildpacks and how they can be used to create more secure container images.</p>
-
-<h2 id="optional-buildpacks-and-paketo">OPTIONAL: Buildpacks and Paketo</h2>
-
-<h3 id="background">Background</h3>
-
-<p>Often people are surprised to find out that there is more than one way to build a container image. I mean, what’s a container image: it’s just a fancy tar file. There are many ways one can make a fancy tar file.</p>
-
-<p>One way is <a href="https://buildpacks.io/">buildpacks</a>. I’ve written about them <a href="https://serverascode.com/2019/12/16/buidpack-pack.html">before</a>. <a href="https://paketo.io/">Paketo</a> is a set of buildpacks that are designed to be used with Kubernetes.</p>
-
-<p>For the purposes of this blog post, the point of Vuildpacks is that they are a way to build a container image that is more secure by default. For example, buildpacks don’t run as root. If we just get rid of that one thing, we’ve made our container images more secure.</p>
-
-<p>The value of Buildpacks:</p>
-
-<ul>
-  <li>Security - Buildpacks run as non-root by default.</li>
-  <li>Advanced Caching - Robust caching is used to improve performance.</li>
-  <li>Auto-detection -Images can be built directly from application source without additional instructions.</li>
-  <li>Bill-of-Materials - Insights into the contents of the app image through standard build-time SBOMs in CycloneDX, SPDX and Syft JSON formats.</li>
-  <li>Modular / Pluggable- Multiple buildpacks can be used to create an app image.</li>
-  <li>Multi-language - Supports more than one programming language family.</li>
-  <li>Multi-process - Image can have multiple entrypoints for each operational mode.</li>
-  <li>Minimal app image - Image contains only what is necessary.</li>
-  <li>Rebasing - Instant updates of base images without re-building.</li>
-  <li>Reproducibility - Reproduces the same app image digest by re-running the build.</li>
-  <li>Reusability - Leverage production-ready buildpacks maintained by the community.</li>
-</ul>
-
-<h3 id="paketo">Paketo</h3>
-
-<p><a href="https://paketo.io/">Paketo</a> is a set of buildpacks that are designed to be used with Kubernetes.</p>
-
-<p>First off this is a Python app and I’m using gunicorn, so we have a Procfile. This is really the only difference I have between a Dockerfile based image and a buildpack based image. Instead of a Dockerfile I have a Procfile, and the Procfile only describes the command to run the app, nothing else.</p>
-
-<blockquote>
-  <p>Procfiles define processes from your application’s code and contains one process per line.</p>
-</blockquote>
-
-<p>Here’s the example Procfile:</p>
-
-<pre><code>$ cat Procfile
-web: gunicorn app:app
-</code></pre>
-
-<p>Now we can build the image with a straight forward command.</p>
-
-<blockquote>
-  <p>NOTE: This assumes, of course, the pack CLI is installed.</p>
-</blockquote>
-
-<pre><code>pack build somepythonflaskapp \
-  --buildpack paketo-buildpacks/python \
-  --builder paketobuildpacks/builder:base
-</code></pre>
-
-<p>And deploy it into Kubernetes, port-forward to the service, and finally curl the app.</p>
-
-<blockquote>
-  <p>NOTE: This app is setup to report the user it’s running as.</p>
-</blockquote>
-
-<pre><code>$ curl localhost:8000
-Application is running as user: cnb
-</code></pre>
-
-<p>Above we can see the app, which is configured to return the user it’s running as, is reporting that it is running as user “cnb” aka not root, aka Cloud Native Buildpacks. Done by default. Nice.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Kubernetes is a framework. We don’t usually describe it as a framework, but it is. IMHO, it’s a library we can use to deploy applications and imprint our organization’s policies and requirements on top of. That’s what makes it valuable, not the fact that it can create a container.]]></summary></entry></feed>
+<p>In normal, production systems one would never run a container as root so the image would, based on your organizations policies and image build process, have a user setup and the Kubernetes manifest would have runAsNonRoot set to true.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Security is a prime concern when deploying applications in a Kubernetes cluster. One of the security aspects in Kubernetes is controlling who can run what and as whom within a Pod. Kubernetes provides two important fields in the Security Context to achieve this: runAsNonRoot and runAsUser. While they might seem similar at first glance, they serve different purposes. This blog post aims to demystify these settings and help you make the right choice for your applications.]]></summary></entry></feed>
