@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building an Insecure App...on Purpose (So That GenAI Can Fix It) | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Building an Insecure App...on Purpose (So That GenAI Can Fix It)">
+        
+        <meta name="twitter:description" content="tldr;
+
+">
+        <meta property="og:description" content="tldr;
+
+" />
+        
+        <meta property="og:title" content="Building an Insecure App...on Purpose (So That GenAI Can Fix It)" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/building-an-insecure-app.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/building-an-insecure-app.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2024/10/02/building-an-insecure-app.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 251
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 OCTOBER</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Building an Insecure App...on Purpose (So That GenAI Can Fix It)</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-10-02T00:00:00-04:00">
+                October 02, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h2 id="tldr">tldr;</h2>
+
+<p>tldr; I built an insecure web application (on purpose) for testing LLMs and here it is: <a href="https://github.com/ccollicutt/insecure-nextjs-guestbook">https://github.com/ccollicutt/insecure-nextjs-guestbook</a>.</p>
+
+<h2 id="dealing-with-technical-debt-using-genai">Dealing with Technical Debt using GenAI</h2>
+
+<p>Is cybersecurity largely a technical issue? An engineering issue? It’s difficult to say. Certainly human psychology plays a big part of it, but, then again, we’re building (insecure) software things and putting them out into the world. We write billions of lines of code, and we can’t do that without making mistakes…so there are billions of mistakes too. That code has bugs, it gets worse over time, and is hard (read: expensive) to maintain. It ends up being a technical liability–a security liability. The reality of software development is an important part of the cybersecurity story. Not the whole story, but an important part.</p>
+
+<p>For this line of thinking, the question is, can Generative Artificial Intelligence (GenAI) help us deal with all this overwhelming technical debt? I believe that GenAI can code, and code well enough to help us get rid of technical debt. And what’s more, this ability can be automated and has the potential to be fast–very fast–so it can potentially take care of a lot of technical debt in a short period of time. Now, not everyone may agree with me, but that’s my opinion, and I’m sticking to it!</p>
+
+<p>So if you believe, or can suspend your disbelief, that GenAI can help you deal with technical debt, then you’ll want to test it, just like I do. But how do you test code that generates code?</p>
+
+<p>I’m going to build an insecure web application and then use GenAI to try to fix it.</p>
+
+<h2 id="what-does-insecure-mean">What Does “Insecure” Mean?</h2>
+
+<p>However, building an insecure web application is a bit of a challenge. On the one hand, we have all kinds of technical debt that’s easy to accumulate in the real world, but on the other hand, when we write a new application, the frameworks, libraries, and tools we use are working behind the scenes to keep us as secure as possible, so in some ways it’s a challenge to build an insecure application, at least out of the gate.</p>
+
+<p>And yet I managed to do it. At least partially.</p>
+
+<p>So, what is an insecure web application? What are common examples of insecurity in a web application?</p>
+
+<h2 id="owasp-top-10">OWASP Top 10</h2>
+
+<p>One way to think about web app vulnerabilities is through the <a href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a>.</p>
+
+<p>Here’s the current OWASP Top 10, as of 2021:</p>
+
+<ul>
+  <li>A01:2021-Broken Access Control</li>
+  <li>A02:2021-Cryptographic Failures</li>
+  <li>A03:2021-Injection</li>
+  <li>A04:2021-Insecure Design</li>
+  <li>A05:2021-Security Misconfiguration</li>
+  <li>A06:2021-Vulnerable and Outdated Components</li>
+  <li>A07:2021-Identification and Authentication Failures</li>
+  <li>A08:2021-Software and Data Integrity Failures</li>
+  <li>A09:2021-Security Logging and Monitoring Failures</li>
+  <li>A10:2021-Server-Side Request Forgery (SSRF)</li>
+</ul>
+
+<p>Let’s look at A01:2021-Broken Access Control, as defined by OWASP:</p>
+
+<ul>
+  <li>Violation of the principle of least privilege or deny by default, where access should only be granted for particular capabilities, roles, or users, but is available to anyone.</li>
+  <li>Bypassing access control checks by modifying the URL (parameter tampering or force browsing), internal application state, or the HTML page, or by using an attack tool modifying API requests.</li>
+  <li>Permitting viewing or editing someone else’s account, by providing its unique identifier (insecure direct object references)</li>
+  <li>Accessing API with missing access controls for POST, PUT and DELETE.</li>
+  <li>Elevation of privilege. Acting as a user without being logged in or acting as an admin when logged in as a user.</li>
+  <li>Metadata manipulation, such as replaying or tampering with a JSON Web Token (JWT) access control token, or a cookie or hidden field manipulated to elevate privileges or abusing JWT invalidation.</li>
+  <li>CORS misconfiguration allows API access from unauthorized/untrusted origins.</li>
+  <li>Force browsing to authenticated pages as an unauthenticated user or to privileged pages as a standard user.</li>
+</ul>
+
+<p>Forced browsing, as an example, sounds fun and technical–but it’s really just about browsing pages you aren’t supposed to know exist, pages that just happen to have additional permissions or access that the average user doesn’t have.</p>
+
+<blockquote>
+  <p>Forced browsing is an attack where the aim is to enumerate and access resources that are not referenced by the application, but are still accessible. An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories and files, and old backup and configuration files. These resources may store sensitive information about web applications and operational systems, such as source code, credentials, internal network addressing, and so on, thus being considered a valuable resource for intruders. - <a href="https://owasp.org/www-community/attacks/Forced_browsing">https://owasp.org/www-community/attacks/Forced_browsing</a></p>
+</blockquote>
+
+<p>And, in a similar vein, (typically SQL) injection, as defined by OWASP:</p>
+
+<ul>
+  <li>User-supplied data is not validated, filtered, or sanitized by the application.</li>
+  <li>Dynamic queries or non-parameterized calls without context-aware escaping are used directly in the interpreter.</li>
+  <li>Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records.</li>
+  <li>Hostile data is directly used or concatenated. The SQL or command contains the structure and malicious data in dynamic queries, commands, or stored procedures.</li>
+</ul>
+
+<p>Some of these are more interesting than others, and for some–it’s hard to believe that they are still happening in 2024.</p>
+
+<h2 id="building-an-insecure-web-app">Building an Insecure Web App</h2>
+
+<p><img src="/img/insecure-webapp-guestbook.jpg" alt="img" /></p>
+
+<p>While there are a handful of “webgoat”-style applications that will help you learn about these vulnerabilities, I decided to build my own so that I would know exactly what problems I was introducing - and thus I would know exactly what problems I was trying to fix with GenAI.</p>
+
+<p>I was working on learning NodeJS and NextJS, so I decided to build my insecure web application using those technologies.</p>
+
+<p>A few points:</p>
+
+<ul>
+  <li>
+    <p>I wanted to make a guestbook app of all things because it would be easy to build, and the fact that anyone should be able to post to it would make it easier to introduce vulnerabilities.</p>
+  </li>
+  <li>
+    <p>I immediately put the clear text authentication into a SQLite database. However, in the real world, no one would put cleartext authentication in a SQLite database–or even use their own authentication system. There are many, many libraries and SaaS services that provide authentication as a service, which is much, much more secure, and that is what people will use. (That is, they’re not as easy to configure, and they’re error-prone, but they’re still much more secure than doing it yourself). I imagine most people building a new web application would either use a third party or <a href="https://next-auth.js.org/">NextAuth</a>.</p>
+  </li>
+  <li>
+    <p>There is an admin user with a default password.</p>
+  </li>
+</ul>
+
+<pre><code>// Insert admin user if not exists
+db.get(`SELECT * FROM users WHERE username = 'admin'`, (err, row) =&gt; {
+  if (!row) {
+    db.run(`INSERT INTO users (username, password, admin) VALUES ('admin', 'admin', 1)`);
+  }
+});
+</code></pre>
+
+<ul>
+  <li>I wanted it to be susceptible to SQL injection–but interestingly, SQLite does a lot of work to prevent that, so I had to do some work to make it vulnerable in terms of using raw queries. For the most part, SQLite just does the right thing, and you have to do some work to make it vulnerable.</li>
+</ul>
+
+<pre><code>// Vulnerable to SQL injection
+const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+</code></pre>
+
+<ul>
+  <li>
+    <p>I also added an admin page that was supposed to be protected, but wasn’t.</p>
+  </li>
+  <li>
+    <p>Originally the app didn’t use a sessionID in the URL, but I added that to make the webapp EVEN MORE VULNERABLE. But you don’t see sessionIDs in the wild, so I’m not sure if that’s realistic.</p>
+  </li>
+</ul>
+
+<p>What I have so far is a webapp that is vulnerable to a number of attacks, including</p>
+
+<ul>
+  <li>SQL injection</li>
+  <li>Forced browsing</li>
+  <li>Session hijacking</li>
+  <li>Probably Cross-Site Scripting (XSS)</li>
+</ul>
+
+<h2 id="testing-the-vulnerabilities">Testing the Vulnerabilities</h2>
+
+<p>In addition to building the insecure application, we need to test for the presence of these vulnerabilities. So there is also a script to test for them. Please note that this is not an exhaustive list of vulnerabilities, but rather a set of examples meant to be illustrative, and in fact many of them do not work.</p>
+<pre><code>$ ./tests.sh 
+Usage: ./tests.sh [test_name]
+
+Available tests:
+  login                  Test common logins
+  sql_injection          Run SQL Injection Test
+  drop_table             Drop messages table with SQL Injection
+  xss                    Run Cross-Site Scripting (XSS) Test
+  insecure_auth          List all users and get admin password via SQL Injection
+  sensitive_data         Run Sensitive Data Exposure Test
+  security_misconfig     Run Security Misconfiguration Test
+  known_vulnerabilities  Run Known Vulnerabilities Test
+  insufficient_logging   Run Insufficient Logging &amp; Monitoring Test
+  list_tables_and_entries List all tables and entries in the database
+  help                   Display this help message
+  list_users             List all users in the database
+  list_nonexistent_users List all users in the database
+  list_tables_and_entries List all tables and entries in the database
+  list_nonexistent_users List all users in the database
+</code></pre>
+
+<p>Here’s an example of SQL injection:</p>
+
+<pre><code>$ ./tests.sh sql_injection
+###################################################
+# Running SQL Injection Test to create admin user #
+###################################################
+Step 1: Attempting SQL injection to create admin user...
+SQL Injection Response: {"message":"Login successful","sessionId":"d86976cace3f01e5ae248e037483d70d","isAdmin":true,"redirectUrl":"/?sessionId=d86976cace3f01e5ae248e037483d70d&amp;username=admin' --&amp;isAdmin=true"}
+
+Step 2: Inserting hacker user with admin privileges...
+
+Step 3: Attempting to login as the new admin user 'hacker'...
+Login response: {"message":"Login successful","sessionId":"d2cfc602ff3fd33d201d69f0fac9bdd2","isAdmin":true,"redirectUrl":"/?sessionId=d2cfc602ff3fd33d201d69f0fac9bdd2&amp;username=hacker&amp;isAdmin=true"}
+User 'hacker' logged in successfully with admin privileges. SQL Injection successful.
+
+Step 4: Checking database for 'hacker' user...
+19|hacker|hackpass|1
+
+Step 5: Listing all users in the database...
+1|admin|admin|1
+2|test|stsdf|0
+3|admin|admin123|0
+19|hacker|hackpass|1
+</code></pre>
+
+<p>Or drop some tables:</p>
+
+<pre><code>$ ./tests.sh drop_table
+##############################################################################################################################
+# Running SQL Injection to Drop Table. This will attempt to drop the 'messages' table from the database using SQL injection. #
+##############################################################################################################################
+Logging in as admin to perform SQL Injection to drop the messages table...
+Logging in with admin:admin
+SessionId: f86bec743b5e8cd60ec886b4a6e9e3b1
+IsAdmin: true
+
+
+./tests.sh: line 143: get_cookie: command not found
+Dropping the messages table with SQL Injection...
+Response: {"message":"Entry added successfully","result":{}}
+Querying the database to check if the messages table still exists...
+users
+</code></pre>
+
+<p>Super hacker stuff, I know.</p>
+
+<h2 id="building-insecure-applications-is-a-lot-of-work">Building Insecure Applications is a Lot of Work</h2>
+
+<p>After all, getting a bunch of vulnerabilities into an application is a lot of work. It’s not realistic to deal with every example that OWASP provides. Furthermore, real-world scenarios are often <em>much</em> more complicated and <em>much</em>  more technical and subtle. Most of what we focus on in cybersecurity is the problem of aging code and the vulnerabilities that come with it. There is less focus on the vulnerabilities that come from improper use of libraries and frameworks and their configuration, vulnerabilities that are subtle and harder to detect. The web application I’m building is more like using a sledgehammer instead of a scalpel, if you’ll pardon the mixed metaphors.</p>
+
+<p>I also need to do more research on OWASP, other tools like the Atomic Red Team, and what other “webgoat”-style applications are out there and how they work, and what they do best.</p>
+
+<p>Find the code, such as it is, <a href="https://github.com/ccollicutt/insecure-nextjs-guestbook">here</a>.</p>
+
+<h2 id="next-up">Next Up</h2>
+
+<p>In future posts, I’ll look more at this insecure webapp, how to test and execute the exploitable vulnerabilities, as well as how to fix it, if possible, using GenAI and tools like <a href="https://cursor.sh/">Cursor</a>.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                251
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownToggle || !dropdownMenu) {
+        console.error('Dropdown elements not found');
+        return;
+    }
+
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        }
+    });
+
+    // Handle all links in the dropdown menu
+    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownMenu.classList.remove('show');
+
+            const href = this.getAttribute('href');
+            
+            // Check if it's an external link or the feed.xml
+            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                window.open(href, '_blank');
+                return;
+            }
+
+            // Check if it's the home or archive link
+            if (href === '/' || href === '/archive.html') {
+                window.location.href = href;
+                return;
+            }
+
+            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+            
+            if (isHomePage && href.includes('#')) {
+                // If on home page and it's a section link, smooth scroll
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If on another page or it's not a section link, navigate to the page
+                window.location.href = href;
+            }
+        });
+    });
+});
+
+// Function to scroll to section after page load
+function scrollToSection() {
+    const hash = window.location.hash;
+    if (hash) {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }
+}
+
+// Call scrollToSection after page load
+window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>
