@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Aren't You Using Incus to Create Containers and Virtual Machines? | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Why Aren't You Using Incus to Create Containers and Virtual Machines?">
+        
+        <meta name="twitter:description" content="Incus
+
+">
+        <meta property="og:description" content="Incus
+
+" />
+        
+        <meta property="og:title" content="Why Aren't You Using Incus to Create Containers and Virtual Machines?" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/incus.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/incus.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2024/10/12/incus.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 252
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2024 OCTOBER</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Why Aren't You Using Incus to Create Containers and Virtual Machines?</h1>
+        <p class="text-gray-600">
+            <time datetime="2024-10-12T00:00:00-04:00">
+                October 12, 2024
+            </time>
+            
+        </p>
+    </header>
+
+    
+
+    <h1 id="incus">Incus</h1>
+
+<p>Virtual machines remain the main building block of pretty much all infrastructure. We tend to forget about the technology and just how entrenched it is in our daily technical lives. Ok, that’s a pretty heavy statement for a blog post, but I do think we forget about virtual machines and just how valuable and secure the technology is–most public cloud services are loss leaders for the VM part of their business.</p>
+
+<p>Anyways, what I want to talk about is <a href="https://linuxcontainers.org/incus/introduction/">Incus</a>, a way to easily create containers AND virtual machines.</p>
+
+<blockquote>
+  <p>NOTE: I use Incus to exclusively create virtual machines, and don’t use the container functionality that much. I would imagine that most people use the container functionality more. So while I’ll touch on the system container functionality, I use Incus for local VMs.</p>
+</blockquote>
+
+<h2 id="what-is-incus">What is Incus?</h2>
+
+<blockquote>
+  <p>When using Incus, you can manage your instances (containers and VMs) with a simple command line tool, directly through the REST API or by using third-party tools and integrations. Incus implements a single REST API for both local and remote access. The Incus project was created by Aleksa Sarai as a community driven alternative to Canonical’s LXD. Today, it’s led and maintained by many of the same people that once created LXD. - <a href="https://linuxcontainers.org/incus/introduction/">Incus Docs</a></p>
+</blockquote>
+
+<p>With Incus, you can easily create virtual machines and containers.</p>
+
+<p>I don’t know all the history of the project, where it comes from in terms of LXD/LXC, etc, but I do know that I need a way to easily create virtual machines on my local computer, and that I really enjoy using Incus. So easy.</p>
+
+<p>Example of creating a virtual machine:</p>
+
+<pre><code class="language-bash">incus launch ubuntu:22.04 my-server --vm
+</code></pre>
+
+<p>It’s that easy. Especially on Ubuntu 24.04, where you can just install the <code>incus</code> package from the default repositories.</p>
+
+<p>I also alias the incus command to this script because I always forget the incus command syntax, and I’m super lazy. So this would create a default sized VM with just <code>vm launch my-vm</code>.</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+launch_vm() {
+  if [ -z "$1" ]; then
+    echo "Usage: $0 launch &lt;vm-name&gt;"
+    echo "Example: $0 launch my-ubuntu-vm"
+    exit 1
+  fi
+
+  local name="$1"
+  local cpu=2
+  local memory="4GiB"
+  local disk="40GiB"
+
+  incus launch images:ubuntu/24.04 "$name" --vm \
+    --device root,size="$disk" \
+    -c limits.cpu="$cpu" \
+    -c limits.memory="$memory"
+}
+
+list_vms() {
+  incus ls
+}
+
+show_help() {
+  echo "Usage: $0 &lt;command&gt; [options]"
+  echo
+  echo "Commands:"
+  echo "  launch &lt;vm-name&gt;  Launch a new VM"
+  echo "  ls                List all VMs"
+  echo "  help              Show this help message"
+  echo
+  echo "For other commands, this script will pass them directly to incus."
+}
+
+# Main command handler
+case "$1" in
+  launch)
+    launch_vm "$2"
+    ;;
+  ls)
+    list_vms
+    ;;
+  help)
+    show_help
+    ;;
+  *)
+    if [ -z "$1" ]; then
+      show_help
+    else
+      # If the command isn't recognized, pass it to incus
+      incus "$@"
+    fi
+    ;;
+esac
+</code></pre>
+
+<h2 id="using-incus">Using Incus</h2>
+
+<p>As mentioned earlier, I almost exclusively use Incus to get a virtual machine.</p>
+
+<p>E.g. with my script I just run:</p>
+
+<pre><code class="language-bash">vm launch a-vm
+</code></pre>
+
+<p>Or with the bare Incus command it’s just as easy:</p>
+
+<pre><code class="language-bash">incus launch images:ubuntu/24.04 a-vm --vm
+</code></pre>
+
+<p>Now I can shell into the VM very quickly.</p>
+
+<pre><code class="language-bash">$ incus shell a-vm # or with my script, vm shell a-vm
+root@a-vm:~# 
+</code></pre>
+
+<p>And you are in a nice little virtual machine that you can install anything you want into.</p>
+
+<h2 id="getting-a-container">Getting a Container</h2>
+
+<p>Writing this post was the first time I used the container functionality of Incus! Getting a container is the default mode of operation, and it’s super easy.</p>
+
+<pre><code class="language-bash">$ incus launch images:ubuntu/22.04 ubuntu-container
+# Image is downloaded, and the container is created
+Launching ubuntu-container
+$ incus ls | grep ubuntu-container
+| ubuntu-container | RUNNING | 10.57.7.201 (eth0)           | fd42:af1f:b7c8:a36c:216:3eff:fee9:32e4 (eth0)   | CONTAINER       | 0         |
+$ vm shell ubuntu-container
+</code></pre>
+
+<p>That is lightning fast. But again, important to note: this is a “system container” and not a “application container”, or in simpler terms, it’s not a docker container. If you have ever used LXC, then you will be right at home.</p>
+
+<blockquote>
+  <p>Application containers (as provided by, for example, Docker) package a single process or application. System containers, on the other hand, simulate a full operating system similar to what you would be running on a host or in a virtual machine. You can run Docker in an Incus system container, but you would not run Incus in a Docker application container. - <a href="https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/">Incus Docs</a></p>
+</blockquote>
+
+<p>You may also want to understand the differences between a virtual machine and a system container:</p>
+
+<blockquote>
+  <p>Virtual machines create a virtual version of a physical machine, using hardware features of the host system. The boundaries between the host system and virtual machines is enforced by those hardware features. System containers, on the other hand, use the already running OS kernel of the host system instead of launching their own kernel. If you run several system containers, they all share the same kernel, which makes them faster and more lightweight than virtual machines. - <a href="https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/">Incus Docs</a></p>
+</blockquote>
+
+<h2 id="why-use-incus">Why Use Incus?</h2>
+
+<p>You can see a list of major features <a href="https://linuxcontainers.org/incus/introduction/#features">here</a> but what I like about it might not be the same as what you like about it.</p>
+
+<ol>
+  <li>It’s very fast - There is an agent in the image that makes getting a shell into the VM super fast. The images are also small and download like lightning, at least in my experience.</li>
+  <li>It’s easy to manage - Incus has a simple syntax for launching VMs and containers</li>
+  <li>Image based - Incus uses images, instead of futzing around with qemu backing files and such</li>
+  <li>You use Linux as your workstation and need to easily get a VM, or a system container</li>
+</ol>
+
+<p>You can also try it online: <a href="https://linuxcontainers.org/incus/try-it/">https://linuxcontainers.org/incus/try-it/</a></p>
+
+<h2 id="why-wouldnt-you-use-incus">Why Wouldn’t You Use Incus?</h2>
+
+<ol>
+  <li>It’s not Docker - it’s a different style of containerization, which many people are not used to.</li>
+  <li>It’s relatively new, and a lot of work is being done on it - But on Ubuntu 24.04 it’s easy to install and get started.</li>
+  <li>I do have some trouble with outbound access from the VMs and have futzed around with Iptables to get it working, but it’s not as easy as one would think–I expect I’m missing something obvious from the docs.</li>
+</ol>
+
+<p>That’s about all I can think of.</p>
+
+<h2 id="pairing-incus-with-my-kubernetes-install-script">Pairing Incus with My Kubernetes Install Script</h2>
+
+<p>FYI - If you create an 8GB VM with 4 CPUS, my <a href="https://github.com/ccollicutt/install-kubernetes">single node Kubernetes install script</a> pairs nicely with Incus, and is often what I use it for.</p>
+
+<h2 id="incus-66-was-just-released">Incus 6.6 Was Just Released</h2>
+
+<p>See <a href="https://discuss.linuxcontainers.org/t/incus-6-6-has-been-released/21762">here</a>. There is also a video overview of the new features <a href="https://www.youtube.com/watch?v=gGBEPtQiiQQ">here</a></p>
+
+<p>Install it, try it out. Have fun easily creating VMs and containers!</p>
+
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2024 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                252
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+ document.addEventListener('DOMContentLoaded', (event) => {
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownToggle || !dropdownMenu) {
+        console.error('Dropdown elements not found');
+        return;
+    }
+
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close the dropdown if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle')) {
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        }
+    });
+
+    // Handle all links in the dropdown menu
+    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdownMenu.classList.remove('show');
+
+            const href = this.getAttribute('href');
+            
+            // Check if it's an external link or the feed.xml
+            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                window.open(href, '_blank');
+                return;
+            }
+
+            // Check if it's the home or archive link
+            if (href === '/' || href === '/archive.html') {
+                window.location.href = href;
+                return;
+            }
+
+            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+            
+            if (isHomePage && href.includes('#')) {
+                // If on home page and it's a section link, smooth scroll
+                const targetId = href.split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If on another page or it's not a section link, navigate to the page
+                window.location.href = href;
+            }
+        });
+    });
+});
+
+// Function to scroll to section after page load
+function scrollToSection() {
+    const hash = window.location.hash;
+    if (hash) {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+            setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }
+}
+
+// Call scrollToSection after page load
+window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

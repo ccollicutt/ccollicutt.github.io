@@ -1,4 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-10-02T10:51:21-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Building an Insecure App…on Purpose (So That GenAI Can Fix It)</title><link href="https://serverascode.com/2024/10/02/building-an-insecure-app.html" rel="alternate" type="text/html" title="Building an Insecure App…on Purpose (So That GenAI Can Fix It)" /><published>2024-10-02T00:00:00-04:00</published><updated>2024-10-02T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/02/building-an-insecure-app</id><content type="html" xml:base="https://serverascode.com/2024/10/02/building-an-insecure-app.html"><![CDATA[<h2 id="tldr">tldr;</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-10-13T07:40:51-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Why Aren’t You Using Incus to Create Containers and Virtual Machines?</title><link href="https://serverascode.com/2024/10/12/incus.html" rel="alternate" type="text/html" title="Why Aren’t You Using Incus to Create Containers and Virtual Machines?" /><published>2024-10-12T00:00:00-04:00</published><updated>2024-10-12T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/12/incus</id><content type="html" xml:base="https://serverascode.com/2024/10/12/incus.html"><![CDATA[<h1 id="incus">Incus</h1>
+
+<p>Virtual machines remain the main building block of pretty much all infrastructure. We tend to forget about the technology and just how entrenched it is in our daily technical lives. Ok, that’s a pretty heavy statement for a blog post, but I do think we forget about virtual machines and just how valuable and secure the technology is–most public cloud services are loss leaders for the VM part of their business.</p>
+
+<p>Anyways, what I want to talk about is <a href="https://linuxcontainers.org/incus/introduction/">Incus</a>, a way to easily create containers AND virtual machines.</p>
+
+<blockquote>
+  <p>NOTE: I use Incus to exclusively create virtual machines, and don’t use the container functionality that much. I would imagine that most people use the container functionality more. So while I’ll touch on the system container functionality, I use Incus for local VMs.</p>
+</blockquote>
+
+<h2 id="what-is-incus">What is Incus?</h2>
+
+<blockquote>
+  <p>When using Incus, you can manage your instances (containers and VMs) with a simple command line tool, directly through the REST API or by using third-party tools and integrations. Incus implements a single REST API for both local and remote access. The Incus project was created by Aleksa Sarai as a community driven alternative to Canonical’s LXD. Today, it’s led and maintained by many of the same people that once created LXD. - <a href="https://linuxcontainers.org/incus/introduction/">Incus Docs</a></p>
+</blockquote>
+
+<p>With Incus, you can easily create virtual machines and containers.</p>
+
+<p>I don’t know all the history of the project, where it comes from in terms of LXD/LXC, etc, but I do know that I need a way to easily create virtual machines on my local computer, and that I really enjoy using Incus. So easy.</p>
+
+<p>Example of creating a virtual machine:</p>
+
+<pre><code class="language-bash">incus launch ubuntu:22.04 my-server --vm
+</code></pre>
+
+<p>It’s that easy. Especially on Ubuntu 24.04, where you can just install the <code>incus</code> package from the default repositories.</p>
+
+<p>I also alias the incus command to this script because I always forget the incus command syntax, and I’m super lazy. So this would create a default sized VM with just <code>vm launch my-vm</code>.</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+launch_vm() {
+  if [ -z "$1" ]; then
+    echo "Usage: $0 launch &lt;vm-name&gt;"
+    echo "Example: $0 launch my-ubuntu-vm"
+    exit 1
+  fi
+
+  local name="$1"
+  local cpu=2
+  local memory="4GiB"
+  local disk="40GiB"
+
+  incus launch images:ubuntu/24.04 "$name" --vm \
+    --device root,size="$disk" \
+    -c limits.cpu="$cpu" \
+    -c limits.memory="$memory"
+}
+
+list_vms() {
+  incus ls
+}
+
+show_help() {
+  echo "Usage: $0 &lt;command&gt; [options]"
+  echo
+  echo "Commands:"
+  echo "  launch &lt;vm-name&gt;  Launch a new VM"
+  echo "  ls                List all VMs"
+  echo "  help              Show this help message"
+  echo
+  echo "For other commands, this script will pass them directly to incus."
+}
+
+# Main command handler
+case "$1" in
+  launch)
+    launch_vm "$2"
+    ;;
+  ls)
+    list_vms
+    ;;
+  help)
+    show_help
+    ;;
+  *)
+    if [ -z "$1" ]; then
+      show_help
+    else
+      # If the command isn't recognized, pass it to incus
+      incus "$@"
+    fi
+    ;;
+esac
+</code></pre>
+
+<h2 id="using-incus">Using Incus</h2>
+
+<p>As mentioned earlier, I almost exclusively use Incus to get a virtual machine.</p>
+
+<p>E.g. with my script I just run:</p>
+
+<pre><code class="language-bash">vm launch a-vm
+</code></pre>
+
+<p>Or with the bare Incus command it’s just as easy:</p>
+
+<pre><code class="language-bash">incus launch images:ubuntu/24.04 a-vm --vm
+</code></pre>
+
+<p>Now I can shell into the VM very quickly.</p>
+
+<pre><code class="language-bash">$ incus shell a-vm # or with my script, vm shell a-vm
+root@a-vm:~# 
+</code></pre>
+
+<p>And you are in a nice little virtual machine that you can install anything you want into.</p>
+
+<h2 id="getting-a-container">Getting a Container</h2>
+
+<p>Writing this post was the first time I used the container functionality of Incus! Getting a container is the default mode of operation, and it’s super easy.</p>
+
+<pre><code class="language-bash">$ incus launch images:ubuntu/22.04 ubuntu-container
+# Image is downloaded, and the container is created
+Launching ubuntu-container
+$ incus ls | grep ubuntu-container
+| ubuntu-container | RUNNING | 10.57.7.201 (eth0)           | fd42:af1f:b7c8:a36c:216:3eff:fee9:32e4 (eth0)   | CONTAINER       | 0         |
+$ vm shell ubuntu-container
+</code></pre>
+
+<p>That is lightning fast. But again, important to note: this is a “system container” and not a “application container”, or in simpler terms, it’s not a docker container. If you have ever used LXC, then you will be right at home.</p>
+
+<blockquote>
+  <p>Application containers (as provided by, for example, Docker) package a single process or application. System containers, on the other hand, simulate a full operating system similar to what you would be running on a host or in a virtual machine. You can run Docker in an Incus system container, but you would not run Incus in a Docker application container. - <a href="https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/">Incus Docs</a></p>
+</blockquote>
+
+<p>You may also want to understand the differences between a virtual machine and a system container:</p>
+
+<blockquote>
+  <p>Virtual machines create a virtual version of a physical machine, using hardware features of the host system. The boundaries between the host system and virtual machines is enforced by those hardware features. System containers, on the other hand, use the already running OS kernel of the host system instead of launching their own kernel. If you run several system containers, they all share the same kernel, which makes them faster and more lightweight than virtual machines. - <a href="https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/">Incus Docs</a></p>
+</blockquote>
+
+<h2 id="why-use-incus">Why Use Incus?</h2>
+
+<p>You can see a list of major features <a href="https://linuxcontainers.org/incus/introduction/#features">here</a> but what I like about it might not be the same as what you like about it.</p>
+
+<ol>
+  <li>It’s very fast - There is an agent in the image that makes getting a shell into the VM super fast. The images are also small and download like lightning, at least in my experience.</li>
+  <li>It’s easy to manage - Incus has a simple syntax for launching VMs and containers</li>
+  <li>Image based - Incus uses images, instead of futzing around with qemu backing files and such</li>
+  <li>You use Linux as your workstation and need to easily get a VM, or a system container</li>
+</ol>
+
+<p>You can also try it online: <a href="https://linuxcontainers.org/incus/try-it/">https://linuxcontainers.org/incus/try-it/</a></p>
+
+<h2 id="why-wouldnt-you-use-incus">Why Wouldn’t You Use Incus?</h2>
+
+<ol>
+  <li>It’s not Docker - it’s a different style of containerization, which many people are not used to.</li>
+  <li>It’s relatively new, and a lot of work is being done on it - But on Ubuntu 24.04 it’s easy to install and get started.</li>
+  <li>I do have some trouble with outbound access from the VMs and have futzed around with Iptables to get it working, but it’s not as easy as one would think–I expect I’m missing something obvious from the docs.</li>
+</ol>
+
+<p>That’s about all I can think of.</p>
+
+<h2 id="pairing-incus-with-my-kubernetes-install-script">Pairing Incus with My Kubernetes Install Script</h2>
+
+<p>FYI - If you create an 8GB VM with 4 CPUS, my <a href="https://github.com/ccollicutt/install-kubernetes">single node Kubernetes install script</a> pairs nicely with Incus, and is often what I use it for.</p>
+
+<h2 id="incus-66-was-just-released">Incus 6.6 Was Just Released</h2>
+
+<p>See <a href="https://discuss.linuxcontainers.org/t/incus-6-6-has-been-released/21762">here</a>. There is also a video overview of the new features <a href="https://www.youtube.com/watch?v=gGBEPtQiiQQ">here</a></p>
+
+<p>Install it, try it out. Have fun easily creating VMs and containers!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Incus]]></summary></entry><entry><title type="html">Building an Insecure App…on Purpose (So That GenAI Can Fix It)</title><link href="https://serverascode.com/2024/10/02/building-an-insecure-app.html" rel="alternate" type="text/html" title="Building an Insecure App…on Purpose (So That GenAI Can Fix It)" /><published>2024-10-02T00:00:00-04:00</published><updated>2024-10-02T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/02/building-an-insecure-app</id><content type="html" xml:base="https://serverascode.com/2024/10/02/building-an-insecure-app.html"><![CDATA[<h2 id="tldr">tldr;</h2>
 
 <p>tldr; I built an insecure web application (on purpose) for testing LLMs and here it is: <a href="https://github.com/ccollicutt/insecure-nextjs-guestbook">https://github.com/ccollicutt/insecure-nextjs-guestbook</a>.</p>
 
@@ -1298,80 +1461,4 @@ $ k describe pod foo-746699dd7-kr99d | grep -i started
 
 <p>Personally, I would think that this kind of thing would be automatic, but it’s not. So this is a good way to make sure that your pods are restarted when there are new secrets.</p>
 
-<p>Kubernetes is a framework, and you have to pull in a lot of “libraries,” such as Reloader.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with Reloader.]]></summary></entry><entry><title type="html">Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes</title><link href="https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes.html" rel="alternate" type="text/html" title="Why My Flask App Refused to Crash: Understanding PID 1 in Containers and Kubernetes" /><published>2023-09-02T00:00:00-04:00</published><updated>2023-09-02T00:00:00-04:00</updated><id>https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes</id><content type="html" xml:base="https://serverascode.com/2023/09/02/pid-one-gunicorn-kubernetes.html"><![CDATA[<p>You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.</p>
-
-<p>OK, maybe this isn’t “you” it’s “me”. I was trying to build a demo app that showed crash loop backoff in Kubernetes, and I couldn’t get the container to crash.</p>
-
-<p>Because pid 1 is Gunicorn, not the app itself.</p>
-
-<pre><code>$ k exec -it crash-only-backend-0 -- cat /proc/1/status | grep "Name\|Uid"
-Name:	gunicorn-run.sh
-Uid:	10001	10001	10001	10001
-</code></pre>
-
-<p>Let’s dive into why this happens and the importance of understanding PID 1 in containers.</p>
-
-<h2 id="what-the-heck-is-gunicorn">What the Heck is Gunicorn?</h2>
-
-<blockquote>
-  <p>Gunicorn ‘Green Unicorn’ is a Python WSGI HTTP Server for UNIX. It’s a pre-fork worker model. The Gunicorn server is broadly compatible with various web frameworks, simply implemented, light on server resources, and fairly speedy. - <a href="https://gunicorn.org/">Gunicorn</a></p>
-</blockquote>
-
-<h2 id="what-is-a-wsgi-server">What is a WSGI Server?</h2>
-
-<p>A Web Server Gateway Interface (WSGI) server is a web server that implements the WSGI specification. The WSGI specification is a Python standard that describes how a web server communicates with web applications.</p>
-
-<h2 id="why-does-flask-need-a-wsgi-server">Why Does Flask Need a WSGI Server?</h2>
-
-<p>Flask is a micro web framework written in Python. It’s a WSGI application, which means it needs a WSGI server to run.</p>
-
-<blockquote>
-  <p>“Production” means “not development”, which applies whether you’re serving your application publicly to millions of users or privately / locally to a single user. Do not use the development server when deploying to production. It is intended for use only during local development. It is not designed to be particularly secure, stable, or efficient. - <a href="https://flask.palletsprojects.com/en/2.3.x/deploying/">Flask</a></p>
-</blockquote>
-
-<h2 id="what-is-pid-1">What is PID 1?</h2>
-
-<p>In Unix-based systems, the process ID (PID) is a unique identifier for each running process. The very first process that runs when a system starts is the init system with PID 1. The init process has special responsibilities, like adopting orphaned child processes and handling signals.</p>
-
-<h2 id="gunicorn-and-pid-1">Gunicorn and PID 1</h2>
-
-<p>When you run a container, the process you start becomes PID 1 within that container. In the case of my Flask app, Gunicorn becomes PID 1.</p>
-
-<blockquote>
-  <p>NOTE: Why not just run Flask directly? Because Gunicorn is a production-ready WSGI server that can handle multiple requests concurrently.</p>
-</blockquote>
-
-<h2 id="why-doesnt-the-container-crash">Why Doesn’t the Container Crash?</h2>
-
-<p>If your Flask app (running as a Gunicorn worker) crashes, Gunicorn will restart it. Since Gunicorn is PID 1, the container will remain alive as long as Gunicorn does. This is why even if your Flask app encounters an error, the container doesn’t crash.</p>
-
-<h2 id="the-kubernetes-perspective">The Kubernetes Perspective</h2>
-
-<p>In a Kubernetes cluster, the kubelet will restart a crashed container based on its <code>restartPolicy</code>. However, if Gunicorn (PID 1) doesn’t crash, Kubernetes won’t know that something is wrong with your Flask app. This could lead to misleading metrics and logs, affecting your debugging and monitoring efforts.</p>
-
-<h2 id="killing-pid-1">Killing Pid 1</h2>
-
-<p>In the app I still wanted to use gunicorn which means to demonstrate an app crashing and Kubernetes restarting the container, I needed to kill gunicorn. I needed to kill PID 1.</p>
-
-<p>Here’s what I ended up with inside the app:</p>
-
-<pre><code>def random_crash():
-    if random.randint(1, 100) &gt; 94:
-        logger.error("&lt;&lt;&lt;&lt; Crashing... &gt;&gt;&gt;&gt;")
-        # gunicorn will restart the process, which is pretty cool, but for this
-        # app we want to purposely crash the whole container, so we kill the
-        # parent process which is gunicorn
-        os.kill(os.getppid(), 9)
-</code></pre>
-
-<blockquote>
-  <p>NOTE: I’m purposely trying to crash the container to demonstrate crashLoopBackoff. As well, I’m not using <code>sys.exit()</code> because that would just exit the flask process, not the container. (Which, by the way, is what I originally did and why I couldn’t get the container to crash.)</p>
-</blockquote>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Understanding PID 1 in containers is crucial for debugging, process management, and robustness, especially when deploying applications on Kubernetes.</p>
-
-<p>To many, this is elementary…even downright obvious. But I’ve been doing this for a while and I still learned something when building this little demo app. As well, while researching this I found a fair bit of confusion around using gunicorn in containers.</p>
-
-<p>Let me know if you have any questions or comments!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[You’ve just deployed your Python Flask app on Kubernetes. You’re using Gunicorn as your WSGI server, and you’re trying to test how the container would behave if the app crashed. But wait! You find out that the container never crashes. Why not? Oh, Gunicorn is being helpful–it keeps restarting the application.]]></summary></entry></feed>
+<p>Kubernetes is a framework, and you have to pull in a lot of “libraries,” such as Reloader.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I will tell you a secret—no, a story. Say, at some point, I had a Kubernetes webhook admission controller that I wrote and deployed, and then the TLS certificate was automatically (nice!) renewed by cert-manager, but the pod wasn’t restarted, so it still had the old certificate, and now all Kubernetes deployments failed. That is indeed a story, perhaps a sad one. I had this shiny new cert, but no one was using it. Say I wanted to fix that. One way would be with Reloader.]]></summary></entry></feed>

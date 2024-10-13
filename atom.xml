@@ -4,13 +4,186 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-02T10:51:21-04:00</updated>
+ <updated>2024-10-13T07:40:51-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Why Aren't You Using Incus to Create Containers and Virtual Machines?</title>
+   <link href="http://serverascode.com//2024/10/12/incus.html"/>
+   <updated>2024-10-12T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2024/10/12/incus</id>
+   <content type="html">&lt;h1 id=&quot;incus&quot;&gt;Incus&lt;/h1&gt;
+
+&lt;p&gt;Virtual machines remain the main building block of pretty much all infrastructure. We tend to forget about the technology and just how entrenched it is in our daily technical lives. Ok, that’s a pretty heavy statement for a blog post, but I do think we forget about virtual machines and just how valuable and secure the technology is–most public cloud services are loss leaders for the VM part of their business.&lt;/p&gt;
+
+&lt;p&gt;Anyways, what I want to talk about is &lt;a href=&quot;https://linuxcontainers.org/incus/introduction/&quot;&gt;Incus&lt;/a&gt;, a way to easily create containers AND virtual machines.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: I use Incus to exclusively create virtual machines, and don’t use the container functionality that much. I would imagine that most people use the container functionality more. So while I’ll touch on the system container functionality, I use Incus for local VMs.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;what-is-incus&quot;&gt;What is Incus?&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;When using Incus, you can manage your instances (containers and VMs) with a simple command line tool, directly through the REST API or by using third-party tools and integrations. Incus implements a single REST API for both local and remote access. The Incus project was created by Aleksa Sarai as a community driven alternative to Canonical’s LXD. Today, it’s led and maintained by many of the same people that once created LXD. - &lt;a href=&quot;https://linuxcontainers.org/incus/introduction/&quot;&gt;Incus Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;With Incus, you can easily create virtual machines and containers.&lt;/p&gt;
+
+&lt;p&gt;I don’t know all the history of the project, where it comes from in terms of LXD/LXC, etc, but I do know that I need a way to easily create virtual machines on my local computer, and that I really enjoy using Incus. So easy.&lt;/p&gt;
+
+&lt;p&gt;Example of creating a virtual machine:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;incus launch ubuntu:22.04 my-server --vm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It’s that easy. Especially on Ubuntu 24.04, where you can just install the &lt;code&gt;incus&lt;/code&gt; package from the default repositories.&lt;/p&gt;
+
+&lt;p&gt;I also alias the incus command to this script because I always forget the incus command syntax, and I’m super lazy. So this would create a default sized VM with just &lt;code&gt;vm launch my-vm&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;#!/bin/bash
+
+launch_vm() {
+  if [ -z &quot;$1&quot; ]; then
+    echo &quot;Usage: $0 launch &amp;lt;vm-name&amp;gt;&quot;
+    echo &quot;Example: $0 launch my-ubuntu-vm&quot;
+    exit 1
+  fi
+
+  local name=&quot;$1&quot;
+  local cpu=2
+  local memory=&quot;4GiB&quot;
+  local disk=&quot;40GiB&quot;
+
+  incus launch images:ubuntu/24.04 &quot;$name&quot; --vm \
+    --device root,size=&quot;$disk&quot; \
+    -c limits.cpu=&quot;$cpu&quot; \
+    -c limits.memory=&quot;$memory&quot;
+}
+
+list_vms() {
+  incus ls
+}
+
+show_help() {
+  echo &quot;Usage: $0 &amp;lt;command&amp;gt; [options]&quot;
+  echo
+  echo &quot;Commands:&quot;
+  echo &quot;  launch &amp;lt;vm-name&amp;gt;  Launch a new VM&quot;
+  echo &quot;  ls                List all VMs&quot;
+  echo &quot;  help              Show this help message&quot;
+  echo
+  echo &quot;For other commands, this script will pass them directly to incus.&quot;
+}
+
+# Main command handler
+case &quot;$1&quot; in
+  launch)
+    launch_vm &quot;$2&quot;
+    ;;
+  ls)
+    list_vms
+    ;;
+  help)
+    show_help
+    ;;
+  *)
+    if [ -z &quot;$1&quot; ]; then
+      show_help
+    else
+      # If the command isn&apos;t recognized, pass it to incus
+      incus &quot;$@&quot;
+    fi
+    ;;
+esac
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;using-incus&quot;&gt;Using Incus&lt;/h2&gt;
+
+&lt;p&gt;As mentioned earlier, I almost exclusively use Incus to get a virtual machine.&lt;/p&gt;
+
+&lt;p&gt;E.g. with my script I just run:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;vm launch a-vm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or with the bare Incus command it’s just as easy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;incus launch images:ubuntu/24.04 a-vm --vm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now I can shell into the VM very quickly.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ incus shell a-vm # or with my script, vm shell a-vm
+root@a-vm:~# 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And you are in a nice little virtual machine that you can install anything you want into.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-a-container&quot;&gt;Getting a Container&lt;/h2&gt;
+
+&lt;p&gt;Writing this post was the first time I used the container functionality of Incus! Getting a container is the default mode of operation, and it’s super easy.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ incus launch images:ubuntu/22.04 ubuntu-container
+# Image is downloaded, and the container is created
+Launching ubuntu-container
+$ incus ls | grep ubuntu-container
+| ubuntu-container | RUNNING | 10.57.7.201 (eth0)           | fd42:af1f:b7c8:a36c:216:3eff:fee9:32e4 (eth0)   | CONTAINER       | 0         |
+$ vm shell ubuntu-container
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That is lightning fast. But again, important to note: this is a “system container” and not a “application container”, or in simpler terms, it’s not a docker container. If you have ever used LXC, then you will be right at home.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Application containers (as provided by, for example, Docker) package a single process or application. System containers, on the other hand, simulate a full operating system similar to what you would be running on a host or in a virtual machine. You can run Docker in an Incus system container, but you would not run Incus in a Docker application container. - &lt;a href=&quot;https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/&quot;&gt;Incus Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You may also want to understand the differences between a virtual machine and a system container:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Virtual machines create a virtual version of a physical machine, using hardware features of the host system. The boundaries between the host system and virtual machines is enforced by those hardware features. System containers, on the other hand, use the already running OS kernel of the host system instead of launching their own kernel. If you run several system containers, they all share the same kernel, which makes them faster and more lightweight than virtual machines. - &lt;a href=&quot;https://linuxcontainers.org/incus/docs/main/explanation/containers_and_vms/&quot;&gt;Incus Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;why-use-incus&quot;&gt;Why Use Incus?&lt;/h2&gt;
+
+&lt;p&gt;You can see a list of major features &lt;a href=&quot;https://linuxcontainers.org/incus/introduction/#features&quot;&gt;here&lt;/a&gt; but what I like about it might not be the same as what you like about it.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It’s very fast - There is an agent in the image that makes getting a shell into the VM super fast. The images are also small and download like lightning, at least in my experience.&lt;/li&gt;
+  &lt;li&gt;It’s easy to manage - Incus has a simple syntax for launching VMs and containers&lt;/li&gt;
+  &lt;li&gt;Image based - Incus uses images, instead of futzing around with qemu backing files and such&lt;/li&gt;
+  &lt;li&gt;You use Linux as your workstation and need to easily get a VM, or a system container&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You can also try it online: &lt;a href=&quot;https://linuxcontainers.org/incus/try-it/&quot;&gt;https://linuxcontainers.org/incus/try-it/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;why-wouldnt-you-use-incus&quot;&gt;Why Wouldn’t You Use Incus?&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It’s not Docker - it’s a different style of containerization, which many people are not used to.&lt;/li&gt;
+  &lt;li&gt;It’s relatively new, and a lot of work is being done on it - But on Ubuntu 24.04 it’s easy to install and get started.&lt;/li&gt;
+  &lt;li&gt;I do have some trouble with outbound access from the VMs and have futzed around with Iptables to get it working, but it’s not as easy as one would think–I expect I’m missing something obvious from the docs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That’s about all I can think of.&lt;/p&gt;
+
+&lt;h2 id=&quot;pairing-incus-with-my-kubernetes-install-script&quot;&gt;Pairing Incus with My Kubernetes Install Script&lt;/h2&gt;
+
+&lt;p&gt;FYI - If you create an 8GB VM with 4 CPUS, my &lt;a href=&quot;https://github.com/ccollicutt/install-kubernetes&quot;&gt;single node Kubernetes install script&lt;/a&gt; pairs nicely with Incus, and is often what I use it for.&lt;/p&gt;
+
+&lt;h2 id=&quot;incus-66-was-just-released&quot;&gt;Incus 6.6 Was Just Released&lt;/h2&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://discuss.linuxcontainers.org/t/incus-6-6-has-been-released/21762&quot;&gt;here&lt;/a&gt;. There is also a video overview of the new features &lt;a href=&quot;https://www.youtube.com/watch?v=gGBEPtQiiQQ&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Install it, try it out. Have fun easily creating VMs and containers!&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Building an Insecure App...on Purpose (So That GenAI Can Fix It)</title>
