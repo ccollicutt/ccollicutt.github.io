@@ -4,13 +4,295 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-13T07:40:51-04:00</updated>
+ <updated>2024-10-20T06:38:08-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Incus Installation and Use - Setup Storage Pools and Bridged Networking</title>
+   <link href="http://serverascode.com//2024/10/19/incus-installation-and-use.html"/>
+   <updated>2024-10-19T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2024/10/19/incus-installation-and-use</id>
+   <content type="html">&lt;p&gt;In this post I’ll show you how to install and setup &lt;a href=&quot;https://linuxcontainers.org/incus/docs/main/&quot;&gt;Incus&lt;/a&gt; on a physical host running Ubuntu 24.04. I’ll setup a storage pool and a bridge network, then launch a VM. Once this is all done, I’ll have a nice homelab server that can spin up many virtual machines and do it quickly, putting them on the right storage pool, on a separate network.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-incus&quot;&gt;What is Incus?&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Incus is a next-generation system container, application container, and virtual machine manager. It provides a user experience similar to that of a public cloud. With it, you can easily mix and match both containers and virtual machines, sharing the same underlying storage and network. - &lt;a href=&quot;https://linuxcontainers.org/incus/docs/main/&quot;&gt;Incus Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Basically, once you install Incus you can ask it for virtual machines or system containers (not Docker containers, but system conatiners) and it will go and build them for you.&lt;/p&gt;
+
+&lt;h2 id=&quot;physical-host&quot;&gt;Physical Host&lt;/h2&gt;
+
+&lt;p&gt;I’m using Ubuntu 24.04 on my homelab server.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=24.04
+DISTRIB_CODENAME=noble
+DISTRIB_DESCRIPTION=&quot;Ubuntu 24.04.1 LTS&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It’s an older server, but it’s got a lot of memory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           188Gi       3.1Gi       185Gi       673Mi       2.5Gi       185Gi
+Swap:          8.0Gi          0B       8.0Gi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And lots of room for disks and such, including a 2TB NVMe drive, which I’ll use for my main storage pool.&lt;/p&gt;
+
+&lt;h2 id=&quot;install-incus&quot;&gt;Install Incus&lt;/h2&gt;
+
+&lt;p&gt;I’ll be following the Incus docs - &lt;a href=&quot;https://linuxcontainers.org/incus/docs/main/installing/#installing&quot;&gt;https://linuxcontainers.org/incus/docs/main/installing/#installing&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First, install the incus and qemu packages; need qemu for the VM support.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apt install incus qemu-system
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Incus is a small set of packages, qemu is a fair bit larger.&lt;/p&gt;
+
+&lt;p&gt;Add your user to the incus group.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo adduser curtis incus-admin
+info: Adding user `curtis&apos; to group `incus-admin&apos; ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Log out and log back in to get the new group, or use newgrp, whatever you want.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus ls
++------+-------+------+------+------+-----------+
+| NAME | STATE | IPV4 | IPV6 | TYPE | SNAPSHOTS |
++------+-------+------+------+------+-----------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;storage-pool&quot;&gt;Storage Pool&lt;/h2&gt;
+
+&lt;p&gt;I have a NVMe drive mounted on /mnt/nvme0n1 and I want to use that to back my incus managed virtual machines.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo mkdir -p /mnt/nvme0n1/incus
+$ incus storage create p1 dir source=/mnt/nvme0n1/incus
+Storage pool p1 created
+$ incus storage ls
++------+--------+--------------------+-------------+---------+---------+
+| NAME | DRIVER |       SOURCE       | DESCRIPTION | USED BY |  STATE  |
++------+--------+--------------------+-------------+---------+---------+
+| p1   | dir    | /mnt/nvme0n1/incus |             | 0       | CREATED |
++------+--------+--------------------+-------------+---------+---------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some files and directories are created in /mnt/nvme0n1/incus.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ls /mnt/nvme0n1/incus/
+buckets     containers-snapshots  custom-snapshots  virtual-machines
+containers  custom                images            virtual-machines-snapshots
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Very slick and easy to create the storage pool.&lt;/p&gt;
+
+&lt;p&gt;Now to build a VM using that storage pool.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus launch images:ubuntu/24.04 test --vm --storage p1
+Launching test
+                                          
+The instance you are starting doesn&apos;t have any network attached to it.
+  To create a new network, use: incus network create
+  To attach a network to an instance, use: incus network attach
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I don’t have a network configured, so this didn’t actually start the VM.&lt;/p&gt;
+
+&lt;p&gt;But, files are created for the VM in the storage pool.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ sudo tree /mnt/nvme0n1/incus/
+/mnt/nvme0n1/incus/
+├── buckets
+├── containers
+├── containers-snapshots
+├── custom
+├── custom-snapshots
+├── images
+├── virtual-machines
+│   └── test
+│       ├── agent-client.crt
+│       ├── agent-client.key
+│       ├── agent.crt
+│       ├── agent.key
+│       ├── backup.yaml
+│       ├── config
+│       │   ├── agent.conf
+│       │   ├── agent.crt
+│       │   ├── agent.key
+│       │   ├── agent-mounts.json
+│       │   ├── files
+│       │   │   ├── hostname.tpl.out
+│       │   │   ├── hosts.tpl.out
+│       │   │   └── metadata.yaml
+│       │   ├── incus-agent
+│       │   ├── install.sh
+│       │   ├── lxd-agent -&amp;gt; incus-agent
+│       │   ├── nics
+│       │   ├── server.crt
+│       │   ├── systemd
+│       │   │   ├── incus-agent.service
+│       │   │   └── incus-agent-setup
+│       │   └── udev
+│       │       └── 99-incus-agent.rules
+│       ├── metadata.yaml
+│       ├── OVMF_VARS_4M.ms.fd
+│       ├── qemu.nvram -&amp;gt; OVMF_VARS_4M.ms.fd
+│       ├── root.img
+│       └── templates
+│           ├── hostname.tpl
+│           └── hosts.tpl
+└── virtual-machines-snapshots
+
+16 directories, 25 files
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;networking&quot;&gt;Networking&lt;/h2&gt;
+
+&lt;p&gt;OK, I love networking, but it can also be a pain, especially when we’re dealing with bridges and virtual machines, etc, etc. I like to think of networking as moving packets as quickly as possible, not configuring bridges, but there’s just no avoiding it.&lt;/p&gt;
+
+&lt;p&gt;The physical host has the below netplan configuration, where I’ve added a VLAN to eth3.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo cat 50-cloud-init.yaml 
+network:
+    ethernets:
+        eno1: {}
+        eth3: {}
+    version: 2
+    vlans:
+        eno1.101:
+            addresses:
+            - 10.100.1.20/24
+            id: 101
+            link: eno1
+            nameservers:
+                addresses:
+                - 10.100.1.3
+                search: []
+            routes:
+            -   to: default
+                via: 10.100.1.1
+        eth3.105:
+            id: 105
+            link: eth3
+        eth3.106:
+            id: 106
+            link: eth3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I’m going to tell incus to create a bridge on a network interface that has a VLAN tag on it, eth3.106.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus network create br106 \
+  --type=bridge \
+  bridge.external_interfaces=eth3.106 \
+  ipv4.dhcp=false \
+  ipv4.nat=false \
+  ipv6.nat=false \
+  ipv4.address=none \
+  ipv6.address=none
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That command creates this config:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus network show br106
+config:
+  bridge.external_interfaces: eth3.106
+  ipv4.address: none
+  ipv4.dhcp: &quot;false&quot;
+  ipv4.nat: &quot;false&quot;
+  ipv6.address: none
+  ipv6.nat: &quot;false&quot;
+description: &quot;&quot;
+name: br106
+type: bridge
+used_by:
+- /1.0/instances/test
+managed: true
+status: Created
+locations:
+- none
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DHCP is actually provided by my physical switch, not incus. So when I launch a VM, it starts with DHCP, but that DHCP address is coming from the upstream switch, not incus. This is what I want.&lt;/p&gt;
+
+&lt;p&gt;I can launch a VM with this network on the previously configured storage pool.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus launch images:ubuntu/24.04 test --vm --storage p1 --network br106
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And list the VMs to see the new one, note that we can see the IP address of the VM even though Incus isn’t doing the IP address management.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus ls
++------+---------+---------------------+------+-----------------+-----------+
+| NAME |  STATE  |        IPV4         | IPV6 |      TYPE       | SNAPSHOTS |
++------+---------+---------------------+------+-----------------+-----------+
+| test | RUNNING | 10.100.6.250 (enp5s0) |      | VIRTUAL-MACHINE | 0         |
++------+---------+---------------------+------+-----------------+-----------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hop onto that VM and ping 1.1.1.1:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ incus shell test
+root@test:~# ping -c 3 1.1.1.1
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=53 time=5.80 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=53 time=3.43 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=53 time=3.47 ms
+
+--- 1.1.1.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 3.425/4.232/5.802/1.110 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Network is online!&lt;/p&gt;
+
+&lt;p&gt;For various reasons I use Mikrotik switches/routers in my homelab, so this interface might look different on your network. Obviously I don’t have a lot of DHCP going on. :)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[admin@MikroTik] &amp;gt; /ip dhcp-server lease print 
+Flags: X - disabled, R - radius, D - dynamic, B - blocked 
+ #   ADDRESS                                                                    MAC-ADDRESS       HOST-NAME                                 SERVER                                 RATE-LIMIT                                 STATUS 
+ 0 D 10.100.6.250                                                                 00:16:3E:4D:15:97 distrobuilder-705ecd65-121a-4b5b-8cdc-... dhcp1                                                                             bound  
+[admin@MikroTik] &amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we can see the DHCP lease is for the VM.&lt;/p&gt;
+
+&lt;h2 id=&quot;incus-profiles&quot;&gt;Incus Profiles&lt;/h2&gt;
+
+&lt;p&gt;Finally, I’ll create a profile for the VM, or rather I’ll edit the default profile to use the bridge network and the storage pool.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ incus profile show default
+config: {}
+description: Default Incus profile
+devices:
+  eth0:
+    network: br106
+    type: nic
+  root:
+    path: /
+    pool: p1
+    type: disk
+name: default
+used_by:
+- /1.0/instances/test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;And there you have it. Incus is now managing my virtual machines, putting them on my storage pool, and giving me a bridge network with IPs from my DHCP server.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Why Aren't You Using Incus to Create Containers and Virtual Machines?</title>
