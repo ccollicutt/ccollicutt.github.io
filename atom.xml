@@ -4,13 +4,88 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-20T06:38:08-04:00</updated>
+ <updated>2024-10-26T19:57:07-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>The Numerous Pains of Programming: Death by a Thousand Cuts</title>
+   <link href="http://serverascode.com//2024/10/25/pain-of-programming.html"/>
+   <updated>2024-10-25T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2024/10/25/pain-of-programming</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;/img/posts/deathcuts.png&quot; alt=&quot;/img/posts/deathcuts.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I recently started building a small Python application, comprising less than 1000 lines of code. However, it’s been a real challenge to get it to the point where it can be deployed and run in a production environment. I’ve done this before, but it’s always difficult, and each time I’m reminded of how much effort it is, in part because I always have to start anew.&lt;/p&gt;
+
+&lt;p&gt;As a part-time developer…which of these extra things do I actually have to do? And to what extent? The code, sure, but all the other things?&lt;/p&gt;
+
+&lt;h2 id=&quot;the-pain-of-programming&quot;&gt;The Pain of Programming&lt;/h2&gt;
+
+&lt;p&gt;For most applications, writing the code is relatively straightforward, though it can still be challenging. However, there are tons of other things around the code, all that extra work you have to do to make it a quote unquote “real application”.&lt;/p&gt;
+
+&lt;p&gt;Below I’m not even including things like picking a language or framework.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: This is not a perfect, comprehensive list–it’s a brainstorm of things I can think of that I’ve had to do, or might have to do to make an application “real” and somewhat professional.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Writing and maintaining comprehensive test suites&lt;/li&gt;
+  &lt;li&gt;Setting up testing infrastructure and testing frameworks&lt;/li&gt;
+  &lt;li&gt;Designing and implementing CI/CD pipelines&lt;/li&gt;
+  &lt;li&gt;Creating and maintaining distributable packages&lt;/li&gt;
+  &lt;li&gt;Managing production environment deployment and monitoring&lt;/li&gt;
+  &lt;li&gt;Implementing release management&lt;/li&gt;
+  &lt;li&gt;Writing and maintaining documentation at all levels&lt;/li&gt;
+  &lt;li&gt;Creating and updating system architecture diagrams&lt;/li&gt;
+  &lt;li&gt;Managing version control workflows and git complexity&lt;/li&gt;
+  &lt;li&gt;Supporting and responding to user needs and feedback&lt;/li&gt;
+  &lt;li&gt;Implementing basic security best practices&lt;/li&gt;
+  &lt;li&gt;Conducting stress testing and performance optimization&lt;/li&gt;
+  &lt;li&gt;Containerizing the application and managing Kubernetes deployments&lt;/li&gt;
+  &lt;li&gt;Setting up vulnerability scanning and maintaining dependencies&lt;/li&gt;
+  &lt;li&gt;Managing databases, data models, and migrations&lt;/li&gt;
+  &lt;li&gt;Configuring IDE settings and extensions&lt;/li&gt;
+  &lt;li&gt;Setting up development environments (e.g., virtual environments)&lt;/li&gt;
+  &lt;li&gt;Managing dependency trees and version conflicts&lt;/li&gt;
+  &lt;li&gt;Configuring and maintaining linters and formatters&lt;/li&gt;
+  &lt;li&gt;Setting up logging and monitoring infrastructure&lt;/li&gt;
+  &lt;li&gt;Dealing with debugging tools…more than print statements?&lt;/li&gt;
+  &lt;li&gt;Testing with SSL certificates&lt;/li&gt;
+  &lt;li&gt;Deploying on different operating systems and user environments&lt;/li&gt;
+  &lt;li&gt;Dealing with authentication, perhaps RBAC too&lt;/li&gt;
+  &lt;li&gt;Do I need different environments for development, testing, staging, and production?&lt;/li&gt;
+  &lt;li&gt;Keeping track of issues, tickets, and other project management tasks&lt;/li&gt;
+  &lt;li&gt;How to get secrets and configuration into the application safely and securely&lt;/li&gt;
+  &lt;li&gt;Dealing with updating the software, from configuration to removing features and functionality&lt;/li&gt;
+  &lt;li&gt;Understanding resource requirements, memory, cpu, etc. and what to set limits to in production&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I think I could keep going, and I’m sure there are many more.&lt;/p&gt;
+
+&lt;p&gt;The above is all a tremendous amount of work, work that extends well beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help deal with it all–it’s just a big old mess of tasks that add up to a lot of work.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-a-real-application&quot;&gt;What is a Real Application?&lt;/h2&gt;
+
+&lt;p&gt;I keep using the phrase “real application”, but what does that mean? What makes an application real? I suppose what I mean is an enterprise, production-grade application, of some kind. But that doesn’t mean much–I’m not sure anyone knows what makes an application production-grade. It’s kind of a vague term, and I think we could probably do better. The reality is that programming is more of an art, a dedicated craft, with hundreds of things that need to be done and hundreds many more tools, technologies, and techniques that can be used to do them. Some of this is optional, some of it is required, and some of it is just good practice. Which is which…it’s not always clear.&lt;/p&gt;
+
+&lt;h2 id=&quot;tedious-work&quot;&gt;Tedious Work&lt;/h2&gt;
+
+&lt;p&gt;I find all this extra work absolutely exhausting and, frankly, quite tedious. In every single one of these steps it seems to me like there just has to be a better way. And for some, I’m sure there is, I simply may not know about it yet.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, I’d love to have a magic wand to wave and get all this done, and thus just focus on the code that provides the value, but I don’t think that’s possible. Generative AI isn’t going to help with this all that much. Imagine what we could do if we just got rid of all this tedium?&lt;/p&gt;
+
+&lt;h2 id=&quot;an-application-can-never-be-done-but-it-has-to-be-run&quot;&gt;An Application Can Never Be Done, but It Has to Be Run&lt;/h2&gt;
+
+&lt;p&gt;I think the reality is that an application can never be complete. There is always more work. It can never be 100% finished–there is always something missing, which is an incredible place to be when you consider that one of humanity’s main outputs at this point in time, one of our main economic drivers, is the writing and running of software. What a bizarre situation to be in!&lt;/p&gt;
+
+&lt;p&gt;My next post will be regarding some solutions to the pain of programming, some kind of protective armor that can stop the thousand cuts.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Incus Installation and Use - Setup Storage Pools and Bridged Networking</title>
