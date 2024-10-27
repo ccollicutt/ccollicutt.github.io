@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-27T06:32:25-04:00</updated>
+ <updated>2024-10-27T09:24:53-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -79,9 +79,11 @@
 
 &lt;h2 id=&quot;tedious-work&quot;&gt;Tedious Work&lt;/h2&gt;
 
-&lt;p&gt;I find all this extra work absolutely exhausting and, frankly, quite tedious. In every single one of these steps it seems to me like there just has to be a better way. And for some, I’m sure there is, I simply may not know about it yet.&lt;/p&gt;
+&lt;p&gt;This list is a decomposition of what a developer has to do. I find all this extra work absolutely exhausting and, frankly, quite tedious. In every single one of these steps it seems to me like there just has to be a better way. And for some, I’m sure there is, I simply may not know about it yet. But I don’t believe that there is any single tool, technique, or technology that can help with all of it.&lt;/p&gt;
 
-&lt;p&gt;Ultimately, I’d love to have a magic wand to wave and get all this done, and thus just focus on the code that provides the value, but I don’t think that’s possible. Generative AI isn’t going to help with this all that much. Imagine what we could do if we just got rid of all this tedium?&lt;/p&gt;
+&lt;p&gt;Ultimately, I’d love to have a magic wand to wave and get all this done, and thus just focus on the code that provides the value, but I don’t think that’s possible. Generative AI isn’t going to help with this all that much, one can imagine it tying this all together somehow, but the problems still exist, they would just be hidden, like a river of lave beneath the surface.&lt;/p&gt;
+
+&lt;p&gt;Imagine what we could do if we just got rid of all this tedium?&lt;/p&gt;
 
 &lt;h2 id=&quot;an-application-can-never-be-done-but-it-has-to-be-run&quot;&gt;An Application Can Never Be Done, but It Has to Be Run&lt;/h2&gt;
 
