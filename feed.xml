@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-10-26T19:57:07-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">The Numerous Pains of Programming: Death by a Thousand Cuts</title><link href="https://serverascode.com/2024/10/25/pain-of-programming.html" rel="alternate" type="text/html" title="The Numerous Pains of Programming: Death by a Thousand Cuts" /><published>2024-10-25T00:00:00-04:00</published><updated>2024-10-25T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/25/pain-of-programming</id><content type="html" xml:base="https://serverascode.com/2024/10/25/pain-of-programming.html"><![CDATA[<p><img src="/img/posts/deathcuts.png" alt="/img/posts/deathcuts.png" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-10-27T06:32:25-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">The Numerous Pains of Programming: Death by a Thousand Cuts</title><link href="https://serverascode.com/2024/10/25/pain-of-programming.html" rel="alternate" type="text/html" title="The Numerous Pains of Programming: Death by a Thousand Cuts" /><published>2024-10-25T00:00:00-04:00</published><updated>2024-10-25T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/25/pain-of-programming</id><content type="html" xml:base="https://serverascode.com/2024/10/25/pain-of-programming.html"><![CDATA[<p><img src="/img/posts/deathcuts.png" alt="/img/posts/deathcuts.png" /></p>
 
 <p>I recently started building a small Python application, comprising less than 1000 lines of code. However, it’s been a real challenge to get it to the point where it can be deployed and run in a production environment. I’ve done this before, but it’s always difficult, and each time I’m reminded of how much effort it is, in part because I always have to start anew.</p>
 
@@ -15,20 +15,21 @@
 </blockquote>
 
 <ol>
-  <li>Writing and maintaining comprehensive test suites</li>
+  <li>Writing and maintaining comprehensive test suites, unit tests, integration tests, etc.</li>
   <li>Setting up testing infrastructure and testing frameworks</li>
   <li>Designing and implementing CI/CD pipelines</li>
   <li>Creating and maintaining distributable packages</li>
   <li>Managing production environment deployment and monitoring</li>
   <li>Implementing release management</li>
-  <li>Writing and maintaining documentation at all levels</li>
+  <li>Writing and maintaining documentation</li>
   <li>Creating and updating system architecture diagrams</li>
   <li>Managing version control workflows and git complexity</li>
   <li>Supporting and responding to user needs and feedback</li>
   <li>Implementing basic security best practices</li>
   <li>Conducting stress testing and performance optimization</li>
-  <li>Containerizing the application and managing Kubernetes deployments</li>
-  <li>Setting up vulnerability scanning and maintaining dependencies</li>
+  <li>Containerizing the application and creating Kubernetes manifests</li>
+  <li>Setting up vulnerability scanning</li>
+  <li>Managing security issues in dependencies</li>
   <li>Managing databases, data models, and migrations</li>
   <li>Configuring IDE settings and extensions</li>
   <li>Setting up development environments (e.g., virtual environments)</li>
@@ -44,6 +45,9 @@
   <li>How to get secrets and configuration into the application safely and securely</li>
   <li>Dealing with updating the software, from configuration to removing features and functionality</li>
   <li>Understanding resource requirements, memory, cpu, etc. and what to set limits to in production</li>
+  <li>Threat modelling–how would an attacker get in, what would be the impact, etc.</li>
+  <li>What license should I use for the software? What does it mean if I choose the wrong one?</li>
+  <li>What metrics should it output, and how?</li>
 </ol>
 
 <p>I think I could keep going, and I’m sure there are many more.</p>

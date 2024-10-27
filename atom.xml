@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-26T19:57:07-04:00</updated>
+ <updated>2024-10-27T06:32:25-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -34,20 +34,21 @@
 &lt;/blockquote&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Writing and maintaining comprehensive test suites&lt;/li&gt;
+  &lt;li&gt;Writing and maintaining comprehensive test suites, unit tests, integration tests, etc.&lt;/li&gt;
   &lt;li&gt;Setting up testing infrastructure and testing frameworks&lt;/li&gt;
   &lt;li&gt;Designing and implementing CI/CD pipelines&lt;/li&gt;
   &lt;li&gt;Creating and maintaining distributable packages&lt;/li&gt;
   &lt;li&gt;Managing production environment deployment and monitoring&lt;/li&gt;
   &lt;li&gt;Implementing release management&lt;/li&gt;
-  &lt;li&gt;Writing and maintaining documentation at all levels&lt;/li&gt;
+  &lt;li&gt;Writing and maintaining documentation&lt;/li&gt;
   &lt;li&gt;Creating and updating system architecture diagrams&lt;/li&gt;
   &lt;li&gt;Managing version control workflows and git complexity&lt;/li&gt;
   &lt;li&gt;Supporting and responding to user needs and feedback&lt;/li&gt;
   &lt;li&gt;Implementing basic security best practices&lt;/li&gt;
   &lt;li&gt;Conducting stress testing and performance optimization&lt;/li&gt;
-  &lt;li&gt;Containerizing the application and managing Kubernetes deployments&lt;/li&gt;
-  &lt;li&gt;Setting up vulnerability scanning and maintaining dependencies&lt;/li&gt;
+  &lt;li&gt;Containerizing the application and creating Kubernetes manifests&lt;/li&gt;
+  &lt;li&gt;Setting up vulnerability scanning&lt;/li&gt;
+  &lt;li&gt;Managing security issues in dependencies&lt;/li&gt;
   &lt;li&gt;Managing databases, data models, and migrations&lt;/li&gt;
   &lt;li&gt;Configuring IDE settings and extensions&lt;/li&gt;
   &lt;li&gt;Setting up development environments (e.g., virtual environments)&lt;/li&gt;
@@ -63,6 +64,9 @@
   &lt;li&gt;How to get secrets and configuration into the application safely and securely&lt;/li&gt;
   &lt;li&gt;Dealing with updating the software, from configuration to removing features and functionality&lt;/li&gt;
   &lt;li&gt;Understanding resource requirements, memory, cpu, etc. and what to set limits to in production&lt;/li&gt;
+  &lt;li&gt;Threat modelling–how would an attacker get in, what would be the impact, etc.&lt;/li&gt;
+  &lt;li&gt;What license should I use for the software? What does it mean if I choose the wrong one?&lt;/li&gt;
+  &lt;li&gt;What metrics should it output, and how?&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;I think I could keep going, and I’m sure there are many more.&lt;/p&gt;
