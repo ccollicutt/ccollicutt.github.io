@@ -104,7 +104,7 @@
                 <div class="magazine-info">
                     <div>Server As Code Dot Com</div>
                     <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
-                    <div class="underline">2024 OCTOBER</div>
+                    <div class="underline">2024 NOVEMBER</div>
                     <div class="underline">¥980</div>
                 </div>
             </div>
@@ -207,6 +207,7 @@
   <li>Managing dependency trees and version conflicts</li>
   <li>Configuring and maintaining linters and formatters</li>
   <li>Setting up logging and monitoring infrastructure</li>
+  <li>What kind of logging…structured, unstructured, etc.</li>
   <li>Dealing with debugging tools…more than print statements?</li>
   <li>Testing with SSL certificates</li>
   <li>Deploying on different operating systems and user environments</li>
@@ -219,11 +220,66 @@
   <li>Threat modelling–how would an attacker get in, what would be the impact, etc.</li>
   <li>What license should I use for the software? What does it mean if I choose the wrong one?</li>
   <li>What metrics should it output, and how?</li>
+  <li>Configuring…the config file. What should it look like? How to validate it? What’s a good layout?</li>
+  <li>Finding dead and unused code</li>
 </ol>
 
 <p>I think I could keep going, and I’m sure there are many more.</p>
 
 <p>The above is all a tremendous amount of work, work that extends well beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help deal with it all–it’s just a big old mess of tasks that add up to a lot of work.</p>
+
+<h2 id="table-formatted">Table Formatted</h2>
+
+<p>Here’s a table view of the above list.</p>
+
+<p>Again, this is not a comprehensive list, but a brainstorm of things I can think of that I’ve had to do, or might have to do to make an application “real” and somewhat professional. I’m sure there are better lists out there somewhere…</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Tasks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Testing &amp; Quality</strong></td>
+      <td>• Writing and maintaining test suites (unit, integration)<br />• Setting up testing infrastructure and frameworks<br />• Conducting stress testing and performance optimization<br />• Testing with SSL certificates<br />• Detecting dead and unused code</td>
+    </tr>
+    <tr>
+      <td><strong>Infrastructure &amp; Deployment</strong></td>
+      <td>• Designing and implementing CI/CD pipelines<br />• Managing production environment deployment and monitoring<br />• Managing different environments (dev, test, staging, prod)<br />• Containerizing applications and Kubernetes manifests<br />• Deploying on different operating systems/environments</td>
+    </tr>
+    <tr>
+      <td><strong>Security</strong></td>
+      <td>• Implementing basic security best practices<br />• Setting up vulnerability scanning<br />• Managing security issues in dependencies<br />• Dealing with authentication and RBAC<br />• Threat modeling<br />• Managing secrets and configuration securely</td>
+    </tr>
+    <tr>
+      <td><strong>Development Environment</strong></td>
+      <td>• Configuring IDE settings and extensions<br />• Setting up development environments<br />• Managing dependency trees and conflicts<br />• Configuring and maintaining linters/formatters<br />• Managing version control workflows</td>
+    </tr>
+    <tr>
+      <td><strong>Documentation &amp; Architecture</strong></td>
+      <td>• Writing and maintaining documentation<br />• Creating/updating system architecture diagrams<br />• Managing licenses and compliance<br />• Maintaining configuration file structure and validation</td>
+    </tr>
+    <tr>
+      <td><strong>Operations &amp; Monitoring</strong></td>
+      <td>• Setting up logging infrastructure (structured/unstructured)<br />• Managing debugging tools<br />• Understanding resource requirements (CPU, memory)<br />• Output metrics configuration and management</td>
+    </tr>
+    <tr>
+      <td><strong>Data Management</strong></td>
+      <td>• Managing databases, data models, and migrations</td>
+    </tr>
+    <tr>
+      <td><strong>Distribution and Upgrades</strong></td>
+      <td>• Creating and maintaining distributable packages<br />• Managing software updates and feature deprecation</td>
+    </tr>
+    <tr>
+      <td><strong>Project Management</strong></td>
+      <td>• Supporting and responding to user needs/feedback<br />• Keeping track of issues, tickets, and tasks<br />• Implementing release management</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="what-is-a-real-application">What is a Real Application?</h2>
 
@@ -240,8 +296,6 @@
 <h2 id="an-application-can-never-be-done-but-it-has-to-be-run">An Application Can Never Be Done, but It Has to Be Run</h2>
 
 <p>I think the reality is that an application can never be complete. There is always more work. It can never be 100% finished–there is always something missing, which is an incredible place to be when you consider that one of humanity’s main outputs at this point in time, one of our main economic drivers, is the writing and running of software. What a bizarre situation to be in!</p>
-
-<p>My next post will be regarding some solutions to the pain of programming, some kind of protective armor that can stop the thousand cuts.</p>
 
 </article>
             </main>

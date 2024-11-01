@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-10-27T09:24:53-04:00</updated>
+ <updated>2024-11-01T08:33:55-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -55,6 +55,7 @@
   &lt;li&gt;Managing dependency trees and version conflicts&lt;/li&gt;
   &lt;li&gt;Configuring and maintaining linters and formatters&lt;/li&gt;
   &lt;li&gt;Setting up logging and monitoring infrastructure&lt;/li&gt;
+  &lt;li&gt;What kind of logging…structured, unstructured, etc.&lt;/li&gt;
   &lt;li&gt;Dealing with debugging tools…more than print statements?&lt;/li&gt;
   &lt;li&gt;Testing with SSL certificates&lt;/li&gt;
   &lt;li&gt;Deploying on different operating systems and user environments&lt;/li&gt;
@@ -67,11 +68,66 @@
   &lt;li&gt;Threat modelling–how would an attacker get in, what would be the impact, etc.&lt;/li&gt;
   &lt;li&gt;What license should I use for the software? What does it mean if I choose the wrong one?&lt;/li&gt;
   &lt;li&gt;What metrics should it output, and how?&lt;/li&gt;
+  &lt;li&gt;Configuring…the config file. What should it look like? How to validate it? What’s a good layout?&lt;/li&gt;
+  &lt;li&gt;Finding dead and unused code&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;I think I could keep going, and I’m sure there are many more.&lt;/p&gt;
 
 &lt;p&gt;The above is all a tremendous amount of work, work that extends well beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help deal with it all–it’s just a big old mess of tasks that add up to a lot of work.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-formatted&quot;&gt;Table Formatted&lt;/h2&gt;
+
+&lt;p&gt;Here’s a table view of the above list.&lt;/p&gt;
+
+&lt;p&gt;Again, this is not a comprehensive list, but a brainstorm of things I can think of that I’ve had to do, or might have to do to make an application “real” and somewhat professional. I’m sure there are better lists out there somewhere…&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Category&lt;/th&gt;
+      &lt;th&gt;Tasks&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Testing &amp;amp; Quality&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Writing and maintaining test suites (unit, integration)&lt;br /&gt;• Setting up testing infrastructure and frameworks&lt;br /&gt;• Conducting stress testing and performance optimization&lt;br /&gt;• Testing with SSL certificates&lt;br /&gt;• Detecting dead and unused code&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Infrastructure &amp;amp; Deployment&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Designing and implementing CI/CD pipelines&lt;br /&gt;• Managing production environment deployment and monitoring&lt;br /&gt;• Managing different environments (dev, test, staging, prod)&lt;br /&gt;• Containerizing applications and Kubernetes manifests&lt;br /&gt;• Deploying on different operating systems/environments&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Security&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Implementing basic security best practices&lt;br /&gt;• Setting up vulnerability scanning&lt;br /&gt;• Managing security issues in dependencies&lt;br /&gt;• Dealing with authentication and RBAC&lt;br /&gt;• Threat modeling&lt;br /&gt;• Managing secrets and configuration securely&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Development Environment&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Configuring IDE settings and extensions&lt;br /&gt;• Setting up development environments&lt;br /&gt;• Managing dependency trees and conflicts&lt;br /&gt;• Configuring and maintaining linters/formatters&lt;br /&gt;• Managing version control workflows&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Documentation &amp;amp; Architecture&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Writing and maintaining documentation&lt;br /&gt;• Creating/updating system architecture diagrams&lt;br /&gt;• Managing licenses and compliance&lt;br /&gt;• Maintaining configuration file structure and validation&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Operations &amp;amp; Monitoring&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Setting up logging infrastructure (structured/unstructured)&lt;br /&gt;• Managing debugging tools&lt;br /&gt;• Understanding resource requirements (CPU, memory)&lt;br /&gt;• Output metrics configuration and management&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Data Management&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Managing databases, data models, and migrations&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Distribution and Upgrades&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Creating and maintaining distributable packages&lt;br /&gt;• Managing software updates and feature deprecation&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Project Management&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;• Supporting and responding to user needs/feedback&lt;br /&gt;• Keeping track of issues, tickets, and tasks&lt;br /&gt;• Implementing release management&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;h2 id=&quot;what-is-a-real-application&quot;&gt;What is a Real Application?&lt;/h2&gt;
 
@@ -88,8 +144,6 @@
 &lt;h2 id=&quot;an-application-can-never-be-done-but-it-has-to-be-run&quot;&gt;An Application Can Never Be Done, but It Has to Be Run&lt;/h2&gt;
 
 &lt;p&gt;I think the reality is that an application can never be complete. There is always more work. It can never be 100% finished–there is always something missing, which is an incredible place to be when you consider that one of humanity’s main outputs at this point in time, one of our main economic drivers, is the writing and running of software. What a bizarre situation to be in!&lt;/p&gt;
-
-&lt;p&gt;My next post will be regarding some solutions to the pain of programming, some kind of protective armor that can stop the thousand cuts.&lt;/p&gt;
 </content>
  </entry>
  
