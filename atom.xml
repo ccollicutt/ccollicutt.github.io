@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-11-02T08:33:38-04:00</updated>
+ <updated>2024-11-02T08:48:49-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -448,7 +448,7 @@ indexes:
 &lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://falco.org/blog/gitops-falco-rules/&quot;&gt;Gitops Your Falco Rules&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://falco.org/blog/gitops-your-falco-rules/&quot;&gt;Gitops Your Falco Rules&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/falcosecurity/falcoctl&quot;&gt;falcoctl&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://falco.org/docs/getting-started/falco-linux-quickstart/&quot;&gt;Try Falcoctl&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -522,7 +522,7 @@ indexes:
 
 &lt;h2 id=&quot;table-formatted-pain&quot;&gt;Table Formatted Pain&lt;/h2&gt;
 
-&lt;p&gt;Here’s a spreadsheet view of the list above.&lt;/p&gt;
+&lt;p&gt;Here’s a table view of the list above.&lt;/p&gt;
 
 &lt;p&gt;Again, this is not a comprehensive list, but a brainstorm of things I can think of that I’ve had to do, or might have to do, to make an application “real” and somewhat professional. I’m sure there are better lists out there somewhere…&lt;/p&gt;
 
