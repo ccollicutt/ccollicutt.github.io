@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-02T08:28:15-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">falcoctl</title><link href="https://serverascode.com/2024/11/01/falcoctl.html" rel="alternate" type="text/html" title="falcoctl" /><published>2024-11-01T00:00:00-04:00</published><updated>2024-11-01T00:00:00-04:00</updated><id>https://serverascode.com/2024/11/01/falcoctl</id><content type="html" xml:base="https://serverascode.com/2024/11/01/falcoctl.html"><![CDATA[<p><em>tl;dr: <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a> is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.</em></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-02T08:33:38-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">falcoctl</title><link href="https://serverascode.com/2024/11/01/falcoctl.html" rel="alternate" type="text/html" title="falcoctl" /><published>2024-11-01T00:00:00-04:00</published><updated>2024-11-01T00:00:00-04:00</updated><id>https://serverascode.com/2024/11/01/falcoctl</id><content type="html" xml:base="https://serverascode.com/2024/11/01/falcoctl.html"><![CDATA[<p><em>tl;dr: <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a> is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.</em></p>
 
 <h2 id="what-is-falco">What is Falco?</h2>
 
@@ -434,15 +434,15 @@ indexes:
   <li><a href="https://falco.org/docs/getting-started/falco-linux-quickstart/">Try Falcoctl</a></li>
 </ul>]]></content><author><name></name></author><summary type="html"><![CDATA[tl;dr: falcoctl is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.]]></summary></entry><entry><title type="html">The Numerous Pains of Programming: Death by a Thousand Cuts</title><link href="https://serverascode.com/2024/10/25/pain-of-programming.html" rel="alternate" type="text/html" title="The Numerous Pains of Programming: Death by a Thousand Cuts" /><published>2024-10-25T00:00:00-04:00</published><updated>2024-10-25T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/25/pain-of-programming</id><content type="html" xml:base="https://serverascode.com/2024/10/25/pain-of-programming.html"><![CDATA[<p><img src="/img/posts/deathcuts.png" alt="/img/posts/deathcuts.png" /></p>
 
-<p>I recently started building a small Python application, comprising less than 1000 lines of code. However, it’s been a real challenge to get it to the point where it can be deployed and run in a production environment. I’ve done this before, but it’s always difficult, and each time I’m reminded of how much effort it is, in part because I always have to start anew.</p>
+<p>I recently started building a small Python application, less than 1000 lines of code. However, it’s been a real challenge to get it to the point where it can be deployed and run in a production environment. I’ve done this before, but it’s always difficult, and each time I’m reminded of how much effort it takes, in part because I always have to start anew.</p>
 
-<p>As a part-time developer…which of these extra things do I actually have to do? And to what extent? The code, sure, but all the other things?</p>
+<p>As a part-time developer…which of these extra things do I actually have to do? And to what extent? The code, sure, but all the other stuff?</p>
 
 <h2 id="the-pain-of-programming">The Pain of Programming</h2>
 
-<p>For most applications, writing the code is relatively straightforward, though it can still be challenging. However, there are tons of other things around the code, all that extra work you have to do to make it a quote unquote “real application”.</p>
+<p>For most applications, writing the code is relatively straightforward, though it can still be challenging. However, there are tons of other things around the code, all the extra work you have to do to make it a quote unquote “real application”.</p>
 
-<p>Below I’m not even including things like picking a language or framework.</p>
+<p>I’m not even including things like choosing a language or framework.</p>
 
 <blockquote>
   <p>NOTE: This is not a perfect, comprehensive list–it’s a brainstorm of things I can think of that I’ve had to do, or might have to do to make an application “real” and somewhat professional.</p>
@@ -487,15 +487,15 @@ indexes:
   <li>Finding dead and unused code</li>
 </ol>
 
-<p>I think I could keep going, and I’m sure there are many more.</p>
+<p>I could go on, and I’m sure there are many more.</p>
 
-<p>The above is all a tremendous amount of work, work that extends well beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help deal with it all–it’s just a big old mess of tasks that add up to a lot of work.</p>
+<p>All of the above is an enormous amount of work, work that goes far beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help with all this–it’s just a big old mess of tasks that add up to a lot of work.</p>
 
 <h2 id="table-formatted-pain">Table Formatted Pain</h2>
 
-<p>Here’s a table view of the above list.</p>
+<p>Here’s a spreadsheet view of the list above.</p>
 
-<p>Again, this is not a comprehensive list, but a brainstorm of things I can think of that I’ve had to do, or might have to do to make an application “real” and somewhat professional. I’m sure there are better lists out there somewhere…</p>
+<p>Again, this is not a comprehensive list, but a brainstorm of things I can think of that I’ve had to do, or might have to do, to make an application “real” and somewhat professional. I’m sure there are better lists out there somewhere…</p>
 
 <table>
   <thead>
@@ -544,21 +544,21 @@ indexes:
   </tbody>
 </table>
 
-<h2 id="what-is-a-real-application">What is a Real Application?</h2>
+<h2 id="what-is-a-real-application">What is a real application?</h2>
 
-<p>I keep using the phrase “real application”, but what does that mean? What makes an application real? I suppose what I mean is an enterprise, production-grade application, of some kind. But that doesn’t mean much–I’m not sure anyone knows what makes an application production-grade. It’s kind of a vague term, and I think we could probably do better. The reality is that programming is more of an art, a dedicated craft, with hundreds of things that need to be done and hundreds many more tools, technologies, and techniques that can be used to do them. Some of this is optional, some of it is required, and some of it is just good practice. Which is which…it’s not always clear.</p>
+<p>I keep using the term “real application”, but what does it mean? What makes an application real? I suppose what I mean is an enterprise, production-grade application of some kind. But that doesn’t mean much–I’m not sure anyone knows what makes an application production-grade. It’s kind of a vague term, and I think we could probably do better. The reality is that programming is more of an art, a dedicated craft, with hundreds of things that need to be done and hundreds of other tools, technologies, and techniques that can be used to do them. Some of this is optional, some of it is required, and some of it is just good practice. It’s not always clear which is which.</p>
 
-<h2 id="tedious-work">Tedious Work</h2>
+<h2 id="tedious-work">Tedious work</h2>
 
-<p>This list is a decomposition of what a developer has to do. I find all this extra work absolutely exhausting and, frankly, quite tedious. In every single one of these steps it seems to me like there just has to be a better way. And for some, I’m sure there is, I simply may not know about it yet. But I don’t believe that there is any single tool, technique, or technology that can help with all of it.</p>
+<p>This list is a decomposition of what a developer has to do. I find all this extra work absolutely exhausting and, frankly, quite tedious. For every single one of these steps, it seems to me that there must be a better way. And for some of them, I’m sure there is, maybe I just don’t know about it yet. But I don’t think there’s a single tool, technique, or technology that can help with all of them.</p>
 
-<p>Ultimately, I’d love to have a magic wand to wave and get all this done, and thus just focus on the code that provides the value, but I don’t think that’s possible. Generative AI isn’t going to help with this all that much, one can imagine it tying this all together somehow, but the problems still exist, they would just be hidden, like a river of lave beneath the surface.</p>
+<p>Ultimately, I would love to have a magic wand that I could wave that would do all of that, so I could just focus on the code that delivers the value, but I don’t think that’s possible. Generative AI isn’t going to help that much, you can imagine it tying it all together somehow, but the problems are still there, they’re just hidden, like a river of lava under the surface.</p>
 
-<p>Imagine what we could do if we just got rid of all this tedium?</p>
+<p>Imagine what we could do if we just got rid of all that boredom?</p>
 
-<h2 id="an-application-can-never-be-done-but-it-has-to-be-run">An Application Can Never Be Done, but It Has to Be Run</h2>
+<h2 id="an-application-can-never-be-done-but-it-must-be-run">An application can never be done, but it must be run.</h2>
 
-<p>I think the reality is that an application can never be complete. There is always more work. It can never be 100% finished–there is always something missing, which is an incredible place to be when you consider that one of humanity’s main outputs at this point in time, one of our main economic drivers, is the writing and running of software. What a bizarre situation to be in!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Incus Installation and Use - Setup Storage Pools and Bridged Networking</title><link href="https://serverascode.com/2024/10/19/incus-installation-and-use.html" rel="alternate" type="text/html" title="Incus Installation and Use - Setup Storage Pools and Bridged Networking" /><published>2024-10-19T00:00:00-04:00</published><updated>2024-10-19T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/19/incus-installation-and-use</id><content type="html" xml:base="https://serverascode.com/2024/10/19/incus-installation-and-use.html"><![CDATA[<p>In this post I’ll show you how to install and setup <a href="https://linuxcontainers.org/incus/docs/main/">Incus</a> on a physical host running Ubuntu 24.04. I’ll setup a storage pool and a bridge network, then launch a VM. Once this is all done, I’ll have a nice homelab server that can spin up many virtual machines and do it quickly, putting them on the right storage pool, on a separate network.</p>
+<p>I think the reality is that an application can never be finished. There is always more work to be done. It can never be 100% finished - there is always something missing, which is an incredible place to be when you consider that one of the main outputs of humanity at this point in time, one of our main economic drivers, is the writing and running of software. What a bizarre situation.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Incus Installation and Use - Setup Storage Pools and Bridged Networking</title><link href="https://serverascode.com/2024/10/19/incus-installation-and-use.html" rel="alternate" type="text/html" title="Incus Installation and Use - Setup Storage Pools and Bridged Networking" /><published>2024-10-19T00:00:00-04:00</published><updated>2024-10-19T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/19/incus-installation-and-use</id><content type="html" xml:base="https://serverascode.com/2024/10/19/incus-installation-and-use.html"><![CDATA[<p>In this post I’ll show you how to install and setup <a href="https://linuxcontainers.org/incus/docs/main/">Incus</a> on a physical host running Ubuntu 24.04. I’ll setup a storage pool and a bridge network, then launch a VM. Once this is all done, I’ll have a nice homelab server that can spin up many virtual machines and do it quickly, putting them on the right storage pool, on a separate network.</p>
 
 <h2 id="what-is-incus">What is Incus?</h2>
 
