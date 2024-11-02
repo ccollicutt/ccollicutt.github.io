@@ -1,4 +1,438 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-01T08:33:55-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">The Numerous Pains of Programming: Death by a Thousand Cuts</title><link href="https://serverascode.com/2024/10/25/pain-of-programming.html" rel="alternate" type="text/html" title="The Numerous Pains of Programming: Death by a Thousand Cuts" /><published>2024-10-25T00:00:00-04:00</published><updated>2024-10-25T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/25/pain-of-programming</id><content type="html" xml:base="https://serverascode.com/2024/10/25/pain-of-programming.html"><![CDATA[<p><img src="/img/posts/deathcuts.png" alt="/img/posts/deathcuts.png" /></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-02T08:28:15-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">falcoctl</title><link href="https://serverascode.com/2024/11/01/falcoctl.html" rel="alternate" type="text/html" title="falcoctl" /><published>2024-11-01T00:00:00-04:00</published><updated>2024-11-01T00:00:00-04:00</updated><id>https://serverascode.com/2024/11/01/falcoctl</id><content type="html" xml:base="https://serverascode.com/2024/11/01/falcoctl.html"><![CDATA[<p><em>tl;dr: <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a> is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.</em></p>
+
+<h2 id="what-is-falco">What is Falco?</h2>
+
+<blockquote>
+  <p>Falco is a cloud native security tool that provides runtime security across hosts, containers, Kubernetes, and cloud environments. It leverages custom rules on Linux kernel events and other data sources through plugins, enriching event data with contextual metadata to deliver real-time alerts. Falco enables the detection of abnormal behavior, potential security threats, and compliance violations. - <a href="https://falco.org/">Falco</a></p>
+</blockquote>
+
+<p><a href="https://falco.org/">Falco</a> is like a security camera for your servers, your Kubernetes nodes, and your cloud environments. It’s a way to detect and respond to security threats in real time.</p>
+
+<p>The underlying technology relies on rules, which are really a set of configuration files. The point of these security rules is that the world around us is changing, and so we need new and updated rules to help us detect and respond to new and emerging threats. If you simply deploy the standard open source Falco rules and never change them, or do not add your own custom rules based on your own unique needs, you’re missing out on much of the power of Falco.</p>
+
+<p>Once you have the base Falco technology, which is of course completely invaluable, the real work is in creating and managing the threat detection rules and then responding to alerts.</p>
+
+<h2 id="distributed-systems">Distributed Systems</h2>
+
+<p>It’s important to note that Falco deployments are like a single security camera. They are not, by default, a distributed collection of security cameras that all send their information to a central location, nor do they by default get their configuration from a central location.</p>
+
+<p>This presents a challenge in that organizations often run many hundreds, thousands, or even tens of thousands of nodes, each with their own Falco installation. Additionally, Falco can also have plugins installed on each node, which further complicates the distribution of configuration.</p>
+
+<ul>
+  <li><strong>Configuration files</strong> - As mentioned, Falco is a rules based engine–so it needs the rules to work, and thus we have to manage those rules, and distribute them to potentially tens of thousands of nodes.</li>
+</ul>
+
+<p>How do we distribute these rules?</p>
+
+<ul>
+  <li><strong>Plugins</strong> - Over the last couple of years Falco has added a plugin framework which allows you in many ways to vastly increase the capacity of what Falco can monitor, i.e. historically Falco has looked at system calls, events from the Linux kernel, but with plugins you can add in other data sources, such as audit logs.</li>
+</ul>
+
+<p>So we have rules <em>and</em> plugins to manage, but how?</p>
+
+<p>That is where falcoctl comes in.</p>
+
+<h2 id="what-is-falcoctl">What is falcoctl?</h2>
+
+<p>Here’s a good <a href="https://falco.org/blog/falcoctl-install-manage-rules-plugins/">blog post</a> from the Falco team that explains it well:</p>
+
+<blockquote>
+  <p>Since the launch of the plugin framework in January 2022, our adopters have requested an out-of-the-box solution to manage the lifecycle of rules (installation, updates). We heard your request and also created a guide to help you smoothly install the plugins. The Falco maintainers proposed the following solution to help with these issues: falcoctl. Falcoctl is a CLI tool that performs several useful tasks for Falco.</p>
+</blockquote>
+
+<p>falcoctl effectively manages artifacts for Falco, including rules, plugins, and configuration.</p>
+
+<ul>
+  <li>Install the falcoctl binary CLI application</li>
+</ul>
+
+<pre><code>LATEST=$(curl -sI https://github.com/falcosecurity/falcoctl/releases/latest | awk '/location: /{gsub("\r","",$2);split($2,v,"/");print substr(v[8],2)}')
+curl --fail -LS "https://github.com/falcosecurity/falcoctl/releases/download/v${LATEST}/falcoctl_${LATEST}_linux_amd64.tar.gz" | tar -xz
+sudo install -o root -g root -m 0755 falcoctl /usr/local/bin/falcoctl
+</code></pre>
+
+<ul>
+  <li>Run it</li>
+</ul>
+
+<pre><code>root@falco:~# which falcoctl
+/usr/local/bin/falcoctl
+root@falco:~# falcoctl
+
+     __       _                _   _ 
+    / _| __ _| | ___ ___   ___| |_| |
+   | |_ / _  | |/ __/ _ \ / __| __| |
+   |  _| (_| | | (_| (_) | (__| |_| |
+   |_|  \__,_|_|\___\___/ \___|\__|_|
+									 
+	
+The official CLI tool for working with Falco and its ecosystem components
+
+Usage:
+  falcoctl [command]
+
+Available Commands:
+  artifact    Interact with Falco artifacts
+  completion  Generate the autocompletion script for the specified shell
+  driver      Interact with falcosecurity driver
+  help        Help about any command
+  index       Interact with index
+  registry    Interact with OCI registries
+  tls         Generate and install TLS material for Falco
+  version     Print the falcoctl version information
+
+Flags:
+      --config string       config file to be used for falcoctl (default "/etc/falcoctl/falcoctl.yaml")
+  -h, --help                help for falcoctl
+      --log-format string   Set formatting for logs (color, text, json) (default "color")
+      --log-level string    Set level for logs (info, warn, debug, trace) (default "info")
+
+Use "falcoctl [command] --help" for more information about a command.
+root@falco:~# 
+</code></pre>
+
+<h2 id="manage-falco-artifacts-with-falcoctl">Manage Falco Artifacts with falcoctl</h2>
+
+<p>What we want to do is use falcoctl to manage our Falco artifacts. There are several components and features of falcoctl that we can use to do this.</p>
+
+<ul>
+  <li>Add an “index”</li>
+</ul>
+
+<pre><code>root@falco:~# sudo falcoctl index add falcosecurity https://falcosecurity.github.io/falcoctl/index.yaml
+2024-11-01 19:30:11 INFO  Adding index
+                      ├ name: falcosecurity
+                      └ path: https://falcosecurity.github.io/falcoctl/index.yaml
+2024-11-01 19:30:11 INFO  Index successfully added 
+</code></pre>
+
+<ul>
+  <li>Review the config</li>
+</ul>
+
+<pre><code>root@falco:~# cat /etc/falcoctl/falcoctl.yaml 
+artifact:
+    follow:
+        every: 6h0m0s
+        falcoversions: http://localhost:8765/versions
+        refs:
+            - falco-rules:3
+driver:
+    hostroot: /
+    name: falco
+    repos:
+        - https://download.falco.org/driver
+    type:
+        - modern_ebpf
+    version: 7.3.0+driver
+indexes:
+    - name: falcosecurity
+      url: https://falcosecurity.github.io/falcoctl/index.yaml
+      backend: ""
+</code></pre>
+
+<ul>
+  <li>Search for Falco artifacts</li>
+</ul>
+
+<pre><code>root@falco:~# falcoctl artifact search falco
+INDEX        	ARTIFACT              	TYPE     	REGISTRY	REPOSITORY
+falcosecurity	falco-incubating-rules	rulesfile	ghcr.io 	falcosecurity/rules/falco-incubating-rules
+falcosecurity	falco-rules           	rulesfile	ghcr.io 	falcosecurity/rules/falco-rules
+falcosecurity	falco-sandbox-rules   	rulesfile	ghcr.io 	falcosecurity/rules/falco-sandbox-rules
+</code></pre>
+
+<ul>
+  <li>Search for Kubernetes artifacts</li>
+</ul>
+
+<pre><code>root@falco:~# falcoctl artifact search kubernetes
+INDEX        	ARTIFACT          	TYPE     	REGISTRY	REPOSITORY
+falcosecurity	k8saudit-eks      	plugin   	ghcr.io 	falcosecurity/plugins/plugin/k8saudit-eks
+falcosecurity	k8saudit-gke      	plugin   	ghcr.io 	falcosecurity/plugins/plugin/k8saudit-gke
+falcosecurity	k8saudit-gke-rules	rulesfile	ghcr.io 	falcosecurity/plugins/ruleset/k8saudit-gke
+falcosecurity	k8saudit-rules    	rulesfile	ghcr.io 	falcosecurity/plugins/ruleset/k8saudit
+falcosecurity	k8smeta           	plugin   	ghcr.io 	falcosecurity/plugins/plugin/k8smeta
+falcosecurity	k8saudit          	plugin   	ghcr.io 	falcosecurity/plugins/plugin/k8saudit
+</code></pre>
+
+<ul>
+  <li>Install the <code>falco-rules</code> artifact</li>
+</ul>
+
+<pre><code>root@falco:~# falcoctl artifact install falco-rules
+2024-11-01 19:33:05 INFO  Resolving dependencies ... 
+2024-11-01 19:33:05 INFO  Installing artifacts
+                      └ refs: [ghcr.io/falcosecurity/rules/falco-rules:latest]
+2024-11-01 19:33:05 INFO  Preparing to pull artifact
+                      └ ref: ghcr.io/falcosecurity/rules/falco-rules:latest
+2024-11-01 19:33:06 INFO  Pulling layer 8da145602705 
+2024-11-01 19:33:06 INFO  Pulling layer b3990bf0209c                                            
+2024-11-01 19:33:06 INFO  Pulling layer de2cd036fd7f                                            
+2024-11-01 19:33:06 INFO  Verifying signature for artifact                                      
+                      └ digest: ghcr.io/falcosecurity/rules/falco-rules@sha256:de2cd036fd7f9bb87de5d62b36d0f35ff4fa8afbeb9a41aa9624e5f6f9a004e1
+2024-11-01 19:33:07 INFO  Signature successfully verified! 
+2024-11-01 19:33:07 INFO  Extracting and installing artifact
+                      ├ type: rulesfile
+                      └ file: falco_rules.yaml.tar.gz
+2024-11-01 19:33:07 INFO  Artifact successfully installed                                       
+                      ├ name: ghcr.io/falcosecurity/rules/falco-rules:latest
+                      ├ type: rulesfile
+                      ├ digest: sha256:de2cd036fd7f9bb87de5d62b36d0f35ff4fa8afbeb9a41aa9624e5f6f9a004e1
+                      └ directory: /etc/falco
+</code></pre>
+
+<h2 id="following-as-a-daemon">Following as a Daemon</h2>
+
+<blockquote>
+  <p>A great feature of falcoctl is its ability to run as a daemon to periodically check the artifacts’ repositories and automatically install new versions. - <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a></p>
+</blockquote>
+
+<p>So this would be the key feature of falcoctl, because, again, it’s great to have the technology, but what does it do to make our lives easier?</p>
+
+<p>When falcoctl tracks (follows) an artifact, it will automatically install new versions of that artifact without any human intervention, which I think is a good thing. Of course, we want to make sure that what we deploy works as expected, but that is a whole other can of worms.</p>
+
+<p>So, with all that in mind, let’s create a service to run falcoctl as a daemon.</p>
+
+<ul>
+  <li>Create a service</li>
+</ul>
+
+<pre><code>cat &lt;&lt; 'EOF' | sudo tee /etc/systemd/system/falcoctl.service
+[Unit]
+Description=Falcoctl
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/local/bin/falcoctl artifact follow
+EOF
+systemctl enable falcoctl
+systemctl start falcoctl
+</code></pre>
+
+<ul>
+  <li>Check the status now that it is running</li>
+</ul>
+
+<pre><code>root@falco:/etc/falcoctl# systemctl status falcoctl
+● falcoctl.service - Falcoctl
+     Loaded: loaded (/etc/systemd/system/falcoctl.service; static)
+     Active: active (running) since Fri 2024-11-01 19:37:32 UTC; 11s ago
+   Main PID: 5544 (falcoctl)
+      Tasks: 7 (limit: 2296)
+     Memory: 25.4M (peak: 25.6M)
+        CPU: 674ms
+     CGroup: /system.slice/falcoctl.service
+             └─5544 /usr/local/bin/falcoctl artifact follow
+
+Nov 01 19:37:33 falco falcoctl[5544]:                       └ artifact: ghcr.io/falcosecurity/r&gt;
+Nov 01 19:37:33 falco falcoctl[5544]: 2024-11-01 19:37:33 INFO  Found new artifact version
+Nov 01 19:37:33 falco falcoctl[5544]:                       ├ followerName: ghcr.io/falcosecuri&gt;
+Nov 01 19:37:33 falco falcoctl[5544]:                       └ tag: 3
+Nov 01 19:37:35 falco falcoctl[5544]: 2024-11-01 19:37:35 INFO  Artifact correctly installed
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ followerName: ghcr.io/falcosecuri&gt;
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ artifactName: ghcr.io/falcosecuri&gt;
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ type: rulesfile
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ digest: sha256:de2cd036fd7f9bb87d&gt;
+Nov 01 19:37:35 falco falcoctl[5544]:                       └ directory: /etc/falco
+root@falco:/etc/falcoctl# systemctl status falcoctl --no-pager
+● falcoctl.service - Falcoctl
+     Loaded: loaded (/etc/systemd/system/falcoctl.service; static)
+     Active: active (running) since Fri 2024-11-01 19:37:32 UTC; 15s ago
+   Main PID: 5544 (falcoctl)
+      Tasks: 7 (limit: 2296)
+     Memory: 25.4M (peak: 25.6M)
+        CPU: 674ms
+     CGroup: /system.slice/falcoctl.service
+             └─5544 /usr/local/bin/falcoctl artifact follow
+
+Nov 01 19:37:33 falco falcoctl[5544]:                       └ artifact: ghcr.io/falcosecu…ules:3
+Nov 01 19:37:33 falco falcoctl[5544]: 2024-11-01 19:37:33 INFO  Found new artifact version
+Nov 01 19:37:33 falco falcoctl[5544]:                       ├ followerName: ghcr.io/falco…ules:3
+Nov 01 19:37:33 falco falcoctl[5544]:                       └ tag: 3
+Nov 01 19:37:35 falco falcoctl[5544]: 2024-11-01 19:37:35 INFO  Artifact correctly installed
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ followerName: ghcr.io/falco…ules:3
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ artifactName: ghcr.io/falco…ules:3
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ type: rulesfile
+Nov 01 19:37:35 falco falcoctl[5544]:                       ├ digest: sha256:de2cd036fd7f…a004e1
+Nov 01 19:37:35 falco falcoctl[5544]:                       └ directory: /etc/falco
+Hint: Some lines were ellipsized, use -l to show in full.
+</code></pre>
+
+<p>Looks good.</p>
+
+<h2 id="build-your-own-falcoctl-artifact">Build Your Own Falcoctl Artifact</h2>
+
+<p>Let’s push a rules file into an OCI registry.</p>
+
+<ul>
+  <li>First create a rules file</li>
+</ul>
+
+<pre><code>cat &lt;&lt; 'EOF' | sudo tee ./custom_rules.yaml
+- list: falco_binaries
+  items: [falcoctl]
+EOF
+</code></pre>
+
+<ul>
+  <li>Login to the registry</li>
+</ul>
+
+<pre><code>root@falco:/etc/falcoctl# falcoctl registry auth basic some_registry -u 'your_user' -p 'some_password'
+2024-11-01 19:52:43 INFO  Login succeeded registry: some_registry user: your_user
+</code></pre>
+
+<ul>
+  <li>Now push that single rules file to the registry</li>
+</ul>
+
+<blockquote>
+  <p>NOTE: We often think of “container images” as the only thing we can push to an OCI registry, but we can actually push any OCI-compliant artifact to an OCI registry, and over time we will see much more use of this.</p>
+</blockquote>
+
+<pre><code>export OCI_ARTIFACT_VERSION=latest
+export OCI_REGISTRY=some_registry
+export OCI_REPOSITORY=some_repo/falco-rules
+export RULESET_FILE=custom_rules.yaml
+falcoctl registry push \
+    --config /dev/null \
+    --type rulesfile \
+    --version ${OCI_ARTIFACT_VERSION} \
+    ${OCI_REGISTRY}/${OCI_REPOSITORY}:${OCI_ARTIFACT_VERSION} \
+    ${RULESET_FILE}
+</code></pre>
+
+<ul>
+  <li>Resulting output</li>
+</ul>
+
+<pre><code>root@falco:/etc/falcoctl# export OCI_ARTIFACT_VERSION=latest
+export OCI_REGISTRY=some_registry
+export OCI_REPOSITORY=some_repo/falco-rules
+export RULESET_FILE=custom_rules.yaml
+falcoctl registry push \
+    --config /dev/null \
+    --type rulesfile \
+    --version ${OCI_ARTIFACT_VERSION} \
+    ${OCI_REGISTRY}/${OCI_REPOSITORY}:${OCI_ARTIFACT_VERSION} \
+    ${RULESET_FILE}
+2024-11-01 20:15:19 INFO  Preparing to push artifact
+                      ├ name: some_registry/some_repo/falco-rules:latest
+                      └ type: rulesfile
+2024-11-01 20:15:19 ERROR open custom_rules.yaml: no such file or directory 
+root@falco:/etc/falcoctl# cd 
+root@falco:~# falcoctl registry push     --config /dev/null     --type rulesfile     --version ${OCI_ARTIFACT_VERSION}     ${OCI_REGISTRY}/${OCI_REPOSITORY}:${OCI_ARTIFACT_VERSION}     ${RULESET_FILE}
+2024-11-01 20:15:24 INFO  Preparing to push artifact
+                      ├ name: some_registry/some_repo/falco-rules:latest
+                      └ type: rulesfile
+2024-11-01 20:15:24 INFO  Parsing dependencies from:  rulesfile: custom_rules.yaml
+2024-11-01 20:15:24 WARN  No dependencies were provided by the user and none were found in the
+                      │   rulesfile.
+2024-11-01 20:15:24 INFO  Parsing requirements from:  rulesfile: custom_rules.yaml
+2024-11-01 20:15:24 WARN  No requirements were provided by the user and none were found in the
+                      │   rulesfile.
+2024-11-01 20:15:24 INFO  Pushing layer d5c35695420a 
+2024-11-01 20:15:26 INFO  97c38f4c17c8: layer already exists                                    
+2024-11-01 20:15:26 INFO  Pushing layer c891d7815e0a 
+2024-11-01 20:15:26 INFO  Artifact pushed                                                       
+                      ├ name: some_registry/some_repo/falco-rules:latest
+                      ├ type: rulesfile
+                      └ digest: sha256:c891d7815e0a30a1a73e026aea4603503b0a12df9bc8b7efc38f61de2d77bd6b
+</code></pre>
+
+<ul>
+  <li>Now follow the artifact by updating the falcoctl.yaml file</li>
+</ul>
+
+<blockquote>
+  <p>NOTE: Below I added <code>some_registry/some_repo/falco-rules:latest</code> to the <code>refs</code> section.</p>
+</blockquote>
+
+<pre><code>root@falco:/etc/falcoctl# cat falcoctl.yaml
+artifact:
+    follow:
+        every: 6h0m0s
+        falcoversions: http://localhost:8765/versions
+        refs:
+            - falco-rules:3
+            - some_registry/some_repo/falco-rules:latest
+driver:
+    hostroot: /
+    name: falco
+    repos:
+        - https://download.falco.org/driver
+    type:
+        - modern_ebpf
+    version: 7.3.0+driver
+indexes:
+    - name: falcosecurity
+      url: https://falcosecurity.github.io/falcoctl/index.yaml
+      backend: ""
+</code></pre>
+
+<ul>
+  <li>Restart the falcoctl service</li>
+</ul>
+
+<pre><code>systemctl restart falcoctl
+</code></pre>
+
+<ul>
+  <li>Check the status of the falcoctl service</li>
+</ul>
+
+<pre><code>systemctl status falcoctl
+</code></pre>
+
+<ul>
+  <li>And check if the new rules file was installed</li>
+</ul>
+
+<pre><code>root@falco:~# cat /etc/falco/custom_rules.yaml 
+- list: falco_binaries
+  items: [falcoctl]
+</code></pre>
+
+<p>It was!</p>
+
+<ul>
+  <li>There are falcoctl logs as well</li>
+</ul>
+
+<pre><code>root@falco:~# grep some_repo /var/log/syslog
+2024-11-01T20:16:57.198277+00:00 falco falcoctl[5819]:                       ├ artifact: some_registry/some_repo/falco-rules:latest
+2024-11-01T20:16:57.200084+00:00 falco falcoctl[5819]:                       └ artifact: some_registry/some_repo/falco-rules:latest
+2024-11-01T20:16:57.433872+00:00 falco falcoctl[5819]:                       ├ followerName: some_registry/some_repo/falco-rules:latest
+2024-11-01T20:16:59.154603+00:00 falco falcoctl[5819]:                       ├ followerName: some_registry/some_repo/falco-rules:latest
+2024-11-01T20:16:59.154713+00:00 falco falcoctl[5819]:                       ├ artifactName: some_registry/some_repo/falco-rules:latest
+</code></pre>
+
+<p>Easy peasy. Well, at least getting it started. Now you need to automate the creation of the artifact, and of course write your own rules, which is the hard part once you have the technology.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In theory, you could deploy falcoctl as a daemon to every host you have, and configure it to check for your new rules basically on a cronjob-like schedule. Need every host to have a new rules file? No problem, just push the new rules file to the OCI registry and the falcoctl daemon will pull it down and install it.</p>
+
+<p>Will that scale? I don’t know. Maybe…maybe not.</p>
+
+<p>However, even once you have Falco installed, and then use falcoctl to have a distribution mechanism in place, you still need to customize your rules. Technology only gets us so far.</p>
+
+<h2 id="ps-sysdig">PS. Sysdig</h2>
+
+<p>I work at <a href="https://sysdig.com">Sysdig</a>, and while we use and support Falco, we’ve also built our enterprise product to have a much wider use case (see <a href="https://www.sysdig.com/cnapp">CNAPP</a> which includes CSPM, CIEM, vulnerability management, and more), and to be considerably more scalable than vanilla open source Falco. Sysdig does all the heavy lifting, rule distribution, etc., etc. And most importantly, in the context of threat detection, we write the rules for you as well.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="https://falco.org/blog/gitops-falco-rules/">Gitops Your Falco Rules</a></li>
+  <li><a href="https://github.com/falcosecurity/falcoctl">falcoctl</a></li>
+  <li><a href="https://falco.org/docs/getting-started/falco-linux-quickstart/">Try Falcoctl</a></li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[tl;dr: falcoctl is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.]]></summary></entry><entry><title type="html">The Numerous Pains of Programming: Death by a Thousand Cuts</title><link href="https://serverascode.com/2024/10/25/pain-of-programming.html" rel="alternate" type="text/html" title="The Numerous Pains of Programming: Death by a Thousand Cuts" /><published>2024-10-25T00:00:00-04:00</published><updated>2024-10-25T00:00:00-04:00</updated><id>https://serverascode.com/2024/10/25/pain-of-programming</id><content type="html" xml:base="https://serverascode.com/2024/10/25/pain-of-programming.html"><![CDATA[<p><img src="/img/posts/deathcuts.png" alt="/img/posts/deathcuts.png" /></p>
 
 <p>I recently started building a small Python application, comprising less than 1000 lines of code. However, it’s been a real challenge to get it to the point where it can be deployed and run in a production environment. I’ve done this before, but it’s always difficult, and each time I’m reminded of how much effort it is, in part because I always have to start anew.</p>
 
@@ -57,7 +491,7 @@
 
 <p>The above is all a tremendous amount of work, work that extends well beyond the few hundred or thousand lines of code you write for the core of a simple application. For a small application, it doesn’t seem worth it. There doesn’t seem to be much in the way of easy-to-use automation or other tools to help deal with it all–it’s just a big old mess of tasks that add up to a lot of work.</p>
 
-<h2 id="table-formatted">Table Formatted</h2>
+<h2 id="table-formatted-pain">Table Formatted Pain</h2>
 
 <p>Here’s a table view of the above list.</p>
 
@@ -1436,106 +1870,4 @@ Mon Dec 18 16:33:29 2023
 11.4.3-runtime-ubuntu20.04 (11.4.3/ubuntu20.04/runtime/Dockerfile)
 </code></pre>
 
-<p>Note that these will change over time, of course. But if Docker reports it can’t find the tag, it’s likely because the tag is wrong, or has changed.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’m working on running LocalAI. But I feel like running that out of Docker.]]></summary></entry><entry><title type="html">My Cyberpunk Weekend - Part 2: The Llama</title><link href="https://serverascode.com/2023/12/10/cyberpunk-weekend-2.html" rel="alternate" type="text/html" title="My Cyberpunk Weekend - Part 2: The Llama" /><published>2023-12-10T00:00:00-05:00</published><updated>2023-12-10T00:00:00-05:00</updated><id>https://serverascode.com/2023/12/10/cyberpunk-weekend-2</id><content type="html" xml:base="https://serverascode.com/2023/12/10/cyberpunk-weekend-2.html"><![CDATA[<p>Well, last week I picked up the 3090 GPU. This week I need to try to use it. That is not an easy feat because “drivers.”</p>
-
-<p>My good old workstation is on Ubuntu 20.04. I should probably upgrade. I should probably not use this machine for AI work. But, I am.</p>
-
-<p>Currently I’m using the nvidia-driver-470 that I’ve had for a while, as though it’s some sort of cherished antique that I’ll hand down to my children. I do remember it being a pain to get working, back when I only had one GPU.</p>
-
-<pre><code class="language-bash">$ dpkg --list | grep nvidia-driver
-ii  nvidia-driver-460                          470.223.02-0ubuntu0.20.04.1                   amd64        Transitional package for nvidia-driver-470
-ii  nvidia-driver-470                          470.223.02-0ubuntu0.20.04.1                   amd64        NVIDIA driver metapackage
-</code></pre>
-
-<p>But to use a llamafile I need the right CUDA toolkit and driver match up. At first I installed 12.3, but then realized that’s not the driver I have. Need to match those up.</p>
-
-<pre><code class="language-bash">$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
-building ggml-cuda with nvcc -arch=native...
-nvcc fatal   : Unsupported gpu architecture 'compute_30'
-/usr/local/cuda-12.3/bin/nvcc: returned nonzero exit status
-building nvidia compute capability detector...
-cudaGetDeviceCount() failed: CUDA driver version is insufficient for CUDA runtime version
-error: compute capability detector returned nonzero exit status
-</code></pre>
-
-<p>Driver:</p>
-
-<pre><code class="language-bash">$ nvidia-smi | grep CUDA
-| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
-</code></pre>
-
-<p>I didn’t want to break my workstation and thus for now wanted to stay on the 470 driver. So I installed the 11.4 CUDA toolkit.</p>
-
-<p>First I purged the 12.3 CUDA toolkit:</p>
-
-<pre><code class="language-bash">$ dpkg -l | grep -E "cuda|cublas|cufft|cufile|curand|cusolver|cusparse|gds-tools|npp|nvjpeg|nsight|nvvm"
-$ # review that list
-$ # now remove
-sudo apt-get --purge remove "*cuda*" "*cublas*" "*cufft*" "*cufile*" "*curand*" \
- "*cusolver*" "*cusparse*" "*gds-tools*" "*npp*" "*nvjpeg*" "nsight*" "*nvvm*"’’’
-</code></pre>
-
-<blockquote>
-  <p>NOTE: This requires setting up the NVIDIA repo! Not shown here.</p>
-</blockquote>
-
-<p>Then I installed the 11.4 CUDA toolkit:</p>
-
-<pre><code class="language-bash">$ sudo apt-get install cuda-toolkit-11-4
-</code></pre>
-
-<p>Added this to my path:</p>
-
-<pre><code class="language-bash">$ which nvcc
-/usr/local/cuda-11.4/bin/nvcc
-</code></pre>
-
-<p>Next I tried to run the llamafile again:</p>
-
-<pre><code class="language-bash">$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
-building ggml-cuda with nvcc -arch=native...
-nvcc fatal   : Value 'native' is not defined for option 'gpu-architecture'
-/usr/local/cuda-11.4/bin/nvcc: returned nonzero exit status
-building nvidia compute capability detector...
-building ggml-cuda with nvcc -arch=compute_86...
-NVIDIA cuBLAS GPU support successfully loaded
-ggml_init_cublas: GGML_CUDA_FORCE_MMQ:   no
-ggml_init_cublas: CUDA_USE_TENSOR_CORES: yes
-ggml_init_cublas: found 2 CUDA devices:
-  Device 0: NVIDIA GeForce RTX 3090, compute capability 8.6
-  Device 1: NVIDIA GeForce GTX 660 Ti, compute capability 3.0
-
-cuBLAS error 3 at /home/curtis/.llamafile/ggml-cuda.cu:6091
-current device: 1
-</code></pre>
-
-<p>But it was using the wrong card. I believe the error was due to using the old 660Ti and trying to compile for it using CUDA 11.4.</p>
-
-<p>Setting <code>CUDA_VISIBLE_DEVICES=0</code> fixed that:</p>
-
-<pre><code class="language-bash">$ env | grep CUDA
-CUDA_VISIBLE_DEVICES=0
-$ ./llava-v1.5-7b-q4-server.llamafile --n-gpu-layers 35
-NVIDIA cuBLAS GPU support successfully loaded
-ggml_init_cublas: GGML_CUDA_FORCE_MMQ:   no
-ggml_init_cublas: CUDA_USE_TENSOR_CORES: yes
-ggml_init_cublas: found 1 CUDA devices:
-  Device 0: NVIDIA GeForce RTX 3090, compute capability 8.6
-{"timestamp":1702258585,"level":"INFO","function":"main","line":2650,"message":"build info","build":1500,"commit":"a30b324"}
-{"timestamp":1702258585,"level":"INFO","function":"main","line":2653,"message":"system info","n_threads":6,"n_threads_batch":-1,"total_threads":12,"system_info":"AVX = 1 | AVX2 = 1 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 1 | NEON = 0 | ARM_FMA = 0 | F16C = 1 | FP16_VA = 0 | WASM_SIMD = 0 | BLAS = 0 | SSE3 = 1 | SSSE3 = 1 | VSX = 0 | "}
-Multi Modal Mode Enabledclip_model_load: model name:   openai/clip-vit-large-patch14-336
-clip_model_load: description:  image encoder for LLaVA
-clip_model_load: GGUF version: 3
-clip_model_load: alignment:    32
-clip_model_load: n_tensors:    377
-clip_model_load: n_kv:         19
-clip_model_load: ftype:        q4_0
-SNIP!
-</code></pre>
-
-<p>That’s about as far as I’m getting this weekend.</p>
-
-<p>Here’s a fun command to watch the GPU:</p>
-
-<pre><code class="language-bash">nvidia-smi --query-gpu=timestamp,name,pci.bus_id,driver_version,pstate,pcie.link.gen.max,pcie.link.gen.current,temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used --format=csv -l 5
-</code></pre>]]></content><author><name></name></author><summary type="html"><![CDATA[Well, last week I picked up the 3090 GPU. This week I need to try to use it. That is not an easy feat because “drivers.”]]></summary></entry></feed>
+<p>Note that these will change over time, of course. But if Docker reports it can’t find the tag, it’s likely because the tag is wrong, or has changed.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’m working on running LocalAI. But I feel like running that out of Docker.]]></summary></entry></feed>

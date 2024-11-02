@@ -229,3 +229,18 @@ body {
         padding: 0 10px;
     }
 }
+
+.back-to-top-wrapper {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: 100%;
+    max-width: calc(65ch + 2rem); /* Match prose width */
+    pointer-events: none; /* Let clicks pass through the wrapper */
+}
+
+.back-to-top-wrapper button {
+    pointer-events: auto; /* Re-enable clicks on the button */
+}

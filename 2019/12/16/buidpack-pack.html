@@ -50,7 +50,7 @@
             <div class="magazine-header">
                 <div class="issue-number-dropdown">
                     <button class="issue-number-top dropdown-toggle">
-                        ISSUE 254
+                        ISSUE 255
                         <span class="arrow-down"></span>
                     </button>
                     <div class="dropdown-menu">
@@ -162,6 +162,11 @@
             
         </p>
     </header>
+
+    <div id="toc" class="hidden mb-8 p-4 bg-gray-50 rounded-lg not-prose">
+        <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+        <nav id="toc-content"></nav>
+    </div>
 
     
 
@@ -323,7 +328,7 @@ spring-music        latest              0ea601302547        15 minutes ago      
             </footer>
 
             <div class="issue-number-large">
-                254
+                255
             </div>
         </div>
     </div>
@@ -373,6 +378,158 @@ spring-music        latest              0ea601302547        15 minutes ago      
         Prism.highlightAll();
         highlightInlineCode();
     });
+
+    // Table of Contents Generator
+    document.addEventListener('DOMContentLoaded', function() {
+        const article = document.querySelector('article.prose');
+        if (!article) return;
+
+        // Get all headers from the article content (h2-h4), excluding those in tables
+        const headers = Array.from(article.querySelectorAll('h2, h3, h4')).filter(header => {
+            // Exclude headers in tables, TOC itself, and any header containing "Table of Contents"
+            return !header.closest('table') && 
+                   !header.closest('.toc') && 
+                   header.textContent.trim() !== 'Table of Contents' &&
+                   !header.textContent.includes('Table of Contents');
+        });
+
+        // Only generate TOC if there are more than 3 headers
+        if (headers.length <= 3) return;
+
+        // Create and initialize TOC container
+        const tocContainer = createTOCContainer();
+        tocContainer.id = 'toc-container';
+        
+        // Generate TOC content
+        const { toc, sectionInfo } = generateTOCContent(headers);
+        
+        // Add TOC to container
+        tocContainer.appendChild(toc);
+        
+        // Insert TOC in the appropriate location
+        insertTOC(article, tocContainer);
+
+        // Create floating button container
+        const floatingContainer = document.createElement('div');
+        floatingContainer.className = 'floating-container prose mx-auto text-center mt-8 mb-4';
+        floatingContainer.style.cssText = `
+            width: 100%;
+            max-width: 65ch;
+        `;
+
+        // Create the button
+        const backButton = document.createElement('button');
+        backButton.textContent = '↑ Back to Contents';
+        backButton.className = 'bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200';
+        backButton.style.cssText = `
+            font-size: 0.875rem;
+        `;
+
+        floatingContainer.appendChild(backButton);
+        article.appendChild(floatingContainer);
+
+        // Scroll back to TOC when clicked
+        backButton.addEventListener('click', () => {
+            tocContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enable smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    function createTOCContainer() {
+        const container = document.createElement('div');
+        container.className = 'toc mb-8 p-4 bg-gray-50 rounded-lg not-prose';
+        container.innerHTML = '<h2 class="toc-title text-lg font-semibold mb-2">Table of Contents</h2>';
+        return container;
+    }
+
+    function generateTOCContent(headers) {
+        const toc = document.createElement('ul');
+        toc.className = 'space-y-2';
+        
+        let sectionCount = 1;
+        let subsectionCount = 1;
+        let lastLevel = 2; // Start with h2 level
+
+        headers.forEach((header, index) => {
+            // Ensure header has an ID
+            if (!header.id) {
+                header.id = `section-${index}`;
+            }
+
+            const level = parseInt(header.tagName.charAt(1));
+            const { sectionNumber, newSectionCount, newSubsectionCount, newLastLevel } = 
+                generateSectionNumber(level, sectionCount, subsectionCount, lastLevel);
+
+            // Update counters
+            sectionCount = newSectionCount;
+            subsectionCount = newSubsectionCount;
+            lastLevel = newLastLevel;
+
+            // Create TOC item
+            const item = createTOCItem(header, level, sectionNumber);
+            toc.appendChild(item);
+
+            // Update header in content
+            header.prepend(document.createTextNode(sectionNumber));
+        });
+
+        return { 
+            toc,
+            sectionInfo: { sectionCount, subsectionCount, lastLevel }
+        };
+    }
+
+    function generateSectionNumber(level, sectionCount, subsectionCount, lastLevel) {
+        let sectionNumber = '';
+        let newSectionCount = sectionCount;
+        let newSubsectionCount = subsectionCount;
+        let newLastLevel = lastLevel;
+
+        if (level === 2) {
+            sectionNumber = `${sectionCount}. `;
+            newSubsectionCount = 1;
+            newSectionCount++;
+            newLastLevel = 2;
+        } else if (level === 3) {
+            sectionNumber = `${sectionCount - 1}.${subsectionCount}. `;
+            newSubsectionCount++;
+            newLastLevel = 3;
+        }
+
+        return {
+            sectionNumber,
+            newSectionCount,
+            newSubsectionCount,
+            newLastLevel
+        };
+    }
+
+    function createTOCItem(header, level, sectionNumber) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${header.id}`;
+        link.textContent = sectionNumber + header.textContent;
+        link.className = 'text-gray-700 hover:text-gray-900 hover:underline block';
+
+        // Add indentation based on header level
+        const indent = level - 2;
+        item.style.paddingLeft = `${indent * 1}rem`;
+        item.appendChild(link);
+
+        return item;
+    }
+
+    function insertTOC(article, tocContainer) {
+        const header = article.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(tocContainer, header.nextSibling);
+        } else {
+            article.insertBefore(tocContainer, article.firstChild);
+        }
+    }
 </script>
 <script>
     const backgrounds = [
@@ -385,81 +542,81 @@ spring-music        latest              0ea601302547        15 minutes ago      
     document.body.style.backgroundRepeat = 'repeat';
 </script>
 <script>
- document.addEventListener('DOMContentLoaded', (event) => {
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
 
-    if (!dropdownToggle || !dropdownMenu) {
-        console.error('Dropdown elements not found');
-        return;
-    }
-
-    dropdownToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-    });
-
-    // Close the dropdown if the user clicks outside of it
-    window.addEventListener('click', function(event) {
-        if (!event.target.matches('.dropdown-toggle')) {
-            if (dropdownMenu.classList.contains('show')) {
-                dropdownMenu.classList.remove('show');
-            }
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
         }
-    });
 
-    // Handle all links in the dropdown menu
-    document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            dropdownMenu.classList.remove('show');
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
 
-            const href = this.getAttribute('href');
-            
-            // Check if it's an external link or the feed.xml
-            if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
-                window.open(href, '_blank');
-                return;
-            }
-
-            // Check if it's the home or archive link
-            if (href === '/' || href === '/archive.html') {
-                window.location.href = href;
-                return;
-            }
-
-            const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
-            
-            if (isHomePage && href.includes('#')) {
-                // If on home page and it's a section link, smooth scroll
-                const targetId = href.split('#')[1];
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
                 }
-            } else {
-                // If on another page or it's not a section link, navigate to the page
-                window.location.href = href;
             }
         });
-    });
-});
 
-// Function to scroll to section after page load
-function scrollToSection() {
-    const hash = window.location.hash;
-    if (hash) {
-        const targetElement = document.querySelector(hash);
-        if (targetElement) {
-            setTimeout(() => {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link or the feed.xml
+                if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                    window.open(href, '_blank');
+                    return;
+                }
+
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.quefrySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
         }
     }
-}
 
-// Call scrollToSection after page load
-window.addEventListener('load', scrollToSection);
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
 </script>
 
 </body>
