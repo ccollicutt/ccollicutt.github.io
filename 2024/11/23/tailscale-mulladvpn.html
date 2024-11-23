@@ -213,7 +213,7 @@
 
 <p>Prior to realizing that Tailscale could use Mullvad as an exit node, I had coincidentally been using Mullvad as my VPN for a month or so, wanting to try something new after my PIA subscription expired. It’s a bit more expensive, but the model is interesting in that you don’t have a subscription really, instead you pay $5 USD per month and you don’t have a username or password, only an account ID.</p>
 
-<p>One thing to note is that Mullad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.</p>
+<p>One thing to note is that Mullvad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.</p>
 
 <p>Overall, a fascinating service that I need to learn more about.</p>
 
@@ -236,6 +236,23 @@
 <p>Once you enable Mullvad in Tailscale, you can select it as an exit node on your Tailscale devices. That’s it. No need to configure Tailscale, then configure Mullvad, then troubleshoot the inevitable configuration issues.</p>
 
 <h2 id="using-mullvad-as-an-exit-node-">Using Mullvad as an Exit Node 🔄</h2>
+
+<p>If you want to see all the exit nodes:</p>
+
+<pre><code class="language-bash">$ tailscale exit-node list
+
+ IP                  HOSTNAME                         COUNTRY            CITY                   STATUS       
+ 100.91.198.95       al-tia-wg-001.mullvad.ts.net     Albania            Tirana                 -            
+ 100.65.216.68       au-adl-wg-301.mullvad.ts.net     Australia          Any                    -            
+ 100.65.216.68       au-adl-wg-301.mullvad.ts.net     Australia          Adelaide               -            
+ 100.70.240.117      au-bne-wg-301.mullvad.ts.net     Australia          Brisbane               -            
+ 100.117.126.96      au-mel-wg-301.mullvad.ts.net     Australia          Melbourne              -            
+ 100.88.22.25        au-per-wg-301.mullvad.ts.net     Australia          Perth                  -            
+ 100.100.169.122     au-syd-wg-001.mullvad.ts.net     Australia          Sydney                 -            
+ 100.79.65.118       at-vie-wg-001.mullvad.ts.net     Austria            Vienna                 -            
+ 100.120.7.76        be-bru-wg-101.mullvad.ts.net     Belgium            Brussels               -            
+SNIP!
+</code></pre>
 
 <p>I use the <code>just</code> command runner to setup some easy commands to enable/disable Mullvad as an exit node.</p>
 

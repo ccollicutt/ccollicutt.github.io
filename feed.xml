@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-23T12:10:28-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Tailscale, Mullvad, and More</title><link href="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html" rel="alternate" type="text/html" title="Tailscale, Mullvad, and More" /><published>2024-11-23T00:00:00-05:00</published><updated>2024-11-23T00:00:00-05:00</updated><id>https://serverascode.com/2024/11/23/tailscale-mulladvpn</id><content type="html" xml:base="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-23T12:24:49-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Tailscale, Mullvad, and More</title><link href="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html" rel="alternate" type="text/html" title="Tailscale, Mullvad, and More" /><published>2024-11-23T00:00:00-05:00</published><updated>2024-11-23T00:00:00-05:00</updated><id>https://serverascode.com/2024/11/23/tailscale-mulladvpn</id><content type="html" xml:base="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/tailscale-mullvad-200w.png" alt="Tailscale Mullvad" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>tldr; Tailscale allows you to create your own private, secure networks, like the LANs of yesteryear, and now they can have "exit nodes" that are Mullvad VPN servers.</em></p>
 </div>
@@ -37,7 +37,7 @@
 
 <p>Prior to realizing that Tailscale could use Mullvad as an exit node, I had coincidentally been using Mullvad as my VPN for a month or so, wanting to try something new after my PIA subscription expired. It’s a bit more expensive, but the model is interesting in that you don’t have a subscription really, instead you pay $5 USD per month and you don’t have a username or password, only an account ID.</p>
 
-<p>One thing to note is that Mullad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.</p>
+<p>One thing to note is that Mullvad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.</p>
 
 <p>Overall, a fascinating service that I need to learn more about.</p>
 
@@ -60,6 +60,23 @@
 <p>Once you enable Mullvad in Tailscale, you can select it as an exit node on your Tailscale devices. That’s it. No need to configure Tailscale, then configure Mullvad, then troubleshoot the inevitable configuration issues.</p>
 
 <h2 id="using-mullvad-as-an-exit-node-">Using Mullvad as an Exit Node 🔄</h2>
+
+<p>If you want to see all the exit nodes:</p>
+
+<pre><code class="language-bash">$ tailscale exit-node list
+
+ IP                  HOSTNAME                         COUNTRY            CITY                   STATUS       
+ 100.91.198.95       al-tia-wg-001.mullvad.ts.net     Albania            Tirana                 -            
+ 100.65.216.68       au-adl-wg-301.mullvad.ts.net     Australia          Any                    -            
+ 100.65.216.68       au-adl-wg-301.mullvad.ts.net     Australia          Adelaide               -            
+ 100.70.240.117      au-bne-wg-301.mullvad.ts.net     Australia          Brisbane               -            
+ 100.117.126.96      au-mel-wg-301.mullvad.ts.net     Australia          Melbourne              -            
+ 100.88.22.25        au-per-wg-301.mullvad.ts.net     Australia          Perth                  -            
+ 100.100.169.122     au-syd-wg-001.mullvad.ts.net     Australia          Sydney                 -            
+ 100.79.65.118       at-vie-wg-001.mullvad.ts.net     Austria            Vienna                 -            
+ 100.120.7.76        be-bru-wg-101.mullvad.ts.net     Belgium            Brussels               -            
+SNIP!
+</code></pre>
 
 <p>I use the <code>just</code> command runner to setup some easy commands to enable/disable Mullvad as an exit node.</p>
 
