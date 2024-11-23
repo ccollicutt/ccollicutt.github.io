@@ -1,4 +1,103 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-02T08:48:49-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">falcoctl</title><link href="https://serverascode.com/2024/11/01/falcoctl.html" rel="alternate" type="text/html" title="falcoctl" /><published>2024-11-01T00:00:00-04:00</published><updated>2024-11-01T00:00:00-04:00</updated><id>https://serverascode.com/2024/11/01/falcoctl</id><content type="html" xml:base="https://serverascode.com/2024/11/01/falcoctl.html"><![CDATA[<p><em>tl;dr: <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a> is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.</em></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-11-23T12:10:28-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Tailscale, Mullvad, and More</title><link href="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html" rel="alternate" type="text/html" title="Tailscale, Mullvad, and More" /><published>2024-11-23T00:00:00-05:00</published><updated>2024-11-23T00:00:00-05:00</updated><id>https://serverascode.com/2024/11/23/tailscale-mulladvpn</id><content type="html" xml:base="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/tailscale-mullvad-200w.png" alt="Tailscale Mullvad" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>tldr; Tailscale allows you to create your own private, secure networks, like the LANs of yesteryear, and now they can have "exit nodes" that are Mullvad VPN servers.</em></p>
+</div>
+
+<hr />
+
+<p>I’ve been a Tailscale user for a while now, though my use waned as I struggled to deal with using a VPN as an exit node. For real, that was my problem. I really struggled with the exit nodes and VPNs. For a while I had a tailscale exit node, as simple Linux VM running in Digital Ocean, which is still an option because Tailscale can use any server as an exit node, but it was a pain to setup and manage and update…and, and, and…</p>
+
+<p>Now Tailscale has a feature where you can use Mullvad VPN endpoints as exit nodes. This is got me right back into using Tailscale full time on all of my devices.</p>
+
+<p>Check out the feature page here: <a href="https://tailscale.com/mullvad">https://tailscale.com/mullvad</a></p>
+
+<blockquote>
+  <p>NOTE: I have no affiliation with Tailscale or Mullvad. I’m a big fan of Tailscale because it is a CANADIAN 🇨🇦 company!</p>
+</blockquote>
+
+<h2 id="tailscale-">Tailscale 🌐</h2>
+
+<p>As mentioned, Tailscale is a Canadian company that makes a VPN service that is very easy to use. But what is a VPN? Why have one at all? What are VPNs really good for? Do they work? There are still a lot of questions out there as to what a “virtual private network” really is. Is it just something we login to at work in most enterprises?</p>
+
+<blockquote>
+  <p>Tailscale makes creating software-defined networks easy: securely connecting users, services, and devices. - <a href="https://tailscale.com">https://tailscale.com</a></p>
+</blockquote>
+
+<p>Here’s the CEO talking about the VPN/Internet problem in the Tailscale blog:</p>
+
+<blockquote>
+  <p>We looked at a lot of options, and talked to a lot of people, and there was an underlying cause for all the problems. The Internet. Things used to be simple. Remember the LAN? But then we connected our LANs to the Internet, and there’s been more and more firewalls and attackers everywhere, and things have slowly been degrading ever since. - <a href="https://tailscale.com/blog/new-internet">https://tailscale.com/blog/new-internet</a></p>
+</blockquote>
+
+<p>I don’t want to get into the philosophical discussion here, but I think Tailscale is on to something, I’m just not exactly sure what it is…possibly something like how social networks may be changing into group chats. But that is for another blog post.</p>
+
+<h2 id="mullvad-">Mullvad 🦊</h2>
+
+<p>I have used PIA, Private Internet Access, for a long time. It’s a great VPN service. Mullvad is similar, but with a few key differences in that they are heavily privacy focused and have a unique way of “logging in”.</p>
+
+<p>Prior to realizing that Tailscale could use Mullvad as an exit node, I had coincidentally been using Mullvad as my VPN for a month or so, wanting to try something new after my PIA subscription expired. It’s a bit more expensive, but the model is interesting in that you don’t have a subscription really, instead you pay $5 USD per month and you don’t have a username or password, only an account ID.</p>
+
+<p>One thing to note is that Mullad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.</p>
+
+<p>Overall, a fascinating service that I need to learn more about.</p>
+
+<h2 id="tailscale-and-mullvad-together-">Tailscale and Mullvad Together 🤝</h2>
+
+<p>Basically you enable Mullvad in Tailscale, it costs $5 USD per month for up to 5 devices. This 5 devices model is really useful, because that’s about what I have in terms of the number of devices that should be on Tailscale. Phones. Workstations. Laptops. Entertainment devices. Servers. Five devices is a good number for me, but if you need more, you just pay more.</p>
+
+<p>First, enable Mullvad in Tailscale. Go to “Settings” and you can find it there.</p>
+
+<p><img src="/img/tailscale-mullvad1.png" alt="Tailscale Mullvad" /></p>
+
+<p>After adding devices you should see something like the below.</p>
+
+<blockquote>
+  <p>NOTE: I’ve removed my devices from the list of course.</p>
+</blockquote>
+
+<p><img src="/img/tailscale-mullvad2.png" alt="Tailscale Mullvad" /></p>
+
+<p>Once you enable Mullvad in Tailscale, you can select it as an exit node on your Tailscale devices. That’s it. No need to configure Tailscale, then configure Mullvad, then troubleshoot the inevitable configuration issues.</p>
+
+<h2 id="using-mullvad-as-an-exit-node-">Using Mullvad as an Exit Node 🔄</h2>
+
+<p>I use the <code>just</code> command runner to setup some easy commands to enable/disable Mullvad as an exit node.</p>
+
+<pre><code class="language-bash">tailscale-use-vpn:
+	sudo tailscale set \
+		--exit-node-allow-lan-access \
+		--exit-node=${MULLVAD_EXIT_NODE}
+
+tailscale-no-vpn:
+	# blank exit node
+	sudo tailscale set --exit-node=
+</code></pre>
+
+<p>So if I need to I can turn off the VPN, for example Reddit blocks VPNs, not that I use Reddit, but it certainly comes up in Google searches.</p>
+
+<h2 id="tailscale-access-control-list-">Tailscale Access Control List 🔒</h2>
+
+<p>While Tailscale does talk about being easy to use, it also has complex looking <a href="https://tailscale.com/kb/1018/acls">ACLs</a>. I hadn’t used the ACLs previously, but now with more devices on Tailscale, I wanted to control what could access what, specifically I wanted a couple of devices only to be able to use the exit nodes, not access any other devices on the tailnet.</p>
+
+<p>I struggled a bit with the ACLs, as any kind of RBAC is challenging to get right, but I had three main realizations that allowed me to get the right setup.</p>
+
+<p>1. The only action is “accept”…this rattled my cage for a bit, as I was expecting deny or some other keywords.</p>
+
+<blockquote>
+  <p>Tailscale access rules deny access by default. As a result, the only possible action is accept. accept allows traffic from the source (src) to the destination (dst). - <a href="https://tailscale.com/kb/1337/acl-syntax">docs</a></p>
+</blockquote>
+
+<p>2. Users: You can control based on what user the device is logged in as on the tailnet. I didn’t realize this initially and was just trying to configure by device. And then realizing my mistake, it was much easier, as my main devices are logged in as me, and the other Internet/VPN only devices have their own users that were invited to the tailnet. Duh!</p>
+
+<p>3. Groups: There is an “autogroup” for accessing the Internet which means you can set users to only have access to the Internet, and not any other devices on the tailnet. Perfect!</p>
+
+<p><img src="/img/tailscale-mullvad3.png" alt="Tailscale ACLs" /></p>
+
+<p>In the end my ACLs were maybe 10 lines of text, but it took a while to get there.</p>
+
+<h2 id="conclusion-">Conclusion 🎯</h2>
+
+<p>I’m really happy to be back to using Tailscale full time. We all really need to have better operational security for our Internet, phones, and application use…which I may be violating by even mentioning my use of Tailscale and Mullvad. But I think it’s a good thing to be talking about, and I hope to see more people using better tools to secure their Internet access.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[tldr; Tailscale allows you to create your own private, secure networks, like the LANs of yesteryear, and now they can have "exit nodes" that are Mullvad VPN servers.]]></summary></entry><entry><title type="html">falcoctl: Installation and Management of Falco Artifacts</title><link href="https://serverascode.com/2024/11/01/falcoctl.html" rel="alternate" type="text/html" title="falcoctl: Installation and Management of Falco Artifacts" /><published>2024-11-01T00:00:00-04:00</published><updated>2024-11-01T00:00:00-04:00</updated><id>https://serverascode.com/2024/11/01/falcoctl</id><content type="html" xml:base="https://serverascode.com/2024/11/01/falcoctl.html"><![CDATA[<p><em>tl;dr: <a href="https://github.com/falcosecurity/falcoctl">falcoctl</a> is an attempt to make it easier to distribute and upgrade Falco artifacts, such as rules and plugins.</em></p>
 
 <h2 id="what-is-falco">What is Falco?</h2>
 
@@ -1753,121 +1852,4 @@ Intersection Polygon:
 
 <p>This was a very quick test. I only spent a handful of minutes on it.</p>
 
-<p>Llama 3:8B. It’s fast. It can run locally. It’s pretty “smart”, although it would take a bit of manual configuration to get the code it output to work; I didn’t give it much of a chance to get things right. Overall, I’m impressed with this little LLM–its compressed a lot of information.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[First, we start up ollama.]]></summary></entry><entry><title type="html">My Cyberpunk Weekend - Part 3: Using Docker and GPUs</title><link href="https://serverascode.com/2023/12/18/cyberpunk-weekend-3.html" rel="alternate" type="text/html" title="My Cyberpunk Weekend - Part 3: Using Docker and GPUs" /><published>2023-12-18T00:00:00-05:00</published><updated>2023-12-18T00:00:00-05:00</updated><id>https://serverascode.com/2023/12/18/cyberpunk-weekend-3</id><content type="html" xml:base="https://serverascode.com/2023/12/18/cyberpunk-weekend-3.html"><![CDATA[<p>I’m working on running LocalAI. But I feel like running that out of Docker.</p>
-
-<p>So how to use a GPU with Docker (on Linux).</p>
-
-<p>First, need the <code>nvidia-docker2</code> driver. Otherwise you get an error like this:</p>
-
-<pre><code>docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]].
-</code></pre>
-
-<p>So install that.</p>
-
-<pre><code>sudo apt install nvidia-docker2
-</code></pre>
-
-<p>I had a fun thing to fix in that I had added some things to the “daemon.json” so had to fix that.</p>
-
-<pre><code>$ sudo dpkg --configure -a
-Setting up nvidia-docker2 (2.13.0-1) ...
-
-Configuration file '/etc/docker/daemon.json'
- ==&gt; File on system created by you or by a script.
- ==&gt; File also in package provided by package maintainer.
-   What would you like to do about it ?  Your options are:
-    Y or I  : install the package maintainer's version
-    N or O  : keep your currently-installed version
-      D     : show the differences between the versions
-      Z     : start a shell to examine the situation
- The default action is to keep your current version.
-*** daemon.json (Y/I/N/O/D/Z) [default=N] ? D
---- /etc/docker/daemon.json     2023-04-10 15:23:11.735382489 -0400
-+++ /etc/docker/daemon.json.dpkg-new    2023-03-31 09:10:49.000000000 -0400
-@@ -1,4 +1,8 @@
- {
--  "registry-mirrors": ["http://10.8.24.123"],
--  "insecure-registries": ["https://some.registry"]
-+    "runtimes": {
-+        "nvidia": {
-+            "path": "nvidia-container-runtime",
-+            "runtimeArgs": []
-+        }
-+    }
- }
-</code></pre>
-
-<p>Next, I have two NVIDIA GPUS, one old one and one newer, better one, the 3090, which is what I want to be using for LLMs.</p>
-
-<p>So, locally I have two, as shown below.</p>
-
-<pre><code>$ nvidia-smi 
-Mon Dec 18 11:35:39 2023       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-|   0  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |                  N/A |
-|  0%   32C    P8    12W / 350W |     10MiB / 24268MiB |      0%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-|   1  NVIDIA GeForce ...  Off  | 00000000:07:00.0 N/A |                  N/A |
-| 44%   71C    P0    N/A /  N/A |   2574MiB /  3015MiB |     N/A      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|    0   N/A  N/A      1445      G   /usr/lib/xorg/Xorg                  4MiB |
-|    0   N/A  N/A      3231      G   /usr/lib/xorg/Xorg                  4MiB |
-+-----------------------------------------------------------------------------+
-</code></pre>
-
-<p>But we can specify to use “device=0” only in the container, so we should only see one GPU.</p>
-
-<pre><code>$ docker run -it --gpus "device=0" nvidia/cuda:11.4.3-base-ubuntu20.04 nvidia-smi
-Mon Dec 18 16:33:29 2023       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.223.02   Driver Version: 470.223.02   CUDA Version: 11.4     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-|   0  NVIDIA GeForce ...  Off  | 00000000:06:00.0 Off |                  N/A |
-|  0%   32C    P8    10W / 350W |     10MiB / 24268MiB |      0%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-+-----------------------------------------------------------------------------+
-</code></pre>
-
-<p>BOOM!</p>
-
-<p>One of the hard parts is figuring out what tag to use on the NVIDIA image. They are all listed here:</p>
-
-<ul>
-  <li><a href="https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/supported-tags.md">https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/supported-tags.md</a></li>
-</ul>
-
-<p>Examples:</p>
-
-<pre><code>11.4.3-base-ubuntu20.04 (11.4.3/ubuntu20.04/base/Dockerfile)
-11.4.3-cudnn8-devel-ubuntu20.04 (11.4.3/ubuntu20.04/devel/cudnn8/Dockerfile)
-11.4.3-cudnn8-runtime-ubuntu20.04 (11.4.3/ubuntu20.04/runtime/cudnn8/Dockerfile)
-11.4.3-devel-ubuntu20.04 (11.4.3/ubuntu20.04/devel/Dockerfile)
-11.4.3-runtime-ubuntu20.04 (11.4.3/ubuntu20.04/runtime/Dockerfile)
-</code></pre>
-
-<p>Note that these will change over time, of course. But if Docker reports it can’t find the tag, it’s likely because the tag is wrong, or has changed.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’m working on running LocalAI. But I feel like running that out of Docker.]]></summary></entry></feed>
+<p>Llama 3:8B. It’s fast. It can run locally. It’s pretty “smart”, although it would take a bit of manual configuration to get the code it output to work; I didn’t give it much of a chance to get things right. Overall, I’m impressed with this little LLM–its compressed a lot of information.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[First, we start up ollama.]]></summary></entry></feed>

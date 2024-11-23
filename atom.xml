@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-11-02T08:48:49-04:00</updated>
+ <updated>2024-11-23T12:10:28-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -13,7 +13,115 @@
 
  
  <entry>
-   <title>falcoctl</title>
+   <title>Tailscale, Mullvad, and More</title>
+   <link href="http://serverascode.com//2024/11/23/tailscale-mulladvpn.html"/>
+   <updated>2024-11-23T00:00:00-05:00</updated>
+   <id>http://serverascode.com/2024/11/23/tailscale-mulladvpn</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/tailscale-mullvad-200w.png&quot; alt=&quot;Tailscale Mullvad&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;tldr; Tailscale allows you to create your own private, secure networks, like the LANs of yesteryear, and now they can have &quot;exit nodes&quot; that are Mullvad VPN servers.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;I’ve been a Tailscale user for a while now, though my use waned as I struggled to deal with using a VPN as an exit node. For real, that was my problem. I really struggled with the exit nodes and VPNs. For a while I had a tailscale exit node, as simple Linux VM running in Digital Ocean, which is still an option because Tailscale can use any server as an exit node, but it was a pain to setup and manage and update…and, and, and…&lt;/p&gt;
+
+&lt;p&gt;Now Tailscale has a feature where you can use Mullvad VPN endpoints as exit nodes. This is got me right back into using Tailscale full time on all of my devices.&lt;/p&gt;
+
+&lt;p&gt;Check out the feature page here: &lt;a href=&quot;https://tailscale.com/mullvad&quot;&gt;https://tailscale.com/mullvad&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: I have no affiliation with Tailscale or Mullvad. I’m a big fan of Tailscale because it is a CANADIAN 🇨🇦 company!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;tailscale-&quot;&gt;Tailscale 🌐&lt;/h2&gt;
+
+&lt;p&gt;As mentioned, Tailscale is a Canadian company that makes a VPN service that is very easy to use. But what is a VPN? Why have one at all? What are VPNs really good for? Do they work? There are still a lot of questions out there as to what a “virtual private network” really is. Is it just something we login to at work in most enterprises?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tailscale makes creating software-defined networks easy: securely connecting users, services, and devices. - &lt;a href=&quot;https://tailscale.com&quot;&gt;https://tailscale.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here’s the CEO talking about the VPN/Internet problem in the Tailscale blog:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We looked at a lot of options, and talked to a lot of people, and there was an underlying cause for all the problems. The Internet. Things used to be simple. Remember the LAN? But then we connected our LANs to the Internet, and there’s been more and more firewalls and attackers everywhere, and things have slowly been degrading ever since. - &lt;a href=&quot;https://tailscale.com/blog/new-internet&quot;&gt;https://tailscale.com/blog/new-internet&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I don’t want to get into the philosophical discussion here, but I think Tailscale is on to something, I’m just not exactly sure what it is…possibly something like how social networks may be changing into group chats. But that is for another blog post.&lt;/p&gt;
+
+&lt;h2 id=&quot;mullvad-&quot;&gt;Mullvad 🦊&lt;/h2&gt;
+
+&lt;p&gt;I have used PIA, Private Internet Access, for a long time. It’s a great VPN service. Mullvad is similar, but with a few key differences in that they are heavily privacy focused and have a unique way of “logging in”.&lt;/p&gt;
+
+&lt;p&gt;Prior to realizing that Tailscale could use Mullvad as an exit node, I had coincidentally been using Mullvad as my VPN for a month or so, wanting to try something new after my PIA subscription expired. It’s a bit more expensive, but the model is interesting in that you don’t have a subscription really, instead you pay $5 USD per month and you don’t have a username or password, only an account ID.&lt;/p&gt;
+
+&lt;p&gt;One thing to note is that Mullad just doesn’t have the same wide Internet pipes as PIA does, though they do have servers in Canada. However, I don’t see that much of a difference in speed, though it is there. So that is something to consider if you are a heavy downloader.&lt;/p&gt;
+
+&lt;p&gt;Overall, a fascinating service that I need to learn more about.&lt;/p&gt;
+
+&lt;h2 id=&quot;tailscale-and-mullvad-together-&quot;&gt;Tailscale and Mullvad Together 🤝&lt;/h2&gt;
+
+&lt;p&gt;Basically you enable Mullvad in Tailscale, it costs $5 USD per month for up to 5 devices. This 5 devices model is really useful, because that’s about what I have in terms of the number of devices that should be on Tailscale. Phones. Workstations. Laptops. Entertainment devices. Servers. Five devices is a good number for me, but if you need more, you just pay more.&lt;/p&gt;
+
+&lt;p&gt;First, enable Mullvad in Tailscale. Go to “Settings” and you can find it there.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-mullvad1.png&quot; alt=&quot;Tailscale Mullvad&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After adding devices you should see something like the below.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;NOTE: I’ve removed my devices from the list of course.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-mullvad2.png&quot; alt=&quot;Tailscale Mullvad&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you enable Mullvad in Tailscale, you can select it as an exit node on your Tailscale devices. That’s it. No need to configure Tailscale, then configure Mullvad, then troubleshoot the inevitable configuration issues.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-mullvad-as-an-exit-node-&quot;&gt;Using Mullvad as an Exit Node 🔄&lt;/h2&gt;
+
+&lt;p&gt;I use the &lt;code&gt;just&lt;/code&gt; command runner to setup some easy commands to enable/disable Mullvad as an exit node.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;tailscale-use-vpn:
+	sudo tailscale set \
+		--exit-node-allow-lan-access \
+		--exit-node=${MULLVAD_EXIT_NODE}
+
+tailscale-no-vpn:
+	# blank exit node
+	sudo tailscale set --exit-node=
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if I need to I can turn off the VPN, for example Reddit blocks VPNs, not that I use Reddit, but it certainly comes up in Google searches.&lt;/p&gt;
+
+&lt;h2 id=&quot;tailscale-access-control-list-&quot;&gt;Tailscale Access Control List 🔒&lt;/h2&gt;
+
+&lt;p&gt;While Tailscale does talk about being easy to use, it also has complex looking &lt;a href=&quot;https://tailscale.com/kb/1018/acls&quot;&gt;ACLs&lt;/a&gt;. I hadn’t used the ACLs previously, but now with more devices on Tailscale, I wanted to control what could access what, specifically I wanted a couple of devices only to be able to use the exit nodes, not access any other devices on the tailnet.&lt;/p&gt;
+
+&lt;p&gt;I struggled a bit with the ACLs, as any kind of RBAC is challenging to get right, but I had three main realizations that allowed me to get the right setup.&lt;/p&gt;
+
+&lt;p&gt;1. The only action is “accept”…this rattled my cage for a bit, as I was expecting deny or some other keywords.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tailscale access rules deny access by default. As a result, the only possible action is accept. accept allows traffic from the source (src) to the destination (dst). - &lt;a href=&quot;https://tailscale.com/kb/1337/acl-syntax&quot;&gt;docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2. Users: You can control based on what user the device is logged in as on the tailnet. I didn’t realize this initially and was just trying to configure by device. And then realizing my mistake, it was much easier, as my main devices are logged in as me, and the other Internet/VPN only devices have their own users that were invited to the tailnet. Duh!&lt;/p&gt;
+
+&lt;p&gt;3. Groups: There is an “autogroup” for accessing the Internet which means you can set users to only have access to the Internet, and not any other devices on the tailnet. Perfect!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-mullvad3.png&quot; alt=&quot;Tailscale ACLs&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the end my ACLs were maybe 10 lines of text, but it took a while to get there.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion-&quot;&gt;Conclusion 🎯&lt;/h2&gt;
+
+&lt;p&gt;I’m really happy to be back to using Tailscale full time. We all really need to have better operational security for our Internet, phones, and application use…which I may be violating by even mentioning my use of Tailscale and Mullvad. But I think it’s a good thing to be talking about, and I hope to see more people using better tools to secure their Internet access.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>falcoctl: Installation and Management of Falco Artifacts</title>
    <link href="http://serverascode.com//2024/11/01/falcoctl.html"/>
    <updated>2024-11-01T00:00:00-04:00</updated>
    <id>http://serverascode.com/2024/11/01/falcoctl</id>
