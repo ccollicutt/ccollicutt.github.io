@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-12-21T12:13:14-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Python Program Distribution and Installation Methods</title><link href="https://serverascode.com/2024/12/21/python-installation-methods.html" rel="alternate" type="text/html" title="Python Program Distribution and Installation Methods" /><published>2024-12-21T00:00:00-05:00</published><updated>2024-12-21T00:00:00-05:00</updated><id>https://serverascode.com/2024/12/21/python-installation-methods</id><content type="html" xml:base="https://serverascode.com/2024/12/21/python-installation-methods.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2024-12-21T12:31:51-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Python Program Distribution and Installation Methods</title><link href="https://serverascode.com/2024/12/21/python-installation-methods.html" rel="alternate" type="text/html" title="Python Program Distribution and Installation Methods" /><published>2024-12-21T00:00:00-05:00</published><updated>2024-12-21T00:00:00-05:00</updated><id>https://serverascode.com/2024/12/21/python-installation-methods</id><content type="html" xml:base="https://serverascode.com/2024/12/21/python-installation-methods.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/python-install-distribute-200w.png" alt="Tailscale Mullvad" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>🐍 tldr; There are many methods to distribute and install Python programs. Here are some of the ways I've tinkered with recently. Recommendation: in most cases, use pipx. 🔧</em></p>
 </div>
@@ -17,8 +17,8 @@
 
 <ol>
   <li>You don’t have a single binary….instead you have an entrypoint into a bunch of Python code and dependencies</li>
-  <li>You don’t have a single Python version embedded…you have to deal with a bunch of different system versions</li>
-  <li>You typically have a lot of dependencies</li>
+  <li>You don’t have a single Python version embedded…you have to deal with all kinds of different system versions</li>
+  <li>You typically have a lot of dependencies, Python has a lot of great libraries to take advantage of</li>
   <li>Some dependencies need to be compiled, netifaces as an example, so sometimes you might need a massive toolchain to build them, which makes the user experience a bit more complex (though Python Wheels help with this)</li>
 </ol>
 
@@ -50,7 +50,7 @@
 
 <p>I tinkered with AppImage for a while, but ended up just using PyInstaller. AppImage can package anything, whereas something like PyInstaller is more specific to Python applications. I think this is what tripped me up.</p>
 
-<p>I’ll come back to AppImage later as I think it’s a great idea, and I find applications I use that are distributed as AppImages–just download, mark as executable and run, all in one package.</p>
+<p>I’ll come back to AppImage later as I think it’s a great idea, and I have applications I use which are distributed as AppImages–just download, mark as executable and run, all in one file.</p>
 
 <h3 id="pyinstaller">PyInstaller</h3>
 
@@ -207,7 +207,7 @@ ubuntu@coolprog-test:~$ which coolprog
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Distributing Python applications isn’t easy. You are installing something into someone’s computer, or server, and you have to make sure it works, and that it isn’t going to break their system, and that it is as easy as possible to install. But that is more difficult than it sounds.</p>
+<p>Distributing Python applications isn’t easy. You are installing something into someone’s computer, or server, and you have to make sure it works, that it isn’t going to break their system or their Python environment, and that it is as easy as possible to install. But doing all that is more difficult than it sounds. Though, having now discovered pipx, I think it is the best choice for most situations.</p>
 
 <p>I find all the work outside of writing code for an application to be much, much more complex than writing the code itself, and I’ve written about it <a href="/2024-10-25-pain-of-programming.html">here</a>.</p>
 

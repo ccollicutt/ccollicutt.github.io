@@ -193,8 +193,8 @@
 
 <ol>
   <li>You don’t have a single binary….instead you have an entrypoint into a bunch of Python code and dependencies</li>
-  <li>You don’t have a single Python version embedded…you have to deal with a bunch of different system versions</li>
-  <li>You typically have a lot of dependencies</li>
+  <li>You don’t have a single Python version embedded…you have to deal with all kinds of different system versions</li>
+  <li>You typically have a lot of dependencies, Python has a lot of great libraries to take advantage of</li>
   <li>Some dependencies need to be compiled, netifaces as an example, so sometimes you might need a massive toolchain to build them, which makes the user experience a bit more complex (though Python Wheels help with this)</li>
 </ol>
 
@@ -226,7 +226,7 @@
 
 <p>I tinkered with AppImage for a while, but ended up just using PyInstaller. AppImage can package anything, whereas something like PyInstaller is more specific to Python applications. I think this is what tripped me up.</p>
 
-<p>I’ll come back to AppImage later as I think it’s a great idea, and I find applications I use that are distributed as AppImages–just download, mark as executable and run, all in one package.</p>
+<p>I’ll come back to AppImage later as I think it’s a great idea, and I have applications I use which are distributed as AppImages–just download, mark as executable and run, all in one file.</p>
 
 <h3 id="pyinstaller">PyInstaller</h3>
 
@@ -383,7 +383,7 @@ ubuntu@coolprog-test:~$ which coolprog
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Distributing Python applications isn’t easy. You are installing something into someone’s computer, or server, and you have to make sure it works, and that it isn’t going to break their system, and that it is as easy as possible to install. But that is more difficult than it sounds.</p>
+<p>Distributing Python applications isn’t easy. You are installing something into someone’s computer, or server, and you have to make sure it works, that it isn’t going to break their system or their Python environment, and that it is as easy as possible to install. But doing all that is more difficult than it sounds. Though, having now discovered pipx, I think it is the best choice for most situations.</p>
 
 <p>I find all the work outside of writing code for an application to be much, much more complex than writing the code itself, and I’ve written about it <a href="/2024-10-25-pain-of-programming.html">here</a>.</p>
 
