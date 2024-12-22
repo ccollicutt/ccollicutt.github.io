@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-12-21T12:31:51-05:00</updated>
+ <updated>2024-12-22T07:24:05-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -192,9 +192,14 @@ done! ✨ 🌟 ✨
 
 &lt;p&gt;So, just add it to your path and you’re good to go.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;ubuntu@coolprog-test:~$ export PATH=$PATH:~/.local/bin
-ubuntu@coolprog-test:~$ which coolprog
-/home/ubuntu/.local/bin/coolprog
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;ubuntu@coolprog-test:~$ pipx ensurepath
+Success! Added /home/ubuntu/.local/bin to the PATH environment variable.
+
+Consider adding shell completions for pipx. Run &apos;pipx completions&apos; for instructions.
+
+You will need to open a new terminal or re-login for the PATH changes to take effect.
+
+Otherwise pipx is ready to go! ✨ 🌟 ✨
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Nice!&lt;/p&gt;
