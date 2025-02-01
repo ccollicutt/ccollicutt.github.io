@@ -4,13 +4,132 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2024-12-22T07:24:05-05:00</updated>
+ <updated>2025-02-01T08:19:44-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Malicious Codes and Where to Find Them</title>
+   <link href="http://serverascode.com//2025/01/30/malcious-codes-and-where-to-find-them.html"/>
+   <updated>2025-01-30T00:00:00-05:00</updated>
+   <id>http://serverascode.com/2025/01/30/malcious-codes-and-where-to-find-them</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/malicious-code-200w.png&quot; alt=&quot;Malicious code&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;tldr; Malicious code is everywhere, but it&apos;s dangerous and hard to find. Here are some of the ways one might find it, or create it.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;div class=&quot;disclaimer&quot; style=&quot;background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 20px 0;&quot;&gt;
+    &lt;p style=&quot;margin: 0;&quot;&gt;&lt;span style=&quot;font-size: 1.2em;&quot;&gt;⚠️&lt;/span&gt; &lt;strong&gt;Disclaimer:&lt;/strong&gt; &lt;i&gt;Malicious code (MC) analysis is important for cybersecurity, but it requires careful handling. We tend to keep it hidden, but it&apos;s out there (unfortunately, we also tend to find it when we least expect it). When performing malicious code analysis, proper security protocols are critical--including the use of isolated virtual machines, detonation zones, secure test environments, etc. to prevent accidental execution or system compromise.&lt;/i&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/malicious-code-circular.png&quot; alt=&quot;Malicious code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ve got a project where I need malicious code to test with. Not to break into systems, but to test software that is supposed to detect malicious code.&lt;/p&gt;
+
+&lt;p&gt;BUT…malicious code doesn’t grow on (binary) trees, it’s hard to find online and in Github repositories, although there seems to be a lot of it.&lt;/p&gt;
+
+&lt;p&gt;Example: &lt;a href=&quot;https://arstechnica.com/security/2024/02/github-besieged-by-millions-of-malicious-repositories-in-ongoing-attack/&quot;&gt;Github besieged by millions of malicious repositories in ongoing attack&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/malicious-code1.png&quot; alt=&quot;Malicious code&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;options-for-finding-malicious-code&quot;&gt;Options for finding malicious code&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Write it yourself
+    &lt;ul&gt;
+      &lt;li&gt;Possibly using &lt;a href=&quot;https://github.com/Yara-Rules/rules&quot;&gt;YARA rules&lt;/a&gt; to reverse engineer test code&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Find it on the “Internet”, e.g.
+    &lt;ul&gt;
+      &lt;li&gt;Find open caches of MC&lt;/li&gt;
+      &lt;li&gt;Go to the backwaters of the internet&lt;/li&gt;
+      &lt;li&gt;Search Github for specific known MC code patterns&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Use a large language model (LLM) to generate it&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Each of these has its own set of problems.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You can write MC, but it won’t be as diverse, and it won’t look like real MC.&lt;/li&gt;
+  &lt;li&gt;Finding MC on the internet is difficult, and sometimes you end up in the various backwaters of the internet, i.e. the pages that don’t show up in search results.&lt;/li&gt;
+  &lt;li&gt;Most LLMs will refuse to generate MC, or will generate code that is so obviously MC that it is unusable.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;finding-it-on-the-internet&quot;&gt;Finding it on the Internet&lt;/h2&gt;
+
+&lt;p&gt;An example: &lt;a href=&quot;https://github.com/ytisf/theZoo&quot;&gt;theZoo&lt;/a&gt;, which fits well with my monster theme. As I said, it’s hard to find MC on the internet, but there must be collections of it out there, and this is one of them.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;theZoo is a project created to make the possibility of malware analysis open and available to the public. Since we have found out that almost all versions of malware are very hard to come by in a way which will allow analysis, we have decided to gather all of them for you in an accessible and safe way. theZoo was born by Yuval tisf Nativ and is now maintained by Shahak Shalev. - &lt;a href=&quot;https://github.com/ytisf/theZoo&quot;&gt;theZoo&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/malicious-code-the-zoo.png&quot; alt=&quot;The Zoo of Malicious Code&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;searching-github&quot;&gt;Searching Github&lt;/h3&gt;
+
+&lt;p&gt;Topics:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/malicious-code-searching-github.png&quot; alt=&quot;Searching Github&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Searching for patterns with Sourcegraph:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/malicious-code-sourcegraph.png&quot; alt=&quot;Searching with Sourcegraph&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is of course much more that could be done here, these are just a few examples.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-a-large-language-model-llm&quot;&gt;Use a Large Language Model (LLM)&lt;/h2&gt;
+
+&lt;p&gt;LLMs are good at generating code, but they usually have a lot of guardrails and other restrictions that prevent them from generating code that is actually malicious. There are ways to trick them into generating MC, but it’s probably against the terms of service of the LLM vendor, and it’s extra work.&lt;/p&gt;
+
+&lt;p&gt;Here’s a simple example with Claude, just to show the standard guardrail response.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/whiterabbitneo-claude.png&quot; alt=&quot;Claude&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;However, if we had an LLM without all the guardrails, and perhaps even trained in malicious code, we would be able to generate more realistic malicious code.&lt;/p&gt;
+
+&lt;p&gt;Enter White Rabbit Neo.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;WhiteRabbitNeo is a Generative AI Large Language Model (LLM) designed to support DevSecOps professionals in use cases for offensive and defensive cybersecurity, secure infrastructure design and automation, and more…While the foundation AI models (from OpenAI, Anthropic, Google, and Meta) censor their outputs for many security use cases, WhiteRabbitNeo is uncensored and trained to act like a modern adversary. It has a deep knowledge of threat intelligence, software engineering, even infrastructure as code, making it ideally suited for DevSecOps tasks and offloading tedium. - &lt;a href=&quot;https://whiterabbitneo.com/&quot;&gt;White Rabbit Neo&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/whiterabbitneo-login.png&quot; alt=&quot;White Rabbit Neo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can ask it to generate some malicious code.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/whiterabbitneo-2.png&quot; alt=&quot;White Rabbit Neo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Well, what it generates isn’t that great, but at least it provides something. One could imagine what nation states and other large, resourceful organisations are doing to train LLMs to generate more realistic malicious code, the caches of MC they have, the resources to train and fine-tune LLMs–they could potentially come up with some interesting MC. (Although, again, code quality, level of deception and sophistication would still be a problem, even now).&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This is just a brief look at how one might track down some MC/malware to test with.&lt;/p&gt;
+
+&lt;p&gt;I find the lack of examples of malicious code really interesting–how do we as an industry get better at stopping, or at least detecting, malicious code without a lot of public examples? Obviously, the reason is that we don’t want to teach attackers how to write malicious code (that said, I think they are still learning). Of course, this problem has existed almost since we invented programming, and nothing is likely to change, which is fine–it’s just an interesting problem. I’m not suggesting we make it easier for attackers to write malicious code by providing them with more examples–just that “hey, it’s an interesting problem space”.&lt;/p&gt;
+
+&lt;div class=&quot;callout&quot; style=&quot;background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0;&quot;&gt;
+    &lt;p style=&quot;margin: 0;&quot;&gt;&lt;strong&gt;🤔&lt;/strong&gt; One question I have is with regard to LLMs is: Will LLMs trained on public source code repositories that do NOT contain malicious code be able to produce code that is secure? Without the inverse example of secure code?&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arstechnica.com/security/2024/02/github-besieged-by-millions-of-malicious-repositories-in-ongoing-attack/&quot;&gt;GitHub “besieged” by malware repositories and repo confusion: Why you’ll be ok&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8949524&quot;&gt;A Comprehensive Review on Malware Detection Approaches&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Python Program Distribution and Installation Methods</title>
@@ -225,10 +344,11 @@ Otherwise pipx is ready to go! ✨ 🌟 ✨
   &lt;li&gt;PyOxidizer???&lt;/li&gt;
   &lt;li&gt;Nuitka???&lt;/li&gt;
   &lt;li&gt;Docker&lt;/li&gt;
+  &lt;li&gt;Shiv&lt;/li&gt;
+  &lt;li&gt;Pipenv&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;And probably many more, some of which are new, and some of which are getting long in the tooth.&lt;/p&gt;
-
+&lt;h2 id=&quot;and-probably-many-more-some-of-which-are-new-and-some-of-which-are-getting-long-in-the-tooth&quot;&gt;And probably many more, some of which are new, and some of which are getting long in the tooth.&lt;/h2&gt;
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;Distributing Python applications isn’t easy. You are installing something into someone’s computer, or server, and you have to make sure it works, that it isn’t going to break their system or their Python environment, and that it is as easy as possible to install. But doing all that is more difficult than it sounds. Though, having now discovered pipx, I think it is the best choice for most situations.&lt;/p&gt;
@@ -875,6 +995,7 @@ indexes:
   &lt;li&gt;What metrics should it output, and how?&lt;/li&gt;
   &lt;li&gt;Configuring…the config file. What should it look like? How to validate it? What’s a good layout?&lt;/li&gt;
   &lt;li&gt;Finding dead and unused code&lt;/li&gt;
+  &lt;li&gt;Removing debug statements in production&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;I could go on, and I’m sure there are many more.&lt;/p&gt;
@@ -917,7 +1038,7 @@ indexes:
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;&lt;strong&gt;Operations &amp;amp; Monitoring&lt;/strong&gt;&lt;/td&gt;
-      &lt;td&gt;• Setting up logging infrastructure (structured/unstructured)&lt;br /&gt;• Managing debugging tools&lt;br /&gt;• Understanding resource requirements (CPU, memory)&lt;br /&gt;• Output metrics configuration and management&lt;/td&gt;
+      &lt;td&gt;• Setting up logging infrastructure (structured/unstructured)&lt;br /&gt;• Managing debugging tools&lt;br /&gt;• Understanding resource requirements (CPU, memory)&lt;br /&gt;• Output metrics configuration and management&lt;br /&gt;• Removing debug statements in production&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;&lt;strong&gt;Data Management&lt;/strong&gt;&lt;/td&gt;
