@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tailscale Kubernetes Operator | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="The Tailscale Kubernetes Operator">
+        
+        <meta name="twitter:description" content="
+    
+    Make your Kubernetes networking life easier with the Tailscale Kubernetes operator.
+
+
+">
+        <meta property="og:description" content="
+    
+    Make your Kubernetes networking life easier with the Tailscale Kubernetes operator.
+
+
+" />
+        
+        <meta property="og:title" content="The Tailscale Kubernetes Operator" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/tailscale-kubernetes-operator.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/tailscale-kubernetes-operator.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 259
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2025 FEBRUARY</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">The Tailscale Kubernetes Operator</h1>
+        <p class="text-gray-600">
+            <time datetime="2025-01-31T00:00:00-05:00">
+                January 31, 2025
+            </time>
+            
+        </p>
+    </header>
+
+    <div id="toc" class="hidden mb-8 p-4 bg-gray-50 rounded-lg not-prose">
+        <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+        <nav id="toc-content"></nav>
+    </div>
+
+    
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/tailscale-k8s-operator-200w.png" alt="Tailscale Kubernetes Operator" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>Make your Kubernetes networking life easier with the Tailscale Kubernetes operator.</em></p>
+</div>
+
+<hr />
+
+<h2 id="tldr">tl;dr</h2>
+
+<p>Modern Kubernetes networking involves multiple complex layers: physical networks, CNI plugins like Calico (handling BGP meshes, VXLAN, IPIP tunnels, and NAT), service meshes, and external access concerns. While the post dives into Calico’s implementation details in a homelab setup—showing how it manages IP pools, BGP peering, and cross-node communication—the <a href="https://tailscale.com/kb/1236/kubernetes-operator">Tailscale Kubernetes operator</a> emerges as a surprisingly straightforward solution for secure service exposure, requiring just a simple annotation to make workloads accessible across your entire tailnet.</p>
+
+<p>Here’s a diagram of my homelab Kubernetes setup, including Tailscale.</p>
+<div style="text-align: center; margin: 20px auto;">
+    <a href="/img/tailscale-k8s-operator/mermaid-diagram.png" target="_blank">
+        <img src="/img/tailscale-k8s-operator/mermaid-diagram-200w.png" alt="Network Diagram" style="max-width: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); display: block; margin: 0 auto;" />
+    </a>
+    <p><em>Click image to enlarge</em></p>
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>There are many layers to networking, especially when you add Kubernetes into the mix. In my relatively simple homelab setup, I have a physical network, a Kubernetes network based on Calico, and now I’m adding Tailscale. But there can be more layers, and more complexity.</p>
+
+<p>Kubernetes networking is interesting because one of the early design decisions was that every pod should have its own routable layer 3 IP address. In some ways, this is a much simpler design for networking, just make everything layer 3 routable. Now we can run thousands and thousands of pods without having to worry about broadcast domains.</p>
+
+<p>But in order to use Kubernetes, you have to set up a CNI–a container network interface. Kubernetes doesn’t actually do its own networking, it just uses the CNI plugin. And the CNI is, in many ways, free to implement the network in any way it wants, from straight Layer 3, to BGP meshes, to overlays like VXLAN and IPIP, or a combination of all of those and other things. So yes, each pod has its own IP address, but how that actually works is up to the CNI.</p>
+
+<p>But there’s more!</p>
+
+<ul>
+  <li>More interestingly, we still need to “expose” workloads, whether via a load balancer, ingress or other means.</li>
+  <li>We have added the concept of service meshes.</li>
+  <li>And we know we have the concept of zero trust networking.</li>
+  <li>And what if we want to access services in other clusters?</li>
+  <li>Or services running in Kubernetes need to access external services?</li>
+</ul>
+
+<p>I’m not stating anything new here, Kubernetes is getting quite mature, as has the networking capabilities that we layer on top. There are a lot of interesting options available.</p>
+
+<h2 id="the-tailscale-kubernetes-operator">The Tailscale Kubernetes Operator</h2>
+
+<blockquote>
+  <p>Tailscale makes creating software-defined networks easy: securely connecting users, services, and devices. - <a href="https://tailscale.com">https://tailscale.com</a></p>
+</blockquote>
+
+<p>First, I’ve written about Tailscale before.</p>
+
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #f5f5f5; padding: 20px; border-radius: 5px;">
+    <a href="https://serverascode.com/2024/11/23/tailscale-mulladvpn.html">
+        <img src="/img/magazine-cards/tailscale-mullvad-200w.png" alt="Tailscale Mullvad" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    </a>
+    <p><em>Check out my previous post about using Tailscale with Mullvad VPN for secure personal networks.</em></p>
+</div>
+
+<p>That post is more about building up a safe personal network combined with Mullvad VPN. This post is about securing and building connectivity with <a href="https://tailscale.com/kb/1236/kubernetes-operator">Tailscale’s Kubernetes operator</a>.</p>
+
+<p>Tailscale provides several options for setting up in Kubernetes, and one of them is the <a href="https://tailscale.com/kb/1236/kubernetes-operator">Tailscale Kubernetes Operator</a>, which is what I’ll be using in this post.</p>
+
+<p>But first, let’s get Kubernetes installed.</p>
+
+<h2 id="installing-kubernetes">Installing Kubernetes</h2>
+
+<p>First, I’ll use my Kubernetes installer script, brilliantly named <a href="https://github.com/ccollicutt/install-kubernetes">install-kubernetes</a>, to set up a Kubernetes cluster. It simply installs a simple kubeadm-based cluster on Ubuntu 22.04 virtual machines, adding in Calico as the CNI.</p>
+
+<pre><code class="language-bash">root@ts1:~# git clone https://github.com/ccollicutt/install-kubernetes
+Cloning into 'install-kubernetes'...
+remote: Enumerating objects: 105, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (11/11), done.
+remote: Total 105 (delta 12), reused 12 (delta 7), pack-reused 87 (from 1)
+Receiving objects: 100% (105/105), 23.90 KiB | 479.00 KiB/s, done.
+Resolving deltas: 100% (52/52), done.
+root@ts1:~# cd install-kubernetes
+root@ts1:~/install-kubernetes# ./install-kubernetes.sh -s
+Starting install...
+==&gt; Logging all output to /tmp/install-kubernetes-R21z3PlZYv/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+Installing required packages
+Installing Kubernetes packages
+Configuring system
+Configuring crictl
+Configuring kubelet
+Configuring containerd
+Installing containerd
+Starting services
+Configuring control plane node...
+Initialising the Kubernetes cluster via Kubeadm
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&gt; Installing Calico tigera-operator
+==&gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&gt; Nodes are ready
+Checking Kubernetes version...
+==&gt; Client version: v1.31.0
+==&gt; Server Version: v1.31.0
+==&gt; Requested KUBE_VERSION matches the server version.
+Installing metrics server
+Configuring as a single node cluster
+Configuring as a single node cluster
+Deploying test nginx pod
+Waiting for all pods to be running...
+Install complete!
+
+### Command to add a worker node ###
+kubeadm join 10.10.10.250:6443 --token &lt;REDACTED&gt; --discovery-token-ca-cert-hash &lt;REDACTED&gt; 
+</code></pre>
+
+<p>This gives me an initial Kubernetes node, which is both a control plane and a worker node. Next, I add another worker node, but I won’t show that output here.</p>
+
+<p>So now I’ve got two nodes, <code>ts1</code> and <code>ts2</code>.</p>
+
+<pre><code>$ k get nodes
+NAME   STATUS   ROLES           AGE   VERSION
+ts1    Ready    control-plane   15h   v1.31.0
+ts2    Ready    &lt;none&gt;          15h   v1.31.0
+</code></pre>
+
+<h2 id="installing-the-tailscale-kubernetes-operator">Installing the Tailscale Kubernetes Operator</h2>
+
+<h3 id="setting-up-tailscale">Setting up Tailscale</h3>
+
+<p>This includes the following steps (see the <a href="https://tailscale.com/kb/1236/kubernetes-operator">docs</a> for more details):</p>
+
+<ol>
+  <li>Setting up an OAuth client ID and secret</li>
+  <li>Configuring tags in the ACLs</li>
+</ol>
+
+<p><img src="/img/tailscale-k8s-operator/kubernetes-operator-tailscale-docs.png" alt="Kubernetes operator tailscale docs" /></p>
+
+<ul>
+  <li>Set up OAuth client ID and secret</li>
+</ul>
+
+<p><img src="/img/tailscale-k8s-operator/oauth-clients-tailscale.png" alt="Tailscale OAuth client ID and secret" /></p>
+
+<ul>
+  <li>Set up ACL tags</li>
+</ul>
+
+<p><img src="/img/tailscale-k8s-operator/access-controls-tailscale.png" alt="Tailscale ACL Tags" /></p>
+
+<ul>
+  <li>See the results in machines once the operator is installed and some workloads are created (note that this is after the operator is installed, and some workloads are created)</li>
+</ul>
+
+<p><img src="/img/tailscale-k8s-operator/machines-tailscale.png" alt="Machines" /></p>
+
+<h3 id="install-into-kubernetes-with-helm">Install into Kubernetes with Helm</h3>
+
+<p>I’ll show you my <a href="https://github.com/casey/just">justfile</a> commands for installation.</p>
+
+<pre><code>add-tailscale-helm:
+    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+    helm repo update
+
+install-tailscale-operator:
+    helm upgrade \
+        --install \
+        tailscale-operator \
+        tailscale/tailscale-operator \
+        --namespace=tailscale \
+        --create-namespace \
+        --set-string oauth.clientId="${TS_CLIENT_ID}" \
+        --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
+        --wait
+</code></pre>
+
+<p>Thanks to Helm, very simple to install.</p>
+
+<pre><code>$ just install-tailscale-operator
+</code></pre>
+
+<h2 id="what-does-this-network-look-like">What Does This Network Look Like?</h2>
+
+<p>In this section we’ll go over the layers. To visualize those layers, here’s a diagram of my homelab setup.</p>
+
+<div class="bg-amber-50 border-l-4 border-amber-500 p-4 my-4">
+  <p class="text-amber-700"><strong>Disclaimer:</strong> This is a basic diagram of my homelab setup and is not completely accurate. Please refer to official Tailscale and Calico and Kubernetes documentation!</p>
+</div>
+
+<p><a href="/img/tailscale-k8s-operator/mermaid-diagram.png" target="_blank"><img src="/img/tailscale-k8s-operator/mermaid-diagram.png" alt="Homelab networking diagram" target="_blank" /></a></p>
+
+<h3 id="physical-networking">Physical Networking</h3>
+
+<p>The physical networking is straightforward: the two nodes/vms are on the same VLAN, and have direct access to each other. (I use <a href="https://serverascode.com/2024/10/19/incus-installation-and-use.html">Incus</a> to manage my VMs.)</p>
+
+<h3 id="calico-networking">Calico Networking</h3>
+
+<p>The Calico configuration is what you get by default. Calico is VERY configurable, and you can do a lot of complex things with it, but this is the default deployment.</p>
+
+<pre><code class="language-bash">$ kubectl get ippool -o yaml
+apiVersion: v1
+items:
+- apiVersion: projectcalico.org/v3
+  kind: IPPool
+  metadata:
+    creationTimestamp: "2025-01-31T23:51:56Z"
+    name: default-ipv4-ippool
+    resourceVersion: "891"
+    uid: 15bc140e-701b-4cb9-aea8-82e74925b997
+  spec:
+    allowedUses:
+    - Workload
+    - Tunnel
+    blockSize: 26
+    cidr: 192.168.0.0/16
+    ipipMode: Never
+    natOutgoing: true
+    nodeSelector: all()
+    vxlanMode: CrossSubnet
+kind: List
+metadata:
+  resourceVersion: ""
+</code></pre>
+
+<p>or…</p>
+
+<pre><code class="language-bash"># calicoctl get ippool default-ipv4-ippool -oyaml
+apiVersion: projectcalico.org/v3
+kind: IPPool
+metadata:
+  creationTimestamp: "2025-01-31T23:51:56Z"
+  name: default-ipv4-ippool
+  resourceVersion: "891"
+  uid: 15bc140e-701b-4cb9-aea8-82e74925b997
+spec:
+  allowedUses:
+  - Workload
+  - Tunnel
+  blockSize: 26
+  cidr: 192.168.0.0/16
+  ipipMode: Never
+  natOutgoing: true
+  nodeSelector: all()
+  vxlanMode: CrossSubnet
+</code></pre>
+
+<p>IP address management is handled by Calico.</p>
+
+<pre><code># calicoctl ipam show --show-blocks
++----------+--------------------+-----------+------------+--------------+
+| GROUPING |        CIDR        | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+--------------------+-----------+------------+--------------+
+| IP Pool  | 192.168.0.0/16     |     65536 | 15 (0%)    | 65521 (100%) |
+| Block    | 192.168.131.64/26  |        64 | 8 (12%)    | 56 (88%)     |
+| Block    | 192.168.153.128/26 |        64 | 7 (11%)    | 57 (89%)     |
++----------+--------------------+-----------+------------+--------------+
+</code></pre>
+
+<p>Default settings:</p>
+
+<ul>
+  <li>VXLAN mode is set to CrossSubnet, meaning that Calico will only use VXLAN encapsulation when pods are communicating across different subnets.</li>
+  <li>IPIP mode is set to Never, which means that IPIP tunneling is not used.</li>
+  <li>The network CIDR is 192.168.0.0/16 with a block size of 26, giving 62 usable IPs in each block as managed by Calico.</li>
+  <li><code>natOutgoing: true</code> means that outgoing traffic is NATed to the external IP address of the node.</li>
+</ul>
+
+<p>So…</p>
+
+<ul>
+  <li>Nodes communicate BGP routes over their physical network (10.10.x.x)</li>
+  <li>Nodes get IPs from the configured pool (192.168.0.0/16)</li>
+  <li>The physical network handles the actual packet delivery between the nodes</li>
+  <li>There is NAT involved (multiple NATs actually)</li>
+</ul>
+
+<pre><code class="language-bash"># calicoctl ipam show
++----------+----------------+-----------+------------+--------------+
+| GROUPING |      CIDR      | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+----------------+-----------+------------+--------------+
+| IP Pool  | 192.168.0.0/16 |     65536 | 15 (0%)    | 65521 (100%) |
++----------+----------------+-----------+------------+--------------+
+# calicoctl node status
+Calico process is running.
+
+IPv4 BGP status
++--------------+-------------------+-------+----------+-------------+
+| PEER ADDRESS |     PEER TYPE     | STATE |  SINCE   |    INFO     |
++--------------+-------------------+-------+----------+-------------+
+| 10.10.10.246 | node-to-node mesh | up    | 23:55:06 | Established |
++--------------+-------------------+-------+----------+-------------+
+
+IPv6 BGP status
+No IPv6 peers found.
+</code></pre>
+
+<p>There are only two nodes, so the BGP mesh is, well, as small as it gets.</p>
+
+<p>We can see all the pods and such and what hosts they are on, IPs, etc.</p>
+
+<pre><code class="language-bash">$ just show-pod-details 
+POD NAME                    POD IP          NODE NAME        NODE IP
+-------------------------  --------------  ---------------  --------------
+calico-apiserver-64497c8b94-2xlqq          192.168.131.72    ts1    10.10.10.250
+calico-apiserver-64497c8b94-c7px8          192.168.131.71    ts1    10.10.10.250
+calico-kube-controllers-7d868b8f66-85ldw   192.168.131.67    ts1    10.10.10.250
+calico-node-b68ck                          10.10.10.246      ts2    10.10.10.246
+calico-node-j5sw5                          10.10.10.250      ts1    10.10.10.250
+calico-typha-764c8bcd98-pwnf4              10.10.10.250      ts1    10.10.10.250
+csi-node-driver-2bg5q                      192.168.131.70    ts1    10.10.10.250
+csi-node-driver-6hs69                      192.168.153.129   ts2    10.10.10.246
+hello-tailscale-expose-74c4485894-xms5d    192.168.153.137   ts2    10.10.10.246
+hello-tailscale-5c8bf6665c-7lqvj           192.168.153.131   ts2    10.10.10.246
+coredns-6f6b679f8f-knnlg                   192.168.131.65    ts1    10.10.10.250
+coredns-6f6b679f8f-sdrp6                   192.168.131.68    ts1    10.10.10.250
+etcd-ts1                                   10.10.10.250      ts1    10.10.10.250
+kube-apiserver-ts1                         10.10.10.250      ts1    10.10.10.250
+kube-controller-manager-ts1                10.10.10.250      ts1    10.10.10.250
+kube-proxy-gm8rh                           10.10.10.246      ts2    10.10.10.246
+kube-proxy-lq5p9                           10.10.10.250      ts1    10.10.10.250
+kube-scheduler-ts1                         10.10.10.250      ts1    10.10.10.250
+metrics-server-5f94f4d4fd-rr92x            192.168.131.64    ts1    10.10.10.250
+operator-6999975fd7-dxvv5                  192.168.153.130   ts2    10.10.10.246
+ts-hello-tailscale-expose-db59d-0          192.168.153.136   ts2    10.10.10.246
+ts-hello-tailscale-z5dfr-0                 192.168.153.133   ts2    10.10.10.246
+tigera-operator-b974bcbbb-hrzv9            10.10.10.250      ts1    10.10.10.250
+</code></pre>
+
+<h3 id="tailscale-networking">Tailscale Networking</h3>
+
+<p>Tailscale uses Wireguard to create a secure network.</p>
+
+<blockquote>
+  <p>Tailscale is built on top of WireGuard; we think very highly of it - <a href="https://tailscale.com/compare/wireguard">https://tailscale.com/compare/wireguard</a></p>
+</blockquote>
+
+<p>Tailscale takes Wireguard quite a bit further, dealing with all the other issues around modern networks, e.g. NAT (which can be brutal to deal with), and adding Access Control Lists (ACLs) and other features.</p>
+
+<blockquote>
+  <p>Tailscale takes care of on-demand NAT traversal so that devices can talk to each other directly in most circumstances, without manual configuration. When NAT traversal fails, Tailscale relays encrypted traffic, so that devices can always talk to each other, albeit with higher latency in that case. There is no need to modify firewalls or routers; any devices that can reach the internet can reach each other. (Tailscale traffic between two devices on the same LAN does not leave that LAN.) - <a href="https://tailscale.com/compare/wireguard">https://tailscale.com/compare/wireguard</a></p>
+</blockquote>
+
+<p>In the Kubernetes deployment we have a proxy pod that is setup for each exposed service by the operator–at least that is the way that I understand it.</p>
+
+<pre><code>$ k get pods -n tailscale 
+NAME                                READY   STATUS    RESTARTS   AGE
+operator-6999975fd7-dxvv5           1/1     Running   0          140m
+ts-hello-tailscale-expose-db59d-0   1/1     Running   0          80m
+ts-hello-tailscale-z5dfr-0          1/1     Running   0          119m
+</code></pre>
+
+<p>The <code>ts-hellow-tailscale*</code> workloads are running in their own namespaces, above are the tailscale pods for those workloads.</p>
+
+<h2 id="accessing-workloads-with-tailscale">Accessing Workloads With Tailscale</h2>
+
+<p>Here’s some justfile commands to curl the hello-tailscale service.</p>
+
+<p>Note that this workload is using the Tailscale annotation to expose the service, but you can also use the Tailscale LoadBalancer service type, and a couple of other options I believe.</p>
+
+<pre><code class="language-bash">deploy-tailscale-hello-with-expose:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    kubectl apply -f - &lt;&lt;'EOF'
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: hello-tailscale-expose
+    ---
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: nginx-index-html
+      namespace: hello-tailscale-expose
+    data:
+      index.html: |
+        &lt;h1&gt;Hello from Tailscale Expose!&lt;/h1&gt;
+    ---
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: hello-tailscale-expose
+      namespace: hello-tailscale-expose
+      labels:
+        app: hello-tailscale-expose
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: hello-tailscale-expose
+      template:
+        metadata:
+          labels:
+            app: hello-tailscale-expose
+        spec:
+          containers:
+            - name: hello-tailscale-expose
+              image: nginx:latest
+              ports:
+                - containerPort: 80
+              volumeMounts:
+                - name: nginx-index
+                  mountPath: /usr/share/nginx/html
+          volumes:
+            - name: nginx-index
+              configMap:
+                name: nginx-index-html
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: hello-tailscale-expose
+      namespace: hello-tailscale-expose
+      annotations:
+        tailscale.com/expose: "true"
+    spec:
+      selector:
+        app: hello-tailscale-expose
+      ports:
+        - port: 80
+          targetPort: 80
+    EOF
+</code></pre>
+
+<p>And we can easily access that service from my workstation, which is on the tailnet!</p>
+
+<div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-4">
+  <p class="text-blue-700">📝 Note that one of these workloads I specified a loadbalancer for, and for the other I used the Tailscale expose annotation.</p>
+</div>
+
+<pre><code>$ tailscale status | grep hello
+100.80.241.127  hello-tailscale-expose-hello-tailscale-expose tagged-devices linux   -
+100.85.85.53    hello-tailscale-hello-tailscale tagged-devices linux   idle, tx 532 rx 316
+100.101.102.103 hello.ts.net         hello@       linux   -
+$ curl hello-tailscale-hello-tailscale
+&lt;h1&gt;Hello from Tailscale LoadBalancer!&lt;/h1&gt;
+$ curl hello-tailscale-expose-hello-tailscale-expose
+&lt;h1&gt;Hello from Tailscale Expose!&lt;/h1&gt;
+</code></pre>
+
+<p>And we can see that in this screenshot as well.</p>
+
+<p><img src="/img/tailscale-k8s-operator/hello-tailscale.png" alt="Hello from Tailscale LoadBalancer" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Tailscale solves a lot of problems for me, especially when it comes to using containers. Networking has become very complex. For example, in the past in my homelab I’d set up <a href="https://metallb.io/">MetalLB</a> to create a load balancer for applications. MetalLB is an amazing piece of technology (thank you to those that built and maintain it!), but I’d be managing IPs and trying to remember which ranges I’d allowed the loadbalancer to use, and inevitably I’d forget. Never mind that those workloads wouldn’t be accessible from my laptop–when I was at home on my workstation, sure, no problem, but when I was on the road I’d have Tailnet but no Kubernetes access. Now I have that too, plus the ability to use ACLs to control access to my Kubernetes cluster. Or, potentially, I can deploy apps that I will use, and be able to access them from my phone too. Very nice! Now I can deploy apps into Kubernetes and use them from any of my devices.</p>
+
+<div class="bg-green-50 border-l-4 border-green-500 p-4 my-4">
+  <p class="text-green-700">📝 Note that there are some things to think about when using Kubernetes, NAT, and Tailscale. Best to read this <a href="https://tailscale.com/blog/kubernetes-direct-connections" class="underline">Tailscale blog post</a> for more details.</p>
+</div>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="https://tailscale.com/learn/managing-access-to-kubernetes-with-tailscale">How to Secure Kubernetes Access with Tailscale</a></li>
+  <li><a href="https://tailscale.com/blog/kubernetes-direct-connections">Kubernetes, direct connections, and you</a></li>
+  <li><a href="https://tailscale.com/blog/how-tailscale-works">How Tailscale Works</a></li>
+  <li><a href="https://tailscale.com/blog/how-nat-traversal-works">How NAT Traversal Works</a></li>
+  <li><a href="https://www.youtube.com/watch?v=7EoCa9HP9Bc&amp;t=3742s">Tailscale Webinar - NAT Traversal explained with Lee Briggs</a></li>
+  <li><a href="https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip">Calico Overlay networking</a></li>
+</ul>
+
+<h2 id="ps-mermaid-diagram-code">PS. Mermaid Diagram Code</h2>
+
+<p>Again, not a perfect diagram, but it’s a good start.</p>
+
+<pre><code>graph TB
+    subgraph Disclaimer[**This is a basic diagram of my homelab setup and may contain inaccuracies.&lt;br&gt;Please refer to official Tailscale documentation.**]
+        style Disclaimer fill:#fff,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
+    end
+
+    subgraph Physical Network
+        DHCP[DHCP Server]
+        VLAN[VLAN Network]
+        DHCP --&gt; VLAN
+    end
+
+    subgraph Kubernetes Cluster
+        subgraph Kubernetes Nodes
+            Node1[Node ts1&lt;br&gt;Control Plane + Worker]
+            Node2[Node ts2&lt;br&gt;Worker]
+            VLAN --&gt; Node1
+            VLAN --&gt; Node2
+        end
+
+        subgraph Calico Networking
+            BGPBGP Mesh&lt;br&gt;(Node to Node)
+            IPPOOL[IP Pool&lt;br&gt;natOutgoing: true]
+            Node1 &lt;--&gt; BGP
+            Node2 &lt;--&gt; BGP
+            BGP --&gt; IPPOOL
+            Pod1[Pods on ts1]
+            Pod2[Pods on ts2]
+            IPPOOL --&gt; Pod1
+            IPPOOL --&gt; Pod2
+            Pod1 -.-&gt;|NAT| INTERNET
+            Pod2 -.-&gt;|NAT| INTERNET
+        end
+
+        subgraph Example Service
+            HELLO[hello-tailscale-expose]
+            TS_HELLO[ts-hello-tailscale-expose&lt;br&gt;Tailscale Proxy Pod]
+            HELLO --&gt; TS_HELLO
+        end
+
+        Pod1 --&gt; TS_OP
+        Pod2 --&gt; TS_OP
+
+        subgraph Tailscale Layer
+            TS_OP[Tailscale Operator&lt;br&gt;Pod]
+            TS_OP --&gt; TS_HELLO
+        end
+    end
+
+    subgraph Tailnet Devices
+        LAPTOP[Laptop&lt;br&gt;Tailscale Client]
+    end
+
+    TS_CTRL[Tailscale Control Plane&lt;br&gt;Cloud Service]
+    INTERNET((Internet))
+    
+    %% Encrypted connections as dotted lines
+    TS_CTRL -.- TS_OP
+    TS_CTRL -.- LAPTOP
+    LAPTOP -.- TS_HELLO
+    
+    classDef physical fill:#f9f,stroke:#333,stroke-width:2px
+    classDef calico fill:#bbf,stroke:#333,stroke-width:2px
+    classDef tailscale fill:#bfb,stroke:#333,stroke-width:2px
+    classDef k8s fill:#fff,stroke:#326CE5,stroke-width:2px
+    classDef device fill:#fdb,stroke:#333,stroke-width:2px
+    classDef service fill:#dfd,stroke:#333,stroke-width:2px
+    
+    class DHCP,VLAN physical
+    class BGP,IPPOOL,Pod1,Pod2 calico
+    class TS_CTRL,TS_OP tailscale
+    class Kubernetes_Cluster k8s
+    class LAPTOP device
+    class HELLO,TS_HELLO service
+</code></pre>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2025 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                259
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+
+    // Table of Contents Generator
+    document.addEventListener('DOMContentLoaded', function() {
+        const article = document.querySelector('article.prose');
+        if (!article) return;
+
+        // Get all headers from the article content (h2-h4), excluding those in tables
+        const headers = Array.from(article.querySelectorAll('h2, h3, h4')).filter(header => {
+            // Exclude headers in tables, TOC itself, and any header containing "Table of Contents"
+            return !header.closest('table') && 
+                   !header.closest('.toc') && 
+                   header.textContent.trim() !== 'Table of Contents' &&
+                   !header.textContent.includes('Table of Contents');
+        });
+
+        // Only generate TOC if there are more than 3 headers
+        if (headers.length <= 3) return;
+
+        // Create and initialize TOC container
+        const tocContainer = createTOCContainer();
+        tocContainer.id = 'toc-container';
+        
+        // Generate TOC content
+        const { toc, sectionInfo } = generateTOCContent(headers);
+        
+        // Add TOC to container
+        tocContainer.appendChild(toc);
+        
+        // Insert TOC in the appropriate location
+        insertTOC(article, tocContainer);
+
+        // Create floating button container
+        const floatingContainer = document.createElement('div');
+        floatingContainer.className = 'floating-container prose mx-auto text-center mt-8 mb-4';
+        floatingContainer.style.cssText = `
+            width: 100%;
+            max-width: 65ch;
+        `;
+
+        // Create the button
+        const backButton = document.createElement('button');
+        backButton.textContent = '↑ Back to Contents';
+        backButton.className = 'bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200';
+        backButton.style.cssText = `
+            font-size: 0.875rem;
+        `;
+
+        floatingContainer.appendChild(backButton);
+        article.appendChild(floatingContainer);
+
+        // Scroll back to TOC when clicked
+        backButton.addEventListener('click', () => {
+            tocContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enable smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    function createTOCContainer() {
+        const container = document.createElement('div');
+        container.className = 'toc mb-8 p-4 bg-gray-50 rounded-lg not-prose';
+        container.innerHTML = '<h2 class="toc-title text-lg font-semibold mb-2">Table of Contents</h2>';
+        return container;
+    }
+
+    function generateTOCContent(headers) {
+        const toc = document.createElement('ul');
+        toc.className = 'space-y-2';
+        
+        let sectionCount = 1;
+        let subsectionCount = 1;
+        let lastLevel = 2; // Start with h2 level
+
+        headers.forEach((header, index) => {
+            // Ensure header has an ID
+            if (!header.id) {
+                header.id = `section-${index}`;
+            }
+
+            const level = parseInt(header.tagName.charAt(1));
+            const { sectionNumber, newSectionCount, newSubsectionCount, newLastLevel } = 
+                generateSectionNumber(level, sectionCount, subsectionCount, lastLevel);
+
+            // Update counters
+            sectionCount = newSectionCount;
+            subsectionCount = newSubsectionCount;
+            lastLevel = newLastLevel;
+
+            // Create TOC item
+            const item = createTOCItem(header, level, sectionNumber);
+            toc.appendChild(item);
+
+            // Update header in content
+            header.prepend(document.createTextNode(sectionNumber));
+        });
+
+        return { 
+            toc,
+            sectionInfo: { sectionCount, subsectionCount, lastLevel }
+        };
+    }
+
+    function generateSectionNumber(level, sectionCount, subsectionCount, lastLevel) {
+        let sectionNumber = '';
+        let newSectionCount = sectionCount;
+        let newSubsectionCount = subsectionCount;
+        let newLastLevel = lastLevel;
+
+        if (level === 2) {
+            sectionNumber = `${sectionCount}. `;
+            newSubsectionCount = 1;
+            newSectionCount++;
+            newLastLevel = 2;
+        } else if (level === 3) {
+            sectionNumber = `${sectionCount - 1}.${subsectionCount}. `;
+            newSubsectionCount++;
+            newLastLevel = 3;
+        }
+
+        return {
+            sectionNumber,
+            newSectionCount,
+            newSubsectionCount,
+            newLastLevel
+        };
+    }
+
+    function createTOCItem(header, level, sectionNumber) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${header.id}`;
+        link.textContent = sectionNumber + header.textContent;
+        link.className = 'text-gray-700 hover:text-gray-900 hover:underline block';
+
+        // Add indentation based on header level
+        const indent = level - 2;
+        item.style.paddingLeft = `${indent * 1}rem`;
+        item.appendChild(link);
+
+        return item;
+    }
+
+    function insertTOC(article, tocContainer) {
+        const header = article.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(tocContainer, header.nextSibling);
+        } else {
+            article.insertBefore(tocContainer, article.firstChild);
+        }
+    }
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link or the feed.xml
+                if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                    window.open(href, '_blank');
+                    return;
+                }
+
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.quefrySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

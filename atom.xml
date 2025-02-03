@@ -4,13 +4,556 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-02-01T08:19:44-05:00</updated>
+ <updated>2025-02-03T06:59:32-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>The Tailscale Kubernetes Operator</title>
+   <link href="http://serverascode.com//2025/01/31/tailscale-kubernetes-operator.html"/>
+   <updated>2025-01-31T00:00:00-05:00</updated>
+   <id>http://serverascode.com/2025/01/31/tailscale-kubernetes-operator</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/tailscale-k8s-operator-200w.png&quot; alt=&quot;Tailscale Kubernetes Operator&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;Make your Kubernetes networking life easier with the Tailscale Kubernetes operator.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tl;dr&lt;/h2&gt;
+
+&lt;p&gt;Modern Kubernetes networking involves multiple complex layers: physical networks, CNI plugins like Calico (handling BGP meshes, VXLAN, IPIP tunnels, and NAT), service meshes, and external access concerns. While the post dives into Calico’s implementation details in a homelab setup—showing how it manages IP pools, BGP peering, and cross-node communication—the &lt;a href=&quot;https://tailscale.com/kb/1236/kubernetes-operator&quot;&gt;Tailscale Kubernetes operator&lt;/a&gt; emerges as a surprisingly straightforward solution for secure service exposure, requiring just a simple annotation to make workloads accessible across your entire tailnet.&lt;/p&gt;
+
+&lt;p&gt;Here’s a diagram of my homelab Kubernetes setup, including Tailscale.&lt;/p&gt;
+&lt;div style=&quot;text-align: center; margin: 20px auto;&quot;&gt;
+    &lt;a href=&quot;/img/tailscale-k8s-operator/mermaid-diagram.png&quot; target=&quot;_blank&quot;&gt;
+        &lt;img src=&quot;/img/tailscale-k8s-operator/mermaid-diagram-200w.png&quot; alt=&quot;Network Diagram&quot; style=&quot;max-width: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); display: block; margin: 0 auto;&quot; /&gt;
+    &lt;/a&gt;
+    &lt;p&gt;&lt;em&gt;Click image to enlarge&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;There are many layers to networking, especially when you add Kubernetes into the mix. In my relatively simple homelab setup, I have a physical network, a Kubernetes network based on Calico, and now I’m adding Tailscale. But there can be more layers, and more complexity.&lt;/p&gt;
+
+&lt;p&gt;Kubernetes networking is interesting because one of the early design decisions was that every pod should have its own routable layer 3 IP address. In some ways, this is a much simpler design for networking, just make everything layer 3 routable. Now we can run thousands and thousands of pods without having to worry about broadcast domains.&lt;/p&gt;
+
+&lt;p&gt;But in order to use Kubernetes, you have to set up a CNI–a container network interface. Kubernetes doesn’t actually do its own networking, it just uses the CNI plugin. And the CNI is, in many ways, free to implement the network in any way it wants, from straight Layer 3, to BGP meshes, to overlays like VXLAN and IPIP, or a combination of all of those and other things. So yes, each pod has its own IP address, but how that actually works is up to the CNI.&lt;/p&gt;
+
+&lt;p&gt;But there’s more!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;More interestingly, we still need to “expose” workloads, whether via a load balancer, ingress or other means.&lt;/li&gt;
+  &lt;li&gt;We have added the concept of service meshes.&lt;/li&gt;
+  &lt;li&gt;And we know we have the concept of zero trust networking.&lt;/li&gt;
+  &lt;li&gt;And what if we want to access services in other clusters?&lt;/li&gt;
+  &lt;li&gt;Or services running in Kubernetes need to access external services?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m not stating anything new here, Kubernetes is getting quite mature, as has the networking capabilities that we layer on top. There are a lot of interesting options available.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-tailscale-kubernetes-operator&quot;&gt;The Tailscale Kubernetes Operator&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tailscale makes creating software-defined networks easy: securely connecting users, services, and devices. - &lt;a href=&quot;https://tailscale.com&quot;&gt;https://tailscale.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;First, I’ve written about Tailscale before.&lt;/p&gt;
+
+&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #f5f5f5; padding: 20px; border-radius: 5px;&quot;&gt;
+    &lt;a href=&quot;https://serverascode.com/2024/11/23/tailscale-mulladvpn.html&quot;&gt;
+        &lt;img src=&quot;/img/magazine-cards/tailscale-mullvad-200w.png&quot; alt=&quot;Tailscale Mullvad&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;/a&gt;
+    &lt;p&gt;&lt;em&gt;Check out my previous post about using Tailscale with Mullvad VPN for secure personal networks.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That post is more about building up a safe personal network combined with Mullvad VPN. This post is about securing and building connectivity with &lt;a href=&quot;https://tailscale.com/kb/1236/kubernetes-operator&quot;&gt;Tailscale’s Kubernetes operator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Tailscale provides several options for setting up in Kubernetes, and one of them is the &lt;a href=&quot;https://tailscale.com/kb/1236/kubernetes-operator&quot;&gt;Tailscale Kubernetes Operator&lt;/a&gt;, which is what I’ll be using in this post.&lt;/p&gt;
+
+&lt;p&gt;But first, let’s get Kubernetes installed.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-kubernetes&quot;&gt;Installing Kubernetes&lt;/h2&gt;
+
+&lt;p&gt;First, I’ll use my Kubernetes installer script, brilliantly named &lt;a href=&quot;https://github.com/ccollicutt/install-kubernetes&quot;&gt;install-kubernetes&lt;/a&gt;, to set up a Kubernetes cluster. It simply installs a simple kubeadm-based cluster on Ubuntu 22.04 virtual machines, adding in Calico as the CNI.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;root@ts1:~# git clone https://github.com/ccollicutt/install-kubernetes
+Cloning into &apos;install-kubernetes&apos;...
+remote: Enumerating objects: 105, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (11/11), done.
+remote: Total 105 (delta 12), reused 12 (delta 7), pack-reused 87 (from 1)
+Receiving objects: 100% (105/105), 23.90 KiB | 479.00 KiB/s, done.
+Resolving deltas: 100% (52/52), done.
+root@ts1:~# cd install-kubernetes
+root@ts1:~/install-kubernetes# ./install-kubernetes.sh -s
+Starting install...
+==&amp;gt; Logging all output to /tmp/install-kubernetes-R21z3PlZYv/install.log
+Checking Linux distribution
+Disabling swap
+Removing packages
+Installing required packages
+Installing Kubernetes packages
+Configuring system
+Configuring crictl
+Configuring kubelet
+Configuring containerd
+Installing containerd
+Starting services
+Configuring control plane node...
+Initialising the Kubernetes cluster via Kubeadm
+Configuring kubeconfig for root and ubuntu users
+Installing Calico CNI
+==&amp;gt; Installing Calico tigera-operator
+==&amp;gt; Installing Calico custom-resources
+Waiting for nodes to be ready...
+==&amp;gt; Nodes are ready
+Checking Kubernetes version...
+==&amp;gt; Client version: v1.31.0
+==&amp;gt; Server Version: v1.31.0
+==&amp;gt; Requested KUBE_VERSION matches the server version.
+Installing metrics server
+Configuring as a single node cluster
+Configuring as a single node cluster
+Deploying test nginx pod
+Waiting for all pods to be running...
+Install complete!
+
+### Command to add a worker node ###
+kubeadm join 10.10.10.250:6443 --token &amp;lt;REDACTED&amp;gt; --discovery-token-ca-cert-hash &amp;lt;REDACTED&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This gives me an initial Kubernetes node, which is both a control plane and a worker node. Next, I add another worker node, but I won’t show that output here.&lt;/p&gt;
+
+&lt;p&gt;So now I’ve got two nodes, &lt;code&gt;ts1&lt;/code&gt; and &lt;code&gt;ts2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ k get nodes
+NAME   STATUS   ROLES           AGE   VERSION
+ts1    Ready    control-plane   15h   v1.31.0
+ts2    Ready    &amp;lt;none&amp;gt;          15h   v1.31.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;installing-the-tailscale-kubernetes-operator&quot;&gt;Installing the Tailscale Kubernetes Operator&lt;/h2&gt;
+
+&lt;h3 id=&quot;setting-up-tailscale&quot;&gt;Setting up Tailscale&lt;/h3&gt;
+
+&lt;p&gt;This includes the following steps (see the &lt;a href=&quot;https://tailscale.com/kb/1236/kubernetes-operator&quot;&gt;docs&lt;/a&gt; for more details):&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Setting up an OAuth client ID and secret&lt;/li&gt;
+  &lt;li&gt;Configuring tags in the ACLs&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/kubernetes-operator-tailscale-docs.png&quot; alt=&quot;Kubernetes operator tailscale docs&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Set up OAuth client ID and secret&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/oauth-clients-tailscale.png&quot; alt=&quot;Tailscale OAuth client ID and secret&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Set up ACL tags&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/access-controls-tailscale.png&quot; alt=&quot;Tailscale ACL Tags&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;See the results in machines once the operator is installed and some workloads are created (note that this is after the operator is installed, and some workloads are created)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/machines-tailscale.png&quot; alt=&quot;Machines&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;install-into-kubernetes-with-helm&quot;&gt;Install into Kubernetes with Helm&lt;/h3&gt;
+
+&lt;p&gt;I’ll show you my &lt;a href=&quot;https://github.com/casey/just&quot;&gt;justfile&lt;/a&gt; commands for installation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;add-tailscale-helm:
+    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+    helm repo update
+
+install-tailscale-operator:
+    helm upgrade \
+        --install \
+        tailscale-operator \
+        tailscale/tailscale-operator \
+        --namespace=tailscale \
+        --create-namespace \
+        --set-string oauth.clientId=&quot;${TS_CLIENT_ID}&quot; \
+        --set-string oauth.clientSecret=&quot;${TS_CLIENT_SECRET}&quot; \
+        --wait
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Thanks to Helm, very simple to install.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ just install-tailscale-operator
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;what-does-this-network-look-like&quot;&gt;What Does This Network Look Like?&lt;/h2&gt;
+
+&lt;p&gt;In this section we’ll go over the layers. To visualize those layers, here’s a diagram of my homelab setup.&lt;/p&gt;
+
+&lt;div class=&quot;bg-amber-50 border-l-4 border-amber-500 p-4 my-4&quot;&gt;
+  &lt;p class=&quot;text-amber-700&quot;&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; This is a basic diagram of my homelab setup and is not completely accurate. Please refer to official Tailscale and Calico and Kubernetes documentation!&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;/img/tailscale-k8s-operator/mermaid-diagram.png&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/mermaid-diagram.png&quot; alt=&quot;Homelab networking diagram&quot; target=&quot;_blank&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;physical-networking&quot;&gt;Physical Networking&lt;/h3&gt;
+
+&lt;p&gt;The physical networking is straightforward: the two nodes/vms are on the same VLAN, and have direct access to each other. (I use &lt;a href=&quot;https://serverascode.com/2024/10/19/incus-installation-and-use.html&quot;&gt;Incus&lt;/a&gt; to manage my VMs.)&lt;/p&gt;
+
+&lt;h3 id=&quot;calico-networking&quot;&gt;Calico Networking&lt;/h3&gt;
+
+&lt;p&gt;The Calico configuration is what you get by default. Calico is VERY configurable, and you can do a lot of complex things with it, but this is the default deployment.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ kubectl get ippool -o yaml
+apiVersion: v1
+items:
+- apiVersion: projectcalico.org/v3
+  kind: IPPool
+  metadata:
+    creationTimestamp: &quot;2025-01-31T23:51:56Z&quot;
+    name: default-ipv4-ippool
+    resourceVersion: &quot;891&quot;
+    uid: 15bc140e-701b-4cb9-aea8-82e74925b997
+  spec:
+    allowedUses:
+    - Workload
+    - Tunnel
+    blockSize: 26
+    cidr: 192.168.0.0/16
+    ipipMode: Never
+    natOutgoing: true
+    nodeSelector: all()
+    vxlanMode: CrossSubnet
+kind: List
+metadata:
+  resourceVersion: &quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;or…&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;# calicoctl get ippool default-ipv4-ippool -oyaml
+apiVersion: projectcalico.org/v3
+kind: IPPool
+metadata:
+  creationTimestamp: &quot;2025-01-31T23:51:56Z&quot;
+  name: default-ipv4-ippool
+  resourceVersion: &quot;891&quot;
+  uid: 15bc140e-701b-4cb9-aea8-82e74925b997
+spec:
+  allowedUses:
+  - Workload
+  - Tunnel
+  blockSize: 26
+  cidr: 192.168.0.0/16
+  ipipMode: Never
+  natOutgoing: true
+  nodeSelector: all()
+  vxlanMode: CrossSubnet
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;IP address management is handled by Calico.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# calicoctl ipam show --show-blocks
++----------+--------------------+-----------+------------+--------------+
+| GROUPING |        CIDR        | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+--------------------+-----------+------------+--------------+
+| IP Pool  | 192.168.0.0/16     |     65536 | 15 (0%)    | 65521 (100%) |
+| Block    | 192.168.131.64/26  |        64 | 8 (12%)    | 56 (88%)     |
+| Block    | 192.168.153.128/26 |        64 | 7 (11%)    | 57 (89%)     |
++----------+--------------------+-----------+------------+--------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Default settings:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;VXLAN mode is set to CrossSubnet, meaning that Calico will only use VXLAN encapsulation when pods are communicating across different subnets.&lt;/li&gt;
+  &lt;li&gt;IPIP mode is set to Never, which means that IPIP tunneling is not used.&lt;/li&gt;
+  &lt;li&gt;The network CIDR is 192.168.0.0/16 with a block size of 26, giving 62 usable IPs in each block as managed by Calico.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;natOutgoing: true&lt;/code&gt; means that outgoing traffic is NATed to the external IP address of the node.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So…&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nodes communicate BGP routes over their physical network (10.10.x.x)&lt;/li&gt;
+  &lt;li&gt;Nodes get IPs from the configured pool (192.168.0.0/16)&lt;/li&gt;
+  &lt;li&gt;The physical network handles the actual packet delivery between the nodes&lt;/li&gt;
+  &lt;li&gt;There is NAT involved (multiple NATs actually)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;# calicoctl ipam show
++----------+----------------+-----------+------------+--------------+
+| GROUPING |      CIDR      | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+----------------+-----------+------------+--------------+
+| IP Pool  | 192.168.0.0/16 |     65536 | 15 (0%)    | 65521 (100%) |
++----------+----------------+-----------+------------+--------------+
+# calicoctl node status
+Calico process is running.
+
+IPv4 BGP status
++--------------+-------------------+-------+----------+-------------+
+| PEER ADDRESS |     PEER TYPE     | STATE |  SINCE   |    INFO     |
++--------------+-------------------+-------+----------+-------------+
+| 10.10.10.246 | node-to-node mesh | up    | 23:55:06 | Established |
++--------------+-------------------+-------+----------+-------------+
+
+IPv6 BGP status
+No IPv6 peers found.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are only two nodes, so the BGP mesh is, well, as small as it gets.&lt;/p&gt;
+
+&lt;p&gt;We can see all the pods and such and what hosts they are on, IPs, etc.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ just show-pod-details 
+POD NAME                    POD IP          NODE NAME        NODE IP
+-------------------------  --------------  ---------------  --------------
+calico-apiserver-64497c8b94-2xlqq          192.168.131.72    ts1    10.10.10.250
+calico-apiserver-64497c8b94-c7px8          192.168.131.71    ts1    10.10.10.250
+calico-kube-controllers-7d868b8f66-85ldw   192.168.131.67    ts1    10.10.10.250
+calico-node-b68ck                          10.10.10.246      ts2    10.10.10.246
+calico-node-j5sw5                          10.10.10.250      ts1    10.10.10.250
+calico-typha-764c8bcd98-pwnf4              10.10.10.250      ts1    10.10.10.250
+csi-node-driver-2bg5q                      192.168.131.70    ts1    10.10.10.250
+csi-node-driver-6hs69                      192.168.153.129   ts2    10.10.10.246
+hello-tailscale-expose-74c4485894-xms5d    192.168.153.137   ts2    10.10.10.246
+hello-tailscale-5c8bf6665c-7lqvj           192.168.153.131   ts2    10.10.10.246
+coredns-6f6b679f8f-knnlg                   192.168.131.65    ts1    10.10.10.250
+coredns-6f6b679f8f-sdrp6                   192.168.131.68    ts1    10.10.10.250
+etcd-ts1                                   10.10.10.250      ts1    10.10.10.250
+kube-apiserver-ts1                         10.10.10.250      ts1    10.10.10.250
+kube-controller-manager-ts1                10.10.10.250      ts1    10.10.10.250
+kube-proxy-gm8rh                           10.10.10.246      ts2    10.10.10.246
+kube-proxy-lq5p9                           10.10.10.250      ts1    10.10.10.250
+kube-scheduler-ts1                         10.10.10.250      ts1    10.10.10.250
+metrics-server-5f94f4d4fd-rr92x            192.168.131.64    ts1    10.10.10.250
+operator-6999975fd7-dxvv5                  192.168.153.130   ts2    10.10.10.246
+ts-hello-tailscale-expose-db59d-0          192.168.153.136   ts2    10.10.10.246
+ts-hello-tailscale-z5dfr-0                 192.168.153.133   ts2    10.10.10.246
+tigera-operator-b974bcbbb-hrzv9            10.10.10.250      ts1    10.10.10.250
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;tailscale-networking&quot;&gt;Tailscale Networking&lt;/h3&gt;
+
+&lt;p&gt;Tailscale uses Wireguard to create a secure network.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tailscale is built on top of WireGuard; we think very highly of it - &lt;a href=&quot;https://tailscale.com/compare/wireguard&quot;&gt;https://tailscale.com/compare/wireguard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Tailscale takes Wireguard quite a bit further, dealing with all the other issues around modern networks, e.g. NAT (which can be brutal to deal with), and adding Access Control Lists (ACLs) and other features.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Tailscale takes care of on-demand NAT traversal so that devices can talk to each other directly in most circumstances, without manual configuration. When NAT traversal fails, Tailscale relays encrypted traffic, so that devices can always talk to each other, albeit with higher latency in that case. There is no need to modify firewalls or routers; any devices that can reach the internet can reach each other. (Tailscale traffic between two devices on the same LAN does not leave that LAN.) - &lt;a href=&quot;https://tailscale.com/compare/wireguard&quot;&gt;https://tailscale.com/compare/wireguard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In the Kubernetes deployment we have a proxy pod that is setup for each exposed service by the operator–at least that is the way that I understand it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ k get pods -n tailscale 
+NAME                                READY   STATUS    RESTARTS   AGE
+operator-6999975fd7-dxvv5           1/1     Running   0          140m
+ts-hello-tailscale-expose-db59d-0   1/1     Running   0          80m
+ts-hello-tailscale-z5dfr-0          1/1     Running   0          119m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;ts-hellow-tailscale*&lt;/code&gt; workloads are running in their own namespaces, above are the tailscale pods for those workloads.&lt;/p&gt;
+
+&lt;h2 id=&quot;accessing-workloads-with-tailscale&quot;&gt;Accessing Workloads With Tailscale&lt;/h2&gt;
+
+&lt;p&gt;Here’s some justfile commands to curl the hello-tailscale service.&lt;/p&gt;
+
+&lt;p&gt;Note that this workload is using the Tailscale annotation to expose the service, but you can also use the Tailscale LoadBalancer service type, and a couple of other options I believe.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;deploy-tailscale-hello-with-expose:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    kubectl apply -f - &amp;lt;&amp;lt;&apos;EOF&apos;
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: hello-tailscale-expose
+    ---
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: nginx-index-html
+      namespace: hello-tailscale-expose
+    data:
+      index.html: |
+        &amp;lt;h1&amp;gt;Hello from Tailscale Expose!&amp;lt;/h1&amp;gt;
+    ---
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: hello-tailscale-expose
+      namespace: hello-tailscale-expose
+      labels:
+        app: hello-tailscale-expose
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: hello-tailscale-expose
+      template:
+        metadata:
+          labels:
+            app: hello-tailscale-expose
+        spec:
+          containers:
+            - name: hello-tailscale-expose
+              image: nginx:latest
+              ports:
+                - containerPort: 80
+              volumeMounts:
+                - name: nginx-index
+                  mountPath: /usr/share/nginx/html
+          volumes:
+            - name: nginx-index
+              configMap:
+                name: nginx-index-html
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: hello-tailscale-expose
+      namespace: hello-tailscale-expose
+      annotations:
+        tailscale.com/expose: &quot;true&quot;
+    spec:
+      selector:
+        app: hello-tailscale-expose
+      ports:
+        - port: 80
+          targetPort: 80
+    EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we can easily access that service from my workstation, which is on the tailnet!&lt;/p&gt;
+
+&lt;div class=&quot;bg-blue-50 border-l-4 border-blue-500 p-4 my-4&quot;&gt;
+  &lt;p class=&quot;text-blue-700&quot;&gt;📝 Note that one of these workloads I specified a loadbalancer for, and for the other I used the Tailscale expose annotation.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;pre&gt;&lt;code&gt;$ tailscale status | grep hello
+100.80.241.127  hello-tailscale-expose-hello-tailscale-expose tagged-devices linux   -
+100.85.85.53    hello-tailscale-hello-tailscale tagged-devices linux   idle, tx 532 rx 316
+100.101.102.103 hello.ts.net         hello@       linux   -
+$ curl hello-tailscale-hello-tailscale
+&amp;lt;h1&amp;gt;Hello from Tailscale LoadBalancer!&amp;lt;/h1&amp;gt;
+$ curl hello-tailscale-expose-hello-tailscale-expose
+&amp;lt;h1&amp;gt;Hello from Tailscale Expose!&amp;lt;/h1&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we can see that in this screenshot as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/tailscale-k8s-operator/hello-tailscale.png&quot; alt=&quot;Hello from Tailscale LoadBalancer&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Tailscale solves a lot of problems for me, especially when it comes to using containers. Networking has become very complex. For example, in the past in my homelab I’d set up &lt;a href=&quot;https://metallb.io/&quot;&gt;MetalLB&lt;/a&gt; to create a load balancer for applications. MetalLB is an amazing piece of technology (thank you to those that built and maintain it!), but I’d be managing IPs and trying to remember which ranges I’d allowed the loadbalancer to use, and inevitably I’d forget. Never mind that those workloads wouldn’t be accessible from my laptop–when I was at home on my workstation, sure, no problem, but when I was on the road I’d have Tailnet but no Kubernetes access. Now I have that too, plus the ability to use ACLs to control access to my Kubernetes cluster. Or, potentially, I can deploy apps that I will use, and be able to access them from my phone too. Very nice! Now I can deploy apps into Kubernetes and use them from any of my devices.&lt;/p&gt;
+
+&lt;div class=&quot;bg-green-50 border-l-4 border-green-500 p-4 my-4&quot;&gt;
+  &lt;p class=&quot;text-green-700&quot;&gt;📝 Note that there are some things to think about when using Kubernetes, NAT, and Tailscale. Best to read this &lt;a href=&quot;https://tailscale.com/blog/kubernetes-direct-connections&quot; class=&quot;underline&quot;&gt;Tailscale blog post&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tailscale.com/learn/managing-access-to-kubernetes-with-tailscale&quot;&gt;How to Secure Kubernetes Access with Tailscale&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tailscale.com/blog/kubernetes-direct-connections&quot;&gt;Kubernetes, direct connections, and you&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tailscale.com/blog/how-tailscale-works&quot;&gt;How Tailscale Works&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tailscale.com/blog/how-nat-traversal-works&quot;&gt;How NAT Traversal Works&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=7EoCa9HP9Bc&amp;amp;t=3742s&quot;&gt;Tailscale Webinar - NAT Traversal explained with Lee Briggs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip&quot;&gt;Calico Overlay networking&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ps-mermaid-diagram-code&quot;&gt;PS. Mermaid Diagram Code&lt;/h2&gt;
+
+&lt;p&gt;Again, not a perfect diagram, but it’s a good start.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;graph TB
+    subgraph Disclaimer[**This is a basic diagram of my homelab setup and may contain inaccuracies.&amp;lt;br&amp;gt;Please refer to official Tailscale documentation.**]
+        style Disclaimer fill:#fff,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
+    end
+
+    subgraph Physical Network
+        DHCP[DHCP Server]
+        VLAN[VLAN Network]
+        DHCP --&amp;gt; VLAN
+    end
+
+    subgraph Kubernetes Cluster
+        subgraph Kubernetes Nodes
+            Node1[Node ts1&amp;lt;br&amp;gt;Control Plane + Worker]
+            Node2[Node ts2&amp;lt;br&amp;gt;Worker]
+            VLAN --&amp;gt; Node1
+            VLAN --&amp;gt; Node2
+        end
+
+        subgraph Calico Networking
+            BGPBGP Mesh&amp;lt;br&amp;gt;(Node to Node)
+            IPPOOL[IP Pool&amp;lt;br&amp;gt;natOutgoing: true]
+            Node1 &amp;lt;--&amp;gt; BGP
+            Node2 &amp;lt;--&amp;gt; BGP
+            BGP --&amp;gt; IPPOOL
+            Pod1[Pods on ts1]
+            Pod2[Pods on ts2]
+            IPPOOL --&amp;gt; Pod1
+            IPPOOL --&amp;gt; Pod2
+            Pod1 -.-&amp;gt;|NAT| INTERNET
+            Pod2 -.-&amp;gt;|NAT| INTERNET
+        end
+
+        subgraph Example Service
+            HELLO[hello-tailscale-expose]
+            TS_HELLO[ts-hello-tailscale-expose&amp;lt;br&amp;gt;Tailscale Proxy Pod]
+            HELLO --&amp;gt; TS_HELLO
+        end
+
+        Pod1 --&amp;gt; TS_OP
+        Pod2 --&amp;gt; TS_OP
+
+        subgraph Tailscale Layer
+            TS_OP[Tailscale Operator&amp;lt;br&amp;gt;Pod]
+            TS_OP --&amp;gt; TS_HELLO
+        end
+    end
+
+    subgraph Tailnet Devices
+        LAPTOP[Laptop&amp;lt;br&amp;gt;Tailscale Client]
+    end
+
+    TS_CTRL[Tailscale Control Plane&amp;lt;br&amp;gt;Cloud Service]
+    INTERNET((Internet))
+    
+    %% Encrypted connections as dotted lines
+    TS_CTRL -.- TS_OP
+    TS_CTRL -.- LAPTOP
+    LAPTOP -.- TS_HELLO
+    
+    classDef physical fill:#f9f,stroke:#333,stroke-width:2px
+    classDef calico fill:#bbf,stroke:#333,stroke-width:2px
+    classDef tailscale fill:#bfb,stroke:#333,stroke-width:2px
+    classDef k8s fill:#fff,stroke:#326CE5,stroke-width:2px
+    classDef device fill:#fdb,stroke:#333,stroke-width:2px
+    classDef service fill:#dfd,stroke:#333,stroke-width:2px
+    
+    class DHCP,VLAN physical
+    class BGP,IPPOOL,Pod1,Pod2 calico
+    class TS_CTRL,TS_OP tailscale
+    class Kubernetes_Cluster k8s
+    class LAPTOP device
+    class HELLO,TS_HELLO service
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Malicious Codes and Where to Find Them</title>
@@ -40,7 +583,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/img/malicious-code1.png&quot; alt=&quot;Malicious code&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;options-for-finding-malicious-code&quot;&gt;Options for finding malicious code&lt;/h2&gt;
+&lt;h2 id=&quot;options-for-finding-malicious-code&quot;&gt;Options for Finding Malicious Code&lt;/h2&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Write it yourself
