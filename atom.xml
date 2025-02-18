@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-02-03T06:59:32-05:00</updated>
+ <updated>2025-02-18T07:55:03-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -68,7 +68,7 @@
     &lt;a href=&quot;https://serverascode.com/2024/11/23/tailscale-mulladvpn.html&quot;&gt;
         &lt;img src=&quot;/img/magazine-cards/tailscale-mullvad-200w.png&quot; alt=&quot;Tailscale Mullvad&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
     &lt;/a&gt;
-    &lt;p&gt;&lt;em&gt;Check out my previous post about using Tailscale with Mullvad VPN for secure personal networks.&lt;/em&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;em&gt;Also check out my other post about using &lt;a href=&quot;https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html&quot;&gt;Tailscale with Kubernetes&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;That post is more about building up a safe personal network combined with Mullvad VPN. This post is about securing and building connectivity with &lt;a href=&quot;https://tailscale.com/kb/1236/kubernetes-operator&quot;&gt;Tailscale’s Kubernetes operator&lt;/a&gt;.&lt;/p&gt;
@@ -927,6 +927,13 @@ Otherwise pipx is ready to go! ✨ 🌟 ✨
 &lt;blockquote&gt;
   &lt;p&gt;NOTE: I have no affiliation with Tailscale or Mullvad. I’m a big fan of Tailscale because it is a CANADIAN 🇨🇦 company!&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #f5f5f5; padding: 20px; border-radius: 5px;&quot;&gt;
+    &lt;a href=&quot;https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html&quot;&gt;
+        &lt;img src=&quot;/img/magazine-cards/tailscale-k8s-operator-200w.png&quot; alt=&quot;Tailscale Mullvad&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;/a&gt;
+    &lt;p&gt;&lt;em&gt;Also check out my other post about using &lt;a href=&quot;https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html&quot;&gt;Tailscale with Kubernetes&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;tailscale-&quot;&gt;Tailscale 🌐&lt;/h2&gt;
 
@@ -24111,8 +24118,8 @@ server 3 has 49 vms
 
 &lt;p&gt;I’ve never been a big fan of live migration. Usually it means a distributed file system, or a shared file system, and those are both hard to run and scale. Also, there is the whole pets vs cattle thing. Using that metaphor, there’s no reason to live migrate cattle.&lt;/p&gt;
 
-&lt;p&gt;However, I did read through a paper, “Adaptive Resource Provisioning for the Cloud
-Using Online Bin Packing”:http://www.cs.princeton.edu/~haipengl/papers/binpacking.pdf, that discussed using bin-packing to move vms around in a cloud so that some hypervisors could be turned off and thus save power. To me that sounds like a good use of live migration.&lt;/p&gt;
+&lt;p&gt;However, I did read through a paper, &lt;a href=&quot;http://www.cs.princeton.edu/~haipengl/papers/binpacking.pdf&quot;&gt;“Adaptive Resource Provisioning for the Cloud
+Using Online Bin Packing”&lt;/a&gt;, that discussed using bin-packing to move vms around in a cloud so that some hypervisors could be turned off and thus save power. To me that sounds like a good use of live migration.&lt;/p&gt;
 
 &lt;p&gt;We have talked about making booting from volumes a default as potential methodology in an OpenStack cloud, which would enable live migration without a large shared file system or a distributed file system. So that could be a direction to go in. I’ve always thought of cinder with plain old lvm hosts to be pretty powerful and having a small failure domain. In theory we could let OpenStack schedule however it wants, and then run a bin packing algorithm every once and a while and live migrate instances to make better use of hypervisors. Easier said than done of course, but would be interesting.&lt;/p&gt;
 

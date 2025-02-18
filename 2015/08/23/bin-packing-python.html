@@ -354,8 +354,8 @@ server 3 has 49 vms
 
 <p>I’ve never been a big fan of live migration. Usually it means a distributed file system, or a shared file system, and those are both hard to run and scale. Also, there is the whole pets vs cattle thing. Using that metaphor, there’s no reason to live migrate cattle.</p>
 
-<p>However, I did read through a paper, “Adaptive Resource Provisioning for the Cloud
-Using Online Bin Packing”:http://www.cs.princeton.edu/~haipengl/papers/binpacking.pdf, that discussed using bin-packing to move vms around in a cloud so that some hypervisors could be turned off and thus save power. To me that sounds like a good use of live migration.</p>
+<p>However, I did read through a paper, <a href="http://www.cs.princeton.edu/~haipengl/papers/binpacking.pdf">“Adaptive Resource Provisioning for the Cloud
+Using Online Bin Packing”</a>, that discussed using bin-packing to move vms around in a cloud so that some hypervisors could be turned off and thus save power. To me that sounds like a good use of live migration.</p>
 
 <p>We have talked about making booting from volumes a default as potential methodology in an OpenStack cloud, which would enable live migration without a large shared file system or a distributed file system. So that could be a direction to go in. I’ve always thought of cinder with plain old lvm hosts to be pretty powerful and having a small failure domain. In theory we could let OpenStack schedule however it wants, and then run a bin packing algorithm every once and a while and live migrate instances to make better use of hypervisors. Easier said than done of course, but would be interesting.</p>
 
