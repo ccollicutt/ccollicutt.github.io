@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Look at the Model Context Protocol | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="A Look at the Model Context Protocol">
+        
+        <meta name="twitter:description" content="
+    
+    What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt...">
+        <meta property="og:description" content="
+    
+    What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt..." />
+        
+        <meta property="og:title" content="A Look at the Model Context Protocol" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol-ai.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol-ai.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2025/03/03/ai-model-context-protocol-ai.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 260
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2025 MARCH</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">A Look at the Model Context Protocol</h1>
+        <p class="text-gray-600">
+            <time datetime="2025-03-03T00:00:00-05:00">
+                March 03, 2025
+            </time>
+            
+        </p>
+    </header>
+
+    <div id="toc" class="hidden mb-8 p-4 bg-gray-50 rounded-lg not-prose">
+        <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+        <nav id="toc-content"></nav>
+    </div>
+
+    
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/mcp-200w.png" alt="Tailscale Kubernetes Operator" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt of caffeine!</em></p>
+</div>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+
+<p>AI is changing the way we build applications, the way we code, the way we do a lot of things. For me, the recent advances in AI are fascinating because AI is neither really good at everything nor really bad at everything. It’s like Schrödinger’s Cat: it’s both amazing and kind of ridiculous at the same time, existing in two worlds at once. Having said that, we, the royal “we”,are going to use AI, for better or for worse.</p>
+
+<p>However, we are still figuring out how best to use AI to solve problems. One of the things that makes humans unique is our ability to use tools. Can AI use tools? Without help…no. Most chatbots can’t just call up an API and take real action. It’s typically limited to producing text of some kind.</p>
+
+<p>Enter the Model Context Protocol, or MCP for short, a protocol that allows AI models to use tools to take action.</p>
+
+<h2 id="what-is-a-model-context-protocol">What is a Model Context Protocol?</h2>
+
+<blockquote>
+  <p>The Model Context Protocol is an open standard that enables developers to build secure, two-way connections between their data sources and AI-powered tools. The architecture is straightforward: developers can either expose their data through MCP servers or build AI applications (MCP clients) that connect to these servers. - <a href="https://www.anthropic.com/news/model-context-protocol">Anthropic</a></p>
+</blockquote>
+
+<blockquote>
+  <p>MCP is an open protocol that standardizes how applications provide context to LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools. - <a href="https://modelcontextprotocol.io/introduction">MCP</a></p>
+</blockquote>
+
+<h2 id="whats-the-value-of-mcp">What’s the Value of MCP?</h2>
+
+<blockquote>
+  <p>…for our example application, MCP would potentially reduce our workload because we wouldn’t need to write three custom AI integrations. Instead, we’d need only write the weather server once, then deploy to interact with all MCP-compatible clients. - <a href="https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you">Willow Tree</a></p>
+</blockquote>
+
+<blockquote>
+  <p>Instead of maintaining separate connectors for each data source, developers can now build against a standard protocol. As the ecosystem matures, AI systems will maintain context as they move between different tools and datasets, replacing today’s fragmented integrations with a more sustainable architecture. - <a href="https://dappier.medium.com/what-is-anthropics-new-mcp-standard-and-how-can-it-improve-your-ai-agent-be6f6c72eb6a">Dappier</a></p>
+</blockquote>
+
+<p>MCP addresses these and other issues:</p>
+
+<ul>
+  <li>
+    <p>Models have specific cut-off dates beyond which they cannot provide reliable information, limiting their response to knowledge available up to their cut-off date and requiring transparent acknowledgement of these limitations.</p>
+  </li>
+  <li>
+    <p>Models often don’t have access to real-time data. All responses must be generated solely from information within the model’s training data or context window, without the ability to verify online information or validate sources in real time.</p>
+  </li>
+  <li>
+    <p>Lack of agentic capabilities. On their own, models are not capable of taking any action other than providing a textual response. Without MCP, or something similar, models are unable to take the actions we need to make them useful.</p>
+  </li>
+</ul>
+
+<h2 id="current-limitation-local-only">Current Limitation: Local Only</h2>
+
+<blockquote>
+  <p>Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - <a href="https://x.com/alexalbert__/status/1861079950411141180">Alex Albert</a></p>
+</blockquote>
+
+<p>Crucially, as of today, 3 March 2025, MCP “servers” can only be used locally! This is clearly a problem, and Anthropic knows it. The problem is authentication. For a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!</p>
+
+<p>Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).</p>
+
+<h2 id="what-does-an-mcp-server-look-like">What Does an MCP Server Look Like?</h2>
+
+<p>Anthropic has created guides for many languages which can be found in their <a href="https://github.com/modelcontextprotocol/">main repository</a>. For Python specifically, they provide a <a href="https://github.com/modelcontextprotocol/python-sdk">Python SDK</a>. Additionally, there is a growing <a href="https://github.com/modelcontextprotocol/servers">list of community-created servers</a> available as well.</p>
+
+<p>Let’s take a quick look at a simple example of an MCP server written in Python.</p>
+
+<h3 id="first-resources-tools-and-prompts">First: Resources, Tools, and Prompts</h3>
+
+<p>Claude Desktop can use multiple sources of information and capabilities via MCP, and here we’ll show using one resource and a simple adding tool.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Resources</td>
+      <td>Represent static data or information that the LLM can access as context, like a database record or a file, essentially providing “read-only” data for the model to reference.</td>
+    </tr>
+    <tr>
+      <td>Tools</td>
+      <td>Executable functions that the LLM can call to perform actions or retrieve dynamic information, allowing the model to actively interact with external systems like making API calls or calculations.</td>
+    </tr>
+    <tr>
+      <td>Prompts</td>
+      <td>Structured templates that guide the LLM interaction by providing a standardized format for user input and expected output, acting like a reusable interaction pattern.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I work with an organisation called <a href="https://taico.ca">TAICO</a> and we publish an XML feed of our articles and events. I have created a simple MCP server to retrieve the events in the feed, so that I can ask Claude about the events, to analyse them, etc. So, to be clear, this is not a tool, but rather a resource that provides up-to-date information to the LLM. That said, the “add” tool is also deployed, and from that we can see that the LLM could have access to almost any function.</p>
+
+<h3 id="creating-a-mcp-server">Creating a MCP Server</h3>
+
+<p>Following <a href="https://modelcontextprotocol.io/quickstart/server">https://modelcontextprotocol.io/quickstart/server</a>.</p>
+
+<p>First, get uv.</p>
+
+<pre><code class="language-bash">pipx install uv
+</code></pre>
+
+<p>Now, create a new directory for your project.</p>
+
+<pre><code class="language-bash">uv init taico-feeds
+cd taico-feeds
+
+# Create virtual environment and activate it
+uv venv
+source .venv/bin/activate
+
+# Install dependencies
+uv add "mcp[cli]" httpx
+
+# Create our server file
+touch taico-feeds.py
+</code></pre>
+
+<p>Now, edit the <code>taico-feeds.py</code> file to add something like the following code, where I have removed some of the code for brevity.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 I then put this into a docker container, and that was how Claude Desktop could use it, by executing the container. I am not a Windows developer, and Claude Desktop only runs on Windows or MacOS. However, Claude Desktop can launch a Docker container on Windows, which is easier for me as I can write the code on Linux and publish the container image. For those of you who develop on Windows, you would have a much simpler time of it and could just use mcp to run it locally.</p>
+</div>
+
+<pre><code class="language-python">from mcp.server.fastmcp import FastMCP
+import requests
+import xml.etree.ElementTree as ET
+from typing import List, Dict, Any
+
+# Create an MCP server
+mcp = FastMCP("Taico Feeds")
+
+# Add an addition tool
+@mcp.tool()
+def add(a: int, b: int) -&gt; int:
+    """Add two numbers"""
+    return a + b
+
+# Add a resource to fetch events from Taico feed
+@mcp.resource("taico://events")
+def get_events() -&gt; List[Dict[str, Any]]:
+    """
+    Fetch events from the Taico feed.
+    
+    Returns a list of events where the category term is 'event'.
+    Each event contains title, link, published date, content, and other metadata.
+    """
+    url = "https://taico.ca/feed.xml"
+    
+&lt;code removed for brevity&gt;
+
+# Run the server when the script is executed directly
+if __name__ == "__main__":
+    mcp.run()
+</code></pre>
+
+<p>Example Claude Desktop configuration to launch the container.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 The container I use in this example is currently not public, but this shows how you could run an MCP server via Docker. Claude Desktop does not have to be able to pull the container image from a private registry, in this case I pre-pulled it, and then Claude Desktop can start up the container via the command setup in the configuration.</p>
+</div>
+
+<pre><code class="language-json">{
+  "mcpServers": {
+    "taico": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "--init", "-e", "DOCKER_CONTAINER=true", "ghcr.io/ccollicutt/taico-mcp-server:main"]
+    }
+  }
+}
+</code></pre>
+
+<h3 id="debug-mode-and-inspector">Debug Mode and Inspector</h3>
+
+<p>While developing, you can use the <code>mcp</code> command to start the server and run it in debug mode. This will also start the MCP inspector, which is a tool that allows you to inspect the server and the resources and tools it has available.</p>
+
+<pre><code class="language-bash">$ mcp dev taico-feeds.py 
+Need to install the following packages:
+@modelcontextprotocol/inspector@0.4.1
+Ok to proceed? (y) y
+
+Starting MCP inspector...
+Proxy server listening on port 3000
+
+🔍 MCP Inspector is up and running at http://localhost:5173 🚀
+</code></pre>
+
+<h2 id="results">Results</h2>
+
+<p>Once I’ve edited the Claude Desktop configuration, and restarted it, I see that I have a new <code>taico://events</code> resource, as well as a <code>add</code> tool.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 Notice that I never spell anything right when chatting with an LLM, it always figures it out. Why spend time retyping? :)</p>
+</div>
+
+<p><img src="/img/mcp-claud-desktop-sources-1.png" alt="" /></p>
+
+<p>If I select that, now I have a chat with Claude that has access to the Taico Feeds resource. What’s more, we can ask Claude about those events, what they were, what happened, what kind of talks–anything we want. Claude now has the data to analyse and provide a response.</p>
+
+<p><img src="/img/mcp-claud-desktop1.png" alt="" /></p>
+
+<p>In the Docker Desktop logs, I see that the MCP server is running.</p>
+
+<p><img src="/img/mcp-docker-desktop-logs-1.png" alt="" /></p>
+
+<p>As well, we can see that there is a simple adding tool available.</p>
+
+<p><img src="/img/mcp-adding-tools.png" alt="" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It’s hard to say whether MCP will be a winner or not. If at some point we can run a remote MCP server and it uses authentication, then it will be extremely useful, perhaps undeniably so–something has to provide this capability. But at the moment it is a local-only solution. Having said that, I definitely see a future where MCP is successful and we all use it every day to make our generative AI applications more useful. It’s a good bet that learning to build MCP servers will be a valuable skill in the future.</p>
+
+<div class="callout" style="background-color: #ffe4b5; padding: 15px; border-radius: 5px;">
+<p>⚠️ This post only covered the most basic concepts around MCP, and there is a lot more to it that I will hopefully cover in future posts. Otherwise, I've added a few links to further reading below.</p>
+</div>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/">https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/</a></li>
+  <li><a href="https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you">https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you</a></li>
+  <li><a href="https://www.chriswere.com/p/anthropics-mcp-first-impressions">https://www.chriswere.com/p/anthropics-mcp-first-impressions</a></li>
+  <li><a href="https://www.philschmid.de/mcp-example-llama">https://www.philschmid.de/mcp-example-llama</a></li>
+  <li><a href="https://www.youtube.com/watch?v=sahuZMMXNpI">https://www.youtube.com/watch?v=sahuZMMXNpI</a></li>
+  <li><a href="https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/">https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/</a></li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2025 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                260
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+
+    // Table of Contents Generator
+    document.addEventListener('DOMContentLoaded', function() {
+        const article = document.querySelector('article.prose');
+        if (!article) return;
+
+        // Get all headers from the article content (h2-h4), excluding those in tables
+        const headers = Array.from(article.querySelectorAll('h2, h3, h4')).filter(header => {
+            // Exclude headers in tables, TOC itself, and any header containing "Table of Contents"
+            return !header.closest('table') && 
+                   !header.closest('.toc') && 
+                   header.textContent.trim() !== 'Table of Contents' &&
+                   !header.textContent.includes('Table of Contents');
+        });
+
+        // Only generate TOC if there are more than 3 headers
+        if (headers.length <= 3) return;
+
+        // Create and initialize TOC container
+        const tocContainer = createTOCContainer();
+        tocContainer.id = 'toc-container';
+        
+        // Generate TOC content
+        const { toc, sectionInfo } = generateTOCContent(headers);
+        
+        // Add TOC to container
+        tocContainer.appendChild(toc);
+        
+        // Insert TOC in the appropriate location
+        insertTOC(article, tocContainer);
+
+        // Create floating button container
+        const floatingContainer = document.createElement('div');
+        floatingContainer.className = 'floating-container prose mx-auto text-center mt-8 mb-4';
+        floatingContainer.style.cssText = `
+            width: 100%;
+            max-width: 65ch;
+        `;
+
+        // Create the button
+        const backButton = document.createElement('button');
+        backButton.textContent = '↑ Back to Contents';
+        backButton.className = 'bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200';
+        backButton.style.cssText = `
+            font-size: 0.875rem;
+        `;
+
+        floatingContainer.appendChild(backButton);
+        article.appendChild(floatingContainer);
+
+        // Scroll back to TOC when clicked
+        backButton.addEventListener('click', () => {
+            tocContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enable smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    function createTOCContainer() {
+        const container = document.createElement('div');
+        container.className = 'toc mb-8 p-4 bg-gray-50 rounded-lg not-prose';
+        container.innerHTML = '<h2 class="toc-title text-lg font-semibold mb-2">Table of Contents</h2>';
+        return container;
+    }
+
+    function generateTOCContent(headers) {
+        const toc = document.createElement('ul');
+        toc.className = 'space-y-2';
+        
+        let sectionCount = 1;
+        let subsectionCount = 1;
+        let lastLevel = 2; // Start with h2 level
+
+        headers.forEach((header, index) => {
+            // Ensure header has an ID
+            if (!header.id) {
+                header.id = `section-${index}`;
+            }
+
+            const level = parseInt(header.tagName.charAt(1));
+            const { sectionNumber, newSectionCount, newSubsectionCount, newLastLevel } = 
+                generateSectionNumber(level, sectionCount, subsectionCount, lastLevel);
+
+            // Update counters
+            sectionCount = newSectionCount;
+            subsectionCount = newSubsectionCount;
+            lastLevel = newLastLevel;
+
+            // Create TOC item
+            const item = createTOCItem(header, level, sectionNumber);
+            toc.appendChild(item);
+
+            // Update header in content
+            header.prepend(document.createTextNode(sectionNumber));
+        });
+
+        return { 
+            toc,
+            sectionInfo: { sectionCount, subsectionCount, lastLevel }
+        };
+    }
+
+    function generateSectionNumber(level, sectionCount, subsectionCount, lastLevel) {
+        let sectionNumber = '';
+        let newSectionCount = sectionCount;
+        let newSubsectionCount = subsectionCount;
+        let newLastLevel = lastLevel;
+
+        if (level === 2) {
+            sectionNumber = `${sectionCount}. `;
+            newSubsectionCount = 1;
+            newSectionCount++;
+            newLastLevel = 2;
+        } else if (level === 3) {
+            sectionNumber = `${sectionCount - 1}.${subsectionCount}. `;
+            newSubsectionCount++;
+            newLastLevel = 3;
+        }
+
+        return {
+            sectionNumber,
+            newSectionCount,
+            newSubsectionCount,
+            newLastLevel
+        };
+    }
+
+    function createTOCItem(header, level, sectionNumber) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${header.id}`;
+        link.textContent = sectionNumber + header.textContent;
+        link.className = 'text-gray-700 hover:text-gray-900 hover:underline block';
+
+        // Add indentation based on header level
+        const indent = level - 2;
+        item.style.paddingLeft = `${indent * 1}rem`;
+        item.appendChild(link);
+
+        return item;
+    }
+
+    function insertTOC(article, tocContainer) {
+        const header = article.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(tocContainer, header.nextSibling);
+        } else {
+            article.insertBefore(tocContainer, article.firstChild);
+        }
+    }
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link or the feed.xml
+                if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                    window.open(href, '_blank');
+                    return;
+                }
+
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.quefrySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>

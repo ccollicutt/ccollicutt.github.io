@@ -1,4 +1,231 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-02-18T07:55:03-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">The Tailscale Kubernetes Operator</title><link href="https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html" rel="alternate" type="text/html" title="The Tailscale Kubernetes Operator" /><published>2025-01-31T00:00:00-05:00</published><updated>2025-01-31T00:00:00-05:00</updated><id>https://serverascode.com/2025/01/31/tailscale-kubernetes-operator</id><content type="html" xml:base="https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-03-04T06:59:52-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">A Look at the Model Context Protocol</title><link href="https://serverascode.com/2025/03/03/ai-model-context-protocol-ai.html" rel="alternate" type="text/html" title="A Look at the Model Context Protocol" /><published>2025-03-03T00:00:00-05:00</published><updated>2025-03-03T00:00:00-05:00</updated><id>https://serverascode.com/2025/03/03/ai-model-context-protocol-ai</id><content type="html" xml:base="https://serverascode.com/2025/03/03/ai-model-context-protocol-ai.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/mcp-200w.png" alt="Tailscale Kubernetes Operator" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt of caffeine!</em></p>
+</div>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+
+<p>AI is changing the way we build applications, the way we code, the way we do a lot of things. For me, the recent advances in AI are fascinating because AI is neither really good at everything nor really bad at everything. It’s like Schrödinger’s Cat: it’s both amazing and kind of ridiculous at the same time, existing in two worlds at once. Having said that, we, the royal “we”,are going to use AI, for better or for worse.</p>
+
+<p>However, we are still figuring out how best to use AI to solve problems. One of the things that makes humans unique is our ability to use tools. Can AI use tools? Without help…no. Most chatbots can’t just call up an API and take real action. It’s typically limited to producing text of some kind.</p>
+
+<p>Enter the Model Context Protocol, or MCP for short, a protocol that allows AI models to use tools to take action.</p>
+
+<h2 id="what-is-a-model-context-protocol">What is a Model Context Protocol?</h2>
+
+<blockquote>
+  <p>The Model Context Protocol is an open standard that enables developers to build secure, two-way connections between their data sources and AI-powered tools. The architecture is straightforward: developers can either expose their data through MCP servers or build AI applications (MCP clients) that connect to these servers. - <a href="https://www.anthropic.com/news/model-context-protocol">Anthropic</a></p>
+</blockquote>
+
+<blockquote>
+  <p>MCP is an open protocol that standardizes how applications provide context to LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools. - <a href="https://modelcontextprotocol.io/introduction">MCP</a></p>
+</blockquote>
+
+<h2 id="whats-the-value-of-mcp">What’s the Value of MCP?</h2>
+
+<blockquote>
+  <p>…for our example application, MCP would potentially reduce our workload because we wouldn’t need to write three custom AI integrations. Instead, we’d need only write the weather server once, then deploy to interact with all MCP-compatible clients. - <a href="https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you">Willow Tree</a></p>
+</blockquote>
+
+<blockquote>
+  <p>Instead of maintaining separate connectors for each data source, developers can now build against a standard protocol. As the ecosystem matures, AI systems will maintain context as they move between different tools and datasets, replacing today’s fragmented integrations with a more sustainable architecture. - <a href="https://dappier.medium.com/what-is-anthropics-new-mcp-standard-and-how-can-it-improve-your-ai-agent-be6f6c72eb6a">Dappier</a></p>
+</blockquote>
+
+<p>MCP addresses these and other issues:</p>
+
+<ul>
+  <li>
+    <p>Models have specific cut-off dates beyond which they cannot provide reliable information, limiting their response to knowledge available up to their cut-off date and requiring transparent acknowledgement of these limitations.</p>
+  </li>
+  <li>
+    <p>Models often don’t have access to real-time data. All responses must be generated solely from information within the model’s training data or context window, without the ability to verify online information or validate sources in real time.</p>
+  </li>
+  <li>
+    <p>Lack of agentic capabilities. On their own, models are not capable of taking any action other than providing a textual response. Without MCP, or something similar, models are unable to take the actions we need to make them useful.</p>
+  </li>
+</ul>
+
+<h2 id="current-limitation-local-only">Current Limitation: Local Only</h2>
+
+<blockquote>
+  <p>Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - <a href="https://x.com/alexalbert__/status/1861079950411141180">Alex Albert</a></p>
+</blockquote>
+
+<p>Crucially, as of today, 3 March 2025, MCP “servers” can only be used locally! This is clearly a problem, and Anthropic knows it. The problem is authentication. For a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!</p>
+
+<p>Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).</p>
+
+<h2 id="what-does-an-mcp-server-look-like">What Does an MCP Server Look Like?</h2>
+
+<p>Anthropic has created guides for many languages which can be found in their <a href="https://github.com/modelcontextprotocol/">main repository</a>. For Python specifically, they provide a <a href="https://github.com/modelcontextprotocol/python-sdk">Python SDK</a>. Additionally, there is a growing <a href="https://github.com/modelcontextprotocol/servers">list of community-created servers</a> available as well.</p>
+
+<p>Let’s take a quick look at a simple example of an MCP server written in Python.</p>
+
+<h3 id="first-resources-tools-and-prompts">First: Resources, Tools, and Prompts</h3>
+
+<p>Claude Desktop can use multiple sources of information and capabilities via MCP, and here we’ll show using one resource and a simple adding tool.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Resources</td>
+      <td>Represent static data or information that the LLM can access as context, like a database record or a file, essentially providing “read-only” data for the model to reference.</td>
+    </tr>
+    <tr>
+      <td>Tools</td>
+      <td>Executable functions that the LLM can call to perform actions or retrieve dynamic information, allowing the model to actively interact with external systems like making API calls or calculations.</td>
+    </tr>
+    <tr>
+      <td>Prompts</td>
+      <td>Structured templates that guide the LLM interaction by providing a standardized format for user input and expected output, acting like a reusable interaction pattern.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I work with an organisation called <a href="https://taico.ca">TAICO</a> and we publish an XML feed of our articles and events. I have created a simple MCP server to retrieve the events in the feed, so that I can ask Claude about the events, to analyse them, etc. So, to be clear, this is not a tool, but rather a resource that provides up-to-date information to the LLM. That said, the “add” tool is also deployed, and from that we can see that the LLM could have access to almost any function.</p>
+
+<h3 id="creating-a-mcp-server">Creating a MCP Server</h3>
+
+<p>Following <a href="https://modelcontextprotocol.io/quickstart/server">https://modelcontextprotocol.io/quickstart/server</a>.</p>
+
+<p>First, get uv.</p>
+
+<pre><code class="language-bash">pipx install uv
+</code></pre>
+
+<p>Now, create a new directory for your project.</p>
+
+<pre><code class="language-bash">uv init taico-feeds
+cd taico-feeds
+
+# Create virtual environment and activate it
+uv venv
+source .venv/bin/activate
+
+# Install dependencies
+uv add "mcp[cli]" httpx
+
+# Create our server file
+touch taico-feeds.py
+</code></pre>
+
+<p>Now, edit the <code>taico-feeds.py</code> file to add something like the following code, where I have removed some of the code for brevity.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 I then put this into a docker container, and that was how Claude Desktop could use it, by executing the container. I am not a Windows developer, and Claude Desktop only runs on Windows or MacOS. However, Claude Desktop can launch a Docker container on Windows, which is easier for me as I can write the code on Linux and publish the container image. For those of you who develop on Windows, you would have a much simpler time of it and could just use mcp to run it locally.</p>
+</div>
+
+<pre><code class="language-python">from mcp.server.fastmcp import FastMCP
+import requests
+import xml.etree.ElementTree as ET
+from typing import List, Dict, Any
+
+# Create an MCP server
+mcp = FastMCP("Taico Feeds")
+
+# Add an addition tool
+@mcp.tool()
+def add(a: int, b: int) -&gt; int:
+    """Add two numbers"""
+    return a + b
+
+# Add a resource to fetch events from Taico feed
+@mcp.resource("taico://events")
+def get_events() -&gt; List[Dict[str, Any]]:
+    """
+    Fetch events from the Taico feed.
+    
+    Returns a list of events where the category term is 'event'.
+    Each event contains title, link, published date, content, and other metadata.
+    """
+    url = "https://taico.ca/feed.xml"
+    
+&lt;code removed for brevity&gt;
+
+# Run the server when the script is executed directly
+if __name__ == "__main__":
+    mcp.run()
+</code></pre>
+
+<p>Example Claude Desktop configuration to launch the container.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 The container I use in this example is currently not public, but this shows how you could run an MCP server via Docker. Claude Desktop does not have to be able to pull the container image from a private registry, in this case I pre-pulled it, and then Claude Desktop can start up the container via the command setup in the configuration.</p>
+</div>
+
+<pre><code class="language-json">{
+  "mcpServers": {
+    "taico": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "--init", "-e", "DOCKER_CONTAINER=true", "ghcr.io/ccollicutt/taico-mcp-server:main"]
+    }
+  }
+}
+</code></pre>
+
+<h3 id="debug-mode-and-inspector">Debug Mode and Inspector</h3>
+
+<p>While developing, you can use the <code>mcp</code> command to start the server and run it in debug mode. This will also start the MCP inspector, which is a tool that allows you to inspect the server and the resources and tools it has available.</p>
+
+<pre><code class="language-bash">$ mcp dev taico-feeds.py 
+Need to install the following packages:
+@modelcontextprotocol/inspector@0.4.1
+Ok to proceed? (y) y
+
+Starting MCP inspector...
+Proxy server listening on port 3000
+
+🔍 MCP Inspector is up and running at http://localhost:5173 🚀
+</code></pre>
+
+<h2 id="results">Results</h2>
+
+<p>Once I’ve edited the Claude Desktop configuration, and restarted it, I see that I have a new <code>taico://events</code> resource, as well as a <code>add</code> tool.</p>
+
+<div class="callout" style="background-color: #e6ffe6; padding: 15px; border-radius: 5px;">
+<p>📝 Notice that I never spell anything right when chatting with an LLM, it always figures it out. Why spend time retyping? :)</p>
+</div>
+
+<p><img src="/img/mcp-claud-desktop-sources-1.png" alt="" /></p>
+
+<p>If I select that, now I have a chat with Claude that has access to the Taico Feeds resource. What’s more, we can ask Claude about those events, what they were, what happened, what kind of talks–anything we want. Claude now has the data to analyse and provide a response.</p>
+
+<p><img src="/img/mcp-claud-desktop1.png" alt="" /></p>
+
+<p>In the Docker Desktop logs, I see that the MCP server is running.</p>
+
+<p><img src="/img/mcp-docker-desktop-logs-1.png" alt="" /></p>
+
+<p>As well, we can see that there is a simple adding tool available.</p>
+
+<p><img src="/img/mcp-adding-tools.png" alt="" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It’s hard to say whether MCP will be a winner or not. If at some point we can run a remote MCP server and it uses authentication, then it will be extremely useful, perhaps undeniably so–something has to provide this capability. But at the moment it is a local-only solution. Having said that, I definitely see a future where MCP is successful and we all use it every day to make our generative AI applications more useful. It’s a good bet that learning to build MCP servers will be a valuable skill in the future.</p>
+
+<div class="callout" style="background-color: #ffe4b5; padding: 15px; border-radius: 5px;">
+<p>⚠️ This post only covered the most basic concepts around MCP, and there is a lot more to it that I will hopefully cover in future posts. Otherwise, I've added a few links to further reading below.</p>
+</div>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/">https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/</a></li>
+  <li><a href="https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you">https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you</a></li>
+  <li><a href="https://www.chriswere.com/p/anthropics-mcp-first-impressions">https://www.chriswere.com/p/anthropics-mcp-first-impressions</a></li>
+  <li><a href="https://www.philschmid.de/mcp-example-llama">https://www.philschmid.de/mcp-example-llama</a></li>
+  <li><a href="https://www.youtube.com/watch?v=sahuZMMXNpI">https://www.youtube.com/watch?v=sahuZMMXNpI</a></li>
+  <li><a href="https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/">https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/</a></li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt of caffeine!]]></summary></entry><entry><title type="html">The Tailscale Kubernetes Operator</title><link href="https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html" rel="alternate" type="text/html" title="The Tailscale Kubernetes Operator" /><published>2025-01-31T00:00:00-05:00</published><updated>2025-01-31T00:00:00-05:00</updated><id>https://serverascode.com/2025/01/31/tailscale-kubernetes-operator</id><content type="html" xml:base="https://serverascode.com/2025/01/31/tailscale-kubernetes-operator.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/tailscale-k8s-operator-200w.png" alt="Tailscale Kubernetes Operator" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>Make your Kubernetes networking life easier with the Tailscale Kubernetes operator.</em></p>
 </div>
@@ -2196,173 +2423,4 @@ users
 
 <h2 id="next-up">Next Up</h2>
 
-<p>In future posts, I’ll look more at this insecure webapp, how to test and execute the exploitable vulnerabilities, as well as how to fix it, if possible, using GenAI and tools like <a href="https://cursor.sh/">Cursor</a>.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[tldr;]]></summary></entry><entry><title type="html">Easily Create a Single Node Kubernetes Cluster</title><link href="https://serverascode.com/2024/08/22/install-kubernetes-script.html" rel="alternate" type="text/html" title="Easily Create a Single Node Kubernetes Cluster" /><published>2024-08-22T00:00:00-04:00</published><updated>2024-08-22T00:00:00-04:00</updated><id>https://serverascode.com/2024/08/22/install-kubernetes-script</id><content type="html" xml:base="https://serverascode.com/2024/08/22/install-kubernetes-script.html"><![CDATA[<p>I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.</p>
-
-<p>For quite a while, the last few years, I have had a bunch of Kubernetes clusters running in my basement. I have half a rack there that used to be filled with servers. Then that changed to just running one larger server with a couple hundred gigs of memory, and that one server was running a bunch of Kubernetes clusters. But recently I shut that down. Mainly because it’s summer here in Toronto and that one big server was heating up the basement, and I wasn’t using it that much. I may turn it on again in the winter. Not sure. Anyways…</p>
-
-<p>Yesterday I needed a small k8s cluster. So I used my good old <code>install-kubernetes.sh</code> script to install it onto a VM running on my local workstation.</p>
-
-<h2 id="tldr">tl;dr</h2>
-
-<ul>
-  <li>I have a 500 line bash script that installs Kubernetes on Ubuntu 22.04, usually a small VM, 8 gigs of ram, 2-4 CPUs, 40 gigs of disk.</li>
-  <li>The script can create a single node “cluster”</li>
-  <li>Or you can deploy a bunch of virtual machines and make one a control plane node and the other workers</li>
-  <li>It only takes 2 or 3 minutes to get a k8s cluster. Below is a picture of the test I ran in a github action. Of course, github’s infrastructure is blazing fast–the speed of the installation will largely depend on how fast you can download packages to the host.</li>
-</ul>
-
-<p><img src="/img/install-k8s-action.png" alt="quick install in a github action" /></p>
-
-<p>There are other single node k8s tools, but I like mine, of course :)</p>
-
-<h2 id="install-kubernetes">Install Kubernetes</h2>
-
-<p>For a year and a half or so–first commit was March of 2023–I’ve had a script that will deploy a Kubernetes cluster into a virtual machine.</p>
-
-<p>That script can be found here:</p>
-
-<ul>
-  <li><a href="https://github.com/ccollicutt/install-kubernetes">https://github.com/ccollicutt/install-kubernetes</a></li>
-</ul>
-
-<p>I haven’t used it for a while, and so it was actually broken for the last bit because the upstream Kubernetes project changed where the packages for Ubuntu are located. So I just updated the script, like bumped it to Kubernetes 1.31, fixed a few other things, and now it’s good to go again to create either a cluster of Kubernetes instances or, perhaps more useful, a full Kubernetes deployment running in a single virtual machine instance (where the single node is both a control plane node and a worker node).</p>
-
-<h2 id="building-a-single-node-kubernetescluster">Building a Single Node Kubernetes…“Cluster”</h2>
-
-<p>First, get yourself an Ubuntu 22.04 virtual machine with at least 8 gigs of ram and around 40 gigs of disk. I’d probably also give it 4 CPUs.</p>
-
-<pre><code>root@install-k8s-demo:~# source /etc/lsb-release; echo $DISTRIB_RELEASE
-22.04
-root@install-k8s-demo:~# nproc
-4
-root@install-k8s-demo:~# free -h
-           	total    	used    	free  	shared  buff/cache   available
-Mem:       	7.7Gi   	124Mi   	7.5Gi    	17Mi   	111Mi   	7.4Gi
-Swap:         	0B      	0B      	0B
-root@install-k8s-demo:~# lsblk
-NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-sda  	8:0	0   40G  0 disk
-├─sda1   8:1	0  100M  0 part /boot/efi
-└─sda2   8:2	0 39.9G  0 part /
-</code></pre>
-
-<p>Then, login to that VM and get a root shell.</p>
-
-<p>Next, grab the install-kubernetes script.</p>
-
-<blockquote>
-  <p>NOTE: You’ll need git installed.</p>
-</blockquote>
-
-<pre><code>root@install-k8s-demo:~# git clone https://github.com/ccollicutt/install-kubernetes
-root@install-k8s-demo:~# cd install-kubernetes
-</code></pre>
-
-<p>There will be a few files there:</p>
-
-<pre><code>root@install-k8s-demo:~/install-kubernetes# ls
-install-kubernetes.sh  makefile  manifests  README.md
-</code></pre>
-
-<p>Then, we simply run the <code>install-kubernetes.sh </code>script BUT using the “-s” option to set it so that it deploys a single node control plane + worker node.</p>
-
-<blockquote>
-  <p>NOTE: If you forget the “-s”, it is probably best to recreate the virtual machine and reinstall it. This is not idempotent, or at least it hasn’t been tested that way.</p>
-</blockquote>
-
-<pre><code>./install-kubernetes.sh -s
-</code></pre>
-
-<p>The output of that will look like:</p>
-
-<pre><code>root@install-k8s-demo:~/install-kubernetes# ./install-kubernetes.sh -s
-Starting install...
-==&gt; Logging all output to /tmp/install-kubernetes-NMxK9WTKim/install.log
-Checking Linux distribution
-Disabling swap
-Removing packages
-Installing required packages
-Installing Kubernetes packages
-Configuring system
-Configuring crictl
-Configuring kubelet
-Configuring containerd
-Installing containerd
-Starting services
-Configuring control plane node...
-Initialising the Kubernetes cluster via Kubeadm
-Configuring kubeconfig for root and ubuntu users
-Installing Calico CNI
-==&gt; Installing Calico tigera-operator
-==&gt; Installing Calico custom-resources
-Waiting for nodes to be ready...
-==&gt; Nodes are ready
-Checking Kubernetes version...
-==&gt; Client version: v1.31.0
-==&gt; Server Version: v1.31.0
-==&gt; Requested KUBE_VERSION matches the server version.
-Installing metrics server
-Configuring as a single node cluster
-Configuring as a single node cluster
-Deploying test nginx pod
-Waiting for all pods to be running...
-Install complete!
-
-### Command to add a worker node ###
-kubeadm join localhost:6443 --token &lt;redact&gt; --discovery-token-ca-cert-hash sha256:&lt;redact&gt;
-</code></pre>
-
-<h2 id="now-you-have-a-kubernetes-cluster">Now You Have a Kubernetes Cluster</h2>
-
-<p>At this point, you can run kubectl and access the local cluster.</p>
-
-<p>There’s a kubeconfig in:</p>
-
-<pre><code>root@install-k8s-demo:~# ls ~/.kube/
-cache  config
-</code></pre>
-
-<p>And, if there is an ubuntu user on the host, the config will be there too.</p>
-
-<pre><code>root@install-k8s-demo:~# ls /home/ubuntu/.kube/
-config
-</code></pre>
-
-<p>And we can connect to the “cluster”.</p>
-
-<pre><code>root@install-k8s-demo:~# kubectl get pods -A
-NAMESPACE      	NAME                                   	READY   STATUS	RESTARTS   AGE
-calico-apiserver   calico-apiserver-78d48b5579-j97lc      	1/1 	Running   0      	4m15s
-calico-apiserver   calico-apiserver-78d48b5579-kmcvr      	1/1 	Running   0      	4m15s
-calico-system  	calico-kube-controllers-7d868b8f66-fldb5   1/1 	Running   0      	4m45s
-calico-system  	calico-node-pqfdn                      	1/1 	Running   0      	4m45s
-calico-system  	calico-typha-899c7464d-9vqzg           	1/1 	Running   0      	4m45s
-calico-system  	csi-node-driver-vqvnx                  	2/2 	Running   0      	4m36s
-kube-system    	coredns-6f6b679f8f-tvtjs               	1/1 	Running   0      	4m49s
-kube-system    	coredns-6f6b679f8f-zvcdl               	1/1 	Running   0      	4m49s
-kube-system    	etcd-install-k8s-demo                  	1/1 	Running   0      	4m57s
-kube-system    	kube-apiserver-install-k8s-demo        	1/1 	Running   0      	4m56s
-kube-system    	kube-controller-manager-install-k8s-demo   1/1 	Running   0      	4m57s
-kube-system    	kube-proxy-9snr9                       	1/1 	Running   0      	4m49s
-kube-system    	kube-scheduler-install-k8s-demo        	1/1 	Running   0      	4m56s
-kube-system    	metrics-server-5f94f4d4fd-sg2gh        	1/1 	Running   0      	4m35s
-tigera-operator	tigera-operator-b974bcbbb-4sjjz        	1/1 	Running   0      	4m49s
-</code></pre>
-
-<h2 id="you-can-deploy-many-worker-nodes-if-you-want">You Can Deploy Many Worker Nodes if You Want</h2>
-
-<p>You could also use this script to deploy a single control plane only node, the standard model for deploying K8s where the control plane is separated, and then create and add as many worker nodes to that control plane as makes sense. However, this script does not orchestrate all of this. You would have to log in to each VM and run the script, set it up as a worker node or a control plane node, and then join the worker nodes to the control plane node using the kubeadm join command. So this is not meant to be some kind of high-level k8s cluster creation orchestration mechanism, no magic here. Of course you can create as large a cluster as you want, you just have to set up each node individually.</p>
-
-<h2 id="some-design-decisions">Some Design Decisions</h2>
-
-<p>If you look at the script, here are some design decisions. It’s using:</p>
-
-<ul>
-  <li>Ubuntu Kubernetes packages</li>
-  <li>containerd</li>
-  <li>Calico as the CNI</li>
-</ul>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>If you need a throwaway Kubernetes cluster that can be created in an Ubuntu 22.04 VM in a few minutes (like two!) I think this is a nice way to do that. Certainly it works for me.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I’ve been working with Kubernetes for a long time. Too long, actually. So long, in fact, that I don’t really use it much anymore. Kubernetes has won in terms of being the default way to deploy modern applications. At this point, it’s kind of boring, which is great! We want boring infrastructure. Boring works. If you’re writing a new application today, the target is going to be a container, and that container is probably going to run in good old boring Kubernetes.]]></summary></entry></feed>
+<p>In future posts, I’ll look more at this insecure webapp, how to test and execute the exploitable vulnerabilities, as well as how to fix it, if possible, using GenAI and tools like <a href="https://cursor.sh/">Cursor</a>.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[tldr;]]></summary></entry></feed>
