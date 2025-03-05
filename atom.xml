@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-03-04T06:59:52-05:00</updated>
+ <updated>2025-03-05T04:16:58-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>A Look at the Model Context Protocol</title>
-   <link href="http://serverascode.com//2025/03/03/ai-model-context-protocol-ai.html"/>
+   <link href="http://serverascode.com//2025/03/03/ai-model-context-protocol.html"/>
    <updated>2025-03-03T00:00:00-05:00</updated>
-   <id>http://serverascode.com/2025/03/03/ai-model-context-protocol-ai</id>
+   <id>http://serverascode.com/2025/03/03/ai-model-context-protocol</id>
    <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
     &lt;img src=&quot;/img/magazine-cards/mcp-200w.png&quot; alt=&quot;Tailscale Kubernetes Operator&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
     &lt;p&gt;&lt;em&gt;What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt of caffeine!&lt;/em&gt;&lt;/p&gt;
@@ -66,7 +66,7 @@
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;current-limitation-local-only&quot;&gt;Current Limitation: Local Only&lt;/h2&gt;
+&lt;h2 id=&quot;current-limitations-local-only-require-approval&quot;&gt;Current Limitations: Local Only, Require Approval&lt;/h2&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - &lt;a href=&quot;https://x.com/alexalbert__/status/1861079950411141180&quot;&gt;Alex Albert&lt;/a&gt;&lt;/p&gt;
@@ -75,6 +75,8 @@
 &lt;p&gt;Crucially, as of today, 3 March 2025, MCP “servers” can only be used locally! This is clearly a problem, and Anthropic knows it. The problem is authentication. For a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!&lt;/p&gt;
 
 &lt;p&gt;Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).&lt;/p&gt;
+
+&lt;p&gt;As well, currently, tool use typically requires human approval, but not having the approval can enable potentially dangerous operations.&lt;/p&gt;
 
 &lt;h2 id=&quot;what-does-an-mcp-server-look-like&quot;&gt;What Does an MCP Server Look Like?&lt;/h2&gt;
 
@@ -238,12 +240,15 @@ Proxy server listening on port 3000
 &lt;h2 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h2&gt;
 
 &lt;ul&gt;
+  &lt;li&gt;Marketplace for MCP server: &lt;a href=&quot;https://www.mcp.run/&quot;&gt;https://www.mcp.run/&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/&quot;&gt;https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you&quot;&gt;https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.chriswere.com/p/anthropics-mcp-first-impressions&quot;&gt;https://www.chriswere.com/p/anthropics-mcp-first-impressions&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.philschmid.de/mcp-example-llama&quot;&gt;https://www.philschmid.de/mcp-example-llama&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=sahuZMMXNpI&quot;&gt;https://www.youtube.com/watch?v=sahuZMMXNpI&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/&quot;&gt;https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@richardhightower/setting-up-claude-filesystem-mcp-80e48a1d3def&quot;&gt;https://medium.com/@richardhightower/setting-up-claude-filesystem-mcp-80e48a1d3def&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://glama.ai/blog/2024-11-25-model-context-protocol-quickstart&quot;&gt;https://glama.ai/blog/2024-11-25-model-context-protocol-quickstart&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>

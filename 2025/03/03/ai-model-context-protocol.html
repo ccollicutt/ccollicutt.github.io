@@ -41,11 +41,11 @@
     
     
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol-ai.png">
-    <meta property="og:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol-ai.png" />
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/ai-model-context-protocol.png" />
     
     
-    <meta property="og:url" content="https://serverascode.com/2025/03/03/ai-model-context-protocol-ai.html" />
+    <meta property="og:url" content="https://serverascode.com/2025/03/03/ai-model-context-protocol.html" />
     <meta property="og:site_name" content="Server As Code Dot Com" />
 </head>
 <body class="font-sans">
@@ -223,7 +223,7 @@
   </li>
 </ul>
 
-<h2 id="current-limitation-local-only">Current Limitation: Local Only</h2>
+<h2 id="current-limitations-local-only-require-approval">Current Limitations: Local Only, Require Approval</h2>
 
 <blockquote>
   <p>Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - <a href="https://x.com/alexalbert__/status/1861079950411141180">Alex Albert</a></p>
@@ -232,6 +232,8 @@
 <p>Crucially, as of today, 3 March 2025, MCP “servers” can only be used locally! This is clearly a problem, and Anthropic knows it. The problem is authentication. For a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!</p>
 
 <p>Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).</p>
+
+<p>As well, currently, tool use typically requires human approval, but not having the approval can enable potentially dangerous operations.</p>
 
 <h2 id="what-does-an-mcp-server-look-like">What Does an MCP Server Look Like?</h2>
 
@@ -395,12 +397,15 @@ Proxy server listening on port 3000
 <h2 id="further-reading">Further Reading</h2>
 
 <ul>
+  <li>Marketplace for MCP server: <a href="https://www.mcp.run/">https://www.mcp.run/</a></li>
   <li><a href="https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/">https://www.docker.com/blog/the-model-context-protocol-simplifying-building-ai-apps-with-anthropic-claude-desktop-and-docker/</a></li>
   <li><a href="https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you">https://www.willowtreeapps.com/craft/is-anthropic-model-context-protocol-right-for-you</a></li>
   <li><a href="https://www.chriswere.com/p/anthropics-mcp-first-impressions">https://www.chriswere.com/p/anthropics-mcp-first-impressions</a></li>
   <li><a href="https://www.philschmid.de/mcp-example-llama">https://www.philschmid.de/mcp-example-llama</a></li>
   <li><a href="https://www.youtube.com/watch?v=sahuZMMXNpI">https://www.youtube.com/watch?v=sahuZMMXNpI</a></li>
   <li><a href="https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/">https://salesforcedevops.net/index.php/2024/11/29/anthropics-model-context-protocol/</a></li>
+  <li><a href="https://medium.com/@richardhightower/setting-up-claude-filesystem-mcp-80e48a1d3def">https://medium.com/@richardhightower/setting-up-claude-filesystem-mcp-80e48a1d3def</a></li>
+  <li><a href="https://glama.ai/blog/2024-11-25-model-context-protocol-quickstart">https://glama.ai/blog/2024-11-25-model-context-protocol-quickstart</a></li>
 </ul>
 
 </article>
