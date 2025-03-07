@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-03-05T04:16:58-05:00</updated>
+ <updated>2025-03-07T12:12:23-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -23,6 +23,10 @@
 &lt;/div&gt;
 
 &lt;hr /&gt;
+
+&lt;div class=&quot;callout&quot; style=&quot;background-color: #fff3cd; padding: 15px; border-radius: 5px;&quot;&gt;
+&lt;p&gt;⚠️ Please note that MCP is moving historically fast! What I wrote here today, is likely not what you will find on the MCP website tomorrow. I will update this post as needed, but please check the &lt;a href=&quot;https://modelcontextprotocol.io/&quot;&gt;MCP website&lt;/a&gt; for the most current information.&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -72,11 +76,26 @@
   &lt;p&gt;Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - &lt;a href=&quot;https://x.com/alexalbert__/status/1861079950411141180&quot;&gt;Alex Albert&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Crucially, as of today, 3 March 2025, MCP “servers” can only be used locally! This is clearly a problem, and Anthropic knows it. The problem is authentication. For a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!&lt;/p&gt;
+&lt;p&gt;Crucially, as of today, 3 March 2025, MCP “servers” can really only be used locally! Certainly there are some qualifications there, but for a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!&lt;/p&gt;
+
+&lt;p&gt;Currently the Inspector tool can do SSE, all though I haven’t tested it. I also haven’t looked into the OAUTH 2.0 and SSE transport methods yet, but that is all coming soon to MCP I’m sure!&lt;/p&gt;
+
+&lt;div class=&quot;callout&quot; style=&quot;background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px;&quot;&gt;
+&lt;h4&gt;MCP Transport Types&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;Note: These are the two main transport methods currently supported by MCP for client-server communication.&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Standard Input/Output (stdio)&lt;/strong&gt; - The stdio transport enables communication through standard input and output streams. This is particularly useful for local integrations and command-line tools.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Server-Sent Events (SSE)&lt;/strong&gt; - SSE transport enables server-to-client streaming with HTTP POST requests for client-to-server communication.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;p&gt;E.g. stdio diagram for my particular use case, where I have Docker running the MCP server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/mcp-stdio.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).&lt;/p&gt;
 
-&lt;p&gt;As well, currently, tool use typically requires human approval, but not having the approval can enable potentially dangerous operations.&lt;/p&gt;
+&lt;p&gt;As well, currently, tool use typically requires human approval, but not having the approval can enable potentially dangerous operations. Difficult to determine risk level acceptance.&lt;/p&gt;
 
 &lt;h2 id=&quot;what-does-an-mcp-server-look-like&quot;&gt;What Does an MCP Server Look Like?&lt;/h2&gt;
 
@@ -232,6 +251,8 @@ Proxy server listening on port 3000
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;It’s hard to say whether MCP will be a winner or not. If at some point we can run a remote MCP server and it uses authentication, then it will be extremely useful, perhaps undeniably so–something has to provide this capability. But at the moment it is a local-only solution. Having said that, I definitely see a future where MCP is successful and we all use it every day to make our generative AI applications more useful. It’s a good bet that learning to build MCP servers will be a valuable skill in the future.&lt;/p&gt;
+
+&lt;p&gt;The future includes all kinds of fun stuff like authentication, remote servers, discoverabiltiy, self-improvement, registries, and more.&lt;/p&gt;
 
 &lt;div class=&quot;callout&quot; style=&quot;background-color: #ffe4b5; padding: 15px; border-radius: 5px;&quot;&gt;
 &lt;p&gt;⚠️ This post only covered the most basic concepts around MCP, and there is a lot more to it that I will hopefully cover in future posts. Otherwise, I&apos;ve added a few links to further reading below.&lt;/p&gt;
