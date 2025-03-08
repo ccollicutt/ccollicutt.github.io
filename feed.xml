@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-03-07T12:12:23-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">A Look at the Model Context Protocol</title><link href="https://serverascode.com/2025/03/03/ai-model-context-protocol.html" rel="alternate" type="text/html" title="A Look at the Model Context Protocol" /><published>2025-03-03T00:00:00-05:00</published><updated>2025-03-03T00:00:00-05:00</updated><id>https://serverascode.com/2025/03/03/ai-model-context-protocol</id><content type="html" xml:base="https://serverascode.com/2025/03/03/ai-model-context-protocol.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-03-08T06:16:29-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">A Look at the Model Context Protocol</title><link href="https://serverascode.com/2025/03/03/ai-model-context-protocol.html" rel="alternate" type="text/html" title="A Look at the Model Context Protocol" /><published>2025-03-03T00:00:00-05:00</published><updated>2025-03-03T00:00:00-05:00</updated><id>https://serverascode.com/2025/03/03/ai-model-context-protocol</id><content type="html" xml:base="https://serverascode.com/2025/03/03/ai-model-context-protocol.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/mcp-200w.png" alt="Tailscale Kubernetes Operator" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>What do these lazy AI systems do? Not a whole heck of a lot without tools and resources. Use the model context protocol to give them a virtual jolt of caffeine!</em></p>
 </div>
@@ -57,9 +57,9 @@
   <p>Right now, MCP is only supported locally - servers must run on your own machine. But we’re building remote server support with enterprise-grade auth, so teams can securely share their context sources across their organization. - <a href="https://x.com/alexalbert__/status/1861079950411141180">Alex Albert</a></p>
 </blockquote>
 
-<p>Crucially, as of today, 3 March 2025, MCP “servers” can really only be used locally! Certainly there are some qualifications there, but for a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not possible, hence the need to use the local server. This severely limits the usefulness of MCP at the moment. But I expect improvements soon!</p>
+<p>Crucially, as of today, 3 March 2025, MCP “servers” can really only be used locally! Certainly there are some qualifications there, but for a remote server (which, frankly, is what I consider a server in this context) to be useful, it must be able to authenticate requests from the LLM client. But this is currently not completely practical, there is a draft specification for it though, so I expect improvements soon! Then again, if we think about this as a purely plugin based system, then it is not such as limitation, we just need to install the plugins from where ever the tool/agent is running.</p>
 
-<p>Currently the Inspector tool can do SSE, all though I haven’t tested it. I also haven’t looked into the OAUTH 2.0 and SSE transport methods yet, but that is all coming soon to MCP I’m sure!</p>
+<p>Note that currently the Inspector tool can do Server Side Events (SSE), all though I haven’t tested it.</p>
 
 <div class="callout" style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px;">
 <h4>MCP Transport Types</h4>
@@ -76,7 +76,7 @@
 
 <p>Further to this, when using Anthropic, one can only use MCP servers with Claude Desktop (which only runs on Windows or MacOS, by the way).</p>
 
-<p>As well, currently, tool use typically requires human approval, but not having the approval can enable potentially dangerous operations. Difficult to determine risk level acceptance.</p>
+<p>As well, currently, tool use via LLMs typically requires human approval, but not having the approval can enable potentially dangerous operations. Difficult to determine risk level acceptance here.</p>
 
 <h2 id="what-does-an-mcp-server-look-like">What Does an MCP Server Look Like?</h2>
 
@@ -158,6 +158,16 @@ def add(a: int, b: int) -&gt; int:
     """Add two numbers"""
     return a + b
 
+@mcp.tool()
+def sha256(text: str) -&gt; str:
+    """Get the SHA256 hash of a text"""
+    print(f"Getting SHA256 hash of text {text}")
+    try:
+        return hashlib.sha256(text.encode('utf-8')).hexdigest()
+    except Exception as e:
+        return f"Failed to get SHA256 hash of text {text}: {str(e)}"
+
+
 # Add a resource to fetch events from Taico feed
 @mcp.resource("taico://events")
 def get_events() -&gt; List[Dict[str, Any]]:
@@ -175,6 +185,8 @@ def get_events() -&gt; List[Dict[str, Any]]:
 if __name__ == "__main__":
     mcp.run()
 </code></pre>
+
+<p>Above there’s a couple tools, add, and sha256. The add tool is a simple tool that adds two numbers together. The sha256 tool is a tool that takes a string and returns the SHA256 hash of that string.</p>
 
 <p>Example Claude Desktop configuration to launch the container.</p>
 
