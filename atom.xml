@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-03-08T06:18:07-05:00</updated>
+ <updated>2025-03-08T06:25:30-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -259,6 +259,10 @@ Proxy server listening on port 3000
 &lt;p&gt;As well, we can see that there is a simple adding tool available.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/mcp-adding-tools.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;other-tools&quot;&gt;Other Tools&lt;/h2&gt;
+
+&lt;p&gt;In this blog post I’ve just used Claude Desktop, but there are other tools that support MCP, e.g. Cursor and &lt;a href=&quot;https://github.com/lastmile-ai/mcp-agent&quot;&gt;mcp-agent&lt;/a&gt; among many more, with more coming all the time. So I don’t want to leave you with the impression that this is only for Claude Desktop. Likely every AI tool/agent will provide support for MCP, and perhaps other similar standards that emerge as well.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
