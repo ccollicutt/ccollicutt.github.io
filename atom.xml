@@ -4,13 +4,279 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-04-09T15:47:50-04:00</updated>
+ <updated>2025-04-12T10:50:50-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Securing a Form on the Internet: Still Pretty Difficult</title>
+   <link href="http://serverascode.com//2025/04/12/securing-a-form-on-the-internet.html"/>
+   <updated>2025-04-12T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2025/04/12/securing-a-form-on-the-internet</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/putting-a-form-on-the-internet-200w.png&quot; alt=&quot;Putting a Form on the Internet&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;Putting a form on the Internet is still crazy hard. There&apos;s quite a few steps to take to make it reasonably secure.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tldr;&lt;/h2&gt;
+
+&lt;p&gt;If you want a “contact us” form on your site, it’s best just to pay for a form provider. On the other hand, there are some great free tier services that provide a lot of the functionality you need to secure a form, though it will be a fair bit of work.&lt;/p&gt;
+
+&lt;p&gt;The fact that forms are still so difficult to secure suggests, to me, that the way we build the Internet is &lt;strong&gt;still fundamentally flawed&lt;/strong&gt;. But perhaps that’s obvious. lol! What a world!&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;I’ve complained on this blog before about how many extra little things there are to do and to think about when writing code or putting things on the web.&lt;/p&gt;
+
+&lt;p&gt;Example, &lt;a href=&quot;https://serverascode.com/2024/10/25/pain-of-programming.html&quot;&gt;Death by a Thousand Cuts&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;a href=&quot;https://serverascode.com/2024/10/25/pain-of-programming.html&quot;&gt;
+        &lt;img src=&quot;/img/magazine-cards/thousand-cuts-200w.png&quot; alt=&quot;Death by a Thousand Cuts&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;/a&gt;
+    &lt;p&gt;&lt;em&gt;Every line of code adds complexity and potential security issues. The many small requirements and considerations when deploying code to the internet can feel like death by a thousand cuts.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Programming is interesting because it can range from extremely complex to extremely simple. Some applications are incredibly sophisticated, maybe you work at Amazon running S3 storage with trillions of objects or at Google inventing the new map-reduce algorithm, but others, like creating a form, are not. It’s just a form. And yet it’s insanely hard to get right, even though the “code” itself is just some HTML.&lt;/p&gt;
+
+&lt;h2 id=&quot;contact-us-form&quot;&gt;Contact us form&lt;/h2&gt;
+
+&lt;p&gt;For the purposes of this post, let’s talk about this from the perspective of a business owner who wants a website with a “contact us” form.&lt;/p&gt;
+
+&lt;h2 id=&quot;abstraction---using-form-providers&quot;&gt;Abstraction - using form providers&lt;/h2&gt;
+
+&lt;p&gt;The best thing to do is to abstract away the form by simply using a service, i.e. transfer the risk of running a form to a provider such as Google Forms or Typeform or Tally or SurveyMonkey. There’s a new form provider called YouForm that seems nice, but it’s $29 a month - you’d need a lot of forms to justify that cost. I’ve used Tally, but I haven’t used any of the others, so I can’t recommend a particular service, but it’s a good idea to use a provider that JUST DOES FORMS. It will save you a lot of time and headaches.&lt;/p&gt;
+
+&lt;p&gt;Just give them the risk instead and pay somewhere between $0 and $100/month. Most zero cost form providers will have their branding on the form and you will have to pay to have it removed if that is important to you.&lt;/p&gt;
+
+&lt;p&gt;However, depending on your perspective, form providers are not cheap. Tally is $24 a month, Typeforms is about $99 or so, etc, etc. These are recurring monthly costs (clearly online forms are a premium business). So that one little form is costing you $288 a year, year after year after year. And all you wanted was a small contact form on your small business website.&lt;/p&gt;
+
+&lt;p&gt;BUT it is probably still better to pay them than to create your own form.&lt;/p&gt;
+
+&lt;div class=&quot;callout callout-success&quot; style=&quot;background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;&quot;&gt;
+    &lt;p style=&quot;color: #155724; margin: 0;&quot;&gt;
+        💰 Overall, this is a theme for people trying to build safely and quickly--the cost of abstracted infrastructure is extremely low (yes, low), depending on usage levels of course. We can pass so much risk to high level abstractions for such a low price point it&apos;s almost always worth it, especially if you have a business that generates almost any level of revenue. If you are generating a few thousand dollars a month, it&apos;s worth it to pay for a form provider.
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;important---what-happens-to-the-data&quot;&gt;Important - what happens to the data?&lt;/h2&gt;
+
+&lt;p&gt;The other thing to consider is what to do with the information the form collects. If you have a contact form, you really want to get the information from the form, to be alerted that someone wants to contact you, presumably to buy something or get more information about your company or product, you need that information. If that information is lost because the form you’ve built stops working, what’s the point?&lt;/p&gt;
+
+&lt;p&gt;Eventually, without maintenance, your custom form will stop working. It’s a fact of life. Using a vendor can help you avoid this problem, although of course they could change their service and break your form, but that would be relatively rare, I would hope.&lt;/p&gt;
+
+&lt;p&gt;Anyway, the point is that you need this information, and you need your form to work for a long time.&lt;/p&gt;
+
+&lt;h2 id=&quot;if-you-want-to-build-your-own-form-you-will-still-need-services-to-help-you&quot;&gt;If you want to build your own form, you will still need services to help you&lt;/h2&gt;
+
+&lt;p&gt;For example, you will need somewhere to host the form (probably the same place your website is hosted), but you will also need a way to run the server-side submit handler (i.e. some code has to run somewhere), store the data, and perhaps send an email to the business owner.&lt;/p&gt;
+
+&lt;p&gt;So:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hosting&lt;/li&gt;
+  &lt;li&gt;Submit handler&lt;/li&gt;
+  &lt;li&gt;Storage&lt;/li&gt;
+  &lt;li&gt;Email&lt;/li&gt;
+  &lt;li&gt;Plus more around CAPTCHA, etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The point is that even if you build your own form, you may need to pay for some services to secure it.&lt;/p&gt;
+
+&lt;h2 id=&quot;html-forms-need-to-be-submitted-to-a-handler&quot;&gt;HTML forms need to be submitted to a handler&lt;/h2&gt;
+
+&lt;p&gt;This is server-side code. This handler must be able to receive and process the form data. If you build your own form, you will need to write this handler and maintain it forever. (Or get it from a framework or something.)&lt;/p&gt;
+
+&lt;p&gt;Also, your code may contain bugs that could be exploited.&lt;/p&gt;
+
+&lt;div class=&quot;callout callout-success&quot; style=&quot;background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;&quot;&gt;
+    &lt;p style=&quot;color: #155724; margin: 0;&quot;&gt;
+        💡 If you are using some kind of framework, you may not need to write this handler. And other things like CSRF protection may be built into the framework. From the perspective of this post, we are not using a framework, it&apos;s a static site with some Javascript.
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;ok-i-still-want-to-build-my-own-form&quot;&gt;OK, I still want to build my own form&lt;/h2&gt;
+
+&lt;p&gt;HTML forms are really easy to create. You can do it in minutes.&lt;/p&gt;
+
+&lt;p&gt;However, the problem is that a “contact us” form is going to be on your website, available to everyone, every spammer, every bot, the whole world, and you want it to be relatively secure and reliable.&lt;/p&gt;
+
+&lt;p&gt;Concerns:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Spam&lt;/li&gt;
+  &lt;li&gt;Bots&lt;/li&gt;
+  &lt;li&gt;DOS of your site&lt;/li&gt;
+  &lt;li&gt;DOS of your storage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A website costs money to run. Usually, the more resources the site uses, the more it costs. So if someone can abuse your website and drive up the resources it uses (so they don’t have to pay for it), they can drive up the cost of your website. Most of these problems are related to Internet abuse. Bots and spammers will try to abuse your form and use it for advertising or to attack you personally (e.g. XSS in the emailed form data).&lt;/p&gt;
+
+&lt;h2 id=&quot;some-security-requirements&quot;&gt;Some security requirements&lt;/h2&gt;
+
+&lt;p&gt;Here are the main security needs you will need to solve for.&lt;/p&gt;
+
+&lt;h3 id=&quot;httpsssltls&quot;&gt;HTTPS/SSL/TLS&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Let’s Encrypt is a Certificate Authority that provides free TLS certificates, making it easy for websites to enable HTTPS encryption and create a more secure Internet for everyone. Let’s Encrypt is a project of the nonprofit Internet Security Research Group. - &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;HTTPS is required. This is pretty straightforward these days, largely because of Let’s Encrypt, which web service providers have adopted, so it’s actually much, much easier than it used to be.&lt;/p&gt;
+
+&lt;p&gt;For all my complaining, at least this is a solved problem!&lt;/p&gt;
+
+&lt;p&gt;For example, if you put your site on Cloudflare and many other hosting services, you just get HTTPS for free, not that free is such a big deal, but what is good is that it is automatic.&lt;/p&gt;
+
+&lt;h3 id=&quot;captcha&quot;&gt;CAPTCHA&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Completely Automated Public Turing Test to tell Computers and Humans Apart (CAPTCHA) is a type of challenge–response turing test used in computing to determine whether the user is human in order to deter bot attacks and spam. - &lt;a href=&quot;https://en.wikipedia.org/wiki/CAPTCHA&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Without CAPTCHA, your form will be abused. It’s a fact. CAPTCHA helps prevent automated bots from constantly hitting your form and submitting spam.&lt;/p&gt;
+
+&lt;p&gt;For example, Cloudflare’s Turnstile is a CAPTCHA service that has a free tier.&lt;/p&gt;
+
+&lt;h3 id=&quot;rate-limiting&quot;&gt;Rate Limiting&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Rate limiting is a strategy for limiting network traffic. It puts a cap on how often someone can repeat an action within a certain timeframe – for instance, trying to log in to an account. Rate limiting can help stop certain kinds of malicious bot activity. It can also reduce strain on web servers. However, rate limiting is not a complete solution for managing bot activity. - &lt;a href=&quot;https://www.cloudflare.com/en-gb/learning/bots/what-is-rate-limiting/&quot;&gt;Cloudflare&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If a bot has managed to get through the CAPTCHA, or if the CAPTCHA has somehow been disabled, perhaps by accident, then we need another layer of protection in the form of rate limiting. Rate limiting will help stop bots from spamming.&lt;/p&gt;
+
+&lt;p&gt;Rate limiting is a bit of a tougher problem to solve, as it often gets jammed together with Web Application Firewalls (WAFs) that are typically a premium service.&lt;/p&gt;
+
+&lt;h3 id=&quot;csrf&quot;&gt;CSRF&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Cross-Site Request Forgery (CSRF) is an attack that forces an end user to execute unwanted actions on a web application in which they’re currently authenticated. With a little help of social engineering (such as sending a link via email or chat), an attacker may trick the users of a web application into executing actions of the attacker’s choosing. - &lt;a href=&quot;https://owasp.org/www-community/attacks/csrf&quot;&gt;OWASP&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;CSRF has been around for a long time and it’s a real problem. It’s one of the things that amazes me that it hasn’t been completely solved.&lt;/p&gt;
+
+&lt;p&gt;The main concern is that a malicious site could submit your form with false information, such as updating your bank details or changing your email address or other sensitive information.&lt;/p&gt;
+
+&lt;p&gt;Here’s what happens in a CSRF attack:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Your browser is logged into bank.com using cookies&lt;/li&gt;
+  &lt;li&gt;You visit evil.com&lt;/li&gt;
+  &lt;li&gt;Evil.com contains code that makes a request to bank.com/transfer&lt;/li&gt;
+  &lt;li&gt;Your browser automatically attaches your bank.com cookies&lt;/li&gt;
+  &lt;li&gt;The bank processes the request because it appears to come from you&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;However, we are building a “contact us” form, so is CSRF a problem at all? We don’t update private data, we don’t collect bank information. Why would we need CSRF protection?&lt;/p&gt;
+
+&lt;p&gt;Although a “contact us” form is not the traditional concern for CSRF protection, implementing a CSRF solution can help:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Spam prevention - without CSRF protection, automated bots could submit your contact form thousands of times&lt;/li&gt;
+  &lt;li&gt;Abuse prevention - an attacker could create a malicious site that submits your contact form with false information&lt;/li&gt;
+  &lt;li&gt;Backend operations protection - your form may trigger database inserts and email sending, resources that cost you money&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Doing this “yourself” would mean implementing CSRF tokens and handling them on the server side. But it is possible to do, and if you have a database or key value store available, you can use that to manage the CSRF tokens.&lt;/p&gt;
+
+&lt;p&gt;There are a few ways to do CSRF protection, the below lists a common strategy called &lt;a href=&quot;https://medium.com/@kaviru.mihisara/synchronizer-token-pattern-e6b23f53518e&quot;&gt;synchronizer token pattern&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When a user visits your form page, the server:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generates a unique session ID and CSRF token&lt;/li&gt;
+  &lt;li&gt;Stores the token in KV storage with the session ID as the key&lt;/li&gt;
+  &lt;li&gt;Sets an HttpOnly, Secure, SameSite=Strict cookie with the session ID&lt;/li&gt;
+  &lt;li&gt;Returns the CSRF token to be embedded in the form&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When the form is submitted, your server:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Extracts the session ID from cookies&lt;/li&gt;
+  &lt;li&gt;Gets the CSRF token from the form data&lt;/li&gt;
+  &lt;li&gt;Retrieves the expected token from KV using the session ID&lt;/li&gt;
+  &lt;li&gt;Verifies that the tokens match before processing the submission&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;input-validation&quot;&gt;Input Validation&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Input validation is the process of ensuring that user input is clean, correct, and safe before it is processed by an application. It helps prevent malicious data from being processed and stored, ensuring the integrity and security of the application. - &lt;a href=&quot;https://owasp.org/www-community/Input_Validation&quot;&gt;OWASP&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What would a contact form have in terms of information it is taking from the user?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Name&lt;/li&gt;
+  &lt;li&gt;Email&lt;/li&gt;
+  &lt;li&gt;Phone&lt;/li&gt;
+  &lt;li&gt;Message&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We would want to validate that the name is not blank, that the email is valid, that the phone is valid and that the message is not blank.&lt;/p&gt;
+
+&lt;p&gt;We would also want to sanitise the data to prevent XSS (cross-site scripting) attacks.&lt;/p&gt;
+
+&lt;h3 id=&quot;xss&quot;&gt;XSS&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Cross-Site Scripting (XSS) is a security vulnerability that allows an attacker to inject malicious code into a web application. This can lead to unauthorized access, data theft, and other security breaches. - &lt;a href=&quot;https://owasp.org/www-community/attacks/XSS&quot;&gt;OWASP&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is key because in most cases the form data will be emailed to the business owner. An attacker will know that this form data is going somewhere, email, database, whatever, and they will try to inject malicious code into the form data. So we need to sanitise the data to prevent XSS attacks.&lt;/p&gt;
+
+&lt;p&gt;If you are building your own form, you would need to remove any dangerous text from the form submission, such as &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tags. There are libraries that can help with this, but it’s still a pain.&lt;/p&gt;
+
+&lt;p&gt;In Javascript there are several libraries, such as one called &lt;a href=&quot;https://www.npmjs.com/package/xss&quot;&gt;XSS&lt;/a&gt;, that can help with this.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Creating an HTML form is easy. But putting it on the web and accepting submissions is fraught with peril. It’s a nightmare, really. Building and running your own form could also end up costing you a lot of money if it is abused. This is why form providers exist, they take on the risk and the problems of maintenance and abuse, but they are not cheap, mainly because there is a lot of value in what they do, even though forms seem so simple on the surface. All I want is a “contact us” form that looks so simple, but is not. Not at all.&lt;/p&gt;
+
+&lt;p&gt;Why this has not been solved as part of the general web platform, the internet itself, is a mystery to me. I wonder if this might change with the massive use of AI for writing code. There really should be a simple, safe, secure way to run code on the web, like a “contact us” form.&lt;/p&gt;
+
+&lt;p&gt;(That said, this can be mostly solved if you pay for a form provider).&lt;/p&gt;
+
+&lt;h2 id=&quot;ps-example-free-tier-do-it-yourself-stack&quot;&gt;PS. Example “free tier” do it yourself stack&lt;/h2&gt;
+
+&lt;div class=&quot;callout callout-info&quot; style=&quot;background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;&quot;&gt;
+    &lt;div style=&quot;display: flex; align-items: center; gap: 10px;&quot;&gt;
+        &lt;span style=&quot;font-size: 1.5rem;&quot;&gt;💭&lt;/span&gt;
+        &lt;p style=&quot;margin: 0; color: #155724;&quot;&gt;Of course, this isn&apos;t completely do it yourself, Cloudflare is doing the heavy lifting by far. Cloudflare and Resend are being used as abstractions. One could deploy all this in their own virtual machine, but that&apos;s a whole other post.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is just an example stack of free tier services that could be used to build a reasonably secure form on the Internet.&lt;/p&gt;
+
+&lt;h3 id=&quot;cloudflare&quot;&gt;&lt;a href=&quot;https://www.cloudflare.com/&quot;&gt;Cloudflare&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hosting static pages&lt;/li&gt;
+  &lt;li&gt;HTTPS/TLS/SSL - automatic with Cloudflare&lt;/li&gt;
+  &lt;li&gt;CAPTCHA with Turnstile&lt;/li&gt;
+  &lt;li&gt;Form data storage - Cloudflare D1 database&lt;/li&gt;
+  &lt;li&gt;Key Value store for CSRF tokens&lt;/li&gt;
+  &lt;li&gt;Submission handler - Cloudflare page functions&lt;/li&gt;
+  &lt;li&gt;Rate limiting&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note that rate limiting with Cloudflare’s free plan is limited to 10 second increments, which is a bit unweildly, see the &lt;a href=&quot;https://developers.cloudflare.com/waf/rate-limiting-rules/&quot;&gt;docs&lt;/a&gt;. However, workers do have rate limiting, see &lt;a href=&quot;https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/&quot;&gt;here&lt;/a&gt;, but it is currently in beta.&lt;/p&gt;
+
+&lt;h3 id=&quot;resend&quot;&gt;&lt;a href=&quot;https://resend.com/&quot;&gt;Resend&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sending the form entry via email&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Malicious Code Comments</title>
