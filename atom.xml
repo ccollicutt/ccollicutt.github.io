@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-04-12T10:50:50-04:00</updated>
+ <updated>2025-04-12T10:59:15-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -235,11 +235,11 @@
 
 &lt;p&gt;If you are building your own form, you would need to remove any dangerous text from the form submission, such as &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tags. There are libraries that can help with this, but it’s still a pain.&lt;/p&gt;
 
-&lt;p&gt;In Javascript there are several libraries, such as one called &lt;a href=&quot;https://www.npmjs.com/package/xss&quot;&gt;XSS&lt;/a&gt;, that can help with this.&lt;/p&gt;
+&lt;p&gt;In Javascript there are several libraries, such as one called &lt;a href=&quot;https://www.npmjs.com/package/xss&quot;&gt;XSS&lt;/a&gt;, that can help sanitise the data.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Creating an HTML form is easy. But putting it on the web and accepting submissions is fraught with peril. It’s a nightmare, really. Building and running your own form could also end up costing you a lot of money if it is abused. This is why form providers exist, they take on the risk and the problems of maintenance and abuse, but they are not cheap, mainly because there is a lot of value in what they do, even though forms seem so simple on the surface. All I want is a “contact us” form that looks so simple, but is not. Not at all.&lt;/p&gt;
+&lt;p&gt;Creating an HTML form is easy. But putting it on the web and accepting submissions is fraught with peril. It’s a nightmare, really. Building and running your own form could also end up costing you a lot of money if it is abused. This is why form providers exist, they take on the risk and the problems of maintenance and abuse, but they are not super cheap, mainly because there is a lot of value in what they do, even though forms seem so simple on the surface. All I want is a “contact us” form that looks so simple, but is not. Not at all.&lt;/p&gt;
 
 &lt;p&gt;Why this has not been solved as part of the general web platform, the internet itself, is a mystery to me. I wonder if this might change with the massive use of AI for writing code. There really should be a simple, safe, secure way to run code on the web, like a “contact us” form.&lt;/p&gt;
 
