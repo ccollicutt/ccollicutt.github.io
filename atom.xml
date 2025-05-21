@@ -4,13 +4,133 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-04-12T10:59:15-04:00</updated>
+ <updated>2025-05-21T12:59:12-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Model Context Protocol Security Resources</title>
+   <link href="http://serverascode.com//2025/05/21/mcp-security-resources.html"/>
+   <updated>2025-05-21T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2025/05/21/mcp-security-resources</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/mcp-security-200w.png&quot; alt=&quot;Model Context Protocol Security&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP we needed to invent firewalls and all that jazz.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tldr;&lt;/h2&gt;
+
+&lt;p&gt;Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it, and thus there is a lot of new thingamabobs out there on the capital-I Internet, from code to blog posts to videos.&lt;/p&gt;
+
+&lt;p&gt;Let’s try to make it a bit easier to find the good stuff.&lt;/p&gt;
+
+&lt;h2 id=&quot;but-firstraillock&quot;&gt;But first…Raillock&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/ccollicutt/raillock&quot;&gt;
+  &lt;img src=&quot;/img/posts/raillock-300x100.png&quot; alt=&quot;Raillock&quot; /&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m working on a set of &lt;em&gt;open source&lt;/em&gt; MCP related security tools, and one of them is a tool called Raillock, and I need some help testing it, using it and making it better, so if you have some time, please check it out and give me some feedback.&lt;/p&gt;
+
+&lt;div class=&quot;callout callout-info&quot; style=&quot;background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;&quot;&gt;
+    &lt;div style=&quot;display: flex; align-items: center; gap: 10px;&quot;&gt;
+        &lt;span style=&quot;font-size: 1.5rem;&quot;&gt;
+            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;path d=&quot;M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+        &lt;/span&gt;
+        &lt;div&gt;
+            &lt;p style=&quot;margin: 0; color: #155724;&quot;&gt;Raillock &quot;locks&quot; the MCP server tool descriptions with cryptographic signatures (i.e. checksums), can be used as a CLI or a Python library. It can be imported into AI Agents that are MCP clients and help them protect themselves from malicious MCP servers and other MCP vulnerabilities.&lt;/p&gt;
+            &lt;p style=&quot;margin: 0.5rem 0 0 0;&quot;&gt;&lt;a href=&quot;https://github.com/ccollicutt/raillock&quot; style=&quot;color: #155724;&quot;&gt;It&apos;s open source and available on GitHub.&lt;/a&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;about-programming-with-natural-language&quot;&gt;About Programming with Natural Language&lt;/h2&gt;
+
+&lt;p&gt;A key aspect of using Large Language Models is that we effectively program them using natural language. For example, the tool descriptions in an MCP server function/tool are part of the ‘program’ that the MCP client passes to the LLM. Of course, this description can include all kinds of malicious instructions. This is something new that security professionals have to deal with. It’s not the only security issue in MCP, but it’s one of the more difficult ones to grasp.&lt;/p&gt;
+
+&lt;p&gt;It’s malicious code comments!&lt;/p&gt;
+
+&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #fff3cd; padding: 1rem; border-radius: 4px;&quot;&gt;
+    &lt;a href=&quot;/2025/04/09/malicious-code-comments.html&quot;&gt;
+        &lt;img src=&quot;/img/magazine-cards/malicious-code-comments-200w.png&quot; alt=&quot;Malicious Code Comments&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;/a&gt;
+    &lt;p&gt;&lt;em&gt;We all have to get used to a new way of programming, and a new attack vectors that don&apos;t look like code. But they are. But they don&apos;t look like code. It&apos;s Halloween every day now. See the post &lt;a href=&quot;/2025/04/09/malicious-code-comments.html&quot;&gt;Malicious Code Comments&lt;/a&gt; for more&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;mcp-security-resources&quot;&gt;MCP Security Resources&lt;/h2&gt;
+
+&lt;p&gt;Last updated: 2025-05-21&lt;/p&gt;
+
+&lt;h3 id=&quot;about-mcp-itself&quot;&gt;About MCP Itself&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://modelcontextprotocol.io/&quot;&gt;Model Context Protocol&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://modelcontextprotocol.io/specification/draft/basic/security_best_practices&quot;&gt;Model Context Protocol Security Best Practices&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;high-level-mcp-resources&quot;&gt;High Level MCP Resources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/slowmist/MCP-Security-Checklist&quot;&gt;MCP Security Checklist&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;meta-resources&quot;&gt;Meta Resources&lt;/h3&gt;
+
+&lt;p&gt;Collections of resources.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/Puliczek/awesome-mcp-security&quot;&gt;Awesome MCP Security&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/AIM-Intelligence/awesome-mcp-security&quot;&gt;AIM-Intelligence/awesome-mcp-security&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://vulnerablemcp.info/&quot;&gt;Vulnerable MCP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;blog-posts&quot;&gt;Blog Posts&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/&quot;&gt;Trail of Bits: Jumping the Line: How MCP Servers Can Attack You Before You Ever Use Them&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/&quot;&gt;Trail of Bits: How MCP Servers Can Steal Your Conversation History&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://simonwillison.net/2025/Apr/9/mcp-prompt-injection&quot;&gt;Simon Willison on MCP Prompt Injection&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://elenacross7.medium.com/%EF%B8%8F-the-s-in-mcp-stands-for-security-91407b33ed6b&quot;&gt;The S in MCP stands for Security&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/invariantlabs-ai/mcp-injection-experiments&quot;&gt;Invariant Labs: MCP Injection Experiments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://invariantlabs.ai/blog/introducing-mcp-scan&quot;&gt;Invariant Labs: Introducing MCP Scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks&quot;&gt;Invariant Labs: MCP Security Notification Tool Poisoning Attacks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;tools&quot;&gt;Tools&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ccollicutt/raillock&quot;&gt;Raillock&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/invariantlabs-ai/mcp-scan&quot;&gt;Ivariant Labs mcp-scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/stacklok/toolhive&quot;&gt;Stacklok Toolhive&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;purposely-vulnerable-mcp-servers&quot;&gt;Purposely Vulnerable MCP Servers&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/harishsg993010/damn-vulnerable-MCP-server&quot;&gt;Damn Vulnerable MCP Server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;papers&quot;&gt;Papers&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/2504.08623&quot;&gt;Enterprise-Grade Security for the Model Context Protocol (MCP): Frameworks and Mitigation Strategies&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;related-projects&quot;&gt;Related Projects&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/vineethsai/MCP-ETDI-docs/blob/vineeth-AI-docs-branch/docs/core/hld.md&quot;&gt;MCP-ETDI-docs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Securing a Form on the Internet: Still Pretty Difficult</title>

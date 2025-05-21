@@ -1,4 +1,115 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-04-12T10:59:15-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Securing a Form on the Internet: Still Pretty Difficult</title><link href="https://serverascode.com/2025/04/12/securing-a-form-on-the-internet.html" rel="alternate" type="text/html" title="Securing a Form on the Internet: Still Pretty Difficult" /><published>2025-04-12T00:00:00-04:00</published><updated>2025-04-12T00:00:00-04:00</updated><id>https://serverascode.com/2025/04/12/securing-a-form-on-the-internet</id><content type="html" xml:base="https://serverascode.com/2025/04/12/securing-a-form-on-the-internet.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-05-21T12:59:12-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Model Context Protocol Security Resources</title><link href="https://serverascode.com/2025/05/21/mcp-security-resources.html" rel="alternate" type="text/html" title="Model Context Protocol Security Resources" /><published>2025-05-21T00:00:00-04:00</published><updated>2025-05-21T00:00:00-04:00</updated><id>https://serverascode.com/2025/05/21/mcp-security-resources</id><content type="html" xml:base="https://serverascode.com/2025/05/21/mcp-security-resources.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/mcp-security-200w.png" alt="Model Context Protocol Security" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP we needed to invent firewalls and all that jazz.</em></p>
+</div>
+
+<hr />
+
+<h2 id="tldr">tldr;</h2>
+
+<p>Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it, and thus there is a lot of new thingamabobs out there on the capital-I Internet, from code to blog posts to videos.</p>
+
+<p>Let’s try to make it a bit easier to find the good stuff.</p>
+
+<h2 id="but-firstraillock">But first…Raillock</h2>
+
+<p><a href="https://github.com/ccollicutt/raillock">
+  <img src="/img/posts/raillock-300x100.png" alt="Raillock" />
+</a></p>
+
+<p>I’m working on a set of <em>open source</em> MCP related security tools, and one of them is a tool called Raillock, and I need some help testing it, using it and making it better, so if you have some time, please check it out and give me some feedback.</p>
+
+<div class="callout callout-info" style="background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        </span>
+        <div>
+            <p style="margin: 0; color: #155724;">Raillock "locks" the MCP server tool descriptions with cryptographic signatures (i.e. checksums), can be used as a CLI or a Python library. It can be imported into AI Agents that are MCP clients and help them protect themselves from malicious MCP servers and other MCP vulnerabilities.</p>
+            <p style="margin: 0.5rem 0 0 0;"><a href="https://github.com/ccollicutt/raillock" style="color: #155724;">It's open source and available on GitHub.</a></p>
+        </div>
+    </div>
+</div>
+
+<h2 id="about-programming-with-natural-language">About Programming with Natural Language</h2>
+
+<p>A key aspect of using Large Language Models is that we effectively program them using natural language. For example, the tool descriptions in an MCP server function/tool are part of the ‘program’ that the MCP client passes to the LLM. Of course, this description can include all kinds of malicious instructions. This is something new that security professionals have to deal with. It’s not the only security issue in MCP, but it’s one of the more difficult ones to grasp.</p>
+
+<p>It’s malicious code comments!</p>
+
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #fff3cd; padding: 1rem; border-radius: 4px;">
+    <a href="/2025/04/09/malicious-code-comments.html">
+        <img src="/img/magazine-cards/malicious-code-comments-200w.png" alt="Malicious Code Comments" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    </a>
+    <p><em>We all have to get used to a new way of programming, and a new attack vectors that don't look like code. But they are. But they don't look like code. It's Halloween every day now. See the post <a href="/2025/04/09/malicious-code-comments.html">Malicious Code Comments</a> for more</em></p>
+</div>
+
+<h2 id="mcp-security-resources">MCP Security Resources</h2>
+
+<p>Last updated: 2025-05-21</p>
+
+<h3 id="about-mcp-itself">About MCP Itself</h3>
+
+<ul>
+  <li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+  <li><a href="https://modelcontextprotocol.io/specification/draft/basic/security_best_practices">Model Context Protocol Security Best Practices</a></li>
+</ul>
+
+<h3 id="high-level-mcp-resources">High Level MCP Resources</h3>
+
+<ul>
+  <li><a href="https://github.com/slowmist/MCP-Security-Checklist">MCP Security Checklist</a></li>
+</ul>
+
+<h3 id="meta-resources">Meta Resources</h3>
+
+<p>Collections of resources.</p>
+
+<ul>
+  <li><a href="https://github.com/Puliczek/awesome-mcp-security">Awesome MCP Security</a></li>
+  <li><a href="https://github.com/AIM-Intelligence/awesome-mcp-security">AIM-Intelligence/awesome-mcp-security</a></li>
+  <li><a href="https://vulnerablemcp.info/">Vulnerable MCP</a></li>
+</ul>
+
+<h3 id="blog-posts">Blog Posts</h3>
+
+<ul>
+  <li><a href="https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/">Trail of Bits: Jumping the Line: How MCP Servers Can Attack You Before You Ever Use Them</a></li>
+  <li><a href="https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/">Trail of Bits: How MCP Servers Can Steal Your Conversation History</a></li>
+  <li><a href="https://simonwillison.net/2025/Apr/9/mcp-prompt-injection">Simon Willison on MCP Prompt Injection</a></li>
+  <li>
+    <p><a href="https://elenacross7.medium.com/%EF%B8%8F-the-s-in-mcp-stands-for-security-91407b33ed6b">The S in MCP stands for Security</a></p>
+  </li>
+  <li><a href="https://github.com/invariantlabs-ai/mcp-injection-experiments">Invariant Labs: MCP Injection Experiments</a></li>
+  <li><a href="https://invariantlabs.ai/blog/introducing-mcp-scan">Invariant Labs: Introducing MCP Scan</a></li>
+  <li><a href="https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks">Invariant Labs: MCP Security Notification Tool Poisoning Attacks</a></li>
+</ul>
+
+<h3 id="tools">Tools</h3>
+
+<ul>
+  <li><a href="https://github.com/ccollicutt/raillock">Raillock</a></li>
+  <li><a href="https://github.com/invariantlabs-ai/mcp-scan">Ivariant Labs mcp-scan</a></li>
+  <li><a href="https://github.com/stacklok/toolhive">Stacklok Toolhive</a></li>
+</ul>
+
+<h3 id="purposely-vulnerable-mcp-servers">Purposely Vulnerable MCP Servers</h3>
+
+<ul>
+  <li><a href="https://github.com/harishsg993010/damn-vulnerable-MCP-server">Damn Vulnerable MCP Server</a></li>
+</ul>
+
+<h3 id="papers">Papers</h3>
+
+<ul>
+  <li><a href="https://arxiv.org/pdf/2504.08623">Enterprise-Grade Security for the Model Context Protocol (MCP): Frameworks and Mitigation Strategies</a></li>
+</ul>
+
+<h3 id="related-projects">Related Projects</h3>
+
+<ul>
+  <li><a href="https://github.com/vineethsai/MCP-ETDI-docs/blob/vineeth-AI-docs-branch/docs/core/hld.md">MCP-ETDI-docs</a></li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP we needed to invent firewalls and all that jazz.]]></summary></entry><entry><title type="html">Securing a Form on the Internet: Still Pretty Difficult</title><link href="https://serverascode.com/2025/04/12/securing-a-form-on-the-internet.html" rel="alternate" type="text/html" title="Securing a Form on the Internet: Still Pretty Difficult" /><published>2025-04-12T00:00:00-04:00</published><updated>2025-04-12T00:00:00-04:00</updated><id>https://serverascode.com/2025/04/12/securing-a-form-on-the-internet</id><content type="html" xml:base="https://serverascode.com/2025/04/12/securing-a-form-on-the-internet.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/putting-a-form-on-the-internet-200w.png" alt="Putting a Form on the Internet" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>Putting a form on the Internet is still crazy hard. There's quite a few steps to take to make it reasonably secure.</em></p>
 </div>
@@ -14863,103 +14974,4 @@ Breaking Changes</p>
 
 <h2 id="you-own-your-uptime">You Own Your Uptime</h2>
 
-<p>If I can conclude with anything it’s that in order to manage complex systems (and apparently they are all complex) I believe organizations must be great at understanding and managing dependencies. To deal with complexity requires expertise in dependencies. Certainly we can try to push the risk onto vendors, but at some point we must take responsibility. You own your uptime.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I have a pet theory that it’s all about dependencies.]]></summary></entry><entry><title type="html">Using OpenShift’s Docker Remote Registry</title><link href="https://serverascode.com/2018/07/02/openshift-remote-registry-docker.html" rel="alternate" type="text/html" title="Using OpenShift’s Docker Remote Registry" /><published>2018-07-02T00:00:00-04:00</published><updated>2018-07-02T00:00:00-04:00</updated><id>https://serverascode.com/2018/07/02/openshift-remote-registry-docker</id><content type="html" xml:base="https://serverascode.com/2018/07/02/openshift-remote-registry-docker.html"><![CDATA[<p>In this post I will cover using an OpenShift Origin deployment that has a registry as a remote registry for Docker images. Note that I’m not covering installing OpenShift–it’s already deployed. I’m just going to use its registry.</p>
-
-<h2 id="official-documentation">Official Documentation</h2>
-
-<p>This <a href="https://docs.openshift.com/container-platform/3.9/install_config/registry/accessing_registry.html">doc</a> is pretty good; won’t get you all the way, but it’s close.</p>
-
-<h2 id="about-the-deployment">About the Deployment</h2>
-
-<p>This OpenShift installation is running in AWS (not that it really matters where it’s running) and the registry is backed by S3. As far as I’m concerned object storage is the best backend for Docker images. Well, at least it’s effectively infinite.</p>
-
-<p>The version of OpenShift Origin being used is 3.9.</p>
-
-<h2 id="s3-permissions">S3 Permissions</h2>
-
-<p>OpenShift was deployed using openshift-ansible, and the hosts file was configured to use an AWS user that has been configured with specific permissions.</p>
-
-<p>A bucket, <code>openshift-1-registry</code>, was created by an administrative user. The OpenShift AWS user was provided the below permissions to be able to use that bucket.</p>
-
-<pre><code>{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": [
-                "arn:aws:s3:::openshift-1-registry",
-                "arn:aws:s3:::openshift-1-registry/*"
-            ]
-        }
-    ]
-}
-</code></pre>
-
-<p>I’m sure that could be firmed up, wildcards are frowned upon, but at least the OpenShift user only has access to his particular bucket. The user can’t list all buckets, but can access <code>openshift-1-registry</code>.</p>
-
-<p>Below I’m using the AWS CLI as an example of access permissions.</p>
-
-<pre><code>$ aws s3 ls
-
-An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
-$ aws s3 ls s3://openshift-1-registry
-                           PRE registry/
-</code></pre>
-
-<h2 id="registry-information">Registry Information</h2>
-
-<p>As root on the controller instance I can find out the route for the docker registry. Of course this assumes that OpenShift has been setup with a wildcard apps domain.</p>
-
-<pre><code>openshift-controller# oc get routes
-NAME               HOST/PORT                                   PATH      SERVICES           PORT      TERMINATION   WILDCARD
-docker-registry    docker-registry-default.apps.example.com              docker-registry    &lt;all&gt;     passthrough   None
-registry-console   registry-console-default.apps.example.com             registry-console   &lt;all&gt;     passthrough   None
-</code></pre>
-
-<p>*.apps.example.com is available through an ELB on AWS.</p>
-
-<p><em>NOTE: I’ve replaced the real URL with example.com.</em></p>
-
-<h2 id="local-docker">Local Docker</h2>
-
-<p>This post assumes you have a local docker instance. In this example, docker 1.13.1 is running in a CentOS 7 host.</p>
-
-<p>We need to add an insecure registry to the local docker (that is, of course, unless you have properly setup all the SSL certificates, which would be a good thing to do for production).</p>
-
-<p>Edit Docker’s daemon.json file to add the insecure registry.</p>
-
-<pre><code>local-docker$ sudo cat /etc/docker/daemon.json
-{
-  "insecure-registries" : ["docker-registry-default.apps.example.com:443"]
-}
-</code></pre>
-
-<p>The restart it.</p>
-
-<h2 id="login">Login</h2>
-
-<p>On the local docker, which also has the <code>oc</code> command line and access to OpenShift…</p>
-
-<pre><code>local-docker$ oc login
-local-docker$ docker login -u $(oc whoami) -p $(oc whoami -t) docker-registry-default.apps.example.com:443
-</code></pre>
-
-<h2 id="pull-and-push-and-image">Pull and Push and Image</h2>
-
-<p>Check what OC project you are in. Note that I’ve created a “example-project” project.</p>
-
-<pre><code>local-docker$ oc project
-Using project "example-project" on server "https://openshift.example.com:443".
-</code></pre>
-
-<p>Pull, tag, and push an image.</p>
-
-<pre><code>local-docker$ docker pull docker.io/busybox
-local-docker$ docker tag docker.io/busybox docker-registry-default.apps.example.com:443/example-project/busybox
-local-docker$ docker push docker-registry-default.apps.example.com:443/example-project/busybox
-</code></pre>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Now you’re using a remote registry that is managed by OpenShift. The part I found most confusing was the project name and how it relates to the image tag.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[In this post I will cover using an OpenShift Origin deployment that has a registry as a remote registry for Docker images. Note that I’m not covering installing OpenShift–it’s already deployed. I’m just going to use its registry.]]></summary></entry></feed>
+<p>If I can conclude with anything it’s that in order to manage complex systems (and apparently they are all complex) I believe organizations must be great at understanding and managing dependencies. To deal with complexity requires expertise in dependencies. Certainly we can try to push the risk onto vendors, but at some point we must take responsibility. You own your uptime.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[I have a pet theory that it’s all about dependencies.]]></summary></entry></feed>

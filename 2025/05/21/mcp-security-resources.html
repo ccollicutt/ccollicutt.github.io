@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Context Protocol Security Resources | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Model Context Protocol Security Resources">
+        
+        <meta name="twitter:description" content="
+    
+    Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP ...">
+        <meta property="og:description" content="
+    
+    Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP ..." />
+        
+        <meta property="og:title" content="Model Context Protocol Security Resources" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/mcp-security-resources.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/mcp-security-resources.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2025/05/21/mcp-security-resources.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+    <script defer data-domain="serverascode.com" src="https://plausible.io/js/script.js"></script>
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 263
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#projects">Software Projects</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2025 MAY</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Model Context Protocol Security Resources</h1>
+        <p class="text-gray-600">
+            <time datetime="2025-05-21T00:00:00-04:00">
+                May 21, 2025
+            </time>
+            
+        </p>
+    </header>
+
+    <div id="toc" class="hidden mb-8 p-4 bg-gray-50 rounded-lg not-prose">
+        <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+        <nav id="toc-content"></nav>
+    </div>
+
+    
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/mcp-security-200w.png" alt="Model Context Protocol Security" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it. Just like when we invented TCP/IP we needed to invent firewalls and all that jazz.</em></p>
+</div>
+
+<hr />
+
+<h2 id="tldr">tldr;</h2>
+
+<p>Model Context Protocol is new, so we need to build all the security tooling and process and knowledge around it, and thus there is a lot of new thingamabobs out there on the capital-I Internet, from code to blog posts to videos.</p>
+
+<p>Let’s try to make it a bit easier to find the good stuff.</p>
+
+<h2 id="but-firstraillock">But first…Raillock</h2>
+
+<p><a href="https://github.com/ccollicutt/raillock">
+  <img src="/img/posts/raillock-300x100.png" alt="Raillock" />
+</a></p>
+
+<p>I’m working on a set of <em>open source</em> MCP related security tools, and one of them is a tool called Raillock, and I need some help testing it, using it and making it better, so if you have some time, please check it out and give me some feedback.</p>
+
+<div class="callout callout-info" style="background-color: #d4edda; border-left: 5px solid #c3e6cb; padding: 1.25rem; margin: 1rem 0;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 1.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        </span>
+        <div>
+            <p style="margin: 0; color: #155724;">Raillock "locks" the MCP server tool descriptions with cryptographic signatures (i.e. checksums), can be used as a CLI or a Python library. It can be imported into AI Agents that are MCP clients and help them protect themselves from malicious MCP servers and other MCP vulnerabilities.</p>
+            <p style="margin: 0.5rem 0 0 0;"><a href="https://github.com/ccollicutt/raillock" style="color: #155724;">It's open source and available on GitHub.</a></p>
+        </div>
+    </div>
+</div>
+
+<h2 id="about-programming-with-natural-language">About Programming with Natural Language</h2>
+
+<p>A key aspect of using Large Language Models is that we effectively program them using natural language. For example, the tool descriptions in an MCP server function/tool are part of the ‘program’ that the MCP client passes to the LLM. Of course, this description can include all kinds of malicious instructions. This is something new that security professionals have to deal with. It’s not the only security issue in MCP, but it’s one of the more difficult ones to grasp.</p>
+
+<p>It’s malicious code comments!</p>
+
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background-color: #fff3cd; padding: 1rem; border-radius: 4px;">
+    <a href="/2025/04/09/malicious-code-comments.html">
+        <img src="/img/magazine-cards/malicious-code-comments-200w.png" alt="Malicious Code Comments" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    </a>
+    <p><em>We all have to get used to a new way of programming, and a new attack vectors that don't look like code. But they are. But they don't look like code. It's Halloween every day now. See the post <a href="/2025/04/09/malicious-code-comments.html">Malicious Code Comments</a> for more</em></p>
+</div>
+
+<h2 id="mcp-security-resources">MCP Security Resources</h2>
+
+<p>Last updated: 2025-05-21</p>
+
+<h3 id="about-mcp-itself">About MCP Itself</h3>
+
+<ul>
+  <li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+  <li><a href="https://modelcontextprotocol.io/specification/draft/basic/security_best_practices">Model Context Protocol Security Best Practices</a></li>
+</ul>
+
+<h3 id="high-level-mcp-resources">High Level MCP Resources</h3>
+
+<ul>
+  <li><a href="https://github.com/slowmist/MCP-Security-Checklist">MCP Security Checklist</a></li>
+</ul>
+
+<h3 id="meta-resources">Meta Resources</h3>
+
+<p>Collections of resources.</p>
+
+<ul>
+  <li><a href="https://github.com/Puliczek/awesome-mcp-security">Awesome MCP Security</a></li>
+  <li><a href="https://github.com/AIM-Intelligence/awesome-mcp-security">AIM-Intelligence/awesome-mcp-security</a></li>
+  <li><a href="https://vulnerablemcp.info/">Vulnerable MCP</a></li>
+</ul>
+
+<h3 id="blog-posts">Blog Posts</h3>
+
+<ul>
+  <li><a href="https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/">Trail of Bits: Jumping the Line: How MCP Servers Can Attack You Before You Ever Use Them</a></li>
+  <li><a href="https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/">Trail of Bits: How MCP Servers Can Steal Your Conversation History</a></li>
+  <li><a href="https://simonwillison.net/2025/Apr/9/mcp-prompt-injection">Simon Willison on MCP Prompt Injection</a></li>
+  <li>
+    <p><a href="https://elenacross7.medium.com/%EF%B8%8F-the-s-in-mcp-stands-for-security-91407b33ed6b">The S in MCP stands for Security</a></p>
+  </li>
+  <li><a href="https://github.com/invariantlabs-ai/mcp-injection-experiments">Invariant Labs: MCP Injection Experiments</a></li>
+  <li><a href="https://invariantlabs.ai/blog/introducing-mcp-scan">Invariant Labs: Introducing MCP Scan</a></li>
+  <li><a href="https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks">Invariant Labs: MCP Security Notification Tool Poisoning Attacks</a></li>
+</ul>
+
+<h3 id="tools">Tools</h3>
+
+<ul>
+  <li><a href="https://github.com/ccollicutt/raillock">Raillock</a></li>
+  <li><a href="https://github.com/invariantlabs-ai/mcp-scan">Ivariant Labs mcp-scan</a></li>
+  <li><a href="https://github.com/stacklok/toolhive">Stacklok Toolhive</a></li>
+</ul>
+
+<h3 id="purposely-vulnerable-mcp-servers">Purposely Vulnerable MCP Servers</h3>
+
+<ul>
+  <li><a href="https://github.com/harishsg993010/damn-vulnerable-MCP-server">Damn Vulnerable MCP Server</a></li>
+</ul>
+
+<h3 id="papers">Papers</h3>
+
+<ul>
+  <li><a href="https://arxiv.org/pdf/2504.08623">Enterprise-Grade Security for the Model Context Protocol (MCP): Frameworks and Mitigation Strategies</a></li>
+</ul>
+
+<h3 id="related-projects">Related Projects</h3>
+
+<ul>
+  <li><a href="https://github.com/vineethsai/MCP-ETDI-docs/blob/vineeth-AI-docs-branch/docs/core/hld.md">MCP-ETDI-docs</a></li>
+</ul>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2025 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                263
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+
+    // Table of Contents Generator
+    document.addEventListener('DOMContentLoaded', function() {
+        const article = document.querySelector('article.prose');
+        if (!article) return;
+
+        // Get all headers from the article content (h2-h4), excluding those in tables
+        const headers = Array.from(article.querySelectorAll('h2, h3, h4')).filter(header => {
+            // Exclude headers in tables, TOC itself, and any header containing "Table of Contents"
+            return !header.closest('table') && 
+                   !header.closest('.toc') && 
+                   header.textContent.trim() !== 'Table of Contents' &&
+                   !header.textContent.includes('Table of Contents');
+        });
+
+        // Only generate TOC if there are more than 3 headers
+        if (headers.length <= 3) return;
+
+        // Create and initialize TOC container
+        const tocContainer = createTOCContainer();
+        tocContainer.id = 'toc-container';
+        
+        // Generate TOC content
+        const { toc, sectionInfo } = generateTOCContent(headers);
+        
+        // Add TOC to container
+        tocContainer.appendChild(toc);
+        
+        // Insert TOC in the appropriate location
+        insertTOC(article, tocContainer);
+
+        // Create floating button container
+        const floatingContainer = document.createElement('div');
+        floatingContainer.className = 'floating-container prose mx-auto text-center mt-8 mb-4';
+        floatingContainer.style.cssText = `
+            width: 100%;
+            max-width: 65ch;
+        `;
+
+        // Create the button
+        const backButton = document.createElement('button');
+        backButton.textContent = '↑ Back to Contents';
+        backButton.className = 'bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200';
+        backButton.style.cssText = `
+            font-size: 0.875rem;
+        `;
+
+        floatingContainer.appendChild(backButton);
+        article.appendChild(floatingContainer);
+
+        // Scroll back to TOC when clicked
+        backButton.addEventListener('click', () => {
+            tocContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enable smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    function createTOCContainer() {
+        const container = document.createElement('div');
+        container.className = 'toc mb-8 p-4 bg-gray-50 rounded-lg not-prose';
+        container.innerHTML = '<h2 class="toc-title text-lg font-semibold mb-2">Table of Contents</h2>';
+        return container;
+    }
+
+    function generateTOCContent(headers) {
+        const toc = document.createElement('ul');
+        toc.className = 'space-y-2';
+        
+        let sectionCount = 1;
+        let subsectionCount = 1;
+        let lastLevel = 2; // Start with h2 level
+
+        headers.forEach((header, index) => {
+            // Ensure header has an ID
+            if (!header.id) {
+                header.id = `section-${index}`;
+            }
+
+            const level = parseInt(header.tagName.charAt(1));
+            const { sectionNumber, newSectionCount, newSubsectionCount, newLastLevel } = 
+                generateSectionNumber(level, sectionCount, subsectionCount, lastLevel);
+
+            // Update counters
+            sectionCount = newSectionCount;
+            subsectionCount = newSubsectionCount;
+            lastLevel = newLastLevel;
+
+            // Create TOC item
+            const item = createTOCItem(header, level, sectionNumber);
+            toc.appendChild(item);
+
+            // Update header in content
+            header.prepend(document.createTextNode(sectionNumber));
+        });
+
+        return { 
+            toc,
+            sectionInfo: { sectionCount, subsectionCount, lastLevel }
+        };
+    }
+
+    function generateSectionNumber(level, sectionCount, subsectionCount, lastLevel) {
+        let sectionNumber = '';
+        let newSectionCount = sectionCount;
+        let newSubsectionCount = subsectionCount;
+        let newLastLevel = lastLevel;
+
+        if (level === 2) {
+            sectionNumber = `${sectionCount}. `;
+            newSubsectionCount = 1;
+            newSectionCount++;
+            newLastLevel = 2;
+        } else if (level === 3) {
+            sectionNumber = `${sectionCount - 1}.${subsectionCount}. `;
+            newSubsectionCount++;
+            newLastLevel = 3;
+        }
+
+        return {
+            sectionNumber,
+            newSectionCount,
+            newSubsectionCount,
+            newLastLevel
+        };
+    }
+
+    function createTOCItem(header, level, sectionNumber) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${header.id}`;
+        link.textContent = sectionNumber + header.textContent;
+        link.className = 'text-gray-700 hover:text-gray-900 hover:underline block';
+
+        // Add indentation based on header level
+        const indent = level - 2;
+        item.style.paddingLeft = `${indent * 1}rem`;
+        item.appendChild(link);
+
+        return item;
+    }
+
+    function insertTOC(article, tocContainer) {
+        const header = article.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(tocContainer, header.nextSibling);
+        } else {
+            article.insertBefore(tocContainer, article.firstChild);
+        }
+    }
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link or the feed.xml
+                if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                    window.open(href, '_blank');
+                    return;
+                }
+
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.quefrySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>
