@@ -4,13 +4,171 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-05-21T12:59:12-04:00</updated>
+ <updated>2025-07-22T19:43:17-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later'</title>
+   <link href="http://serverascode.com//2025/07/22/finding-plotholes-in-ai-assisted-code.html"/>
+   <updated>2025-07-22T00:00:00-04:00</updated>
+   <id>http://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/plothole-200w.png&quot; alt=&quot;Finding Plotholes in AI-Assisted Code&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;Find AI-assisted code artifacts that need fixing&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tldr;&lt;/h2&gt;
+
+&lt;p&gt;I am trying out new ways of testing AI-assisted code generation. LLMs will introduce all kinds of strange elements into the code or simply refuse to implement it. One approach in terms of detection is to use another LLM to identify any TODOs or other incomplete or unimplemented features in the code, as well as any weird artefacts left behind by those lazy LLMs. I do this with a tool I’ve written called Plothole.&lt;/p&gt;
+
+&lt;p&gt;Tech stack:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Golang CLI&lt;/li&gt;
+  &lt;li&gt;Mistral’s Devstral model&lt;/li&gt;
+  &lt;li&gt;NVIDIA 3090&lt;/li&gt;
+  &lt;li&gt;Ollama&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;analysing-text-with-llms&quot;&gt;Analysing text with LLMs&lt;/h2&gt;
+
+&lt;p&gt;I’m fascinated by the idea of using AI to analyse text and identify issues such as security vulnerabilities and bugs in code. I’ve written several tools for this purpose and encountered the same problems each time: using regular expressions, extracting JSON from Large Language Models, and so on. Perhaps I have some kind of mental block, as I can’t think of anything else to do with AI.&lt;/p&gt;
+
+&lt;p&gt;Having said that, I suppose that if you write enough variations of the same tool, you’ll eventually find something useful.&lt;/p&gt;
+
+&lt;h2 id=&quot;incomplete-or-missing-code&quot;&gt;Incomplete or missing code&lt;/h2&gt;
+
+&lt;p&gt;Over the last few months, I have been writing a lot of AI-assisted code. One issue I’ve found with LLMs is that they create incomplete code and leave out sections, adding ‘fix later’ comments that create serious bugs. These aren’t obvious unless you read every line of code, which I don’t think most people coding with AI assistance will do. Some will, but not everyone.&lt;/p&gt;
+
+&lt;p&gt;I run a number of tests on AI-assisted code, such as looking for duplicate and dead code — i.e. static code checks. Sometimes, AI will leave duplicate code or code that is never executed. In addition to that, I want to look for incomplete code, TODOs and ‘XXX fix later’ comments. These should not be present in production code.&lt;/p&gt;
+
+&lt;p&gt;That’s where plothole comes in.&lt;/p&gt;
+
+&lt;h2 id=&quot;mistrals-devstral&quot;&gt;Mistral’s Devstral&lt;/h2&gt;
+
+&lt;p&gt;Recently, I also found a solution to a problem that didn’t actually exist: I wanted to run more models at home on my NVIDIA 3090, which should be capable of running some great open-source models. One of these is &lt;a href=&quot;https://mistral.ai/news/devstral-2507&quot;&gt;Mistral’s Devstral&lt;/a&gt;, which has been specifically trained to write code. But what could I use it for?&lt;/p&gt;
+
+&lt;p&gt;I decided to combine my desire to run models like Devstral with my need to solve the problem of incomplete code and AI comments, and I wrote a tool called ‘Plothole’ to find incomplete code and comments such as ‘TODO’ or ‘XXX fix later’ that AI-assisted code will leave in and that you might not catch with other tools.&lt;/p&gt;
+
+&lt;p&gt;So Plothole uses Devstral via a simple Ollma interface.&lt;/p&gt;
+&lt;h2 id=&quot;plothole&quot;&gt;Plothole&lt;/h2&gt;
+
+&lt;p&gt;Here’s an example of running it on one of my projects.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ make plothole-check 
+~/bin/plothole check ./cmd ./internal ./pkg ./tests --recursive --severity=high --fail-on-findings
+Checking: [./cmd ./internal ./pkg ./tests]
+Checking file: cmd/cli/main.go [CACHED]
+Checking file: cmd/server/main.go [CACHED]
+Checking file: internal/assets/embed_test.go [CACHED]
+Checking file: internal/assets/static/js/app.js [CACHED]
+Checking file: internal/assets/static/js/dashboard.js [CACHED]
+Checking file: internal/assets/static/js/login.js [CACHED]
+Checking file: internal/assets/static/js/profile.js [CACHED]
+Checking file: internal/assets/static/js/users.js [CACHED]
+Checking file: internal/assets/static.go [CACHED]
+Checking file: internal/cli/commands/root.go [CACHED]
+Checking file: internal/cli/root.go [CACHED]
+Checking file: internal/server/api/handler.go [CACHED]
+Checking file: internal/server/api/handler_test.go [CACHED]
+Checking file: internal/server/api/response.go [CACHED]
+Checking file: internal/server/api/router.go [CACHED]
+Checking file: internal/server/auth/auth.go [CACHED]
+Checking file: internal/server/auth/auth_test.go [CACHED]
+Checking file: internal/server/middleware/auth.go [CACHED]
+Checking file: internal/server/server.go [CACHED]
+Checking file: internal/server/store/store.go [CACHED]
+Checking file: internal/server/store/store_test.go [CACHED]
+Checking file: internal/server/web/embed_test.go [CACHED]
+Checking file: internal/server/web/handlers.go [CACHED]
+Checking file: pkg/api/types.go [CACHED]
+Checking file: pkg/config/config.go [CACHED]
+Checking file: pkg/config/config_test.go [CACHED]
+Checking file: pkg/logger/logger.go [CACHED]
+Checking file: pkg/logger/logger_test.go [CACHED]
+Checking file: pkg/version/version.go [CACHED]
+Checking file: pkg/version/version_test.go [CACHED]
+Plothole Analysis Results
+==================================================
+Files analyzed: 30
+Files with issues: 1
+Total findings: 1
+Cache hits: 30, misses: 0 (100.0% hit rate)
+  [HIGH] High: 1
+  [MED]  Medium: 0
+  [LOW]  Low: 0
+
+File: internal/server/middleware/auth.go [CACHED]
+   [HIGH]:30 Incomplete API key validation implementation
+      Suggestion: Implement proper API key validation instead of just checking for non-empty values
+
+make: *** [Makefile:216: plothole-check] Error 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, it found a high-severity issue in the code in that the API key validation is incomplete.&lt;/p&gt;
+
+&lt;p&gt;This is what that code looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;			// Check API key authentication if allowed
+			if !authenticated &amp;amp;&amp;amp; config.AllowAPIKey {
+				apiKey := r.Header.Get(&quot;Authorization&quot;)
+				if apiKey != &quot;&quot; {
+					// Remove &quot;Bearer &quot; prefix if present
+					if len(apiKey) &amp;gt; 7 &amp;amp;&amp;amp; apiKey[:7] == &quot;Bearer &quot; {
+						apiKey = apiKey[7:]
+					}
+					
+					// For debugging: ensure we have a non-empty API key
+					if len(apiKey) &amp;gt; 0 {
+						// Validate API key with store
+						user, err := am.store.GetUserByAPIKey(apiKey)
+						if err == nil &amp;amp;&amp;amp; user != nil {
+							authenticated = true
+							if role, ok := user[&quot;role&quot;].(string); ok {
+								isAdmin = (role == &quot;admin&quot;)
+							}
+						}
+					}
+				}
+			}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Interestingly, the comment doesn’t match the code.&lt;/p&gt;
+
+&lt;p&gt;The comment says:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// For debugging: ensure we have a non-empty API key
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But the code does:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if len(apiKey) &amp;gt; 0 {
+    // Validate API key with store
+    user, err := am.store.GetUserByAPIKey(apiKey)
+    // ... actual authentication logic
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But, this is not debugging code. It’s core authentication logic. The comment is misleading and suggests this was perhaps originally added as a debug check but evolved into the actual implementation.&lt;/p&gt;
+
+&lt;p&gt;This is a real life example of a kind of code comment bug…I guess? Very interesting.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I have a lot more testing to do with plothole, but I think it might turn out to be useful. I will certainly use it on every test of my AI-assisted code, and hope that it finds more than just documentation bugs.&lt;/p&gt;
+
+&lt;p&gt;Using Devstral means this can be inexpensive to run. Companies could easily run this on their codebases with little cost.&lt;/p&gt;
+
+&lt;p&gt;I’m going to test plothole on my own for a while, then release it as open source.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Model Context Protocol Security Resources</title>
@@ -102,6 +260,9 @@
   &lt;li&gt;&lt;a href=&quot;https://github.com/invariantlabs-ai/mcp-injection-experiments&quot;&gt;Invariant Labs: MCP Injection Experiments&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://invariantlabs.ai/blog/introducing-mcp-scan&quot;&gt;Invariant Labs: Introducing MCP Scan&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks&quot;&gt;Invariant Labs: MCP Security Notification Tool Poisoning Attacks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://invariantlabs.ai/blog/mcp-github-vulnerability&quot;&gt;Invariant Labs: MCP GitHub Vulnerability&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://simonwillison.net/2025/May/26/github-mcp-exploited/&quot;&gt;Simon Willison: GitHub exploited to run MCP code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.backslash.security/blog/mcp-server-security-overview&quot;&gt;Guilty, Innocent, or Just Risky? Why MCP Server Security Verdicts Are Hard&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;tools&quot;&gt;Tools&lt;/h3&gt;
@@ -110,6 +271,7 @@
   &lt;li&gt;&lt;a href=&quot;https://github.com/ccollicutt/raillock&quot;&gt;Raillock&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/invariantlabs-ai/mcp-scan&quot;&gt;Ivariant Labs mcp-scan&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/stacklok/toolhive&quot;&gt;Stacklok Toolhive&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/eqtylab/mcp-guardian&quot;&gt;eqtylab/mcp-guardian&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;purposely-vulnerable-mcp-servers&quot;&gt;Purposely Vulnerable MCP Servers&lt;/h3&gt;

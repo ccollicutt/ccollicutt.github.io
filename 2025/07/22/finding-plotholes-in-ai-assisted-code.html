@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" class="min-h-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later' | Server As Code Dot Com</title>
+    <meta name="description" content="A techno-blog for our techno-times">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/assets/css/prism.min.css" rel="stylesheet">
+    <link href="/assets/css/extra.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:site" content="serverascode.com">
+    <meta name="twitter:creator" content="Curtis Collicutt">
+    
+    
+        <meta name="twitter:title" content="Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later'">
+        
+        <meta name="twitter:description" content="
+    
+    Find AI-assisted code artifacts that need fixing
+
+
+">
+        <meta property="og:description" content="
+    
+    Find AI-assisted code artifacts that need fixing
+
+
+" />
+        
+        <meta property="og:title" content="Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later'" />
+        <meta property="og:type" content="article" />
+    
+    
+    
+    
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://serverascode.com/img/social/posts/finding-plotholes-in-ai-assisted-code.png">
+    <meta property="og:image" content="https://serverascode.com/img/social/posts/finding-plotholes-in-ai-assisted-code.png" />
+    
+    
+    <meta property="og:url" content="https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code.html" />
+    <meta property="og:site_name" content="Server As Code Dot Com" />
+    <script defer data-domain="serverascode.com" src="https://plausible.io/js/script.js"></script>
+</head>
+<body class="font-sans">
+    <div class="magazine-container">
+        <header>
+            <div class="magazine-header">
+                <div class="issue-number-dropdown">
+                    <button class="issue-number-top dropdown-toggle">
+                        ISSUE 264
+                        <span class="arrow-down"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-section">
+                            <h3>Navigation</h3>
+                            <a href="/">Home</a>
+                            <a href="/archive.html">Archive</a>
+                            <a href="/feed.xml">RSS Feed</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Sections</h3>
+                            <a href="/#latest-issues">Latest Issues</a>
+                            <a href="/#projects">Software Projects</a>
+                            <a href="/#tidal-series">Tidal Series</a>
+                            <a href="/#connect-with-me">Connect With Me</a>
+                            <a href="/#recent-posts">Recent Posts</a>
+                        </div>
+                        <div class="dropdown-section">
+                            <h3>Connect</h3>
+                            
+                                
+                            
+                                
+                                    <a href="https://tidalseries.com" target="_blank" rel="noopener noreferrer">TIDAL SERIES Newsletter</a>
+                                
+                            
+                                
+                                    <a href="https://www.linkedin.com/in/ccollicutt/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                                
+                            
+                                
+                                    <a href="https://taico.ca" target="_blank" rel="noopener noreferrer">TAICO - The Toronto AI and Cybersecurity Organization</a>
+                                
+                            
+                                
+                                    <a href="https://github.com/ccollicutt" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                
+                            
+                                
+                                    <a href="https://huggingface.co/ccollicutt" target="_blank" rel="noopener noreferrer">Hugging Face</a>
+                                
+                            
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="magazine-info">
+                    <div>Server As Code Dot Com</div>
+                    <div class="underline"><a href="/archive.html">ARCHIVE</a></div>
+                    <div class="underline">2025 JULY</div>
+                    <div class="underline">¥980</div>
+                </div>
+            </div>
+            <p class="magazine-subtitle">A techno-blog for our techno-times</p>
+            <a href="/" class="logo-link">
+                <img src="/img/logo/logo.png" alt="Server As Code Dot Com" class="logo-image">
+            </a>
+        </header>
+
+        <div class="content-wrapper">
+            <main class="flex-grow px-4 md:px-8 main-content">
+                <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+    <div class="flex justify-center space-x-4">
+        
+        
+        <a href="https://serverascode.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/author/curtis.jpg" alt="Curtis Collicutt" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">Curtis Collicutt</span>
+        </a>
+        
+        
+        
+        <a href="https://tidalseries.com" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/tidalseries.png" alt="TIDAL SERIES Newsletter" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">TIDAL SERIES Newsletter</span>
+        </a>
+        
+        
+        
+        <a href="https://www.linkedin.com/in/ccollicutt/" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/linkedin.png" alt="LinkedIn" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">LinkedIn</span>
+        </a>
+        
+        
+        
+        
+        
+        <a href="https://github.com/ccollicutt" class="group flex flex-col items-center bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3" target="_blank" rel="noopener noreferrer">
+            <img src="/img/cards/github.jpg" alt="GitHub" class="w-14 h-14 object-cover rounded-full mb-2">
+            <span class="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">GitHub</span>
+        </a>
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<article class="prose lg:prose-xl mx-auto">
+    <header class="mb-8 text-center not-prose">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2">Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later'</h1>
+        <p class="text-gray-600">
+            <time datetime="2025-07-22T00:00:00-04:00">
+                July 22, 2025
+            </time>
+            
+        </p>
+    </header>
+
+    <div id="toc" class="hidden mb-8 p-4 bg-gray-50 rounded-lg not-prose">
+        <h2 class="text-lg font-semibold mb-2">Table of Contents</h2>
+        <nav id="toc-content"></nav>
+    </div>
+
+    
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/plothole-200w.png" alt="Finding Plotholes in AI-Assisted Code" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>Find AI-assisted code artifacts that need fixing</em></p>
+</div>
+
+<hr />
+
+<h2 id="tldr">tldr;</h2>
+
+<p>I am trying out new ways of testing AI-assisted code generation. LLMs will introduce all kinds of strange elements into the code or simply refuse to implement it. One approach in terms of detection is to use another LLM to identify any TODOs or other incomplete or unimplemented features in the code, as well as any weird artefacts left behind by those lazy LLMs. I do this with a tool I’ve written called Plothole.</p>
+
+<p>Tech stack:</p>
+
+<ul>
+  <li>Golang CLI</li>
+  <li>Mistral’s Devstral model</li>
+  <li>NVIDIA 3090</li>
+  <li>Ollama</li>
+</ul>
+
+<h2 id="analysing-text-with-llms">Analysing text with LLMs</h2>
+
+<p>I’m fascinated by the idea of using AI to analyse text and identify issues such as security vulnerabilities and bugs in code. I’ve written several tools for this purpose and encountered the same problems each time: using regular expressions, extracting JSON from Large Language Models, and so on. Perhaps I have some kind of mental block, as I can’t think of anything else to do with AI.</p>
+
+<p>Having said that, I suppose that if you write enough variations of the same tool, you’ll eventually find something useful.</p>
+
+<h2 id="incomplete-or-missing-code">Incomplete or missing code</h2>
+
+<p>Over the last few months, I have been writing a lot of AI-assisted code. One issue I’ve found with LLMs is that they create incomplete code and leave out sections, adding ‘fix later’ comments that create serious bugs. These aren’t obvious unless you read every line of code, which I don’t think most people coding with AI assistance will do. Some will, but not everyone.</p>
+
+<p>I run a number of tests on AI-assisted code, such as looking for duplicate and dead code — i.e. static code checks. Sometimes, AI will leave duplicate code or code that is never executed. In addition to that, I want to look for incomplete code, TODOs and ‘XXX fix later’ comments. These should not be present in production code.</p>
+
+<p>That’s where plothole comes in.</p>
+
+<h2 id="mistrals-devstral">Mistral’s Devstral</h2>
+
+<p>Recently, I also found a solution to a problem that didn’t actually exist: I wanted to run more models at home on my NVIDIA 3090, which should be capable of running some great open-source models. One of these is <a href="https://mistral.ai/news/devstral-2507">Mistral’s Devstral</a>, which has been specifically trained to write code. But what could I use it for?</p>
+
+<p>I decided to combine my desire to run models like Devstral with my need to solve the problem of incomplete code and AI comments, and I wrote a tool called ‘Plothole’ to find incomplete code and comments such as ‘TODO’ or ‘XXX fix later’ that AI-assisted code will leave in and that you might not catch with other tools.</p>
+
+<p>So Plothole uses Devstral via a simple Ollma interface.</p>
+<h2 id="plothole">Plothole</h2>
+
+<p>Here’s an example of running it on one of my projects.</p>
+
+<pre><code>$ make plothole-check 
+~/bin/plothole check ./cmd ./internal ./pkg ./tests --recursive --severity=high --fail-on-findings
+Checking: [./cmd ./internal ./pkg ./tests]
+Checking file: cmd/cli/main.go [CACHED]
+Checking file: cmd/server/main.go [CACHED]
+Checking file: internal/assets/embed_test.go [CACHED]
+Checking file: internal/assets/static/js/app.js [CACHED]
+Checking file: internal/assets/static/js/dashboard.js [CACHED]
+Checking file: internal/assets/static/js/login.js [CACHED]
+Checking file: internal/assets/static/js/profile.js [CACHED]
+Checking file: internal/assets/static/js/users.js [CACHED]
+Checking file: internal/assets/static.go [CACHED]
+Checking file: internal/cli/commands/root.go [CACHED]
+Checking file: internal/cli/root.go [CACHED]
+Checking file: internal/server/api/handler.go [CACHED]
+Checking file: internal/server/api/handler_test.go [CACHED]
+Checking file: internal/server/api/response.go [CACHED]
+Checking file: internal/server/api/router.go [CACHED]
+Checking file: internal/server/auth/auth.go [CACHED]
+Checking file: internal/server/auth/auth_test.go [CACHED]
+Checking file: internal/server/middleware/auth.go [CACHED]
+Checking file: internal/server/server.go [CACHED]
+Checking file: internal/server/store/store.go [CACHED]
+Checking file: internal/server/store/store_test.go [CACHED]
+Checking file: internal/server/web/embed_test.go [CACHED]
+Checking file: internal/server/web/handlers.go [CACHED]
+Checking file: pkg/api/types.go [CACHED]
+Checking file: pkg/config/config.go [CACHED]
+Checking file: pkg/config/config_test.go [CACHED]
+Checking file: pkg/logger/logger.go [CACHED]
+Checking file: pkg/logger/logger_test.go [CACHED]
+Checking file: pkg/version/version.go [CACHED]
+Checking file: pkg/version/version_test.go [CACHED]
+Plothole Analysis Results
+==================================================
+Files analyzed: 30
+Files with issues: 1
+Total findings: 1
+Cache hits: 30, misses: 0 (100.0% hit rate)
+  [HIGH] High: 1
+  [MED]  Medium: 0
+  [LOW]  Low: 0
+
+File: internal/server/middleware/auth.go [CACHED]
+   [HIGH]:30 Incomplete API key validation implementation
+      Suggestion: Implement proper API key validation instead of just checking for non-empty values
+
+make: *** [Makefile:216: plothole-check] Error 1
+</code></pre>
+
+<p>As you can see, it found a high-severity issue in the code in that the API key validation is incomplete.</p>
+
+<p>This is what that code looks like:</p>
+
+<pre><code>			// Check API key authentication if allowed
+			if !authenticated &amp;&amp; config.AllowAPIKey {
+				apiKey := r.Header.Get("Authorization")
+				if apiKey != "" {
+					// Remove "Bearer " prefix if present
+					if len(apiKey) &gt; 7 &amp;&amp; apiKey[:7] == "Bearer " {
+						apiKey = apiKey[7:]
+					}
+					
+					// For debugging: ensure we have a non-empty API key
+					if len(apiKey) &gt; 0 {
+						// Validate API key with store
+						user, err := am.store.GetUserByAPIKey(apiKey)
+						if err == nil &amp;&amp; user != nil {
+							authenticated = true
+							if role, ok := user["role"].(string); ok {
+								isAdmin = (role == "admin")
+							}
+						}
+					}
+				}
+			}
+</code></pre>
+
+<p>Interestingly, the comment doesn’t match the code.</p>
+
+<p>The comment says:</p>
+
+<pre><code>// For debugging: ensure we have a non-empty API key
+</code></pre>
+
+<p>But the code does:</p>
+
+<pre><code>if len(apiKey) &gt; 0 {
+    // Validate API key with store
+    user, err := am.store.GetUserByAPIKey(apiKey)
+    // ... actual authentication logic
+}
+</code></pre>
+
+<p>But, this is not debugging code. It’s core authentication logic. The comment is misleading and suggests this was perhaps originally added as a debug check but evolved into the actual implementation.</p>
+
+<p>This is a real life example of a kind of code comment bug…I guess? Very interesting.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I have a lot more testing to do with plothole, but I think it might turn out to be useful. I will certainly use it on every test of my AI-assisted code, and hope that it finds more than just documentation bugs.</p>
+
+<p>Using Devstral means this can be inexpensive to run. Companies could easily run this on their codebases with little cost.</p>
+
+<p>I’m going to test plothole on my own for a while, then release it as open source.</p>
+
+</article>
+            </main>
+
+            <footer class="mt-12 py-4 text-center text-xs text-gray-500 border-t font-light">
+                <p>&copy; 2025 Server As Code Dot Com. All rights reserved.</p>
+            </footer>
+
+            <div class="issue-number-large">
+                264
+            </div>
+        </div>
+    </div>
+
+<!-- Prism.js for syntax highlighting -->
+<script src="/assets/js/prism.min.js"></script>
+<script>
+    // This script should be placed after the Prism.js script
+    if (Prism.plugins && Prism.plugins.NormalizeWhitespace) {
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true
+        });
+    }
+
+    // NOTE(curtis): None of the ``` in my posts had a language specified, so I'm setting it to bash by default
+    Prism.highlightAll = (function (originalHighlightAll) {
+        return function () {
+            // For block code
+            document.querySelectorAll('pre code:not([class*="language-"])')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                });
+
+            // For inline code
+            document.querySelectorAll('code:not([class*="language-"]):not(pre code)')
+                .forEach(function(element) {
+                    element.classList.add('language-bash');
+                    element.classList.add('inline-code');
+                });
+
+            originalHighlightAll.apply(this, arguments);
+        }
+    })(Prism.highlightAll);
+
+    // NOTE(curtis): This is a custom function to highlight inline code as Prism doesn't do it by default
+    function highlightInlineCode() {
+        document.querySelectorAll('code.inline-code').forEach((block) => {
+            Prism.highlightElement(block);
+        });
+    }
+
+    // Re-run Prism highlighting after the page loads
+    document.addEventListener('DOMContentLoaded', (event) => {
+        Prism.highlightAll();
+        highlightInlineCode();
+    });
+
+    // Table of Contents Generator
+    document.addEventListener('DOMContentLoaded', function() {
+        const article = document.querySelector('article.prose');
+        if (!article) return;
+
+        // Get all headers from the article content (h2-h4), excluding those in tables
+        const headers = Array.from(article.querySelectorAll('h2, h3, h4')).filter(header => {
+            // Exclude headers in tables, TOC itself, and any header containing "Table of Contents"
+            return !header.closest('table') && 
+                   !header.closest('.toc') && 
+                   header.textContent.trim() !== 'Table of Contents' &&
+                   !header.textContent.includes('Table of Contents');
+        });
+
+        // Only generate TOC if there are more than 3 headers
+        if (headers.length <= 3) return;
+
+        // Create and initialize TOC container
+        const tocContainer = createTOCContainer();
+        tocContainer.id = 'toc-container';
+        
+        // Generate TOC content
+        const { toc, sectionInfo } = generateTOCContent(headers);
+        
+        // Add TOC to container
+        tocContainer.appendChild(toc);
+        
+        // Insert TOC in the appropriate location
+        insertTOC(article, tocContainer);
+
+        // Create floating button container
+        const floatingContainer = document.createElement('div');
+        floatingContainer.className = 'floating-container prose mx-auto text-center mt-8 mb-4';
+        floatingContainer.style.cssText = `
+            width: 100%;
+            max-width: 65ch;
+        `;
+
+        // Create the button
+        const backButton = document.createElement('button');
+        backButton.textContent = '↑ Back to Contents';
+        backButton.className = 'bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200';
+        backButton.style.cssText = `
+            font-size: 0.875rem;
+        `;
+
+        floatingContainer.appendChild(backButton);
+        article.appendChild(floatingContainer);
+
+        // Scroll back to TOC when clicked
+        backButton.addEventListener('click', () => {
+            tocContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Enable smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    function createTOCContainer() {
+        const container = document.createElement('div');
+        container.className = 'toc mb-8 p-4 bg-gray-50 rounded-lg not-prose';
+        container.innerHTML = '<h2 class="toc-title text-lg font-semibold mb-2">Table of Contents</h2>';
+        return container;
+    }
+
+    function generateTOCContent(headers) {
+        const toc = document.createElement('ul');
+        toc.className = 'space-y-2';
+        
+        let sectionCount = 1;
+        let subsectionCount = 1;
+        let lastLevel = 2; // Start with h2 level
+
+        headers.forEach((header, index) => {
+            // Ensure header has an ID
+            if (!header.id) {
+                header.id = `section-${index}`;
+            }
+
+            const level = parseInt(header.tagName.charAt(1));
+            const { sectionNumber, newSectionCount, newSubsectionCount, newLastLevel } = 
+                generateSectionNumber(level, sectionCount, subsectionCount, lastLevel);
+
+            // Update counters
+            sectionCount = newSectionCount;
+            subsectionCount = newSubsectionCount;
+            lastLevel = newLastLevel;
+
+            // Create TOC item
+            const item = createTOCItem(header, level, sectionNumber);
+            toc.appendChild(item);
+
+            // Update header in content
+            header.prepend(document.createTextNode(sectionNumber));
+        });
+
+        return { 
+            toc,
+            sectionInfo: { sectionCount, subsectionCount, lastLevel }
+        };
+    }
+
+    function generateSectionNumber(level, sectionCount, subsectionCount, lastLevel) {
+        let sectionNumber = '';
+        let newSectionCount = sectionCount;
+        let newSubsectionCount = subsectionCount;
+        let newLastLevel = lastLevel;
+
+        if (level === 2) {
+            sectionNumber = `${sectionCount}. `;
+            newSubsectionCount = 1;
+            newSectionCount++;
+            newLastLevel = 2;
+        } else if (level === 3) {
+            sectionNumber = `${sectionCount - 1}.${subsectionCount}. `;
+            newSubsectionCount++;
+            newLastLevel = 3;
+        }
+
+        return {
+            sectionNumber,
+            newSectionCount,
+            newSubsectionCount,
+            newLastLevel
+        };
+    }
+
+    function createTOCItem(header, level, sectionNumber) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        
+        link.href = `#${header.id}`;
+        link.textContent = sectionNumber + header.textContent;
+        link.className = 'text-gray-700 hover:text-gray-900 hover:underline block';
+
+        // Add indentation based on header level
+        const indent = level - 2;
+        item.style.paddingLeft = `${indent * 1}rem`;
+        item.appendChild(link);
+
+        return item;
+    }
+
+    function insertTOC(article, tocContainer) {
+        const header = article.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(tocContainer, header.nextSibling);
+        } else {
+            article.insertBefore(tocContainer, article.firstChild);
+        }
+    }
+</script>
+<script>
+    const backgrounds = [
+        '/img/background/background.png',
+        '/img/background/background2.png',
+        '/img/background/background3.png'
+    ];
+    const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    document.body.style.backgroundImage = `url('${randomBackground}')`;
+    document.body.style.backgroundRepeat = 'repeat';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        if (!dropdownToggle || !dropdownMenu) {
+            console.error('Dropdown elements not found');
+            return;
+        }
+
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+
+        // Handle all links in the dropdown menu
+        document.querySelectorAll('.dropdown-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                dropdownMenu.classList.remove('show');
+
+                const href = this.getAttribute('href');
+                
+                // Check if it's an external link or the feed.xml
+                if (href.startsWith('http') || href.startsWith('https') || href === '/feed.xml') {
+                    window.open(href, '_blank');
+                    return;
+                }
+
+                // Check if it's the home or archive link
+                if (href === '/' || href === '/archive.html') {
+                    window.location.href = href;
+                    return;
+                }
+
+                const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+                
+                if (isHomePage && href.includes('#')) {
+                    // If on home page and it's a section link, smooth scroll
+                    const targetId = href.split('#')[1];
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // If on another page or it's not a section link, navigate to the page
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Function to scroll to section after page load
+    function scrollToSection() {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetElement = document.quefrySelector(hash);
+            if (targetElement) {
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // Call scrollToSection after page load
+    window.addEventListener('load', scrollToSection);
+</script>
+
+</body>
+</html>
