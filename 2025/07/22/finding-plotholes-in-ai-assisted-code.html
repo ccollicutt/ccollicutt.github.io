@@ -327,6 +327,12 @@ make: *** [Makefile:216: plothole-check] Error 1
 
 <h2 id="conclusion">Conclusion</h2>
 
+<p>In the end, Claude Code gave Plothole a glowing review when I was trying to understand why a fake function I added wasn’t flagged by deadcode analysis.</p>
+
+<blockquote>
+  <p>Even staticcheck doesn’t flag exported functions. The plothole scanner would be more likely to catch this kind of issue since it does semantic analysis of code patterns and can identify functions that appear to be placeholders or incomplete implementations (based on the “fix later” comment). This is why having plothole analysis in the pipeline is valuable - it catches issues that traditional static analysis tools miss. - Claude Code</p>
+</blockquote>
+
 <p>I have a lot more testing to do with plothole, but I think it might turn out to be useful. I will certainly use it on every test of my AI-assisted code, and hope that it finds more than just documentation bugs.</p>
 
 <p>Using Devstral means this can be inexpensive to run. Companies could easily run this on their codebases with little cost.</p>

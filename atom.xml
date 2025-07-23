@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-07-22T20:21:59-04:00</updated>
+ <updated>2025-07-23T08:07:00-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -161,6 +161,12 @@ make: *** [Makefile:216: plothole-check] Error 1
 &lt;p&gt;This is a real life example of a kind of code comment bug…I guess? Very interesting.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;In the end, Claude Code gave Plothole a glowing review when I was trying to understand why a fake function I added wasn’t flagged by deadcode analysis.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Even staticcheck doesn’t flag exported functions. The plothole scanner would be more likely to catch this kind of issue since it does semantic analysis of code patterns and can identify functions that appear to be placeholders or incomplete implementations (based on the “fix later” comment). This is why having plothole analysis in the pipeline is valuable - it catches issues that traditional static analysis tools miss. - Claude Code&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;I have a lot more testing to do with plothole, but I think it might turn out to be useful. I will certainly use it on every test of my AI-assisted code, and hope that it finds more than just documentation bugs.&lt;/p&gt;
 
