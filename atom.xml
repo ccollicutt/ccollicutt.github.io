@@ -4,7 +4,7 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-07-23T08:07:00-04:00</updated>
+ <updated>2025-07-23T08:08:24-04:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
@@ -19,7 +19,7 @@
    <id>http://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code</id>
    <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
     &lt;img src=&quot;/img/magazine-cards/plothole-200w.png&quot; alt=&quot;Finding Plotholes in AI-Assisted Code&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
-    &lt;p&gt;&lt;em&gt;Find AI-assisted code artifacts that need fixing&lt;/em&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;em&gt;Identify AI-assisted code artefacts that require fixing.&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;hr /&gt;
