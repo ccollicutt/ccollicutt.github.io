@@ -223,7 +223,14 @@
 <p>I decided to combine my desire to run models like Devstral with my need to solve the problem of incomplete code and AI comments, and I wrote a tool called ‘Plothole’ to find incomplete code and comments such as ‘TODO’ or ‘XXX fix later’ that AI-assisted code will leave in and that you might not catch with other tools.</p>
 
 <p>So Plothole uses Devstral via a simple Ollma interface.</p>
-<h2 id="plothole">Plothole</h2>
+
+<h2 id="using-plothole-and-example-results">Using Plothole and Example Results</h2>
+
+<div style="background-color: #e6f9ec; color: #217a3b; border-left: 6px solid #34c759; padding: 16px; margin-bottom: 24px; border-radius: 4px; font-weight: 500;">
+    <strong>🛠️ Note:</strong> Plothole is still <span style="text-decoration: underline;">under development</span>. Features and results may change as the tool evolves.
+</div>
+
+<h3 id="example-1">Example 1</h3>
 
 <p>Here’s an example of running it on one of my projects.</p>
 
@@ -324,6 +331,113 @@ make: *** [Makefile:216: plothole-check] Error 1
 <p>But, this is not debugging code. It’s core authentication logic. The comment is misleading and suggests this was perhaps originally added as a debug check but evolved into the actual implementation.</p>
 
 <p>This is a real life example of a kind of code comment bug…I guess? Very interesting.</p>
+
+<h3 id="example-2">Example 2</h3>
+
+<p>This is the output from a project in which I examined the entire set of files from top to bottom.</p>
+
+<pre><code>Plothole Analysis Results
+==================================================
+Files analyzed: 98
+Files with issues: 8
+Total findings: 11
+Cache hits: 8, misses: 90 (8.2% hit rate)
+  [HIGH] High: 1
+  [MED]  Medium: 10
+  [LOW]  Low: 0
+
+File: pkg/logger/logger.go
+   [MED] :73 Function WithContext contains placeholder comment indicating unimplemented or incomplete functionality
+      Suggestion: Implement proper context handling instead of returning the same logger
+   [MED] :80 Function WithFields contains placeholder comment indicating unimplemented or incomplete functionality
+      Suggestion: Implement child logger with embedded fields instead of returning the same logger
+
+File: internal/agent/execution.go
+   [MED] :39 Potential unimplemented or incomplete code path for Windows scripts without shebang
+      Suggestion: Ensure that fileExtension and shebang are correctly set for all scenarios
+
+File: internal/agent/registration.go
+   [MED] :30 Comment indicating a placeholder for registration endpoint
+      Suggestion: Consider implementing a dedicated registration endpoint instead of using the heartbeat endpoint.
+   [MED] :67 Simple placeholder IP address in getLocalIP function
+      Suggestion: Implement more robust IP detection mechanism.
+
+File: internal/cli/commands/format_integration_test.go
+   [MED] :85 "NotImplementedError" indicates a stub or placeholder that needs to be implemented.
+      Suggestion: Implement the missing functionality.
+
+File: internal/server/api/handler_test.go
+   [MED] :13 Comment suggests this is a placeholder function which might not be fully implemented.
+      Suggestion: Verify and implement any necessary functionality.
+
+File: internal/server/store/agents.go
+   [MED] :39 Placeholder pattern indicating missing business logic
+      Suggestion: Add actual business logic instead of placeholder comment
+
+File: internal/server/store/sqlite_test.go
+   [MED] :189 Unquoted 'STUB' keyword found, indicating placeholder or unfinished code.
+      Suggestion: Replace STUB with actual implementation.
+   [MED] :246 'NotImplementedError' is raised in the code. This indicates that some functionality is not yet implemented.
+      Suggestion: Implement the missing functionality to replace NotImplementedError.
+
+File: internal/server/web/handlers.go
+   [HIGH]:39 Explicit TODO/FIXME comment: // Get dashboard data
+      Suggestion: Ensure that all necessary functions and logic are implemented
+</code></pre>
+
+<p>To which Claude Code retorts:</p>
+
+<pre><code>● Looking at these static analysis results, I see a mix of technical debt and incomplete implementations. Here's my assessment:
+
+  HIGH Priority Issue
+
+  The "// Get dashboard data" comment in handlers.go:28 is flagged as a TODO/FIXME, but it's actually just a descriptive comment for implemented code. This seems like a false positive from the analysis tool.
+
+  MEDIUM Priority Issues - Legitimate Concerns
+
+  Most Critical:
+  1. Logger incomplete implementation (pkg/logger/logger.go) - WithContext and WithFields methods are placeholders that should be properly implemented for production use
+  2. IP detection placeholder (internal/agent/registration.go:67) - Simple placeholder IP detection needs robust implementation
+  3. Windows script execution (internal/agent/execution.go:39) - Potential gaps in Windows script handling
+
+  Development/Testing Issues:
+  4. Test stubs in multiple files - NotImplementedError and STUB placeholders in tests should be completed
+  5. Business logic gaps in internal/server/store/agents.go - Missing actual business logic implementation
+
+  Recommendations
+
+  For Production Readiness:
+  - Fix the logger implementation first (highest impact)
+  - Implement proper IP detection for agent registration
+  - Complete the Windows script execution logic
+
+  For Development Quality:
+  - Replace test stubs with actual test implementations
+  - Complete business logic placeholders
+  - Consider implementing the dedicated registration endpoint suggestion
+
+  Overall Assessment: The codebase has solid foundations but contains technical debt typical of active development. The core functionality works (tests pass), but production deployment would benefit from addressing the logger and networking placeholders first.
+</code></pre>
+
+<p>The results are interesting. Mistral Devstral looks at the code generated by Claude Code. Then, Claude Code analyses the results from Plothole. A bit circular. But it seems like I’d get some better code out of it in the end.</p>
+
+<h2 id="llm-as-judge">LLM as Judge</h2>
+
+<blockquote>
+  <p>The term LLLM as judge (usually written as “LLM-as-a-Judge”) refers to using a large language model (LLM) to evaluate or assess outputs, such as the responses produced by another AI model or system. This process involves prompting an LLM to act as a “judge” based on explicitly defined criteria, allowing it to assign scores, classify outputs, or choose the best result among options. - Source Perplexity.ai</p>
+</blockquote>
+
+<p>In a sense, that’s what Plothole does: it uses Mistral Devstral to evaluate Claude Code’s generated code. Having said that, I’m not tied to Devstral — you could try any model that Ollama will run with Plothole, although I haven’t.</p>
+
+<h2 id="future-step-evaluations">Future Step: Evaluations</h2>
+
+<blockquote>
+  <p>…evals (short for “evaluations”) are structured tests or frameworks used to systematically measure and assess how well an AI system performs on specific tasks or criteria. Evals help developers, researchers, and organizations determine if their models are accurate, reliable, and fit for real-world use. - Source Perplexity.ai</p>
+</blockquote>
+
+<p>I should create evals for Plothole.</p>
+
+<p>Evals, evals, evals.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
