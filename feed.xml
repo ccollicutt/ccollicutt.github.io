@@ -1,4 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-07-26T15:23:45-04:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and ‘XXX Fix Later’</title><link href="https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code.html" rel="alternate" type="text/html" title="Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and ‘XXX Fix Later’" /><published>2025-07-22T00:00:00-04:00</published><updated>2025-07-22T00:00:00-04:00</updated><id>https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code</id><content type="html" xml:base="https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://serverascode.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://serverascode.com/" rel="alternate" type="text/html" /><updated>2025-11-22T11:21:13-05:00</updated><id>https://serverascode.com/feed.xml</id><title type="html">Server As Code Dot Com</title><subtitle>A techno-blog for our techno-times</subtitle><entry><title type="html">rmrf: A Safer rm -rf</title><link href="https://serverascode.com/2025/11/22/rmrf-the-safer-rm-rf.html" rel="alternate" type="text/html" title="rmrf: A Safer rm -rf" /><published>2025-11-22T00:00:00-05:00</published><updated>2025-11-22T00:00:00-05:00</updated><id>https://serverascode.com/2025/11/22/rmrf-the-safer-rm-rf</id><content type="html" xml:base="https://serverascode.com/2025/11/22/rmrf-the-safer-rm-rf.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <img src="/img/magazine-cards/rmrf-200w.png" alt="Finding Plotholes in AI-Assisted Code" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
+    <p><em>We need to make our work lives safer. rmrf is intended to demonstrate how we can build safer tools for operating complex systems and make operators' daily lives more predictable and less stressful.</em></p>
+</div>
+
+<hr />
+
+<h2 id="tldr">tldr;</h2>
+
+<p>I’ve created a tool called <a href="https://github.com/ccollicutt/rmrf">rmrf</a>, a safer version of the well-known and extremely useful command <code>rm -rf</code>. Howver, <code>rm -rf</code> is a tool that with extremeley sharp edges (ask me, I know!) and it can be dangerouse to run, especially in production situations. What’s more, there are many other tools and systms that are just as dangerous. With this all in mind, rmrf is not intended to replace rm -rf; instead, it’s an example of how we could build safer tools when operating complex systems.</p>
+
+<h2 id="operational-risk">Operational Risk</h2>
+
+<p>Most of the time, somewhat unbelievably, computers work. Even more surprisingly, complex systems built on top of them work too. However, hidden beneath that veneer of working software is the invisible labour of human operators, holding it all together with proverbial duct tape, eternal vigilence, and lost weekends.</p>
+
+<p>While we develop software in small groups, creating many tests and releasing often, we typically do the opposite in terms of running complex systems. One or two operators work alone at night with no tests or safety harnesses, and release updates only once a year if they’re lucky.</p>
+
+<p>We need to focus more on operational safety.</p>
+
+<p>This is the greatest time in the history of computing to build your own tools and software. Operators now have the ability to be the designers of their own fate.</p>
+
+<h2 id="rmrf">rmrf</h2>
+
+<p>There are stages a workflow can go through to be safer. rmrf implements the following stages. Note that this is not a comprehensive list, and there are many other stages that could be added or altered, depending on the system and the operators.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stage</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>No Stage</strong></td>
+      <td>Initial state when first starting up interactive mode; there is no active plan yet</td>
+    </tr>
+    <tr>
+      <td><strong>Plan</strong></td>
+      <td>Define what it is that we want to delete; creates an auditable record of intent</td>
+    </tr>
+    <tr>
+      <td><strong>Validate</strong></td>
+      <td>Check the plan against the policies in the particular environment</td>
+    </tr>
+    <tr>
+      <td><strong>Near-Miss</strong></td>
+      <td>If an issue is detected before execution; if the user exits ‘rmrf’ before application, a near-miss is recorded for learning</td>
+    </tr>
+    <tr>
+      <td><strong>Stage</strong></td>
+      <td>Prepare to apply, in this case it means backing up the files for recovery</td>
+    </tr>
+    <tr>
+      <td><strong>Apply</strong></td>
+      <td>Perform the actual deletion</td>
+    </tr>
+    <tr>
+      <td><strong>Verify</strong></td>
+      <td>Confirm that the files were deleted, that the operations completed successfully</td>
+    </tr>
+    <tr>
+      <td><strong>Rollback</strong></td>
+      <td>If necessary, restore the data from the backup if something went wrong</td>
+    </tr>
+    <tr>
+      <td><strong>Closeout</strong></td>
+      <td>Finalize the plan, remove backups or set them to be removed at a future time, and set the lifecycle as complete</td>
+    </tr>
+    <tr>
+      <td><strong>Learn</strong></td>
+      <td>Capture notes and insights for future operations and work towards creating a learning organization</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="/img/rmrf-workflow.png" alt="rmrf workflow diagram" style="max-width: 100%; display: block; margin: 20px auto;" /></p>
+
+<h2 id="using-rmrf">Using rmrf</h2>
+
+<p>Here’s an example of using rmrf to delete the <code>/tmp/old-logs</code> directory via the golden path, taking us through all the stages.</p>
+
+<div style="width: 100%; margin: 24px 0;">
+  <iframe src="https://www.youtube.com/embed/7XIbYE8MZdk" title="rmrf demo video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="width: 100%; height: 400px; display: block; border: none; border-radius: 8px;"></iframe>
+</div>
+
+<p>Also, if you exit after creating a plan but before applying it, a near-miss is recorded for analysis.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We need to make our operational lives safer, and rmrf shows how we can build safer tools for operating complex systems. There has never been a better time to be an operator and build amazing, safe tools.</p>
+
+<p>Please check out the <a href="https://github.com/ccollicutt/rmrf">rmrf</a> repository and give it a try.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[We need to make our work lives safer. rmrf is intended to demonstrate how we can build safer tools for operating complex systems and make operators' daily lives more predictable and less stressful.]]></summary></entry><entry><title type="html">Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and ‘XXX Fix Later’</title><link href="https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code.html" rel="alternate" type="text/html" title="Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and ‘XXX Fix Later’" /><published>2025-07-22T00:00:00-04:00</published><updated>2025-07-22T00:00:00-04:00</updated><id>https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code</id><content type="html" xml:base="https://serverascode.com/2025/07/22/finding-plotholes-in-ai-assisted-code.html"><![CDATA[<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
     <img src="/img/magazine-cards/plothole-200w.png" alt="Finding Plotholes in AI-Assisted Code" style="max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" />
     <p><em>Identify AI-assisted code artefacts that require fixing.</em></p>
 </div>
@@ -15133,83 +15225,4 @@ b5d3c8cd-a56f-4252-a026-7107790fcd44
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Kubernetes.io has a <a href="https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/">blog post</a> announcing local persistent volumes. It’s worth a read. Anything I say here of value would just be copying from that. :) There are several reasons not to use this model for storage. Seems like it would be best for data heavy applications…data gravity. There is also a <a href="https://github.com/kubernetes-incubator/external-storage/tree/master/local-volume">simple volume manager</a> available as well, but I didn’t explore that in this blog post.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Let’s quickly discuss using persistent local volumes with Kubernetes.]]></summary></entry><entry><title type="html">Vent - Kubernetes the Hard Way with Ansible and Packet.net</title><link href="https://serverascode.com/2018/09/03/vent-kubernetes-the-hard-way.html" rel="alternate" type="text/html" title="Vent - Kubernetes the Hard Way with Ansible and Packet.net" /><published>2018-09-03T00:00:00-04:00</published><updated>2018-09-03T00:00:00-04:00</updated><id>https://serverascode.com/2018/09/03/vent-kubernetes-the-hard-way</id><content type="html" xml:base="https://serverascode.com/2018/09/03/vent-kubernetes-the-hard-way.html"><![CDATA[<p>In preparation to write the Certificate Kubernetes Administrator exam I’m going through the ever popular Kubernetes the Hard way (kthw), as developed by Mr. Kelsey Hightower. I actually did <a href="https://github.com/ccollicutt/kubernetes-the-hard-way-with-aws-and-ansible">the same thing a couple of years ago</a>, in which I translated kthw from a step by step command line depoyment into some Ansible that deployed kthw to Amazon Web Services.</p>
-
-<p>In this blog post I discuss a repo I created that does something similar–it still converts the shell commands into Ansible, but instead of AWS it deploys Kubernetes to bare metal nodes on Packet.net.</p>
-
-<h2 id="packetnet">Packet.net</h2>
-
-<p>I’m a big fan of packet.net. I like four major things about packet.net:</p>
-
-<ol>
-  <li>Bare Metal resources</li>
-  <li>Layer 3 networking</li>
-  <li>Simplicity</li>
-  <li>Spot pricing</li>
-</ol>
-
-<h3 id="baremetal">Baremetal</h3>
-
-<p>Obviously the main point of packet.net is that instead of getting virtual machines, you get bare metal nodes. I really like getting bare metal nodes. You don’t have to worry about sharing resources with other tenants. You get the full speed of bare metal. They can be pricey over time, but if I was an organization seeking speed, for example in CI/CD, it would be well worth it to utilize packet to push things as fast as they can go.</p>
-
-<p>Specifically for Vent I focussed on the AMD EPYC nodes which are under plan c2.medium.x86. With 64GB of RAM, 20GB of networking, 24 cores, and about 1TB of SSD, it’s perfect for Kubernetes.</p>
-
-<p>Other cloud providers also have bare metal nodes, but I haven’t used them. I think AWS provides bare metal, and they have the Nitro hypervisor, which is effectively bare metal. But that is a discussion for another day. :)</p>
-
-<h3 id="networking">Networking</h3>
-
-<p>I like how Packet.net has done their networking–it’s all layer 3 based. As a public cloud, this is the right way to go. People often think networking means a shared layer 2 with a /24 netmask, like what you get with most clouds virtual private networking.</p>
-
-<p>Packet.net’s layer 3 model means that each node gets three IPs: a public IPv4, an Ipv6, and an internal, private RFC 1918 address (all on the same bond0 interface). The private address is in the 10.0.0.0/8 range, but it’s usually a /31, which means it just has a couple usable addresses–the hosts IP and the gateway. A route is setup to send all 10.0.0.0/8 addresses through that gateway, and packet must be doing filtering to allow “private networking” in the sense that other nodes in the same project are put into a filtering group (ie. network ACL), so that they can only talk to each other on the private network. So if you have three nodes, they each have their own /31 private IP space, but are part of an ACL group (presumably).</p>
-
-<p>This is a very scalable model for packet.net, and with an underlying layer 3 private network as a tenant you can set up an overlay network if you like, vxlan, what have you, and in the example of Kubernetes you could do something simple like use flannel, which is an overlay.</p>
-
-<p>When deploying things like Kubernetes and OpenStack I pay a lot of attention to networking models–it takes some thought about how to fit k8s into an environment. Overlays almost always work because they just ride on top of the underlying physical network and just need L3 connectivity between the virtual switches or whatever is taking care of the overlay. However, overlays are not alway the. Good architecture decisions must be made.</p>
-
-<p>One issue I have with this model is that I don’t necessarily want nodes listening on public IPv{4,6} address if they don’t need to be, but would still like them to have egress access to the Internet. It would be worthwhile for packet.net to have a nat gateway setup like AWS can do. They would have to perform some network magic in the background, but I think it’d be doable. More likely they will create a VPC-like model with a hidden overlay, perhaps using EVPN. Who knows. :)</p>
-
-<p>(Aside: I did do a lot of work and setup dnsmasq, squid, and apt-cacher-ng in packet.net. I removed the public IPv{4,6} addresses from the interface and setup nodes to go through a cache. This worked for 99% of what I was doing–but in some cases applications <em>cough</em> docker images <em>cough</em> are really annoying and require access to the Internet without a proxy. Again, another story for another day.)</p>
-
-<p>I had to do some tricks with macvlan to get flannel working with packet.net’s model, but it’s flannel’s issue. See the <a href="https://github.com/ccollicutt/vent">vent repo</a> for more information on that. At least I finally learned about macvlan to work around the issue.</p>
-
-<p><em>NOTE: Packet also support setting up your own standard VLANs in some capacity, but I haven’t explored that yet.</em></p>
-
-<h3 id="spot-pricing">Spot pricing</h3>
-
-<p>Spot pricing is essentially a way to bid on computing time. You put in your bid, and if it’s high enough you get the compute resources you asked for. Later on, if someone puts in a higher bid your resources get diverted to them. What this really means is that your bare metal server will be deleted.</p>
-
-<p>I’m a big fan of spot pricing, as I think that economics is really important in computing, or it should be at least. With spot markets you can really test out some economic theories. Or, at least, get less expensive short term resources, such as CI/CD or for testing out deployments, which I do a lot of. While working on Vent I usually was able to get the AMD EPYC nodes for about $.30 in spot pricing versus $1 they normally are per hour. That’s quite a discount.</p>
-
-<h2 id="simplicity">Simplicity</h2>
-
-<p>There is a core set of features that a public cloud requires, IMHO. Public clouds like AWS have hundreds of custom services. It can be very confusing to understand what is available and how they work, let alone their billing mode. I’m not saying one way is better than another, but it’s often refreshing to have a simpler view of public cloud resources. Digital Ocean is similar in their desire to keep things clean. Time will tell if this is a good product design, but I appreciate it. A good networking model, access to compute resources, and persistent volumes, elastic IPs…the basic requirements, it’s all I need. I’m not even a big fan of “security groups” which packet does not have. Load balancers are probably a good idea though.</p>
-
-<h2 id="kthw">kthw</h2>
-
-<p>Mr. Hightower has changed kthw considerably over the years. As I write this I’m sure he’s creating a new version that will come out soon. WHen I last worked with Kubernetes and kthw it was version 1.3.0. Now we are on 1.10.7 for Vent, 1.10.2 for kthw, and 1.11 for Kubernetes proper.</p>
-
-<p>kthw is not at this time using docker in a way that you think it would. Docker is not actually installed, instead it’s using <a href="https://containerd.io/">containerd</a>. It also uses <a href="https://github.com/google/gvisor">gvisor</a>, another Google project.</p>
-
-<blockquote>
-  <p>Gvisor [is] a new kind of sandbox that helps provide secure isolation for containers, while being more lightweight than a virtual machine (VM). gVisor integrates with Docker and Kubernetes, making it simple and easy to run sandboxed containers in production environments.</p>
-</blockquote>
-
-<p>I really appreciate the work that Mr. Hightower has put into kthw as I have used it quite a bit to learn about Kubernetes.</p>
-
-<h2 id="vent">Vent</h2>
-
-<p>Finally, lets chat about Vent a bit. First, I have an <a href="https://github.com/ccollicutt/vent/blob/master/OVERVIEW.md">overview document</a> in the vent repo that discusses the choices I made and issues I ran into if you’d like something more in depth.</p>
-
-<p>With Vent I took kthw and turned it into a set of Ansible playbooks. Specifically I didn’t use roles, each step in kthw is a separate playbook. For convenience, they are all brought together in a monolithic file, all.yml. I chose this model to make it look like kthw, with a step by step process. In the future I may change this to be role based.</p>
-
-<p>Provisioning packet.net instances is not done with Ansible, and instead I’m using the packet.net golang based CLI. it has support for spot instances. You can provision Packet.net instances with Ansible or Terraform, and probably other systems, but Ansible and Terraform don’t seem to support spot instance pricing (at least at this time). I should probably contribute that to the Ansible module, but haven’t had time.</p>
-
-<p>One thing I don’t like about how I’m deploying k8s is that I’m relying pretty heavily on the flannel k8s deployment yaml to manage the networking. I’d like to have Ansible set that up instead of using the magic deployment from CoreOS. Also, I’d like to not use flannel at all and move to an Open vSwitch based networking model, but that will take some time to research. For now it’s magic flannel. :)</p>
-
-<p>Like kthw, I’m not putting the k8s control plane into containers or self-hosted in k8s itself. Self-hosting is what kubeadm and some other deployment tools do. Something to look into in the future.</p>
-
-<p>Going forward I hope to write a “vent” CLI that does a lot of the setup, including provisioning, setting up a few basic variables, etc.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Thanks to packet.net for a great service. Thanks to Mr. Hightower for kthw. And wish me luck on the CKA exam!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[In preparation to write the Certificate Kubernetes Administrator exam I’m going through the ever popular Kubernetes the Hard way (kthw), as developed by Mr. Kelsey Hightower. I actually did the same thing a couple of years ago, in which I translated kthw from a step by step command line depoyment into some Ansible that deployed kthw to Amazon Web Services.]]></summary></entry></feed>
+<p>Kubernetes.io has a <a href="https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/">blog post</a> announcing local persistent volumes. It’s worth a read. Anything I say here of value would just be copying from that. :) There are several reasons not to use this model for storage. Seems like it would be best for data heavy applications…data gravity. There is also a <a href="https://github.com/kubernetes-incubator/external-storage/tree/master/local-volume">simple volume manager</a> available as well, but I didn’t explore that in this blog post.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Let’s quickly discuss using persistent local volumes with Kubernetes.]]></summary></entry></feed>

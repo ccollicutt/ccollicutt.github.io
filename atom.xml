@@ -4,13 +4,115 @@
  <title>serverascode.com rss feed</title>
  <link href="http://serverascode.com/atom.xml" rel="self"/>
  <link href="http://serverascode.com/"/>
- <updated>2025-07-26T15:23:45-04:00</updated>
+ <updated>2025-11-22T11:21:13-05:00</updated>
  <id>http://serverascode.com/</id>
  <author>
    <name>curtis</name>
    <email>curtis@serverascode.com</email>
  </author>
 
+ 
+ <entry>
+   <title>rmrf: A Safer rm -rf</title>
+   <link href="http://serverascode.com//2025/11/22/rmrf-the-safer-rm-rf.html"/>
+   <updated>2025-11-22T00:00:00-05:00</updated>
+   <id>http://serverascode.com/2025/11/22/rmrf-the-safer-rm-rf</id>
+   <content type="html">&lt;div style=&quot;display: flex; align-items: center; gap: 20px; margin-bottom: 20px;&quot;&gt;
+    &lt;img src=&quot;/img/magazine-cards/rmrf-200w.png&quot; alt=&quot;Finding Plotholes in AI-Assisted Code&quot; style=&quot;max-width: 200px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);&quot; /&gt;
+    &lt;p&gt;&lt;em&gt;We need to make our work lives safer. rmrf is intended to demonstrate how we can build safer tools for operating complex systems and make operators&apos; daily lives more predictable and less stressful.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;tldr;&lt;/h2&gt;
+
+&lt;p&gt;I’ve created a tool called &lt;a href=&quot;https://github.com/ccollicutt/rmrf&quot;&gt;rmrf&lt;/a&gt;, a safer version of the well-known and extremely useful command &lt;code&gt;rm -rf&lt;/code&gt;. Howver, &lt;code&gt;rm -rf&lt;/code&gt; is a tool that with extremeley sharp edges (ask me, I know!) and it can be dangerouse to run, especially in production situations. What’s more, there are many other tools and systms that are just as dangerous. With this all in mind, rmrf is not intended to replace rm -rf; instead, it’s an example of how we could build safer tools when operating complex systems.&lt;/p&gt;
+
+&lt;h2 id=&quot;operational-risk&quot;&gt;Operational Risk&lt;/h2&gt;
+
+&lt;p&gt;Most of the time, somewhat unbelievably, computers work. Even more surprisingly, complex systems built on top of them work too. However, hidden beneath that veneer of working software is the invisible labour of human operators, holding it all together with proverbial duct tape, eternal vigilence, and lost weekends.&lt;/p&gt;
+
+&lt;p&gt;While we develop software in small groups, creating many tests and releasing often, we typically do the opposite in terms of running complex systems. One or two operators work alone at night with no tests or safety harnesses, and release updates only once a year if they’re lucky.&lt;/p&gt;
+
+&lt;p&gt;We need to focus more on operational safety.&lt;/p&gt;
+
+&lt;p&gt;This is the greatest time in the history of computing to build your own tools and software. Operators now have the ability to be the designers of their own fate.&lt;/p&gt;
+
+&lt;h2 id=&quot;rmrf&quot;&gt;rmrf&lt;/h2&gt;
+
+&lt;p&gt;There are stages a workflow can go through to be safer. rmrf implements the following stages. Note that this is not a comprehensive list, and there are many other stages that could be added or altered, depending on the system and the operators.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Stage&lt;/th&gt;
+      &lt;th&gt;Description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;No Stage&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Initial state when first starting up interactive mode; there is no active plan yet&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Plan&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Define what it is that we want to delete; creates an auditable record of intent&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Validate&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Check the plan against the policies in the particular environment&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Near-Miss&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;If an issue is detected before execution; if the user exits ‘rmrf’ before application, a near-miss is recorded for learning&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Stage&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Prepare to apply, in this case it means backing up the files for recovery&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Apply&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Perform the actual deletion&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Verify&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Confirm that the files were deleted, that the operations completed successfully&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Rollback&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;If necessary, restore the data from the backup if something went wrong&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Closeout&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Finalize the plan, remove backups or set them to be removed at a future time, and set the lifecycle as complete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;Learn&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;Capture notes and insights for future operations and work towards creating a learning organization&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/rmrf-workflow.png&quot; alt=&quot;rmrf workflow diagram&quot; style=&quot;max-width: 100%; display: block; margin: 20px auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;using-rmrf&quot;&gt;Using rmrf&lt;/h2&gt;
+
+&lt;p&gt;Here’s an example of using rmrf to delete the &lt;code&gt;/tmp/old-logs&lt;/code&gt; directory via the golden path, taking us through all the stages.&lt;/p&gt;
+
+&lt;div style=&quot;width: 100%; margin: 24px 0;&quot;&gt;
+  &lt;iframe src=&quot;https://www.youtube.com/embed/7XIbYE8MZdk&quot; title=&quot;rmrf demo video&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot; style=&quot;width: 100%; height: 400px; display: block; border: none; border-radius: 8px;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Also, if you exit after creating a plan but before applying it, a near-miss is recorded for analysis.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;We need to make our operational lives safer, and rmrf shows how we can build safer tools for operating complex systems. There has never been a better time to be an operator and build amazing, safe tools.&lt;/p&gt;
+
+&lt;p&gt;Please check out the &lt;a href=&quot;https://github.com/ccollicutt/rmrf&quot;&gt;rmrf&lt;/a&gt; repository and give it a try.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Finding Plotholes in AI-Assisted Code: Missing or Incomplete Code, TODOs, and 'XXX Fix Later'</title>
